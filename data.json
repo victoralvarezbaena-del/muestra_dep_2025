@@ -1,0 +1,67 @@
+{
+  "groups": {
+    "A": {
+      "teams": [
+        "A1",
+        "A2",
+        "A3"
+      ],
+      "matches": []
+    },
+    "B": {
+      "teams": [
+        "B1",
+        "B2",
+        "B3"
+      ],
+      "matches": []
+    },
+    "C": {
+      "teams": [
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "matches": []
+    },
+    "D": {
+      "teams": [
+        "D1",
+        "D2",
+        "D3"
+      ],
+      "matches": []
+    }
+  },
+  "points": {
+    "win": 3,
+    "draw": 1,
+    "loss": 0
+  },
+  "knockout": {
+    "sf1": {
+      "gh": null,
+      "ga": null,
+      "winner": "",
+      "hour": "",
+      "place": ""
+    },
+    "sf2": {
+      "gh": null,
+      "ga": null,
+      "winner": "",
+      "hour": "",
+      "place": ""
+    },
+    "final": {
+      "gh": null,
+      "ga": null,
+      "winner": "",
+      "hour": "",
+      "place": ""
+    }
+  },
+  "tournamentName": "",
+  "updatedAt": "2025-10-17T20:28:08.750Z",
+  "updatedAtLocal": "17/10/2025, 02:28:08 p.m."
+}

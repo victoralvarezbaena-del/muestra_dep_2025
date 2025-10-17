@@ -100,7 +100,7 @@ D3</textarea></div>
         <button id="btnGenerate">Generar rol por grupo</button>
 
         <!-- PUBLICAR -->
-        <input type="url" id="publishURL" placeholder="URL del Web App (…/exec)" style="flex:2; min-width:320px" />
+        <input type="url" id="publishURL" placeholder="URL del Web App (opcional)" style="flex:2; min-width:320px" />
         <button id="btnPublish">Publicar <span id="publishStatus"></span></button>
 
         <div class="spacer"></div>
@@ -514,99 +514,51 @@ function setPublishStatus(text, type = '') {
 }
 
 async function publishNow() {
-  let url = document.getElementById('publishURL')?.value?.trim();
-  if (!url) {
-    alert('Ingresa la URL del Web App (…/exec) del Publicador');
-    return;
-  }
-
-  // Asegurar que la URL termina en /exec
-  if (!url.endsWith('/exec')) {
-    url = url.replace(/\/dev$/, '/exec').replace(/\/$/, '') + '/exec';
-  }
-
+  // Para GitHub Pages, simplemente guardamos los datos localmente
+  // y la carátula pública los leerá desde localStorage o un archivo data.json
+  
   const snapshot = JSON.parse(JSON.stringify(state));
   stamp(snapshot);
-
+  
   // Mostrar loading
   const btn = document.getElementById('btnPublish');
-  const originalText = btn.textContent;
   btn.disabled = true;
   setPublishStatus('⏳', 'loading');
 
   try {
-    console.log('Enviando datos a:', url);
+    // Opción A: Guardar en localStorage (más simple)
+    localStorage.setItem('TORNEO_PUBLIC_DATA', JSON.stringify(snapshot));
     
-    // Intentar con fetch
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(snapshot)
-    });
-
-    if (!response.ok) {
-      throw new Error(`Error HTTP: ${response.status} ${response.statusText}`);
-    }
-
-    const text = await response.text();
-    const data = JSON.parse(text);
+    // Opción B: También ofrecer descarga del archivo data.json
+    const dataStr = JSON.stringify(snapshot, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
     
-    if (data && data.ok) {
-      setPublishStatus('✅', 'success');
-      setTimeout(() => setPublishStatus(''), 3000);
-      alert('✅ Publicado correctamente\n' + (data.message || ''));
-    } else {
-      setPublishStatus('❌', 'error');
-      alert('⚠️ ' + (data.error || text));
-    }
+    // Crear enlace de descarga
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'torneo-data.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    setPublishStatus('✅', 'success');
+    setTimeout(() => setPublishStatus(''), 3000);
+    
+    alert('✅ Datos listos para publicar!\n\n' +
+          'Se ha guardado localmente y descargado el archivo JSON.\n\n' +
+          'Para publicar en GitHub:\n' +
+          '1. Sube el archivo descargado a tu repositorio como "data.json"\n' +
+          '2. La carátula pública leerá los datos desde ahí');
+    
   } catch (err) {
     console.error('Error:', err);
     setPublishStatus('❌', 'error');
-    
-    // Intentar con XMLHttpRequest como fallback
-    try {
-      await publishWithXHR(url, snapshot);
-    } catch (xhrError) {
-      alert('❌ No se pudo publicar. Verifica:\n• La URL es correcta\n• El Web App está desplegado\n• Tu conexión a internet');
-    }
+    alert('Error al preparar datos: ' + err.message);
   } finally {
     btn.disabled = false;
   }
-}
-
-function publishWithXHR(url, snapshot) {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', url, true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.timeout = 10000;
-    
-    xhr.onload = function() {
-      if (xhr.status === 200) {
-        try {
-          const data = JSON.parse(xhr.responseText);
-          if (data && data.ok) {
-            setPublishStatus('✅', 'success');
-            setTimeout(() => setPublishStatus(''), 3000);
-            alert('✅ Publicado correctamente');
-            resolve();
-          } else {
-            reject(new Error(data.error || 'Error desconocido'));
-          }
-        } catch (e) {
-          reject(new Error('Respuesta inválida'));
-        }
-      } else {
-        reject(new Error(`HTTP ${xhr.status}`));
-      }
-    };
-    
-    xhr.onerror = xhr.ontimeout = function() {
-      reject(new Error('Error de conexión'));
-    };
-    
-    xhr.send(JSON.stringify(snapshot));
-  });
 }
 
 // ===== Inicialización =====

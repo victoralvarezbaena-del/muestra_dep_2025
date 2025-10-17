@@ -25,6 +25,7 @@
     .pts{font-weight:800}
     .loading{text-align:center;padding:40px;color:var(--muted)}
     .error{text-align:center;padding:20px;color:var(--bad);background:#fef2f2;border-radius:10px;margin:10px 0}
+    .update-btn{background:var(--accent);color:white;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;margin:10px 0}
   </style>
 </head>
 <body>
@@ -39,6 +40,7 @@
     <div id="loading" class="loading">🔄 Cargando datos del torneo...</div>
     <div id="error" class="error" style="display:none"></div>
     <div id="content" style="display:none">
+      <button onclick="loadData()" class="update-btn">🔄 Actualizar Datos</button>
       <div class="card">
         <h2>Grupos</h2>
         <div id="groupsRoot" class="groups"></div>
@@ -52,23 +54,44 @@
   </main>
 
   <script>
-    // ===== CONFIGURACIÓN =====
-    const PUBLISHER_URL = 'https://script.google.com/macros/s/AKfycbzrutne7x0yWAFUK3paGn-OpLCF-NWoodzc1XpzSMv_JoGIO-3SaiWdD1ppgWzytkJFTQ/exec';
-    
+    // ===== FUENTES DE DATOS =====
+    const DATA_SOURCES = [
+      // Opción 1: Archivo data.json en el repositorio
+      'data.json',
+      // Opción 2: Datos locales (si el administrador está en la misma página)
+      () => {
+        const local = localStorage.getItem('TORNEO_PUBLIC_DATA');
+        return local ? JSON.parse(local) : null;
+      }
+    ];
+
     // ===== CARGAR DATOS =====
     async function loadData() {
       try {
         showLoading();
         
-        const response = await fetch(PUBLISHER_URL);
-        if (!response.ok) {
-          throw new Error(`Error ${response.status}: ${response.statusText}`);
+        let data = null;
+        
+        // Intentar cada fuente de datos
+        for (const source of DATA_SOURCES) {
+          try {
+            if (typeof source === 'function') {
+              data = source();
+            } else {
+              const response = await fetch(source);
+              if (response.ok) {
+                data = await response.json();
+              }
+            }
+            
+            if (data) break; // Si encontramos datos, salir del loop
+          } catch (e) {
+            console.log(`Fuente ${source} falló:`, e);
+          }
         }
         
-        const data = await response.json();
-        
-        if (data.ok === false) {
-          throw new Error(data.error || 'Error del servidor');
+        if (!data) {
+          throw new Error('No se pudieron cargar los datos del torneo');
         }
         
         render(data);

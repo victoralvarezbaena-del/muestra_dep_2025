@@ -2,35 +2,135 @@
   "groups": {
     "A": {
       "teams": [
-        "A1",
-        "A2",
-        "A3"
+        "Lobos",
+        "Liebres",
+        "Halcones"
       ],
-      "matches": []
+      "matches": [
+        {
+          "home": "Lobos",
+          "away": "Liebres",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Tantocob cancha 1"
+        },
+        {
+          "home": "Halcones",
+          "away": "Lobos",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Tantocob cancha 1"
+        },
+        {
+          "home": "Liebres",
+          "away": "Halcones",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Tantocob cancha 1"
+        }
+      ]
     },
     "B": {
       "teams": [
-        "B1",
-        "B2",
-        "B3"
+        "Panteras",
+        "Pumas",
+        "Ardillas"
       ],
-      "matches": []
+      "matches": [
+        {
+          "home": "Panteras",
+          "away": "Pumas",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Tantocob cancha 1"
+        },
+        {
+          "home": "Ardillas",
+          "away": "Panteras",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Tantocob cancha 1"
+        },
+        {
+          "home": "Pumas",
+          "away": "Ardillas",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Tantocob cancha 1"
+        }
+      ]
     },
     "C": {
       "teams": [
-        "C1",
-        "C2",
-        "C3"
+        "Abejas",
+        "Quichanes",
+        "Dragones"
       ],
-      "matches": []
+      "matches": [
+        {
+          "home": "Abejas",
+          "away": "Quichanes",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Tantocob cancha 1"
+        },
+        {
+          "home": "Dragones",
+          "away": "Abejas",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Tantocob cancha 1"
+        },
+        {
+          "home": "Quichanes",
+          "away": "Dragones",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Tantocob cancha 1"
+        }
+      ]
     },
     "D": {
       "teams": [
-        "D1",
-        "D2",
-        "D3"
+        "Potros",
+        "Jaguares",
+        "Avispas"
       ],
-      "matches": []
+      "matches": [
+        {
+          "home": "Potros",
+          "away": "Jaguares",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Tantocob cancha 1"
+        },
+        {
+          "home": "Avispas",
+          "away": "Potros",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Tantocob cancha 1"
+        },
+        {
+          "home": "Jaguares",
+          "away": "Avispas",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Tantocob cancha 1"
+        }
+      ]
     }
   },
   "points": {
@@ -61,7 +161,7 @@
       "place": ""
     }
   },
-  "tournamentName": "",
-  "updatedAt": "2025-10-17T20:28:08.750Z",
-  "updatedAtLocal": "17/10/2025, 02:28:08 p.m."
+  "tournamentName": "Futbol Varonil",
+  "updatedAt": "2025-10-17T20:33:55.614Z",
+  "updatedAtLocal": "17/10/2025, 02:33:55 p.m."
 }

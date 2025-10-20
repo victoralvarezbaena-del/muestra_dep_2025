@@ -142,14 +142,14 @@
     "sf1": {
       "gh": 2,
       "ga": 1,
-      "winner": "",
+      "winner": "Halcones",
       "hour": "8:00",
       "place": "Cancha 1"
     },
     "sf2": {
       "gh": 0,
       "ga": 1,
-      "winner": "",
+      "winner": "Dragones",
       "hour": "9:00",
       "place": "Cancha 2"
     },
@@ -163,7 +163,7 @@
   },
   "tournamentName": "Futbol Femenil",
   "theme": {
-    "color": "#0284c7",
+    "color": "#C757B2",
     "bg": "#f8fafc"
   },
   "updatedAt": "2025-10-20T19:16:08.188Z",

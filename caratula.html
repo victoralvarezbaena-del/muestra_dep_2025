@@ -1,285 +1,142 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Carátula — Torneo</title>
-  <style>
-    :root{
-      --bg:#f8fafc; --card:#ffffff; --muted:#475569; --text:#0f172a; --accent:#0284c7; --ok:#16a34a; --bad:#dc2626;
-      --border:#cbd5e1; --panel:#e2e8f0;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
-    header{padding:20px 16px;border-bottom:2px solid var(--border);background:linear-gradient(90deg,#e2e8f0,#f1f5f9)}
-    .container{max-width:1100px;margin:0 auto;padding:16px}
-    h1{margin:0 0 4px;font-size:clamp(22px,3.2vw,34px)}
-    .subtitle{color:var(--muted);font-size:14px}
-
-    .grid{display:grid;gap:16px}
-    @media(min-width:1000px){.grid{grid-template-columns:1fr 380px}}
-
-    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:0 4px 12px rgba(0,0,0,.06)}
-    .card h2{margin:0 0 12px;font-size:18px}
-    .note{font-size:12px;color:var(--muted)}
-    .pill{display:inline-flex;align-items:center;gap:8px;padding:4px 10px;border:1px solid var(--border);border-radius:999px;background:#f1f5f9;color:var(--muted);font-size:12px}
-
-    /* Grupos */
-    .groups{display:grid;gap:12px}
-    @media(min-width:700px){.groups{grid-template-columns:1fr 1fr}}
-    .group{border:1px solid var(--border);border-radius:12px;padding:12px;background:#fff}
-    .group h3{margin:0 0 8px}
-    .matches{display:grid;gap:8px;margin-top:6px}
-    .match{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;border:1px solid var(--border);border-radius:10px;padding:8px;background:#f8fafc}
-    .meta{grid-column:1/-1;display:flex;gap:8px;color:var(--muted);font-size:12px;align-items:center}
-    .score{font-weight:800}
-    .team{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-    table{width:100%;border-collapse:collapse;margin-top:10px}
-    th,td{padding:8px 10px;border-bottom:1px solid var(--border);text-align:right}
-    th:first-child,td:first-child{text-align:left}
-    thead th{font-size:12px;color:var(--muted);font-weight:600}
-    .pos{font-variant-numeric:tabular-nums;color:var(--muted)}
-    .pts{font-weight:800}
-    .first{background:rgba(34,197,94,.10)}
-
-    /* KO */
-    .bracket{display:grid;gap:12px;margin-top:10px}
-    @media(min-width:900px){.bracket{grid-template-columns:1fr 1fr}}
-    .semi,.final{background:#fff;border:1px solid var(--border);border-radius:12px;padding:12px}
-    .semi h3,.final h3{margin:0 0 8px;font-size:16px}
-    .ko-row{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center}
-    .placeholder{color:var(--muted);font-style:italic}
-
-    .footer{margin-top:8px;color:var(--muted);font-size:12px}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Carátula del Torneo</title>
+<style>
+:root {
+  --accent:#0284c7;
+  --bg:#f8fafc;
+  --text:#0f172a;
+  --muted:#475569;
+}
+body {
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+header {
+  text-align:center;
+  padding:20px;
+  background:linear-gradient(90deg,var(--accent),#0ea5e9);
+  color:#fff;
+}
+main {max-width:1200px;margin:auto;padding:16px;}
+.group {
+  margin-bottom:24px;
+  border:1px solid #cbd5e1;
+  border-radius:12px;
+  background:#fff;
+  overflow:hidden;
+}
+.group h2 {
+  margin:0;
+  padding:8px 12px;
+  background:var(--accent);
+  color:#fff;
+}
+table {width:100%;border-collapse:collapse;}
+th,td {padding:8px;border-bottom:1px solid #e2e8f0;text-align:right;}
+th:first-child,td:first-child{text-align:left;}
+th {background:#f1f5f9;color:var(--muted);}
+tbody tr:nth-child(1){background:rgba(34,197,94,.15);}
+.match {
+  display:flex;justify-content:center;gap:8px;
+  padding:6px;margin:4px 0;
+  background:#f8fafc;border-radius:6px;border:1px solid #e2e8f0;
+}
+footer {
+  text-align:center;
+  font-size:12px;
+  color:var(--muted);
+  margin-top:30px;
+}
+.final {
+  border:2px solid var(--accent);
+  border-radius:12px;
+  padding:12px;
+  margin-top:20px;
+}
+</style>
 </head>
 <body>
-  <header>
-    <div class="container">
-      <h1 id="title">Carátula — Torneo</h1>
-      <div class="subtitle" id="subtitle">Vista pública de resultados, horarios y tabla por grupo.</div>
-    </div>
-  </header>
+<header>
+  <h1 id="title">Torneo</h1>
+</header>
+<main id="content">
+  <p>Cargando datos del torneo...</p>
+</main>
+<footer id="footer"></footer>
 
-  <main class="container grid">
-    <section class="card">
-      <h2>Grupos y partidos</h2>
-      <div id="groupsRoot" class="groups"></div>
-      <div class="footer" id="legend">DG = Diferencia de goles.</div>
-    </section>
-
-    <aside class="card">
-      <h2>Llave — Semifinales y Final</h2>
-      <div class="bracket">
-        <div class="semi">
-          <h3>Semifinal 1</h3>
-          <div class="ko-row">
-            <div class="team" id="sf1h">Por definirse</div>
-            <div class="score" id="sf1s">—</div>
-            <div class="team" id="sf1a" style="text-align:right">Por definirse</div>
-          </div>
-          <div class="meta" id="sf1meta"></div>
-        </div>
-        <div class="semi">
-          <h3>Semifinal 2</h3>
-          <div class="ko-row">
-            <div class="team" id="sf2h">Por definirse</div>
-            <div class="score" id="sf2s">—</div>
-            <div class="team" id="sf2a" style="text-align:right">Por definirse</div>
-          </div>
-          <div class="meta" id="sf2meta"></div>
-        </div>
-        <div class="final" style="grid-column:1/-1">
-          <h3>Final</h3>
-          <div class="ko-row">
-            <div class="team" id="fih">Por definirse</div>
-            <div class="score" id="fis">—</div>
-            <div class="team" id="fia" style="text-align:right">Por definirse</div>
-          </div>
-          <div class="meta" id="fimeta"></div>
-        </div>
-      </div>
-      <div class="footer" id="updated">Última actualización: —</div>
-    </aside>
-  </main>
-
-  <script>
-    const $ = (s,r=document)=>r.querySelector(s);
-
-    // ===== Helpers =====
-    function computeTable(matches, teams, points){
-      const t = Object.fromEntries((teams||[]).map(x=>[x,{team:x,PJ:0,G:0,E:0,P:0,GF:0,GC:0,DG:0,Pts:0}]));
-      const cfg = points||{win:3,draw:1,loss:0};
-      for(const m of (matches||[])){
-        if(m.gh==null || m.ga==null) continue;
-        const H=t[m.home], A=t[m.away]; if(!H||!A) continue;
-        H.PJ++; A.PJ++; H.GF+=m.gh; H.GC+=m.ga; A.GF+=m.ga; A.GC+=m.gh;
-        if(m.gh>m.ga){ H.G++; A.P++; H.Pts+=cfg.win; A.Pts+=cfg.loss; }
-        else if(m.gh<m.ga){ A.G++; H.P++; A.Pts+=cfg.win; H.Pts+=cfg.loss; }
-        else { H.E++; A.E++; H.Pts+=cfg.draw; A.Pts+=cfg.draw; }
-      }
-      for(const x of (teams||[])){ t[x].DG = t[x].GF - t[x].GC; }
-      return Object.values(t).sort((a,b)=> b.Pts-a.Pts || b.DG-a.DG || b.GF-a.GF || a.team.localeCompare(b.team));
-    }
-
-    function fmtMeta(hour, place){
-      const bits = [];
-      if(hour) bits.push(`🕒 ${hour}`);
-      if(place) bits.push(`📍 ${place}`);
-      return bits.join(' · ');
-    }
-
-    function renderGroups(data){
-      const root = $('#groupsRoot');
-      root.innerHTML = '';
-      const order = ['A','B','C','D'];
-      const points = data.points || {win:3,draw:1,loss:0};
-
-      for(const g of order){
-        const G = data.groups?.[g]; if(!G) continue;
-        const box = document.createElement('div'); box.className='group';
-        box.innerHTML = `<h3>Grupo ${g}</h3>`;
-
-        // Partidos
-        const wrap = document.createElement('div'); wrap.className='matches';
-        (G.matches||[]).forEach(m=>{
-          const row = document.createElement('div'); row.className='match';
-          row.innerHTML = `
-            <div class="team">${m.home||''}</div>
-            <div class="score">${m.gh==null || m.ga==null ? '—' : `${m.gh} — ${m.ga}`}</div>
-            <div class="team" style="text-align:right">${m.away||''}</div>
-          `;
-          wrap.appendChild(row);
-
-          const meta = document.createElement('div'); meta.className='meta';
-          const txt = fmtMeta(m.hour, m.place);
-          meta.textContent = txt || '🗓️ Por programar';
-          wrap.appendChild(meta);
-        });
-        box.appendChild(wrap);
-
-        // Tabla
-        const rows = computeTable(G.matches, G.teams||[], points);
-        const hasTeams = (G.teams||[]).length>0;
-        const table = document.createElement('div');
-        table.innerHTML = `
-          <div style="overflow:auto">
-            <table>
-              <thead><tr>
-                <th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>E</th><th>P</th>
-                <th>GF</th><th>GC</th><th>DG</th><th>Pts</th>
-              </tr></thead>
-              <tbody>
-                ${hasTeams ? rows.map((r,i)=>`
-                  <tr class="${i===0?'first':''}">
-                    <td class="pos">${i+1}</td>
-                    <td>${r.team}</td>
-                    <td>${r.PJ}</td>
-                    <td>${r.G}</td>
-                    <td>${r.E}</td>
-                    <td>${r.P}</td>
-                    <td>${r.GF}</td>
-                    <td>${r.GC}</td>
-                    <td>${r.DG}</td>
-                    <td class="pts">${r.Pts}</td>
-                  </tr>
-                `).join('') : '<tr><td colspan="10" class="note">Sin equipos aún.</td></tr>'}
-              </tbody>
-            </table>
-          </div>
-        `;
-        box.appendChild(table);
-
-        root.appendChild(box);
-      }
-    }
-
-    function renderKO(data){
-      const k = data.knockout || {};
-      // Semis — NO autocompletar; respetar solo lo que venga en JSON
-      const sf1h = k.sf1?.home || 'Por definirse';
-      const sf1a = k.sf1?.away || 'Por definirse';
-      const sf2h = k.sf2?.home || 'Por definirse';
-      const sf2a = k.sf2?.away || 'Por definirse';
-      const fiH  = k.final?.home || 'Por definirse';
-      const fiA  = k.final?.away || 'Por definirse';
-
-      $('#sf1h').textContent = sf1h; $('#sf1a').textContent = sf1a;
-      $('#sf2h').textContent = sf2h; $('#sf2a').textContent = sf2a;
-      $('#fih').textContent  = fiH;  $('#fia').textContent  = fiA;
-
-      $('#sf1s').textContent = (k.sf1?.gh==null || k.sf1?.ga==null) ? '—' : `${k.sf1.gh} — ${k.sf1.ga}`;
-      $('#sf2s').textContent = (k.sf2?.gh==null || k.sf2?.ga==null) ? '—' : `${k.sf2.gh} — ${k.sf2.ga}`;
-      $('#fis').textContent  = (k.final?.gh==null || k.final?.ga==null) ? '—' : `${k.final.gh} — ${k.final.ga}`;
-
-      $('#sf1meta').textContent = fmtMeta(k.sf1?.hour, k.sf1?.place) || '🗓️ Por programar';
-      $('#sf2meta').textContent = fmtMeta(k.sf2?.hour, k.sf2?.place) || '🗓️ Por programar';
-      $('#fimeta').textContent  = fmtMeta(k.final?.hour, k.final?.place) || '🗓️ Por programar';
-    }
-
-    function renderHeader(data, sourceLabel){
-      const name = data.tournamentName || '';
-      $('#title').textContent = name ? `Carátula — ${name}` : 'Carátula — Torneo';
-      const updated = data.updatedAtLocal || data.updatedAt || '';
-      $('#updated').textContent = updated ? `Última actualización: ${updated}${sourceLabel?` · ${sourceLabel}`:''}` : `Última actualización: —${sourceLabel?` · ${sourceLabel}`:''}`;
-    }
-
-    // ===== Carga de datos =====
-    async function loadData(){
-      const url = new URL(location.href);
-      // Preview local (desde admin) si ?local=1
-      if(url.searchParams.get('local')==='1'){
-        const raw = localStorage.getItem('TORNEO_PUBLIC_DATA');
-        if(raw){
-          try{
-            const data = JSON.parse(raw);
-            renderHeader(data, 'local');
-            renderGroups(data);
-            renderKO(data);
-            return;
-          }catch{}
-        }
-      }
-
-      // Si viene ?src=URL externa, úsala
-      const src = url.searchParams.get('src');
-      if(src){
-        try{
-          const res = await fetch(src, {cache:'no-store'});
-          const data = await res.json();
-          renderHeader(data, 'src');
-          renderGroups(data);
-          renderKO(data);
-          return;
-        }catch(e){
-          console.error('No se pudo cargar desde src:', e);
-        }
-      }
-
-      // Si viene ?t=slug → data-<slug>.json; si no, data.json
-      const t = url.searchParams.get('t');
-      const path = t ? `data-${t}.json` : 'data.json';
-      try{
-        const res = await fetch(path, {cache:'no-store'});
-        if(!res.ok) throw new Error('HTTP '+res.status);
-        const data = await res.json();
-        renderHeader(data, t?`t=${t}`:'data.json');
-        renderGroups(data);
-        renderKO(data);
-      }catch(e){
-        console.error('No se pudo cargar', e);
-        document.body.innerHTML = `
-          <div class="container" style="padding:40px">
-            <h2>No se pudieron cargar los datos</h2>
-            <p class="note">Asegúrate de haber subido <code>${path}</code> al repositorio o usa <code>?t=</code> o <code>?src=</code>.</p>
-          </div>
-        `;
-      }
-    }
-
-    loadData();
-  </script>
+<script>
+async function loadData() {
+  const params = new URLSearchParams(location.search);
+  const slug = params.get('t') || 'data';
+  const url = `${slug}.json`;
+  const res = await fetch(url);
+  if(!res.ok) throw new Error('No se pudo cargar el JSON');
+  const data = await res.json();
+  render(data);
+}
+function applyTheme(theme){
+  if(!theme) return;
+  if(theme.color) document.documentElement.style.setProperty('--accent',theme.color);
+  if(theme.bg) document.documentElement.style.setProperty('--bg',theme.bg);
+}
+function computeTable(matches,teams){
+  const t=Object.fromEntries(teams.map(x=>[x,{team:x,PJ:0,G:0,E:0,P:0,GF:0,GC:0,DG:0,Pts:0}])),cfg={win:3,draw:1,loss:0};
+  for(const m of matches){ if(m.gh==null||m.ga==null) continue;
+    const H=t[m.home],A=t[m.away]; if(!H||!A) continue;
+    H.PJ++;A.PJ++;H.GF+=m.gh;H.GC+=m.ga;A.GF+=m.ga;A.GC+=m.gh;
+    if(m.gh>m.ga){H.G++;A.P++;H.Pts+=cfg.win;}
+    else if(m.gh<m.ga){A.G++;H.P++;A.Pts+=cfg.win;}
+    else {H.E++;A.E++;H.Pts+=cfg.draw;A.Pts+=cfg.draw;}
+  }
+  for(const x of teams){t[x].DG=t[x].GF-t[x].GC;}
+  return Object.values(t).sort((a,b)=>b.Pts-a.Pts||b.DG-a.DG||b.GF-a.GF||a.team.localeCompare(b.team));
+}
+function groupHTML(key,g){
+  const rows=computeTable(g.matches||[],g.teams||[]);
+  const trs=rows.map((r,i)=>`
+  <tr class="${i===0?'first':''}">
+    <td>${i+1}</td><td>${r.team}</td><td>${r.PJ}</td><td>${r.G}</td><td>${r.E}</td><td>${r.P}</td>
+    <td>${r.GF}</td><td>${r.GC}</td><td>${r.DG}</td><td><b>${r.Pts}</b></td>
+  </tr>`).join('');
+  return `
+  <div class="group">
+    <h2>Grupo ${key}</h2>
+    <table>
+      <thead><tr><th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>E</th><th>P</th><th>GF</th><th>GC</th><th>DG</th><th>Pts</th></tr></thead>
+      <tbody>${trs}</tbody>
+    </table>
+  </div>`;
+}
+function render(data){
+  applyTheme(data.theme);
+  const main=document.getElementById('content');
+  const title=document.getElementById('title');
+  title.textContent=data.tournamentName||'Torneo';
+  let html='';
+  for(const k of ['A','B','C','D']){
+    if(data.groups&&data.groups[k]) html+=groupHTML(k,data.groups[k]);
+  }
+  const ko=data.knockout||{};
+  html+=`
+  <div class="final">
+    <h2>Semifinales y Final</h2>
+    <div class="match">${ko.sf1?.home||'A1'} ${ko.sf1?.gh??''} - ${ko.sf1?.ga??''} ${ko.sf1?.away||'D1'} (${ko.sf1?.winner||''})</div>
+    <div class="match">${ko.sf2?.home||'B1'} ${ko.sf2?.gh??''} - ${ko.sf2?.ga??''} ${ko.sf2?.away||'C1'} (${ko.sf2?.winner||''})</div>
+    <div class="match"><b>Final:</b> ${ko.final?.home||'SF1'} ${ko.final?.gh??''} - ${ko.final?.ga??''} ${ko.final?.away||'SF2'} <b>${ko.final?.winner?'🏆 '+ko.final.winner:''}</b></div>
+  </div>`;
+  main.innerHTML=html;
+  const f=document.getElementById('footer');
+  if(data.updatedAtLocal) f.textContent='Última actualización: '+data.updatedAtLocal;
+}
+loadData().catch(e=>{
+  document.getElementById('content').textContent='❌ '+e.message;
+});
+</script>
 </body>
 </html>
-

@@ -99,8 +99,11 @@ C3</textarea></div>
 D2
 D3</textarea></div>
       </div>
+
       <div class="row" style="margin-top:8px;align-items:center">
         <input type="text" id="tournamentName" placeholder="Nombre del torneo (opcional)" style="flex:2" />
+        <!-- NUEVO: slug/clave para data-<slug>.json y URL ?t=<slug> -->
+        <input type="text" id="slug" placeholder="Slug/clave (ej. futbol)" style="flex:1; min-width:180px" title="Se usa en el nombre de archivo y en la URL pública (?t=)">
         <button id="btnGenerate">Generar rol por grupo</button>
 
         <!-- PUBLICAR -->
@@ -233,7 +236,8 @@ const state = {
     sf2:  { home:'', away:'', gh:null, ga:null, winner:'', hour:'', place:'' },
     final:{ home:'', away:'', gh:null, ga:null, winner:'', hour:'', place:'' }
   },
-  tournamentName: ''
+  tournamentName: '',
+  slug: '' // NUEVO
 };
 
 // ===== Funciones auxiliares =====
@@ -360,6 +364,15 @@ function generate() {
     }));
   }
   state.tournamentName = document.getElementById('tournamentName').value.trim();
+
+  // si no hay slug aún, sugerirlo desde el nombre
+  if (!state.slug) {
+    const s = slug(state.tournamentName || '');
+    state.slug = s;
+    const slugInput = document.getElementById('slug');
+    if (slugInput) slugInput.value = s;
+  }
+
   save(); render();
 }
 
@@ -455,6 +468,7 @@ function load() {
     document.getElementById('gc').value = state.groups.C.teams.join('\n');
     document.getElementById('gd').value = state.groups.D.teams.join('\n');
     if (state.tournamentName) document.getElementById('tournamentName').value = state.tournamentName;
+    if (state.slug) document.getElementById('slug').value = state.slug; // NUEVO
     return true;
   } catch { return false; }
 }
@@ -476,8 +490,8 @@ function downloadFile(name, text) {
   a.download = name; a.click(); URL.revokeObjectURL(a.href);
 }
 function saveCopy() {
-  const base = document.getElementById('tournamentName')?.value?.trim() || 'torneo_grupos';
-  const file = `${slug(base)}_${ts()}.json`;
+  const baseName = state.slug || slug(document.getElementById('tournamentName')?.value?.trim() || '') || 'torneo';
+  const file = `data-${baseName}.json`; // NUEVO
   const snapshot = JSON.parse(JSON.stringify(state));
   stamp(snapshot);
   downloadFile(file, JSON.stringify(snapshot, null, 2));
@@ -516,6 +530,7 @@ function importData() {
         document.getElementById('gc').value = state.groups.C.teams.join('\n');
         document.getElementById('gd').value = state.groups.D.teams.join('\n');
         document.getElementById('tournamentName').value = state.tournamentName || '';
+        document.getElementById('slug').value = state.slug || '';
         save(); render(); populateKOInputsFromState();
         alert('✅ Datos importados');
         fileInput.value = '';
@@ -531,13 +546,13 @@ function importData() {
 function exportData() {
   const snapshot = JSON.parse(JSON.stringify(state));
   stamp(snapshot);
-  const base = document.getElementById('tournamentName')?.value?.trim() || 'torneo';
-  const fileName = `${slug(base)}_export_${ts()}.json`;
+  const baseName = state.slug || slug(document.getElementById('tournamentName')?.value?.trim() || '') || 'torneo';
+  const fileName = `data-${baseName}.json`; // NUEVO
   downloadFile(fileName, JSON.stringify(snapshot, null, 2));
   alert('📤 Exportado: ' + fileName);
 }
 
-// ===== Publicación (para GitHub Pages, descarga data.json) =====
+// ===== Publicación (para GitHub Pages: descarga data-<slug>.json) =====
 function setPublishStatus(text, type = '') {
   const statusEl = document.getElementById('publishStatus');
   statusEl.textContent = text; statusEl.className = `status ${type}`;
@@ -549,13 +564,15 @@ async function publishNow() {
   btn.disabled = true; setPublishStatus('⏳', 'loading');
   try {
     localStorage.setItem('TORNEO_PUBLIC_DATA', JSON.stringify(snapshot));
+    const baseName = state.slug || slug(state.tournamentName || '') || 'torneo'; // NUEVO
+    const fileName = `data-${baseName}.json`; // NUEVO
     const dataStr = JSON.stringify(snapshot, null, 2);
     const blob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href = url; a.download = 'data.json';
+    const a = document.createElement('a'); a.href = url; a.download = fileName;
     document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
     setPublishStatus('✅', 'success'); setTimeout(() => setPublishStatus(''), 3000);
-    alert('✅ Datos listos.\nSube el archivo descargado como data.json a tu repositorio.');
+    alert('✅ Datos listos.\nSube el archivo descargado como ' + fileName + ' a tu repositorio.\nURL pública sugerida: https://TUUSUARIO.github.io/TUREPO/?t=' + baseName);
   } catch (err) {
     console.error(err); setPublishStatus('❌', 'error'); alert('Error: ' + err.message);
   } finally { btn.disabled = false; }
@@ -600,8 +617,25 @@ document.getElementById('btnPublish').addEventListener('click', publishNow);
 document.getElementById('btnImport').addEventListener('click', importData);
 document.getElementById('btnExport').addEventListener('click', exportData);
 document.getElementById('importFile').addEventListener('change', importData);
+
+// nombre del torneo → sugiere slug si vacío
 document.getElementById('tournamentName').addEventListener('change', e => {
-  state.tournamentName = e.target.value.trim(); save();
+  state.tournamentName = e.target.value.trim();
+  const slugInput = document.getElementById('slug');
+  if (slugInput && (!slugInput.value.trim() || !state.slug)) {
+    const suggested = slug(state.tournamentName || '');
+    slugInput.value = suggested;
+    state.slug = suggested;
+  }
+  save();
+});
+
+// escribir slug normalizado
+document.getElementById('slug').addEventListener('input', e => {
+  const v = slug(e.target.value);
+  e.target.value = v;
+  state.slug = v;
+  save();
 });
 
 // Listeners KO (marcadores/ganadores/horarios/lugares)
@@ -624,7 +658,7 @@ document.getElementById('tournamentName').addEventListener('change', e => {
   });
 });
 
-// Listeners para nombres manuales de KO
+// Nombres manuales KO
 document.getElementById('sf1HomeName').addEventListener('input', e=>{
   state.knockout.sf1.home = e.target.value.trim(); updateKnockoutSeeds(); save();
 });
@@ -649,4 +683,5 @@ init();
 </script>
 </body>
 </html>
+
 

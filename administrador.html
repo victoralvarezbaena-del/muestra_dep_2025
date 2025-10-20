@@ -411,7 +411,17 @@ function stamp(snapshot){
   catch{ snapshot.updatedAtLocal=now.toLocaleString(); }
   return snapshot;
 }
-function saveCopy(){ const base=$('#tournamentName')?.value?.trim()||'torneo_grupos'; const file=`${slug(base)}_${ts()}.json`; const snap=JSON.parse(JSON.stringify(state)); stamp(snap); downloadFile(file, JSON.stringify(snap,null,2)); }
+function saveCopy(){ 
+  const base=$('#tournamentName')?.value?.trim()||'torneo_grupos'; 
+  const file=`${slug(base)}_${ts()}.json`; 
+  const snap=JSON.parse(JSON.stringify(state)); 
+  // Asegurarnos de que el tema se incluya en la copia
+  if (state.theme) {
+    snap.theme = state.theme;
+  }
+  stamp(snap); 
+  downloadFile(file, JSON.stringify(snap,null,2)); 
+}
 function clearAll(){ if(!confirm('¿Borrar datos locales?')) return; try{ localStorage.removeItem(STORAGE_KEY);}catch{} location.reload(); }
 
 function importData(){
@@ -438,11 +448,27 @@ function importData(){
   rd.onerror=()=>alert('❌ Error al leer el archivo');
   rd.readAsText(f);
 }
-function exportData(){ const snap=JSON.parse(JSON.stringify(state)); stamp(snap); const base=$('#tournamentName')?.value?.trim()||'torneo'; const fn=`${slug(base)}_export_${ts()}.json`; downloadFile(fn, JSON.stringify(snap,null,2)); alert('📤 Exportado: '+fn); }
+function exportData(){ 
+  const snap=JSON.parse(JSON.stringify(state)); 
+  // Asegurarnos de que el tema se incluya en la exportación
+  if (state.theme) {
+    snap.theme = state.theme;
+  }
+  stamp(snap); 
+  const base=$('#tournamentName')?.value?.trim()||'torneo'; 
+  const fn=`${slug(base)}_export_${ts()}.json`; 
+  downloadFile(fn, JSON.stringify(snap,null,2)); 
+  alert('📤 Exportado: '+fn); 
+}
 
 function setPublishStatus(t,cls=''){ const el=$('#publishStatus'); el.textContent=t; el.className=`status ${cls}`; }
 async function publishNow(){
-  const snap=JSON.parse(JSON.stringify(state)); stamp(snap);
+  const snap=JSON.parse(JSON.stringify(state)); 
+  // Asegurarnos de que el tema se incluya en la publicación
+  if (state.theme) {
+    snap.theme = state.theme;
+  }
+  stamp(snap);
   const btn=$('#btnPublish'); btn.disabled=true; setPublishStatus('⏳','loading');
   try{
     localStorage.setItem('TORNEO_PUBLIC_DATA', JSON.stringify(snap));
@@ -511,6 +537,3 @@ init();
 </script>
 </body>
 </html>
-
-
-

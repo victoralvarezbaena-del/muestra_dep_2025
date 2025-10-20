@@ -3,348 +3,213 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Carátula — Torneo</title>
+  <title>Carátula — Estado del Torneo</title>
   <style>
     :root{ --bg:#f8fafc; --card:#ffffff; --muted:#475569; --text:#0f172a; --line:#cbd5e1; --accent:#0284c7; --ok:#16a34a; --bad:#dc2626; }
     *{box-sizing:border-box}
     body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
     header{padding:18px 16px;border-bottom:2px solid var(--line);background:linear-gradient(90deg,#e2e8f0,#f1f5f9)}
     .container{max-width:1200px;margin:0 auto;padding:16px}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:16px}
+    h1{margin:0;font-size:clamp(22px,3vw,32px)}
+    .subtitle{color:var(--muted)}
+
     .groups{display:grid;gap:14px}
     @media(min-width:900px){.groups{grid-template-columns:1fr 1fr}}
     .group{padding:12px;border-radius:12px;border:1px solid var(--line)}
-    .A{background:rgba(56,189,248,.10)}.B{background:rgba(168,85,247,.10)}
-    .C{background:rgba(251,191,36,.10)}.D{background:rgba(34,197,94,.10)}
-    .match{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:8px;margin:4px 0}
-    .badge{display:inline-block;font-size:12px;padding:2px 8px;border-radius:999px;background:#ecfeff;border:1px solid #a5f3fc;color:#0369a1}
+    .A{background:rgba(56,189,248,.10);border-color:rgba(56,189,248,.45)}
+    .B{background:rgba(168,85,247,.10);border-color:rgba(168,85,247,.45)}
+    .C{background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.45)}
+    .D{background:rgba(34,197,94,.10);border-color:rgba(34,197,94,.45)}
+
+    .matches{display:grid;gap:8px;margin-top:6px}
+    .match{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:8px}
+    .meta{font-size:12px;color:var(--muted)}
+    .badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);background:#f1f5f9;color:#334155}
+    .badge.upcoming{background:#ecfeff;border-color:#a5f3fc;color:#0369a1}
+
     table{width:100%;border-collapse:collapse;margin-top:8px}
     th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right}
     th:first-child,td:first-child{text-align:left}
     thead th{font-size:12px;color:#64748b}
+    .pos{font-variant-numeric:tabular-nums;color:#64748b}
     .pts{font-weight:800}
-    .loading{text-align:center;padding:40px;color:var(--muted)}
-    .error{text-align:center;padding:20px;color:var(--bad);background:#fef2f2;border-radius:10px;margin:10px 0}
-    .update-btn{background:var(--accent);color:white;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;margin:10px 0}
+    .gd-pos{color:var(--ok)}
+    .gd-neg{color:var(--bad)}
+
+    .kk{display:grid;gap:12px;margin-top:12px}
+    @media(min-width:900px){.kk{grid-template-columns:1fr 1fr}}
+    .box{background:#ffffff;border:1px solid var(--line);border-radius:12px;padding:12px}
+
+    .footer{margin-top:10px;text-align:right;color:#64748b;font-size:13px}
   </style>
 </head>
 <body>
   <header>
     <div class="container">
-      <h1 id="title">Carátula — Torneo</h1>
-      <div id="subtitle">Cargando datos del torneo...</div>
+      <h1 id="title">Carátula — Estado del Torneo</h1>
+      <div class="subtitle">Vista pública (solo lectura). Fuente: <code>data.json</code></div>
     </div>
   </header>
 
-  <main class="container">
-    <div id="loading" class="loading">🔄 Cargando datos del torneo...</div>
-    <div id="error" class="error" style="display:none"></div>
-    <div id="content" style="display:none">
-      <button onclick="loadData()" class="update-btn">🔄 Actualizar Datos</button>
-      <div class="card">
-        <h2>Grupos</h2>
-        <div id="groupsRoot" class="groups"></div>
-      </div>
-      <div class="card">
-        <h2>Fase Final</h2>
-        <div id="koRoot"></div>
-      </div>
-      <div id="lastUpdate" style="text-align:center;color:var(--muted);margin-top:20px;font-size:14px"></div>
-    </div>
+  <main class="container" style="display:grid;gap:16px">
+    <section>
+      <h2 style="margin:0 0 8px">Grupos</h2>
+      <div class="groups" id="groupsRoot"></div>
+    </section>
+
+    <section>
+      <h2 style="margin:0 0 8px">Semifinales y Final</h2>
+      <div id="koRoot" class="kk"></div>
+      <div id="lastUpdate" class="footer">Última actualización: —</div>
+    </section>
   </main>
 
   <script>
-    // ===== FUENTES DE DATOS =====
-    const DATA_SOURCES = [
-      // Opción 1: Archivo data.json en el repositorio
-      'data.json',
-      // Opción 2: Datos locales (si el administrador está en la misma página)
-      () => {
-        const local = localStorage.getItem('TORNEO_PUBLIC_DATA');
-        return local ? JSON.parse(local) : null;
-      }
-    ];
+    const $ = (s, r=document)=>r.querySelector(s);
 
-    // ===== CARGAR DATOS =====
-    async function loadData() {
-      try {
-        showLoading();
-        
-        let data = null;
-        
-        // Intentar cada fuente de datos
-        for (const source of DATA_SOURCES) {
-          try {
-            if (typeof source === 'function') {
-              data = source();
-            } else {
-              const response = await fetch(source);
-              if (response.ok) {
-                data = await response.json();
-              }
-            }
-            
-            if (data) break; // Si encontramos datos, salir del loop
-          } catch (e) {
-            console.log(`Fuente ${source} falló:`, e);
+    let state = { tournamentName:'', points:{win:3,draw:1,loss:0}, groups:{}, knockout:{}, updatedAt:null, updatedAtLocal:null };
+
+    function computeTable(matches, teams, points){
+      const t = Object.fromEntries((teams||[]).map(x=>[x,{team:x,PJ:0,G:0,E:0,P:0,GF:0,GC:0,DG:0,Pts:0}]));
+      const cfg = points || {win:3,draw:1,loss:0};
+      for(const m of (matches||[])){
+        if(m.gh==null || m.ga==null) continue;
+        const H=t[m.home], A=t[m.away]; if(!H||!A) continue;
+        H.PJ++; A.PJ++;
+        H.GF+=m.gh; H.GC+=m.ga; A.GF+=m.ga; A.GC+=m.gh;
+        if(m.gh>m.ga){ H.G++; A.P++; H.Pts+=cfg.win; A.Pts+=cfg.loss; }
+        else if(m.gh<m.ga){ A.G++; H.P++; A.Pts+=cfg.win; H.Pts+=cfg.loss; }
+        else { H.E++; A.E++; H.Pts+=cfg.draw; H.Pts+=cfg.draw; }
+      }
+      for(const x of (teams||[])){ t[x].DG = t[x].GF - t[x].GC; }
+      return Object.values(t).sort((a,b)=> b.Pts - a.Pts || b.DG - a.DG || b.GF - a.GF || a.team.localeCompare(b.team));
+    }
+
+    function renderHeader(){
+      const t = state.tournamentName || '';
+      $('#title').textContent = t ? `Carátula — ${t}` : 'Carátula — Estado del Torneo';
+      const el = $('#lastUpdate');
+      if(!el) return;
+      if(state.updatedAtLocal){
+        el.textContent = 'Última actualización: ' + state.updatedAtLocal;
+      } else if(state.updatedAt){
+        const d = new Date(state.updatedAt);
+        el.textContent = 'Última actualización: ' + d.toLocaleString();
+      } else {
+        el.textContent = 'Última actualización: —';
+      }
+    }
+
+    function renderGroups(){
+      const root = $('#groupsRoot'); root.innerHTML = '';
+      const groups = state.groups || {}; const pts = state.points || {win:3,draw:1,loss:0};
+      const order = Object.keys(groups).sort(); if(!order.length){ root.innerHTML = '<div class="subtitle">No hay grupos en el JSON.</div>'; return; }
+      order.forEach(k=>{
+        const g = groups[k] || {teams:[],matches:[]};
+        const box = document.createElement('div'); box.className = `group ${k}`;
+        box.innerHTML = `<h3 style="margin:0 0 6px">Grupo ${k}</h3>
+                         <div class="subtitle">Equipos: ${g.teams?.length ? g.teams.join(', ') : '—'}</div>`;
+        const wrap = document.createElement('div'); wrap.className='matches';
+        (g.matches||[]).forEach(m=>{
+          const played = (m.gh!=null && m.ga!=null);
+          const score = played ? `${m.gh} — ${m.ga}` : `<span class='badge upcoming'>Programado</span>`;
+          const row = document.createElement('div'); row.className='match';
+          row.innerHTML = `<span>${m.home||'—'}</span><span style="text-align:center;font-weight:800">${score}</span><span style="text-align:right">${m.away||'—'}</span>`;
+          wrap.appendChild(row);
+          if(m.hour || m.place){
+            const meta = document.createElement('div'); meta.className='meta';
+            meta.textContent = `${m.hour ? '🕒 '+m.hour : ''}${m.place ? '  📍 '+m.place : ''}`;
+            wrap.appendChild(meta);
           }
-        }
-        
-        if (!data) {
-          throw new Error('No se pudieron cargar los datos del torneo');
-        }
-        
-        render(data);
-        
-      } catch (error) {
-        showError('❌ Error cargando datos: ' + error.message);
-        console.error('Error:', error);
-      }
-    }
+        });
+        if(!(g.matches||[]).length){ wrap.innerHTML = '<div class="subtitle">Aún no hay partidos programados.</div>'; }
+        box.appendChild(wrap);
 
-    function showLoading() {
-      document.getElementById('loading').style.display = 'block';
-      document.getElementById('error').style.display = 'none';
-      document.getElementById('content').style.display = 'none';
-    }
-
-    function showError(message) {
-      document.getElementById('loading').style.display = 'none';
-      document.getElementById('error').style.display = 'block';
-      document.getElementById('error').textContent = message;
-      document.getElementById('content').style.display = 'none';
-    }
-
-    function showContent() {
-      document.getElementById('loading').style.display = 'none';
-      document.getElementById('error').style.display = 'none';
-      document.getElementById('content').style.display = 'block';
-    }
-
-    // ===== RENDERIZADO =====
-    function render(state) {
-      showContent();
-      
-      // Título
-      if (state.tournamentName) {
-        document.getElementById('title').textContent = state.tournamentName;
-        document.getElementById('subtitle').textContent = 'Estado actual del torneo';
-      }
-      
-      // Grupos
-      renderGroups(state);
-      
-      // Fase final
-      renderKO(state);
-      
-      // Última actualización
-      const updateTime = state.updatedAt || state.publishedAt;
-      if (updateTime) {
-        const date = new Date(updateTime);
-        document.getElementById('lastUpdate').textContent = 
-          'Última actualización: ' + date.toLocaleString();
-      }
-    }
-
-    function renderGroups(state) {
-      const container = document.getElementById('groupsRoot');
-      const groups = state.groups || {};
-      
-      if (Object.keys(groups).length === 0) {
-        container.innerHTML = '<div class="group">No hay grupos configurados</div>';
-        return;
-      }
-      
-      let html = '';
-      
-      for (const [groupKey, group] of Object.entries(groups)) {
-        const teams = group.teams || [];
-        const matches = group.matches || [];
-        
-        html += `
-          <div class="group ${groupKey}">
-            <h3>Grupo ${groupKey}</h3>
-            <div style="margin-bottom: 12px; font-size: 14px; color: var(--muted)">
-              Equipos: ${teams.length ? teams.join(', ') : 'Por definir'}
-            </div>
-            ${renderGroupMatches(matches)}
-            ${renderGroupTable(matches, teams, state.points)}
-          </div>
-        `;
-      }
-      
-      container.innerHTML = html;
-    }
-
-    function renderGroupMatches(matches) {
-      if (!matches.length) {
-        return '<div style="color: var(--muted); font-size: 14px">No hay partidos programados</div>';
-      }
-      
-      let html = '<div style="margin-bottom: 12px">';
-      
-      matches.forEach(match => {
-        const hasScore = match.gh != null && match.ga != null;
-        const score = hasScore ? `${match.gh} — ${match.ga}` : '<span class="badge">Programado</span>';
-        
-        html += `
-          <div class="match">
-            <div>${match.home || '—'}</div>
-            <div style="font-weight: 800; text-align: center">${score}</div>
-            <div style="text-align: right">${match.away || '—'}</div>
-          </div>
-        `;
-        
-        if (match.hour || match.place) {
-          html += `<div style="font-size: 12px; color: var(--muted); margin: 2px 0 8px 0">
-            ${match.hour ? '🕒 ' + match.hour : ''} ${match.place ? '📍 ' + match.place : ''}
-          </div>`;
-        }
-      });
-      
-      html += '</div>';
-      return html;
-    }
-
-    function renderGroupTable(matches, teams, pointsConfig) {
-      const playedMatches = matches.filter(m => m.gh != null && m.ga != null);
-      
-      if (playedMatches.length === 0) {
-        return '<div style="color: var(--muted); font-size: 14px">La tabla se mostrará cuando se jueguen partidos</div>';
-      }
-      
-      const tableData = computeTable(matches, teams, pointsConfig);
-      
-      return `
-        <div style="overflow-x: auto">
-          <table>
-            <thead>
-              <tr>
-                <th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>E</th><th>P</th>
-                <th>GF</th><th>GC</th><th>DG</th><th>Pts</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${tableData.map((team, index) => `
-                <tr>
-                  <td>${index + 1}</td>
-                  <td><strong>${team.team}</strong></td>
-                  <td>${team.PJ}</td>
-                  <td>${team.G}</td>
-                  <td>${team.E}</td>
-                  <td>${team.P}</td>
-                  <td>${team.GF}</td>
-                  <td>${team.GC}</td>
-                  <td>${team.DG}</td>
-                  <td class="pts">${team.Pts}</td>
-                </tr>
-              `).join('')}
-            </tbody>
-          </table>
-        </div>
-      `;
-    }
-
-    function computeTable(matches, teams, points = {win: 3, draw: 1, loss: 0}) {
-      const table = {};
-      
-      // Inicializar equipos
-      teams.forEach(team => {
-        table[team] = { team, PJ: 0, G: 0, E: 0, P: 0, GF: 0, GC: 0, DG: 0, Pts: 0 };
-      });
-      
-      // Procesar partidos
-      matches.forEach(match => {
-        if (match.gh == null || match.ga == null) return;
-        
-        const home = table[match.home];
-        const away = table[match.away];
-        if (!home || !away) return;
-        
-        // Actualizar estadísticas
-        home.PJ++; away.PJ++;
-        home.GF += match.gh; home.GC += match.ga;
-        away.GF += match.ga; away.GC += match.gh;
-        
-        if (match.gh > match.ga) {
-          home.G++; away.P++;
-          home.Pts += points.win; away.Pts += points.loss;
-        } else if (match.gh < match.ga) {
-          away.G++; home.P++;
-          away.Pts += points.win; home.Pts += points.loss;
+        const playedList = (g.matches||[]).filter(m=> m.gh!=null && m.ga!=null);
+        if(playedList.length){
+          const rows = computeTable(g.matches, g.teams, pts);
+          const table = document.createElement('div');
+          table.innerHTML = `
+            <div style="overflow:auto">
+              <table>
+                <thead><tr><th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>E</th><th>P</th><th>GF</th><th>GC</th><th>DG</th><th>Pts</th></tr></thead>
+                <tbody>
+                  ${rows.map((r,i)=>`<tr><td class="pos">${i+1}</td><td>${r.team}</td><td>${r.PJ}</td><td>${r.G}</td><td>${r.E}</td><td>${r.P}</td><td>${r.GF}</td><td>${r.GC}</td><td class="${r.DG>0?'gd-pos':r.DG<0?'gd-neg':''}">${r.DG}</td><td class="pts">${r.Pts}</td></tr>`).join('')}
+                </tbody>
+              </table>
+            </div>`;
+          box.appendChild(table);
         } else {
-          home.E++; away.E++;
-          home.Pts += points.draw; away.Pts += points.draw;
+          const note = document.createElement('div'); note.className='subtitle'; note.textContent='La tabla aparecerá cuando haya al menos un partido jugado.'; box.appendChild(note);
         }
-      });
-      
-      // Calcular diferencia de goles
-      teams.forEach(team => {
-        table[team].DG = table[team].GF - table[team].GC;
-      });
-      
-      // Ordenar
-      return Object.values(table).sort((a, b) => {
-        return b.Pts - a.Pts || b.DG - a.DG || b.GF - a.GF || a.team.localeCompare(b.team);
+        root.appendChild(box);
       });
     }
 
-    function renderKO(state) {
-      const container = document.getElementById('koRoot');
+    function renderKO(){
+      const root = $('#koRoot'); root.innerHTML='';
       const ko = state.knockout || {};
-      
+
+      // Utilidades: toma home/away si existen; si no, fallback a ganadores
+      function winnerOfGroup(gk){
+        const g = (state.groups||{})[gk]; if(!g) return '';
+        const rows = computeTable(g.matches||[], g.teams||[], state.points||{win:3,draw:1,loss:0});
+        return rows[0]?.team || '';
+      }
+      const A1 = winnerOfGroup('A') || 'A1';
+      const B1 = winnerOfGroup('B') || 'B1';
+      const C1 = winnerOfGroup('C') || 'C1';
+      const D1 = winnerOfGroup('D') || 'D1';
+
       const rounds = [
-        { id: 'sf1', title: 'Semifinal 1' },
-        { id: 'sf2', title: 'Semifinal 2' }, 
-        { id: 'final', title: 'Final' }
+        {id:'sf1', label:'Semifinal 1', defH:A1, defA:D1},
+        {id:'sf2', label:'Semifinal 2', defH:B1, defA:C1},
+        {id:'final', label:'Final',      defH:(ko.sf1?.winner||'Ganador SF1'), defA:(ko.sf2?.winner||'Ganador SF2')}
       ];
-      
-      let html = '<div style="display: grid; gap: 16px;">';
-      
-      rounds.forEach(round => {
-        const data = ko[round.id] || {};
-        const hasScore = data.gh != null && data.ga != null;
-        const score = hasScore ? `${data.gh} — ${data.ga}` : '<span class="badge">Programado</span>';
-        
-        html += `
-          <div style="border: 1px solid var(--line); border-radius: 10px; padding: 12px;">
-            <h3 style="margin: 0 0 8px 0">${round.title}</h3>
-            <div class="match">
-              <div>${data.home || 'Por definir'}</div>
-              <div style="font-weight: 800; text-align: center">${score}</div>
-              <div style="text-align: right">${data.away || 'Por definir'}</div>
-            </div>
-            ${data.hour || data.place ? `
-              <div style="font-size: 12px; color: var(--muted); margin-top: 6px">
-                ${data.hour ? '🕒 ' + data.hour : ''} ${data.place ? '📍 ' + data.place : ''}
-              </div>
-            ` : ''}
-            ${round.id === 'final' && data.winner ? `
-              <div style="margin-top: 8px; font-weight: 800; color: var(--ok)">
-                🏆 Campeón: ${data.winner}
-              </div>
-            ` : ''}
-          </div>
-        `;
+
+      rounds.forEach(r=>{
+        const d = ko[r.id] || {};
+        const home = (d.home && d.home.trim()) || r.defH;
+        const away = (d.away && d.away.trim()) || r.defA;
+        const played = (d.gh!=null && d.ga!=null);
+        const score = played ? `${d.gh} — ${d.ga}` : `<span class='badge upcoming'>Programado</span>`;
+
+        const box = document.createElement('div'); box.className='box';
+        box.innerHTML = `<h3 style="margin:0 0 6px">${r.label}</h3>
+                         <div class="match" style="margin:6px 0">
+                           <span>${home}</span>
+                           <span style="text-align:center;font-weight:800">${score}</span>
+                           <span style="text-align:right">${away}</span>
+                         </div>`;
+        if(d.hour || d.place){
+          const meta = document.createElement('div'); meta.className='meta';
+          meta.textContent = `${d.hour ? '🕒 '+d.hour : ''}${d.place ? '  📍 '+d.place : ''}`;
+          box.appendChild(meta);
+        }
+        if(r.id==='final' && d.winner){
+          const champ = document.createElement('div'); champ.className='subtitle'; champ.textContent = `🏆 Campeón: ${d.winner}`;
+          box.appendChild(champ);
+        }
+        root.appendChild(box);
       });
-      
-      html += '</div>';
-      container.innerHTML = html;
     }
 
-    // ===== INICIALIZACIÓN =====
-    // Cargar datos al iniciar
-    loadData();
-    
-    // Recargar cada 2 minutos
-    setInterval(loadData, 120000);
-    
-    // También recargar cuando la página gana foco
-    document.addEventListener('visibilitychange', function() {
-      if (!document.hidden) {
-        loadData();
+    async function boot(){
+      try{
+        const res = await fetch('data.json', {cache:'no-store'});
+        if(!res.ok) throw new Error('HTTP '+res.status);
+        const obj = await res.json();
+        state = obj || state;
+        renderHeader();
+        renderGroups();
+        renderKO();
+      }catch(e){
+        alert('No se pudo cargar data.json: '+e.message);
       }
-    });
+    }
+
+    boot();
   </script>
 </body>
 </html>
+

@@ -19,13 +19,13 @@
     .card{background:var(--card);border:1px solid #cbd5e1;border-radius:18px;padding:16px;box-shadow:0 3px 10px rgba(0,0,0,.1)}
     .card h2{margin:0 0 12px;font-size:18px}
     label{display:block;margin:8px 0 6px;color:var(--muted)}
-    textarea,input[type="text"],input[type="number"],input[type="url"],select,input[type="file"]{width:100%;background:#f8fafc;color:var(--text);border:1px solid #cbd5e1;border-radius:12px;padding:10px 12px;outline:none}
+    textarea,input[type="text"],input[type="number"],input[type="url"],select,input[type="file"],input[type="color"]{width:100%;background:#f8fafc;color:var(--text);border:1px solid #cbd5e1;border-radius:12px;padding:10px 12px;outline:none}
     textarea:focus,input:focus,select:focus{box-shadow:var(--ring);border-color:transparent}
     textarea{min-height:96px;white-space:pre}
     button{background:linear-gradient(180deg,var(--accent),#0ea5e9);color:#fff;border:none;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer}
     button.ghost{background:transparent;color:var(--accent);border:1px solid #cbd5e1}
     button:disabled{opacity:0.6;cursor:not-allowed}
-    .row{display:flex;gap:8px;flex-wrap:wrap}
+    .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
     .spacer{flex:1}
 
     .groups{display:grid;gap:12px}
@@ -100,14 +100,22 @@ D2
 D3</textarea></div>
       </div>
 
-      <div class="row" style="margin-top:8px;align-items:center">
+      <!-- NUEVO: Tema (colores) -->
+      <div class="row" style="margin-top:8px">
         <input type="text" id="tournamentName" placeholder="Nombre del torneo (opcional)" style="flex:2" />
-        <!-- NUEVO: slug/clave para data-<slug>.json y URL ?t=<slug> -->
-        <input type="text" id="slug" placeholder="Slug/clave (ej. futbol)" style="flex:1; min-width:180px" title="Se usa en el nombre de archivo y en la URL pública (?t=)">
+        <div style="display:flex; gap:8px; align-items:center">
+          <label for="themeColor" style="margin:0;color:var(--muted)">Acento</label>
+          <input type="color" id="themeColor" value="#0284c7" style="width:54px;padding:0">
+          <label for="themeBg" style="margin:0;color:var(--muted)">Fondo</label>
+          <input type="color" id="themeBg" value="#f8fafc" style="width:54px;padding:0">
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:8px">
         <button id="btnGenerate">Generar rol por grupo</button>
 
-        <!-- PUBLICAR -->
-        <input type="url" id="publishURL" placeholder="URL del Web App (opcional)" style="flex:2; min-width:320px" />
+        <!-- PUBLICAR (para GH Pages descarga data.json) -->
+        <input type="url" id="publishURL" placeholder="(Opcional para otros backends)" style="flex:2; min-width:320px" />
         <button id="btnPublish">Publicar <span id="publishStatus"></span></button>
 
         <div class="spacer"></div>
@@ -217,122 +225,90 @@ D3</textarea></div>
   </main>
 
 <script>
-// ===== Configuración =====
+/* ===== Configuración ===== */
 const STORAGE_KEY = 'torneo_grupos_ko_v1';
 const $ = (s, r = document) => r.querySelector(s);
 
-// ===== Estado inicial =====
+/* ===== Estado inicial ===== */
 const state = {
   groups: {
-    A: { teams: ['A1', 'A2', 'A3'], matches: [] },
-    B: { teams: ['B1', 'B2', 'B3'], matches: [] },
-    C: { teams: ['C1', 'C2', 'C3'], matches: [] },
-    D: { teams: ['D1', 'D2', 'D3'], matches: [] },
+    A: { teams: ['A1','A2','A3'], matches: [] },
+    B: { teams: ['B1','B2','B3'], matches: [] },
+    C: { teams: ['C1','C2','C3'], matches: [] },
+    D: { teams: ['D1','D2','D3'], matches: [] },
   },
-  points: { win: 3, draw: 1, loss: 0 },
+  points: { win:3, draw:1, loss:0 },
   knockout: {
-    // ahora con 'home' y 'away' opcionales
     sf1:  { home:'', away:'', gh:null, ga:null, winner:'', hour:'', place:'' },
     sf2:  { home:'', away:'', gh:null, ga:null, winner:'', hour:'', place:'' },
     final:{ home:'', away:'', gh:null, ga:null, winner:'', hour:'', place:'' }
   },
   tournamentName: '',
-  slug: '' // NUEVO
+  // NUEVO: tema
+  theme: { color: '#0284c7', bg: '#f8fafc' }
 };
 
-// ===== Funciones auxiliares =====
-function parseTeams(txt) {
-  return String(txt || '').split('\n').map(s => s.trim()).filter(Boolean);
-}
-function roundRobin3(teams) {
-  if (teams.length !== 3) return [];
-  const [t1, t2, t3] = teams;
-  return [[t1, t2], [t3, t1], [t2, t3]];
-}
-function valInt(v) {
-  if (v === null || v === undefined || v === '') return null;
-  const n = parseInt(v, 10);
-  return Number.isFinite(n) && n >= 0 ? n : null;
-}
-function computeTable(matches, teams) {
-  const t = Object.fromEntries(teams.map(x => [x, { team: x, PJ: 0, G: 0, E: 0, P: 0, GF: 0, GC: 0, DG: 0, Pts: 0 }]));
-  const cfg = state.points;
-  for (const m of matches) {
-    if (m.gh == null || m.ga == null) continue;
-    const H = t[m.home], A = t[m.away];
-    if (!H || !A) continue;
-    H.PJ++; A.PJ++;
-    H.GF += m.gh; H.GC += m.ga;
-    A.GF += m.ga; A.GC += m.gh;
-    if (m.gh > m.ga) { H.G++; A.P++; H.Pts += cfg.win; A.Pts += cfg.loss; }
-    else if (m.gh < m.ga) { A.G++; H.P++; A.Pts += cfg.win; H.Pts += cfg.loss; }
-    else { H.E++; A.E++; H.Pts += cfg.draw; A.Pts += cfg.draw; }
+/* ===== Helpers ===== */
+function parseTeams(txt){ return String(txt||'').split('\n').map(s=>s.trim()).filter(Boolean); }
+function roundRobin3(t){ if(t.length!==3) return []; const [a,b,c]=t; return [[a,b],[c,a],[b,c]]; }
+function valInt(v){ if(v===''||v==null) return null; const n=parseInt(v,10); return Number.isFinite(n)&&n>=0?n:null; }
+function computeTable(matches,teams){
+  const t=Object.fromEntries(teams.map(x=>[x,{team:x,PJ:0,G:0,E:0,P:0,GF:0,GC:0,DG:0,Pts:0}])), cfg=state.points;
+  for(const m of matches){ if(m.gh==null||m.ga==null) continue; const H=t[m.home],A=t[m.away]; if(!H||!A) continue;
+    H.PJ++;A.PJ++;H.GF+=m.gh;H.GC+=m.ga;A.GF+=m.ga;A.GC+=m.gh;
+    if(m.gh>m.ga){H.G++;A.P++;H.Pts+=cfg.win;A.Pts+=cfg.loss;}
+    else if(m.gh<m.ga){A.G++;H.P++;A.Pts+=cfg.win;H.Pts+=cfg.loss;}
+    else {H.E++;A.E++;H.Pts+=cfg.draw;A.Pts+=cfg.draw;}
   }
-  for (const x of teams) { t[x].DG = t[x].GF - t[x].GC; }
-  return Object.values(t).sort((a, b) => b.Pts - a.Pts || b.DG - a.DG || b.GF - a.GF || a.team.localeCompare(b.team));
+  for(const x of teams){ t[x].DG=t[x].GF-t[x].GC; }
+  return Object.values(t).sort((a,b)=> b.Pts-a.Pts || b.DG-a.DG || b.GF-a.GF || a.team.localeCompare(b.team));
 }
 
-// ===== Renderizado =====
-function render() {
-  const root = document.getElementById('groupsRoot');
-  root.innerHTML = '';
-  const colors = { A: 'groupA', B: 'groupB', C: 'groupC', D: 'groupD' };
-  for (const g of ['A', 'B', 'C', 'D']) {
-    const box = document.createElement('div');
-    box.className = `groupBox ${colors[g]}`;
-    const G = state.groups[g];
-    box.innerHTML = `<h3 style="margin:0 0 6px">Grupo ${g}</h3>`;
-    if (G.teams.length !== 3) {
-      const warn = document.createElement('div'); warn.className = 'note';
-      warn.textContent = 'Agrega exactamente 3 equipos (uno por línea).';
-      box.appendChild(warn); root.appendChild(box); continue;
-    }
+/* ===== Render ===== */
+function render(){
+  const root=$('#groupsRoot'); root.innerHTML='';
+  const colors={A:'groupA',B:'groupB',C:'groupC',D:'groupD'};
+  for(const g of ['A','B','C','D']){
+    const box=document.createElement('div'); box.className=`groupBox ${colors[g]}`;
+    const G=state.groups[g]; box.innerHTML=`<h3 style="margin:0 0 6px">Grupo ${g}</h3>`;
+    if(G.teams.length!==3){ const warn=document.createElement('div'); warn.className='note'; warn.textContent='Agrega exactamente 3 equipos (uno por línea).'; box.appendChild(warn); root.appendChild(box); continue; }
     // Partidos
-    const matchesWrap = document.createElement('div'); matchesWrap.className = 'matches';
-    G.matches.forEach(m => {
-      const row = document.createElement('div'); row.className = 'match';
-      row.innerHTML = `
+    const wrap=document.createElement('div'); wrap.className='matches';
+    G.matches.forEach(m=>{
+      const row=document.createElement('div'); row.className='match';
+      row.innerHTML=`
         <div class="team">${m.home}</div>
         <div class="team" style="justify-content:center">
-          <input type="number" min="0" class="gh" value="${m.gh ?? ''}" aria-label="Goles ${m.home}">
+          <input type="number" min="0" class="gh" value="${m.gh??''}" aria-label="Goles ${m.home}">
           <span class="dash">—</span>
-          <input type="number" min="0" class="ga" value="${m.ga ?? ''}" aria-label="Goles ${m.away}">
+          <input type="number" min="0" class="ga" value="${m.ga??''}" aria-label="Goles ${m.away}">
         </div>
         <div class="team" style="justify-content:flex-end">${m.away}</div>`;
-      const info = document.createElement('div'); info.className = 'info';
-      info.innerHTML = `
-        <input type="text" class="hour"  placeholder="Hora"  value="${m.hour || ''}">
-        <input type="text" class="place" placeholder="Lugar" value="${m.place || ''}">`;
-      const gh = row.querySelector('.gh'), ga = row.querySelector('.ga');
-      const hour = info.querySelector('.hour'), place = info.querySelector('.place');
-      const persist = () => {
-        m.gh = valInt(gh.value); m.ga = valInt(ga.value);
-        m.hour = hour.value.trim(); m.place = place.value.trim();
-        save(); render();
-      };
-      gh.addEventListener('input', persist);
-      ga.addEventListener('input', persist);
-      hour.addEventListener('change', persist);
-      place.addEventListener('change', persist);
-      matchesWrap.appendChild(row); matchesWrap.appendChild(info);
+      const info=document.createElement('div'); info.className='info';
+      info.innerHTML=`<input type="text" class="hour" placeholder="Hora" value="${m.hour||''}">
+                      <input type="text" class="place" placeholder="Lugar" value="${m.place||''}">`;
+      const gh=row.querySelector('.gh'), ga=row.querySelector('.ga');
+      const hour=info.querySelector('.hour'), place=info.querySelector('.place');
+      const persist=()=>{ m.gh=valInt(gh.value); m.ga=valInt(ga.value); m.hour=hour.value.trim(); m.place=place.value.trim(); save(); render(); };
+      gh.addEventListener('input',persist); ga.addEventListener('input',persist);
+      hour.addEventListener('change',persist); place.addEventListener('change',persist);
+      wrap.appendChild(row); wrap.appendChild(info);
     });
-    box.appendChild(matchesWrap);
+    box.appendChild(wrap);
     // Tabla
-    const rows = computeTable(G.matches, G.teams);
-    const table = document.createElement('div');
-    table.innerHTML = `
+    const rows=computeTable(G.matches,G.teams);
+    const table=document.createElement('div');
+    table.innerHTML=`
       <div style="overflow:auto">
         <table>
-          <thead>
-            <tr>
-              <th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>E</th><th>P</th>
-              <th>GF</th><th>GC</th><th>DG</th><th>Pts</th>
-            </tr>
-          </thead>
+          <thead><tr>
+            <th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>E</th><th>P</th>
+            <th>GF</th><th>GC</th><th>DG</th><th>Pts</th>
+          </tr></thead>
           <tbody>
-            ${rows.map((r, i) => `
-              <tr class="${i === 0 ? 'first' : ''}">
-                <td class="pos">${i + 1}</td>
+            ${rows.map((r,i)=>`
+              <tr class="${i===0?'first':''}">
+                <td class="pos">${i+1}</td>
                 <td>${r.team}</td>
                 <td>${r.PJ}</td>
                 <td>${r.G}</td>
@@ -352,336 +328,189 @@ function render() {
   updateKnockoutSeeds();
 }
 
-function generate() {
-  state.groups.A.teams = parseTeams(document.getElementById('ga').value);
-  state.groups.B.teams = parseTeams(document.getElementById('gb').value);
-  state.groups.C.teams = parseTeams(document.getElementById('gc').value);
-  state.groups.D.teams = parseTeams(document.getElementById('gd').value);
-  for (const g of ['A', 'B', 'C', 'D']) {
-    const T = state.groups[g].teams;
-    state.groups[g].matches = roundRobin3(T).map(p => ({
-      home: p[0], away: p[1], gh: null, ga: null, hour: '', place: ''
-    }));
-  }
-  state.tournamentName = document.getElementById('tournamentName').value.trim();
+/* ===== Tema (preview inmediato) ===== */
+function applyPreviewTheme(){
+  // Fondo general
+  document.body.style.background = state.theme?.bg || '#f8fafc';
+  // Acento (botones/bordes con var(--accent))
+  const color = state.theme?.color || '#0284c7';
+  document.documentElement.style.setProperty('--accent', color);
+}
 
-  // si no hay slug aún, sugerirlo desde el nombre
-  if (!state.slug) {
-    const s = slug(state.tournamentName || '');
-    state.slug = s;
-    const slugInput = document.getElementById('slug');
-    if (slugInput) slugInput.value = s;
+/* ===== Generate / Winners / KO ===== */
+function generate(){
+  state.groups.A.teams=parseTeams($('#ga').value);
+  state.groups.B.teams=parseTeams($('#gb').value);
+  state.groups.C.teams=parseTeams($('#gc').value);
+  state.groups.D.teams=parseTeams($('#gd').value);
+  for(const g of ['A','B','C','D']){
+    const T=state.groups[g].teams;
+    state.groups[g].matches=roundRobin3(T).map(p=>({home:p[0],away:p[1],gh:null,ga:null,hour:'',place:''}));
   }
-
+  state.tournamentName=$('#tournamentName').value.trim();
   save(); render();
 }
-
-function groupWinner(gkey) {
-  const G = state.groups[gkey]; if (G.teams.length !== 3) return '';
-  const rows = computeTable(G.matches, G.teams); return rows[0]?.team || '';
+function groupWinner(gkey){ const G=state.groups[gkey]; if(G.teams.length!==3) return ''; const rows=computeTable(G.matches,G.teams); return rows[0]?.team||''; }
+function updateKnockoutSeeds(){
+  const A1=groupWinner('A')||'A1', B1=groupWinner('B')||'B1', C1=groupWinner('C')||'C1', D1=groupWinner('D')||'D1';
+  const sf1Home=state.knockout.sf1.home || A1;
+  const sf1Away=state.knockout.sf1.away || D1;
+  const sf2Home=state.knockout.sf2.home || B1;
+  const sf2Away=state.knockout.sf2.away || C1;
+  $('#sf1h').textContent=sf1Home; $('#sf1a').textContent=sf1Away;
+  $('#sf2h').textContent=sf2Home; $('#sf2a').textContent=sf2Away;
+  const sf1w=$('#sf1w'); sf1w.innerHTML=`<option value="">— Ganador —</option><option value="${sf1Home}">${sf1Home}</option><option value="${sf1Away}">${sf1Away}</option>`; if(state.knockout.sf1.winner) sf1w.value=state.knockout.sf1.winner;
+  const sf2w=$('#sf2w'); sf2w.innerHTML=`<option value="">— Ganador —</option><option value="${sf2Home}">${sf2Home}</option><option value="${sf2Away}">${sf2Away}</option>`; if(state.knockout.sf2.winner) sf2w.value=state.knockout.sf2.winner;
+  const w1=state.knockout.sf1.winner || 'Ganador SF1';
+  const w2=state.knockout.sf2.winner || 'Ganador SF2';
+  const fiHome=state.knockout.final.home || w1;
+  const fiAway=state.knockout.final.away || w2;
+  $('#fih').textContent=fiHome; $('#fia').textContent=fiAway;
+  const fiw=$('#fiw'); fiw.innerHTML=`<option value="">— Campeón —</option>${fiHome!=='Ganador SF1'?`<option value="${fiHome}">${fiHome}</option>`:''}${fiAway!=='Ganador SF2'?`<option value="${fiAway}">${fiAway}</option>`:''}`; if(state.knockout.final.winner) fiw.value=state.knockout.final.winner;
+  // Restaurar marcadores
+  $('#sf1gh').value=state.knockout.sf1.gh??''; $('#sf1ga').value=state.knockout.sf1.ga??'';
+  $('#sf2gh').value=state.knockout.sf2.gh??''; $('#sf2ga').value=state.knockout.sf2.ga??'';
+  $('#figh').value=state.knockout.final.gh??''; $('#figa').value=state.knockout.final.ga??'';
+  // Rellenar inputs override
+  $('#sf1HomeName').value = state.knockout.sf1.home || '';
+  $('#sf1AwayName').value = state.knockout.sf1.away || '';
+  $('#sf2HomeName').value = state.knockout.sf2.home || '';
+  $('#sf2AwayName').value = state.knockout.sf2.away || '';
+  $('#fiHomeName').value  = state.knockout.final.home || '';
+  $('#fiAwayName').value  = state.knockout.final.away || '';
 }
 
-function updateKnockoutSeeds() {
-  // Ganadores por tabla (fallback)
-  const A1 = groupWinner('A') || 'A1';
-  const B1 = groupWinner('B') || 'B1';
-  const C1 = groupWinner('C') || 'C1';
-  const D1 = groupWinner('D') || 'D1';
-
-  // Preferir nombres manuales (overrides)
-  const sf1Home = state.knockout.sf1.home || A1;
-  const sf1Away = state.knockout.sf1.away || D1;
-  const sf2Home = state.knockout.sf2.home || B1;
-  const sf2Away = state.knockout.sf2.away || C1;
-
-  // Pintar etiquetas
-  document.getElementById('sf1h').textContent = sf1Home;
-  document.getElementById('sf1a').textContent = sf1Away;
-  document.getElementById('sf2h').textContent = sf2Home;
-  document.getElementById('sf2a').textContent = sf2Away;
-
-  // Rellenar selects de ganador con lo que se muestra
-  const sf1w = document.getElementById('sf1w');
-  sf1w.innerHTML = `<option value="">— Ganador —</option>
-                    <option value="${sf1Home}">${sf1Home}</option>
-                    <option value="${sf1Away}">${sf1Away}</option>`;
-  if (state.knockout.sf1.winner) sf1w.value = state.knockout.sf1.winner;
-
-  const sf2w = document.getElementById('sf2w');
-  sf2w.innerHTML = `<option value="">— Ganador —</option>
-                    <option value="${sf2Home}">${sf2Home}</option>
-                    <option value="${sf2Away}">${sf2Away}</option>`;
-  if (state.knockout.sf2.winner) sf2w.value = state.knockout.sf2.winner;
-
-  // Final: usa overrides si existen; si no, usa ganadores de SF
-  const w1 = state.knockout.sf1.winner || 'Ganador SF1';
-  const w2 = state.knockout.sf2.winner || 'Ganador SF2';
-  const fiHome = state.knockout.final.home || w1;
-  const fiAway = state.knockout.final.away || w2;
-
-  document.getElementById('fih').textContent = fiHome;
-  document.getElementById('fia').textContent = fiAway;
-
-  const fiw = document.getElementById('fiw');
-  fiw.innerHTML = `<option value="">— Campeón —</option>
-                   ${fiHome !== 'Ganador SF1' ? `<option value="${fiHome}">${fiHome}</option>` : ''}
-                   ${fiAway !== 'Ganador SF2' ? `<option value="${fiAway}">${fiAway}</option>` : ''}`;
-  if (state.knockout.final.winner) fiw.value = state.knockout.final.winner;
-
-  // Restaurar marcadores KO
-  document.getElementById('sf1gh').value = state.knockout.sf1.gh ?? '';
-  document.getElementById('sf1ga').value = state.knockout.sf1.ga ?? '';
-  document.getElementById('sf2gh').value = state.knockout.sf2.gh ?? '';
-  document.getElementById('sf2ga').value = state.knockout.sf2.ga ?? '';
-  document.getElementById('figh').value = state.knockout.final.gh ?? '';
-  document.getElementById('figa').value = state.knockout.final.ga ?? '';
-
-  // Rellenar inputs de override (si existen en el DOM)
-  const s1 = state.knockout.sf1, s2 = state.knockout.sf2, fi = state.knockout.final;
-  const ih1 = document.getElementById('sf1HomeName');
-  const ia1 = document.getElementById('sf1AwayName');
-  const ih2 = document.getElementById('sf2HomeName');
-  const ia2 = document.getElementById('sf2AwayName');
-  const ifh = document.getElementById('fiHomeName');
-  const ifa = document.getElementById('fiAwayName');
-
-  if (ih1) ih1.value = s1.home || '';
-  if (ia1) ia1.value = s1.away || '';
-  if (ih2) ih2.value = s2.home || '';
-  if (ia2) ia2.value = s2.away || '';
-  if (ifh) ifh.value = fi.home || '';
-  if (ifa) ifa.value = fi.away || '';
-}
-
-// ===== Persistencia =====
-function save() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-  catch (e) { console.warn('No se pudo guardar en localStorage'); }
-}
-function load() {
-  try {
-    const s = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-    if (!s) return false;
-    Object.assign(state, s);
-    document.getElementById('ga').value = state.groups.A.teams.join('\n');
-    document.getElementById('gb').value = state.groups.B.teams.join('\n');
-    document.getElementById('gc').value = state.groups.C.teams.join('\n');
-    document.getElementById('gd').value = state.groups.D.teams.join('\n');
-    if (state.tournamentName) document.getElementById('tournamentName').value = state.tournamentName;
-    if (state.slug) document.getElementById('slug').value = state.slug; // NUEVO
+/* ===== Persistencia ===== */
+function save(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch{} }
+function load(){
+  try{
+    const s=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null'); if(!s) return false;
+    Object.assign(state,s);
+    $('#ga').value=state.groups.A.teams.join('\n');
+    $('#gb').value=state.groups.B.teams.join('\n');
+    $('#gc').value=state.groups.C.teams.join('\n');
+    $('#gd').value=state.groups.D.teams.join('\n');
+    if(state.tournamentName) $('#tournamentName').value=state.tournamentName;
+    // Tema -> inputs + preview
+    if(state.theme){ 
+      $('#themeColor').value = state.theme.color || '#0284c7';
+      $('#themeBg').value    = state.theme.bg || '#f8fafc';
+      applyPreviewTheme();
+    }
     return true;
-  } catch { return false; }
+  }catch{ return false; }
 }
 
-// ===== Exportar/Importar =====
-function slug(s) {
-  return String(s).toLowerCase().normalize('NFD')
-    .replace(/\p{Diacritic}/gu, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-}
-function ts() {
-  const d = new Date(); const p = n => String(n).padStart(2, '0');
-  return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}`;
-}
-function downloadFile(name, text) {
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
-  a.download = name; a.click(); URL.revokeObjectURL(a.href);
-}
-function saveCopy() {
-  const baseName = state.slug || slug(document.getElementById('tournamentName')?.value?.trim() || '') || 'torneo';
-  const file = `data-${baseName}.json`; // NUEVO
-  const snapshot = JSON.parse(JSON.stringify(state));
-  stamp(snapshot);
-  downloadFile(file, JSON.stringify(snapshot, null, 2));
-}
-function stamp(snapshot) {
-  const now = new Date();
-  snapshot.updatedAt = now.toISOString();
-  try {
-    snapshot.updatedAtLocal = new Intl.DateTimeFormat(undefined, {
-      year: 'numeric', month: '2-digit', day: '2-digit',
-      hour: '2-digit', minute: '2-digit', second: '2-digit'
-    }).format(now);
-  } catch { snapshot.updatedAtLocal = now.toLocaleString(); }
+/* ===== Exportar/Importar/Publish ===== */
+function slug(s){ return String(s).toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
+function ts(){ const d=new Date(),p=n=>String(n).padStart(2,'0'); return `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}`; }
+function downloadFile(name, text){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([text],{type:'application/json'})); a.download=name; a.click(); URL.revokeObjectURL(a.href); }
+function stamp(snapshot){
+  const now=new Date(); snapshot.updatedAt=now.toISOString();
+  try{ snapshot.updatedAtLocal=new Intl.DateTimeFormat(undefined,{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'}).format(now); }
+  catch{ snapshot.updatedAtLocal=now.toLocaleString(); }
   return snapshot;
 }
-function clearAll() {
-  if (!confirm('¿Estás seguro de que quieres borrar todos los datos locales?')) return;
-  try { localStorage.removeItem(STORAGE_KEY); } catch {}
-  location.reload();
-}
+function saveCopy(){ const base=$('#tournamentName')?.value?.trim()||'torneo_grupos'; const file=`${slug(base)}_${ts()}.json`; const snap=JSON.parse(JSON.stringify(state)); stamp(snap); downloadFile(file, JSON.stringify(snap,null,2)); }
+function clearAll(){ if(!confirm('¿Borrar datos locales?')) return; try{ localStorage.removeItem(STORAGE_KEY);}catch{} location.reload(); }
 
-// ===== IMPORTAR DATOS =====
-function importData() {
-  const fileInput = document.getElementById('importFile');
-  const file = fileInput.files[0];
-  if (!file) { alert('Selecciona un archivo JSON'); return; }
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      const importedData = JSON.parse(e.target.result);
-      if (!importedData.groups || !importedData.knockout) throw new Error('Estructura inválida');
-      if (confirm('Esto reemplazará los datos actuales. ¿Continuar?')) {
-        Object.assign(state, importedData);
-        document.getElementById('ga').value = state.groups.A.teams.join('\n');
-        document.getElementById('gb').value = state.groups.B.teams.join('\n');
-        document.getElementById('gc').value = state.groups.C.teams.join('\n');
-        document.getElementById('gd').value = state.groups.D.teams.join('\n');
-        document.getElementById('tournamentName').value = state.tournamentName || '';
-        document.getElementById('slug').value = state.slug || '';
-        save(); render(); populateKOInputsFromState();
-        alert('✅ Datos importados');
-        fileInput.value = '';
+function importData(){
+  const inp=$('#importFile'); const f=inp.files?.[0]; if(!f){ alert('Selecciona un archivo JSON'); return; }
+  const rd=new FileReader();
+  rd.onload=()=>{ try{
+      const obj=JSON.parse(rd.result);
+      if(!obj.groups||!obj.knockout) throw new Error('Estructura inválida');
+      if(confirm('Esto reemplazará los datos actuales. ¿Continuar?')){
+        Object.assign(state,obj);
+        $('#ga').value=state.groups.A.teams.join('\n');
+        $('#gb').value=state.groups.B.teams.join('\n');
+        $('#gc').value=state.groups.C.teams.join('\n');
+        $('#gd').value=state.groups.D.teams.join('\n');
+        $('#tournamentName').value=state.tournamentName||'';
+        // Cargar tema desde import
+        $('#themeColor').value = state.theme?.color || '#0284c7';
+        $('#themeBg').value    = state.theme?.bg || '#f8fafc';
+        applyPreviewTheme();
+        save(); render(); updateKnockoutSeeds();
+        alert('✅ Datos importados'); inp.value='';
       }
-    } catch (error) {
-      alert('❌ Error al importar: ' + error.message);
-      console.error(error);
-    }
-  };
-  reader.onerror = function() { alert('❌ Error al leer el archivo'); };
-  reader.readAsText(file);
+    }catch(e){ alert('❌ Error al importar: '+e.message); } };
+  rd.onerror=()=>alert('❌ Error al leer el archivo');
+  rd.readAsText(f);
 }
-function exportData() {
-  const snapshot = JSON.parse(JSON.stringify(state));
-  stamp(snapshot);
-  const baseName = state.slug || slug(document.getElementById('tournamentName')?.value?.trim() || '') || 'torneo';
-  const fileName = `data-${baseName}.json`; // NUEVO
-  downloadFile(fileName, JSON.stringify(snapshot, null, 2));
-  alert('📤 Exportado: ' + fileName);
-}
+function exportData(){ const snap=JSON.parse(JSON.stringify(state)); stamp(snap); const base=$('#tournamentName')?.value?.trim()||'torneo'; const fn=`${slug(base)}_export_${ts()}.json`; downloadFile(fn, JSON.stringify(snap,null,2)); alert('📤 Exportado: '+fn); }
 
-// ===== Publicación (para GitHub Pages: descarga data-<slug>.json) =====
-function setPublishStatus(text, type = '') {
-  const statusEl = document.getElementById('publishStatus');
-  statusEl.textContent = text; statusEl.className = `status ${type}`;
-}
-async function publishNow() {
-  const snapshot = JSON.parse(JSON.stringify(state));
-  stamp(snapshot);
-  const btn = document.getElementById('btnPublish');
-  btn.disabled = true; setPublishStatus('⏳', 'loading');
-  try {
-    localStorage.setItem('TORNEO_PUBLIC_DATA', JSON.stringify(snapshot));
-    const baseName = state.slug || slug(state.tournamentName || '') || 'torneo'; // NUEVO
-    const fileName = `data-${baseName}.json`; // NUEVO
-    const dataStr = JSON.stringify(snapshot, null, 2);
-    const blob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href = url; a.download = fileName;
+function setPublishStatus(t,cls=''){ const el=$('#publishStatus'); el.textContent=t; el.className=`status ${cls}`; }
+async function publishNow(){
+  const snap=JSON.parse(JSON.stringify(state)); stamp(snap);
+  const btn=$('#btnPublish'); btn.disabled=true; setPublishStatus('⏳','loading');
+  try{
+    localStorage.setItem('TORNEO_PUBLIC_DATA', JSON.stringify(snap));
+    const dataStr=JSON.stringify(snap,null,2);
+    const blob=new Blob([dataStr],{type:'application/json'});
+    const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='data.json';
     document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-    setPublishStatus('✅', 'success'); setTimeout(() => setPublishStatus(''), 3000);
-    alert('✅ Datos listos.\nSube el archivo descargado como ' + fileName + ' a tu repositorio.\nURL pública sugerida: https://TUUSUARIO.github.io/TUREPO/?t=' + baseName);
-  } catch (err) {
-    console.error(err); setPublishStatus('❌', 'error'); alert('Error: ' + err.message);
-  } finally { btn.disabled = false; }
+    setPublishStatus('✅','success'); setTimeout(()=>setPublishStatus(''),3000);
+    alert('✅ Datos listos.\nSube el archivo descargado como data.json (o renómbralo a data-<slug>.json) a tu repositorio.');
+  }catch(e){ console.error(e); setPublishStatus('❌','error'); alert('Error: '+e.message); }
+  finally{ btn.disabled=false; }
 }
 
-// ===== Inicialización =====
-function populateKOInputsFromState() {
-  const k = state.knockout || {};
-  const s1 = k.sf1 || {}, s2 = k.sf2 || {}, fi = k.final || {};
+/* ===== Inicialización ===== */
+function populateKOInputsFromState(){
+  const k=state.knockout||{}, s1=k.sf1||{}, s2=k.sf2||{}, fi=k.final||{};
   // Horas/Lugares
-  document.getElementById('sf1Hour').value = s1.hour || '';
-  document.getElementById('sf1Place').value = s1.place || '';
-  document.getElementById('sf2Hour').value = s2.hour || '';
-  document.getElementById('sf2Place').value = s2.place || '';
-  document.getElementById('fiHour').value  = fi.hour || '';
-  document.getElementById('fiPlace').value = fi.place || '';
+  $('#sf1Hour').value=s1.hour||''; $('#sf1Place').value=s1.place||'';
+  $('#sf2Hour').value=s2.hour||''; $('#sf2Place').value=s2.place||'';
+  $('#fiHour').value =fi.hour ||''; $('#fiPlace').value =fi.place ||'';
   // Nombres manuales
-  const ih1 = document.getElementById('sf1HomeName');
-  const ia1 = document.getElementById('sf1AwayName');
-  const ih2 = document.getElementById('sf2HomeName');
-  const ia2 = document.getElementById('sf2AwayName');
-  const ifh = document.getElementById('fiHomeName');
-  const ifa = document.getElementById('fiAwayName');
-  if (ih1) ih1.value = s1.home || '';
-  if (ia1) ia1.value = s1.away || '';
-  if (ih2) ih2.value = s2.home || '';
-  if (ia2) ia2.value = s2.away || '';
-  if (ifh) ifh.value = fi.home || '';
-  if (ifa) ifa.value = fi.away || '';
+  $('#sf1HomeName').value=s1.home||''; $('#sf1AwayName').value=s1.away||'';
+  $('#sf2HomeName').value=s2.home||''; $('#sf2AwayName').value=s2.away||'';
+  $('#fiHomeName').value =fi.home ||''; $('#fiAwayName').value =fi.away ||'';
 }
-function init() {
-  const hadData = load();
-  if (!hadData) { generate(); } else { render(); }
-  populateKOInputsFromState();
-}
+function init(){ const had=load(); if(!had){ generate(); } else { render(); } populateKOInputsFromState(); applyPreviewTheme(); }
 
-// ===== Event Listeners =====
-document.getElementById('btnGenerate').addEventListener('click', generate);
-document.getElementById('btnSaveCopy').addEventListener('click', saveCopy);
-document.getElementById('btnClearAll').addEventListener('click', clearAll);
-document.getElementById('btnPublish').addEventListener('click', publishNow);
-document.getElementById('btnImport').addEventListener('click', importData);
-document.getElementById('btnExport').addEventListener('click', exportData);
-document.getElementById('importFile').addEventListener('change', importData);
+/* ===== Listeners ===== */
+$('#btnGenerate').addEventListener('click',generate);
+$('#btnSaveCopy').addEventListener('click',saveCopy);
+$('#btnClearAll').addEventListener('click',clearAll);
+$('#btnPublish').addEventListener('click',publishNow);
+$('#btnImport').addEventListener('click',importData);
+$('#btnExport').addEventListener('click',exportData);
+$('#importFile').addEventListener('change',importData);
 
-// nombre del torneo → sugiere slug si vacío
-document.getElementById('tournamentName').addEventListener('change', e => {
-  state.tournamentName = e.target.value.trim();
-  const slugInput = document.getElementById('slug');
-  if (slugInput && (!slugInput.value.trim() || !state.slug)) {
-    const suggested = slug(state.tournamentName || '');
-    slugInput.value = suggested;
-    state.slug = suggested;
-  }
-  save();
+$('#tournamentName').addEventListener('change',e=>{ state.tournamentName=e.target.value.trim(); save(); });
+
+// KO
+['sf1','sf2','final'].forEach(round=>{
+  $(`#${round}gh`).addEventListener('input',e=>{ state.knockout[round].gh=valInt(e.target.value); save(); });
+  $(`#${round}ga`).addEventListener('input',e=>{ state.knockout[round].ga=valInt(e.target.value); save(); });
+  $(`#${round}w`).addEventListener('change',e=>{ state.knockout[round].winner=e.target.value||''; if(round!=='final') updateKnockoutSeeds(); save(); });
+  $(`#${round}Hour`).addEventListener('change',e=>{ state.knockout[round].hour=e.target.value.trim(); save(); });
+  $(`#${round}Place`).addEventListener('change',e=>{ state.knockout[round].place=e.target.value.trim(); save(); });
 });
+// KO nombres manuales
+$('#sf1HomeName').addEventListener('input',e=>{ state.knockout.sf1.home=e.target.value.trim(); updateKnockoutSeeds(); save(); });
+$('#sf1AwayName').addEventListener('input',e=>{ state.knockout.sf1.away=e.target.value.trim(); updateKnockoutSeeds(); save(); });
+$('#sf2HomeName').addEventListener('input',e=>{ state.knockout.sf2.home=e.target.value.trim(); updateKnockoutSeeds(); save(); });
+$('#sf2AwayName').addEventListener('input',e=>{ state.knockout.sf2.away=e.target.value.trim(); updateKnockoutSeeds(); save(); });
+$('#fiHomeName').addEventListener('input',e=>{ state.knockout.final.home=e.target.value.trim(); updateKnockoutSeeds(); save(); });
+$('#fiAwayName').addEventListener('input',e=>{ state.knockout.final.away=e.target.value.trim(); updateKnockoutSeeds(); save(); });
 
-// escribir slug normalizado
-document.getElementById('slug').addEventListener('input', e => {
-  const v = slug(e.target.value);
-  e.target.value = v;
-  state.slug = v;
-  save();
+// Tema: cambios con preview inmediata
+$('#themeColor').addEventListener('input', e=>{
+  state.theme.color = e.target.value || '#0284c7';
+  applyPreviewTheme(); save();
 });
-
-// Listeners KO (marcadores/ganadores/horarios/lugares)
-['sf1', 'sf2', 'final'].forEach(round => {
-  document.getElementById(`${round}gh`).addEventListener('input', e => {
-    state.knockout[round].gh = valInt(e.target.value); save();
-  });
-  document.getElementById(`${round}ga`).addEventListener('input', e => {
-    state.knockout[round].ga = valInt(e.target.value); save();
-  });
-  document.getElementById(`${round}w`).addEventListener('change', e => {
-    state.knockout[round].winner = e.target.value || '';
-    if (round !== 'final') updateKnockoutSeeds(); save();
-  });
-  document.getElementById(`${round}Hour`).addEventListener('change', e => {
-    state.knockout[round].hour = e.target.value.trim(); save();
-  });
-  document.getElementById(`${round}Place`).addEventListener('change', e => {
-    state.knockout[round].place = e.target.value.trim(); save();
-  });
+$('#themeBg').addEventListener('input', e=>{
+  state.theme.bg = e.target.value || '#f8fafc';
+  applyPreviewTheme(); save();
 });
 
-// Nombres manuales KO
-document.getElementById('sf1HomeName').addEventListener('input', e=>{
-  state.knockout.sf1.home = e.target.value.trim(); updateKnockoutSeeds(); save();
-});
-document.getElementById('sf1AwayName').addEventListener('input', e=>{
-  state.knockout.sf1.away = e.target.value.trim(); updateKnockoutSeeds(); save();
-});
-document.getElementById('sf2HomeName').addEventListener('input', e=>{
-  state.knockout.sf2.home = e.target.value.trim(); updateKnockoutSeeds(); save();
-});
-document.getElementById('sf2AwayName').addEventListener('input', e=>{
-  state.knockout.sf2.away = e.target.value.trim(); updateKnockoutSeeds(); save();
-});
-document.getElementById('fiHomeName').addEventListener('input', e=>{
-  state.knockout.final.home = e.target.value.trim(); updateKnockoutSeeds(); save();
-});
-document.getElementById('fiAwayName').addEventListener('input', e=>{
-  state.knockout.final.away = e.target.value.trim(); updateKnockoutSeeds(); save();
-});
-
-// Iniciar
 init();
 </script>
 </body>
 </html>
+
 
 

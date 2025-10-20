@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Carátula del Torneo</title>
 <style>
-:root {
+:root{
   --accent:#0284c7;
   --bg:#f8fafc;
   --text:#0f172a;
@@ -15,7 +15,7 @@
 }
 *{box-sizing:border-box}
 body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
-header{padding:22px 16px;color:#fff;background:linear-gradient(90deg,var(--accent),#0ea5e9)}
+header{padding:22px 16px;color:#fff;background:linear-gradient(90deg,var(--accent),var(--accent))}
 .container{max-width:1200px;margin:0 auto;padding:16px}
 h1{margin:0;font-size:clamp(22px,3.2vw,34px)}
 .subtitle{opacity:.9}
@@ -82,10 +82,25 @@ footer{font-size:12px;color:var(--muted);text-align:center;margin:18px 0}
 <script>
 const $ = (s, r=document)=>r.querySelector(s);
 
+/* ========= Utilidades ========= */
+function pick(obj, paths, def=null){
+  for(const p of paths){
+    const parts = p.split('.');
+    let v = obj;
+    let ok = true;
+    for(const k of parts){
+      if(v && Object.prototype.hasOwnProperty.call(v, k)){ v = v[k]; }
+      else { ok = false; break; }
+    }
+    if(ok && v!=null && v!=='') return v;
+  }
+  return def;
+}
+
 /* ========= Carga ========= */
 async function loadData(){
   const q = new URLSearchParams(location.search);
-  const slug = q.get('t') || 'data';       // ?t=data-mi-torneo  → data-mi-torneo.json
+  const slug = q.get('t') || 'data';  // ?t=data-mi-torneo -> data-mi-torneo.json
   const url  = `${slug}.json`;
   const res  = await fetch(url, {cache:'no-store'});
   if(!res.ok) throw new Error('No se pudo cargar el JSON ('+res.status+')');
@@ -93,14 +108,26 @@ async function loadData(){
   renderAll(data);
 }
 
-/* ========= Tema ========= */
-function applyTheme(theme){
-  if(!theme) return;
-  if(theme.color) document.documentElement.style.setProperty('--accent', theme.color);
-  if(theme.bg)    document.documentElement.style.setProperty('--bg', theme.bg);
+/* ========= Tema (robusto) ========= */
+function applyTheme(data){
+  // Soporta varias variantes en el JSON
+  const accent = pick(data, ['theme.color','theme.accent','colors.accent'], null);
+  const bg     = pick(data, ['theme.bg','theme.background','colors.bg','colors.background'], null);
+
+  if(accent){
+    document.documentElement.style.setProperty('--accent', accent);
+    // Asegurar el header (si alguien dejó el gradiente fijo)
+    const header = document.querySelector('header');
+    if(header) header.style.background = `linear-gradient(90deg, ${accent}, ${accent})`;
+  }
+  if(bg){
+    document.documentElement.style.setProperty('--bg', bg);
+    // fondo del body (por si el navegador cacheó estilos)
+    document.body.style.background = bg;
+  }
 }
 
-/* ========= Tabla por grupo ========= */
+/* ========= Cómputo de tabla por grupo ========= */
 function computeTable(matches, teams){
   const t = Object.fromEntries((teams||[]).map(x => [x, {team:x,PJ:0,G:0,E:0,P:0,GF:0,GC:0,DG:0,Pts:0}]));
   const cfg = {win:3, draw:1, loss:0};
@@ -110,19 +137,24 @@ function computeTable(matches, teams){
     H.PJ++; A.PJ++;
     H.GF += m.gh; H.GC += m.ga;
     A.GF += m.ga; A.GC += m.gh;
-    if(m.gh>m.ga){ H.G++; A.P++; H.Pts += cfg.win; A.Pts += cfg.loss; }
-    else if(m.gh<m.ga){ A.G++; H.P++; A.Pts += cfg.win; H.Pts += cfg.loss; }
+    if(m.gh>m.ga){ H.G++; A.P++; H.Pts += cfg.win; }
+    else if(m.gh<m.ga){ A.G++; H.P++; A.Pts += cfg.win; }
     else { H.E++; A.E++; H.Pts += cfg.draw; A.Pts += cfg.draw; }
   }
   for(const x of (teams||[])){ t[x].DG = t[x].GF - t[x].GC; }
   return Object.values(t).sort((a,b)=> b.Pts-a.Pts || b.DG-a.DG || b.GF-a.GF || a.team.localeCompare(b.team));
 }
 
-/* ========= UI de grupos (calendario + tabla) ========= */
+/* ========= Ganador por grupo (para seeds si no hay nombres manuales) ========= */
+function groupWinner(g){
+  const rows = computeTable(g.matches||[], g.teams||[]);
+  return rows[0]?.team || '';
+}
+
+/* ========= UI de grupos ========= */
 function groupBlock(key, g){
   const teams = g.teams || [];
   const matches = g.matches || [];
-  // Calendario + resultados
   const cal = matches.map(m=>{
     const gh = (m.gh==null || m.gh==='') ? '—' : m.gh;
     const ga = (m.ga==null || m.ga==='') ? '—' : m.ga;
@@ -140,7 +172,6 @@ function groupBlock(key, g){
       </div>`;
   }).join('') || `<div class="badge">No hay calendario para el grupo ${key}</div>`;
 
-  // Tabla
   const rows = computeTable(matches, teams);
   const tbody = rows.map((r,i)=>`
     <tr>
@@ -176,7 +207,7 @@ function groupBlock(key, g){
   </div>`;
 }
 
-/* ========= KO ========= */
+/* ========= KO (lee manuales y, si faltan, calcula) ========= */
 function koLine(title, m, defaults){
   const home  = (m?.home && m.home.trim()) ? m.home : (defaults?.home || '');
   const away  = (m?.away && m.away.trim()) ? m.away : (defaults?.away || '');
@@ -203,8 +234,8 @@ function koLine(title, m, defaults){
 
 /* ========= Render principal ========= */
 function renderAll(data){
-  // Tema y encabezado
-  applyTheme(data.theme);
+  applyTheme(data);
+
   $('#title').textContent = data.tournamentName || 'Torneo';
   $('#subtitle').textContent = data.subtitle || '';
 
@@ -212,22 +243,30 @@ function renderAll(data){
   const gr = $('#groupsRoot');
   gr.innerHTML = '';
   const order = ['A','B','C','D'];
+  const groupsObj = data.groups || {};
   order.forEach(k=>{
-    if(data.groups && data.groups[k]){
-      gr.insertAdjacentHTML('beforeend', groupBlock(k, data.groups[k]));
-    }
+    if(groupsObj[k]) gr.insertAdjacentHTML('beforeend', groupBlock(k, groupsObj[k]));
   });
 
-  // KO
+  // Semillas KO: usar manuales; si faltan, usar líderes de tabla
+  const A1 = groupsObj.A ? groupWinner(groupsObj.A) : 'A1';
+  const B1 = groupsObj.B ? groupWinner(groupsObj.B) : 'B1';
+  const C1 = groupsObj.C ? groupWinner(groupsObj.C) : 'C1';
+  const D1 = groupsObj.D ? groupWinner(groupsObj.D) : 'D1';
+
   const ko = data.knockout || {};
+  const sf1Defaults = {home: A1 || 'A1', away: D1 || 'D1'};
+  const sf2Defaults = {home: B1 || 'B1', away: C1 || 'C1'};
+  const fiDefaults  = {home: 'Ganador SF1', away: 'Ganador SF2'};
+
   const koRoot = $('#koRoot');
   koRoot.innerHTML = `
     <div class="bracket">
-      ${koLine('Semifinal 1', ko.sf1, {home:'A1', away:'D1'})}
-      ${koLine('Semifinal 2', ko.sf2, {home:'B1', away:'C1'})}
+      ${koLine('Semifinal 1', ko.sf1, sf1Defaults)}
+      ${koLine('Semifinal 2', ko.sf2, sf2Defaults)}
     </div>
     <div class="hr"></div>
-    ${koLine('Final', ko.final, {home:'Ganador SF1', away:'Ganador SF2'})}
+    ${koLine('Final', ko.final, fiDefaults)}
   `;
 
   // Pie

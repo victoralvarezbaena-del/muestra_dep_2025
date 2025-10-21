@@ -1,0 +1,898 @@
+[file name]: administrador.html
+[file content begin]
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Administrador — Torneo 4 Grupos + Semifinales</title>
+  <style>
+    :root{ --bg:#f8fafc; --panel:#e2e8f0; --card:#ffffff; --muted:#475569; --text:#0f172a; --accent:#0284c7; --ok:#16a34a; --bad:#dc2626; --ring:0 0 0 2px var(--accent) inset; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    header{padding:20px 16px;border-bottom:2px solid #cbd5e1;background:linear-gradient(90deg,#e2e8f0,#f1f5f9);position:sticky;top:0;z-index:10}
+    .container{max-width:1200px;margin:0 auto;padding:16px}
+    h1{margin:0;font-size:clamp(22px,3.2vw,34px)}
+    .subtitle{color:var(--muted)}
+
+    .grid{display:grid;gap:16px}
+    @media(min-width:1100px){.grid{grid-template-columns:420px 1fr}}
+
+    .card{background:var(--card);border:1px solid #cbd5e1;border-radius:18px;padding:16px;box-shadow:0 3px 10px rgba(0,0,0,.1)}
+    .card h2{margin:0 0 12px;font-size:18px}
+    label{display:block;margin:8px 0 6px;color:var(--muted)}
+    textarea,input[type="text"],input[type="number"],input[type="url"],select,input[type="file"],input[type="color"]{width:100%;background:#f8fafc;color:var(--text);border:1px solid #cbd5e1;border-radius:12px;padding:10px 12px;outline:none}
+    textarea:focus,input:focus,select:focus{box-shadow:var(--ring);border-color:transparent}
+    textarea{min-height:96px;white-space:pre}
+    button{background:linear-gradient(180deg,var(--accent),#0ea5e9);color:#fff;border:none;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer}
+    button.ghost{background:transparent;color:var(--accent);border:1px solid #cbd5e1}
+    button:disabled{opacity:0.6;cursor:not-allowed}
+    .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .spacer{flex:1}
+
+    .groups{display:grid;gap:12px}
+    @media(min-width:700px){.groups{grid-template-columns:1fr 1fr}}
+
+    /* Colores por grupo */
+    .groupA{background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.45)}
+    .groupB{background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.45)}
+    .groupC{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.45)}
+    .groupD{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.45)}
+
+    .groupBox{padding:12px;border-radius:12px;margin-bottom:12px}
+
+    .matches{display:grid;gap:10px;margin-top:10px}
+    .match{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;background:#f8fafc;border:1px solid #cbd5e1;border-radius:12px;padding:10px}
+    .team{display:flex;align-items:center;gap:10px}
+    .team input{max-width:80px;text-align:center}
+    .dash{opacity:.6}
+    .info{display:flex;gap:8px;margin-top:6px}
+    .info input{background:#f8fafc;border:1px solid #cbd5e1;border-radius:10px;padding:8px 10px;font-size:14px}
+
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{padding:8px 10px;border-bottom:1px solid #cbd5e1;text-align:right}
+    th:first-child,td:first-child{text-align:left}
+    thead th{font-size:12px;color:var(--muted);font-weight:600}
+    tbody tr:hover{background:#e2e8f0}
+    .pos{font-variant-numeric:tabular-nums;color:var(--muted)}
+    .pts{font-weight:800}
+    .first{background:rgba(34,197,94,.15)}
+    .note{font-size:12px;color:var(--muted)}
+
+    /* Knockout */
+    .bracket{display:grid;gap:12px;margin-top:16px}
+    @media(min-width:900px){.bracket{grid-template-columns:1fr 1fr}}
+    .semi,.final,.third{background:#ffffff;border:1px solid #cbd5e1;border-radius:12px;padding:12px}
+    .semi h3,.final h3,.third h3{margin:0 0 8px;font-size:16px}
+
+    /* Estado de publicación */
+    .status{font-size:12px;padding:4px 8px;border-radius:6px;margin-left:8px}
+    .status.success{background:#dcfce7;color:#166534;border:1px solid #bbf7d0}
+    .status.error{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
+    .status.loading{background:#eff6ff;color:#1e40af;border:1px solid#dbeafe}
+
+    /* Import/Export section */
+    .import-export{background:#f0f9ff;border:2px dashed #bae6fd;border-radius:12px;padding:16px;margin-top:12px}
+    .import-export h3{margin:0 0 12px;font-size:16px;color:#0369a1}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Administrador — Torneo 4 Grupos + Semifinales</h1>
+      <div class="subtitle">Crea y gestiona tu torneo. Los datos se guardan localmente y puedes publicarlos online.</div>
+    </div>
+  </header>
+
+  <main class="container grid">
+    <section class="card">
+      <h2>1) Equipos por grupo</h2>
+      <div class="groups">
+        <div><label>Grupo A</label><textarea id="ga">A1
+A2
+A3</textarea></div>
+        <div><label>Grupo B</label><textarea id="gb">B1
+B2
+B3</textarea></div>
+        <div><label>Grupo C</label><textarea id="gc">C1
+C2
+C3</textarea></div>
+        <div><label>Grupo D</label><textarea id="gd">D1
+D2
+D3</textarea></div>
+      </div>
+
+      <!-- Tema (colores) -->
+      <div class="row" style="margin-top:8px">
+        <input type="text" id="tournamentName" placeholder="Nombre del torneo (opcional)" style="flex:2" />
+        <div style="display:flex; gap:8px; align-items:center">
+          <label for="themeColor" style="margin:0;color:var(--muted)">Acento</label>
+          <input type="color" id="themeColor" value="#0284c7" style="width:54px;padding:0">
+          <label for="themeBg" style="margin:0;color:var(--muted)">Fondo</label>
+          <input type="color" id="themeBg" value="#f8fafc" style="width:54px;padding:0">
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:8px">
+        <button id="btnGenerate">Generar rol por grupo</button>
+
+        <!-- PUBLICAR (para GH Pages descarga data.json) -->
+        <input type="url" id="publishURL" placeholder="(Opcional para otros backends)" style="flex:2; min-width:320px" />
+        <button id="btnPublish">Publicar <span id="publishStatus"></span></button>
+
+        <div class="spacer"></div>
+        <button id="btnSaveCopy" class="ghost">💾 Guardar copia</button>
+        <button id="btnClearAll" class="ghost">🧹 Limpiar</button>
+      </div>
+
+      <!-- SECCIÓN IMPORTAR/EXPORTAR -->
+      <div class="import-export">
+        <h3>📥 Importar / 📤 Exportar Datos</h3>
+        <div class="row">
+          <input type="file" id="importFile" accept=".json" style="flex:2">
+          <button id="btnImport" class="ghost">📥 Importar JSON</button>
+          <button id="btnExport" class="ghost">📤 Exportar JSON</button>
+        </div>
+        <div style="font-size:12px; color:var(--muted); margin-top:8px">
+          💡 Puedes importar un archivo JSON anterior para continuar donde lo dejaste
+        </div>
+      </div>
+
+      <div style="margin-top:8px; font-size:12px; color:var(--muted)">
+        💡 <strong>Para usar:</strong> 1) Agrega equipos → 2) Genera rol → 3) Ingresa resultados → 4) Publica
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Grupos y partidos</h2>
+      <div id="groupsRoot"></div>
+
+      <div class="bracket">
+        <div class="semi">
+          <h3>Semifinal 1 — A1 vs D1</h3>
+          <div class="row">
+            <div class="team" style="flex:1"><span id="sf1h">A1</span></div>
+            <div class="team" style="justify-content:center">
+              <input type="number" min="0" inputmode="numeric" id="sf1gh" style="max-width:80px"> <span class="dash">—</span>
+              <input type="number" min="0" inputmode="numeric" id="sf1ga" style="max-width:80px">
+            </div>
+            <div class="team" style="flex:1;justify-content:flex-end"><span id="sf1a">D1</span></div>
+          </div>
+          <div class="row" style="margin-top:6px">
+            <label style="flex:1">Si hay empate, elige ganador</label>
+            <select id="sf1w" style="max-width:260px"><option value="">— Ganador —</option></select>
+            <div class="row" style="margin-top:6px">
+              <input type="text" id="sf1Hour" placeholder="Hora (ej. 16:00)" style="max-width:180px">
+              <input type="text" id="sf1Place" placeholder="Lugar (ej. Estadio)" style="flex:1">
+            </div>
+          </div>
+          <!-- Nombres manuales (opcional) -->
+          <div class="row" style="margin-top:6px">
+            <input type="text" id="sf1HomeName" placeholder="Nombre semifinalista local (opcional)" style="flex:1">
+            <input type="text" id="sf1AwayName" placeholder="Nombre semifinalista visita (opcional)" style="flex:1">
+          </div>
+        </div>
+
+        <div class="semi">
+          <h3>Semifinal 2 — B1 vs C1</h3>
+          <div class="row">
+            <div class="team" style="flex:1"><span id="sf2h">B1</span></div>
+            <div class="team" style="justify-content:center">
+              <input type="number" min="0" inputmode="numeric" id="sf2gh" style="max-width:80px"> <span class="dash">—</span>
+              <input type="number" min="0" inputmode="numeric" id="sf2ga" style="max-width:80px">
+            </div>
+            <div class="team" style="flex:1;justify-content:flex-end"><span id="sf2a">C1</span></div>
+          </div>
+          <div class="row" style="margin-top:6px">
+            <label style="flex:1">Si hay empate, elige ganador</label>
+            <select id="sf2w" style="max-width:260px"><option value="">— Ganador —</option></select>
+            <div class="row" style="margin-top:6px">
+              <input type="text" id="sf2Hour" placeholder="Hora (ej. 17:00)" style="max-width:180px">
+              <input type="text" id="sf2Place" placeholder="Lugar (ej. Estadio)" style="flex:1">
+            </div>
+          </div>
+          <!-- Nombres manuales (opcional) -->
+          <div class="row" style="margin-top:6px">
+            <input type="text" id="sf2HomeName" placeholder="Nombre semifinalista local (opcional)" style="flex:1">
+            <input type="text" id="sf2AwayName" placeholder="Nombre semifinalista visita (opcional)" style="flex:1">
+          </div>
+        </div>
+
+        <div class="final">
+          <h3>Final</h3>
+          <div class="row">
+            <div class="team" style="flex:1"><span id="fih">Ganador SF1</span></div>
+            <div class="team" style="justify-content:center">
+              <input type="number" min="0" inputmode="numeric" id="figh" style="max-width:80px"> <span class="dash">—</span>
+              <input type="number" min="0" inputmode="numeric" id="figa" style="max-width:80px">
+            </div>
+            <div class="team" style="flex:1;justify-content:flex-end"><span id="fia">Ganador SF2</span></div>
+          </div>
+          <div class="row" style="margin-top:6px">
+            <label style="flex:1">Si hay empate, elige campeón</label>
+            <select id="fiw" style="max-width:260px"><option value="">— Campeón —</option></select>
+            <div class="row" style="margin-top:6px">
+              <input type="text" id="fiHour" placeholder="Hora (ej. 19:00)" style="max-width:180px">
+              <input type="text" id="fiPlace" placeholder="Lugar (ej. Estadio)" style="flex:1">
+            </div>
+          </div>
+          <!-- Nombres manuales (opcional) -->
+          <div class="row" style="margin-top:6px">
+            <input type="text" id="fiHomeName" placeholder="Nombre finalista local (opcional)" style="flex:1">
+            <input type="text" id="fiAwayName" placeholder="Nombre finalista visita (opcional)" style="flex:1">
+          </div>
+        </div>
+
+        <div class="third">
+          <h3>Tercer Lugar</h3>
+          <div class="row">
+            <div class="team" style="flex:1"><span id="thirdh">Perdedor SF1</span></div>
+            <div class="team" style="justify-content:center">
+              <input type="number" min="0" inputmode="numeric" id="thirdgh" style="max-width:80px"> <span class="dash">—</span>
+              <input type="number" min="0" inputmode="numeric" id="thirdga" style="max-width:80px">
+            </div>
+            <div class="team" style="flex:1;justify-content:flex-end"><span id="thirda">Perdedor SF2</span></div>
+          </div>
+          <div class="row" style="margin-top:6px">
+            <label style="flex:1">Si hay empate, elige tercero</label>
+            <select id="thirdw" style="max-width:260px"><option value="">— Tercero —</option></select>
+            <div class="row" style="margin-top:6px">
+              <input type="text" id="thirdHour" placeholder="Hora (ej. 18:00)" style="max-width:180px">
+              <input type="text" id="thirdPlace" placeholder="Lugar (ej. Estadio)" style="flex:1">
+            </div>
+          </div>
+          <!-- Nombres manuales (opcional) -->
+          <div class="row" style="margin-top:6px">
+            <input type="text" id="thirdHomeName" placeholder="Nombre local tercer lugar (opcional)" style="flex:1">
+            <input type="text" id="thirdAwayName" placeholder="Nombre visita tercer lugar (opcional)" style="flex:1">
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+<script>
+// ===== CONFIGURACIÓN =====
+const STORAGE_KEY = 'torneo_grupos_ko_v2';
+const $ = (selector, root = document) => root.querySelector(selector);
+
+// ===== ESTADO INICIAL =====
+let state = {
+  groups: {
+    A: { teams: ['A1', 'A2', 'A3'], matches: [] },
+    B: { teams: ['B1', 'B2', 'B3'], matches: [] },
+    C: { teams: ['C1', 'C2', 'C3'], matches: [] },
+    D: { teams: ['D1', 'D2', 'D3'], matches: [] },
+  },
+  points: { win: 3, draw: 1, loss: 0 },
+  knockout: {
+    sf1: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
+    sf2: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
+    final: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
+    third: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' }
+  },
+  tournamentName: '',
+  theme: { color: '#0284c7', bg: '#f8fafc' }
+};
+
+// ===== HELPERS =====
+function parseTeams(txt) {
+  return String(txt || '').split('\n').map(s => s.trim()).filter(Boolean);
+}
+
+function roundRobin3(teams) {
+  if (teams.length !== 3) return [];
+  const [a, b, c] = teams;
+  return [[a, b], [c, a], [b, c]];
+}
+
+function valInt(v) {
+  if (v === '' || v == null) return null;
+  const n = parseInt(v, 10);
+  return Number.isFinite(n) && n >= 0 ? n : null;
+}
+
+function computeTable(matches, teams) {
+  const table = Object.fromEntries(teams.map(team => [team, {
+    team, PJ: 0, G: 0, E: 0, P: 0, GF: 0, GC: 0, DG: 0, Pts: 0
+  }]));
+  
+  const cfg = state.points;
+  
+  matches.forEach(match => {
+    if (match.gh == null || match.ga == null) return;
+    
+    const homeTeam = table[match.home];
+    const awayTeam = table[match.away];
+    if (!homeTeam || !awayTeam) return;
+    
+    // Actualizar partidos jugados
+    homeTeam.PJ++;
+    awayTeam.PJ++;
+    
+    // Actualizar goles
+    homeTeam.GF += match.gh;
+    homeTeam.GC += match.ga;
+    awayTeam.GF += match.ga;
+    awayTeam.GC += match.gh;
+    
+    // Determinar resultado
+    if (match.gh > match.ga) {
+      homeTeam.G++;
+      awayTeam.P++;
+      homeTeam.Pts += cfg.win;
+      awayTeam.Pts += cfg.loss;
+    } else if (match.gh < match.ga) {
+      awayTeam.G++;
+      homeTeam.P++;
+      awayTeam.Pts += cfg.win;
+      homeTeam.Pts += cfg.loss;
+    } else {
+      homeTeam.E++;
+      awayTeam.E++;
+      homeTeam.Pts += cfg.draw;
+      awayTeam.Pts += cfg.draw;
+    }
+  });
+  
+  // Calizar diferencia de goles
+  teams.forEach(team => {
+    table[team].DG = table[team].GF - table[team].GC;
+  });
+  
+  // Ordenar por puntos, diferencia de goles, goles a favor
+  return Object.values(table).sort((a, b) => {
+    if (b.Pts !== a.Pts) return b.Pts - a.Pts;
+    if (b.DG !== a.DG) return b.DG - a.DG;
+    if (b.GF !== a.GF) return b.GF - a.GF;
+    return a.team.localeCompare(b.team);
+  });
+}
+
+function groupWinner(groupKey) {
+  const group = state.groups[groupKey];
+  const rows = computeTable(group.matches, group.teams);
+  return rows[0]?.team || '';
+}
+
+// ===== RENDER GRUPOS =====
+function renderGroups() {
+  const root = $('#groupsRoot');
+  root.innerHTML = '';
+  
+  ['A', 'B', 'C', 'D'].forEach(groupKey => {
+    const group = state.groups[groupKey];
+    const teams = group.teams || [];
+    
+    const groupDiv = document.createElement('div');
+    groupDiv.className = `groupBox group${groupKey}`;
+    groupDiv.innerHTML = `<h3>Grupo ${groupKey}</h3>`;
+    
+    const matchesContainer = document.createElement('div');
+    matchesContainer.className = 'matches';
+    
+    // Crear partidos
+    const calendar = roundRobin3(teams);
+    calendar.forEach(([home, away]) => {
+      const existingMatch = group.matches.find(m => m.home === home && m.away === away) || 
+                          { home, away, gh: null, ga: null, hour: '', place: '' };
+      
+      const matchDiv = document.createElement('div');
+      matchDiv.className = 'match';
+      matchDiv.innerHTML = `
+        <div class="team">${home}</div>
+        <div class="team" style="justify-content:center">
+          <input type="number" min="0" class="score-home" data-group="${groupKey}" data-home="${home}" data-away="${away}" 
+                 value="${existingMatch.gh == null ? '' : existingMatch.gh}" style="max-width:80px">
+          <span class="dash">—</span>
+          <input type="number" min="0" class="score-away" data-group="${groupKey}" data-home="${home}" data-away="${away}" 
+                 value="${existingMatch.ga == null ? '' : existingMatch.ga}" style="max-width:80px">
+        </div>
+        <div class="team" style="justify-content:flex-end">${away}</div>
+      `;
+      
+      const infoDiv = document.createElement('div');
+      infoDiv.className = 'info';
+      infoDiv.innerHTML = `
+        <input type="text" class="match-hour" data-group="${groupKey}" data-home="${home}" data-away="${away}" 
+               placeholder="Hora (ej. 14:00)" value="${existingMatch.hour || ''}">
+        <input type="text" class="match-place" data-group="${groupKey}" data-home="${home}" data-away="${away}" 
+               placeholder="Lugar (ej. Cancha 1)" value="${existingMatch.place || ''}">
+      `;
+      
+      matchesContainer.appendChild(matchDiv);
+      matchesContainer.appendChild(infoDiv);
+    });
+    
+    groupDiv.appendChild(matchesContainer);
+    
+    // Tabla de posiciones
+    const rows = computeTable(group.matches, teams);
+    const tableHTML = `
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>E</th><th>P</th>
+              <th>GF</th><th>GC</th><th>DG</th><th>Pts</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows.map((row, index) => `
+              <tr class="${index === 0 ? 'first' : ''}">
+                <td class="pos">${index + 1}</td>
+                <td>${row.team}</td>
+                <td>${row.PJ}</td>
+                <td>${row.G}</td>
+                <td>${row.E}</td>
+                <td>${row.P}</td>
+                <td>${row.GF}</td>
+                <td>${row.GC}</td>
+                <td>${row.DG}</td>
+                <td class="pts">${row.Pts}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
+    
+    groupDiv.insertAdjacentHTML('beforeend', tableHTML);
+    root.appendChild(groupDiv);
+  });
+  
+  setupGroupEventListeners();
+}
+
+// ===== EVENT LISTENERS PARA GRUPOS =====
+function setupGroupEventListeners() {
+  // Scores
+  document.querySelectorAll('.score-home, .score-away').forEach(input => {
+    input.addEventListener('input', function() {
+      const groupKey = this.dataset.group;
+      const home = this.dataset.home;
+      const away = this.dataset.away;
+      
+      let match = state.groups[groupKey].matches.find(m => m.home === home && m.away === away);
+      if (!match) {
+        match = { home, away, gh: null, ga: null, hour: '', place: '' };
+        state.groups[groupKey].matches.push(match);
+      }
+      
+      if (this.classList.contains('score-home')) {
+        match.gh = valInt(this.value);
+      } else {
+        match.ga = valInt(this.value);
+      }
+      
+      saveState();
+      renderGroups();
+      updateKnockout();
+    });
+  });
+  
+  // Hora y lugar
+  document.querySelectorAll('.match-hour, .match-place').forEach(input => {
+    input.addEventListener('change', function() {
+      const groupKey = this.dataset.group;
+      const home = this.dataset.home;
+      const away = this.dataset.away;
+      
+      let match = state.groups[groupKey].matches.find(m => m.home === home && m.away === away);
+      if (!match) {
+        match = { home, away, gh: null, ga: null, hour: '', place: '' };
+        state.groups[groupKey].matches.push(match);
+      }
+      
+      if (this.classList.contains('match-hour')) {
+        match.hour = this.value.trim();
+      } else {
+        match.place = this.value.trim();
+      }
+      
+      saveState();
+    });
+  });
+}
+
+// ===== KNOCKOUT =====
+function updateKnockout() {
+  const A1 = groupWinner('A') || 'A1';
+  const B1 = groupWinner('B') || 'B1';
+  const C1 = groupWinner('C') || 'C1';
+  const D1 = groupWinner('D') || 'D1';
+
+  // Semifinales
+  $('#sf1h').textContent = state.knockout.sf1.home || A1;
+  $('#sf1a').textContent = state.knockout.sf1.away || D1;
+  $('#sf2h').textContent = state.knockout.sf2.home || B1;
+  $('#sf2a').textContent = state.knockout.sf2.away || C1;
+
+  // Final y tercer lugar
+  const sf1Winner = state.knockout.sf1.winner;
+  const sf2Winner = state.knockout.sf2.winner;
+  
+  // Para la final
+  $('#fih').textContent = state.knockout.final.home || (sf1Winner || 'Ganador SF1');
+  $('#fia').textContent = state.knockout.final.away || (sf2Winner || 'Ganador SF2');
+  
+  // Para tercer lugar
+  const sf1Loser = sf1Winner ? 
+    (sf1Winner === (state.knockout.sf1.home || A1) ? (state.knockout.sf1.away || D1) : (state.knockout.sf1.home || A1)) : 
+    'Perdedor SF1';
+  const sf2Loser = sf2Winner ? 
+    (sf2Winner === (state.knockout.sf2.home || B1) ? (state.knockout.sf2.away || C1) : (state.knockout.sf2.home || B1)) : 
+    'Perdedor SF2';
+  
+  $('#thirdh').textContent = state.knockout.third.home || sf1Loser;
+  $('#thirda').textContent = state.knockout.third.away || sf2Loser;
+
+  updateWinnerSelects();
+}
+
+function updateWinnerSelects() {
+  const sf1h = $('#sf1h').textContent;
+  const sf1a = $('#sf1a').textContent;
+  const sf2h = $('#sf2h').textContent;
+  const sf2a = $('#sf2a').textContent;
+  const fih = $('#fih').textContent;
+  const fia = $('#fia').textContent;
+  const thirdh = $('#thirdh').textContent;
+  const thirda = $('#thirda').textContent;
+
+  // Semifinal 1
+  $('#sf1w').innerHTML = `<option value="">— Ganador —</option>
+                          <option value="${sf1h}">${sf1h}</option>
+                          <option value="${sf1a}">${sf1a}</option>`;
+  if (state.knockout.sf1.winner) $('#sf1w').value = state.knockout.sf1.winner;
+
+  // Semifinal 2
+  $('#sf2w').innerHTML = `<option value="">— Ganador —</option>
+                          <option value="${sf2h}">${sf2h}</option>
+                          <option value="${sf2a}">${sf2a}</option>`;
+  if (state.knockout.sf2.winner) $('#sf2w').value = state.knockout.sf2.winner;
+
+  // Final
+  $('#fiw').innerHTML = `<option value="">— Campeón —</option>
+                         <option value="${fih}">${fih}</option>
+                         <option value="${fia}">${fia}</option>`;
+  if (state.knockout.final.winner) $('#fiw').value = state.knockout.final.winner;
+
+  // Tercer lugar
+  $('#thirdw').innerHTML = `<option value="">— Tercero —</option>
+                            <option value="${thirdh}">${thirdh}</option>
+                            <option value="${thirda}">${thirda}</option>`;
+  if (state.knockout.third.winner) $('#thirdw').value = state.knockout.third.winner;
+}
+
+function loadKnockoutFromState() {
+  const k = state.knockout;
+  
+  // Semifinal 1
+  $('#sf1gh').value = k.sf1.gh == null ? '' : k.sf1.gh;
+  $('#sf1ga').value = k.sf1.ga == null ? '' : k.sf1.ga;
+  $('#sf1Hour').value = k.sf1.hour || '';
+  $('#sf1Place').value = k.sf1.place || '';
+  $('#sf1HomeName').value = k.sf1.home || '';
+  $('#sf1AwayName').value = k.sf1.away || '';
+
+  // Semifinal 2
+  $('#sf2gh').value = k.sf2.gh == null ? '' : k.sf2.gh;
+  $('#sf2ga').value = k.sf2.ga == null ? '' : k.sf2.ga;
+  $('#sf2Hour').value = k.sf2.hour || '';
+  $('#sf2Place').value = k.sf2.place || '';
+  $('#sf2HomeName').value = k.sf2.home || '';
+  $('#sf2AwayName').value = k.sf2.away || '';
+
+  // Final
+  $('#figh').value = k.final.gh == null ? '' : k.final.gh;
+  $('#figa').value = k.final.ga == null ? '' : k.final.ga;
+  $('#fiHour').value = k.final.hour || '';
+  $('#fiPlace').value = k.final.place || '';
+  $('#fiHomeName').value = k.final.home || '';
+  $('#fiAwayName').value = k.final.away || '';
+
+  // Tercer lugar
+  $('#thirdgh').value = k.third.gh == null ? '' : k.third.gh;
+  $('#thirdga').value = k.third.ga == null ? '' : k.third.ga;
+  $('#thirdHour').value = k.third.hour || '';
+  $('#thirdPlace').value = k.third.place || '';
+  $('#thirdHomeName').value = k.third.home || '';
+  $('#thirdAwayName').value = k.third.away || '';
+
+  updateKnockout();
+}
+
+function saveKnockoutToState() {
+  const k = state.knockout;
+  
+  // Semifinal 1
+  k.sf1.gh = valInt($('#sf1gh').value);
+  k.sf1.ga = valInt($('#sf1ga').value);
+  k.sf1.winner = $('#sf1w').value;
+  k.sf1.hour = $('#sf1Hour').value.trim();
+  k.sf1.place = $('#sf1Place').value.trim();
+  k.sf1.home = $('#sf1HomeName').value.trim();
+  k.sf1.away = $('#sf1AwayName').value.trim();
+
+  // Semifinal 2
+  k.sf2.gh = valInt($('#sf2gh').value);
+  k.sf2.ga = valInt($('#sf2ga').value);
+  k.sf2.winner = $('#sf2w').value;
+  k.sf2.hour = $('#sf2Hour').value.trim();
+  k.sf2.place = $('#sf2Place').value.trim();
+  k.sf2.home = $('#sf2HomeName').value.trim();
+  k.sf2.away = $('#sf2AwayName').value.trim();
+
+  // Final
+  k.final.gh = valInt($('#figh').value);
+  k.final.ga = valInt($('#figa').value);
+  k.final.winner = $('#fiw').value;
+  k.final.hour = $('#fiHour').value.trim();
+  k.final.place = $('#fiPlace').value.trim();
+  k.final.home = $('#fiHomeName').value.trim();
+  k.final.away = $('#fiAwayName').value.trim();
+
+  // Tercer lugar
+  k.third.gh = valInt($('#thirdgh').value);
+  k.third.ga = valInt($('#thirdga').value);
+  k.third.winner = $('#thirdw').value;
+  k.third.hour = $('#thirdHour').value.trim();
+  k.third.place = $('#thirdPlace').value.trim();
+  k.third.home = $('#thirdHomeName').value.trim();
+  k.third.away = $('#thirdAwayName').value.trim();
+  
+  saveState();
+}
+
+// ===== PERSISTENCIA =====
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) {
+    console.error('Error guardando estado:', e);
+  }
+}
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      Object.assign(state, parsed);
+      return true;
+    }
+  } catch (e) {
+    console.error('Error cargando estado:', e);
+  }
+  return false;
+}
+
+// ===== FUNCIONALIDADES PRINCIPALES =====
+function generateSchedule() {
+  // Actualizar equipos desde textareas
+  state.groups.A.teams = parseTeams($('#ga').value);
+  state.groups.B.teams = parseTeams($('#gb').value);
+  state.groups.C.teams = parseTeams($('#gc').value);
+  state.groups.D.teams = parseTeams($('#gd').value);
+  
+  // Generar partidos para cada grupo
+  ['A', 'B', 'C', 'D'].forEach(groupKey => {
+    const teams = state.groups[groupKey].teams;
+    state.groups[groupKey].matches = roundRobin3(teams).map(([home, away]) => ({
+      home, away, gh: null, ga: null, hour: '', place: ''
+    }));
+  });
+  
+  // Actualizar nombre del torneo
+  state.tournamentName = $('#tournamentName').value.trim();
+  
+  saveState();
+  renderGroups();
+  updateKnockout();
+  
+  alert('✅ Rol generado correctamente');
+}
+
+function publishTournament() {
+  const statusEl = $('#publishStatus');
+  statusEl.textContent = '⏳ Generando...';
+  statusEl.className = 'status loading';
+  
+  try {
+    // Preparar datos para exportar
+    const exportData = {
+      tournamentName: state.tournamentName,
+      subtitle: '',
+      groups: state.groups,
+      knockout: state.knockout,
+      updatedAtLocal: new Date().toLocaleString('es-ES'),
+      theme: state.theme
+    };
+    
+    // Crear y descargar archivo
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'data.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    statusEl.textContent = '✅ Publicado';
+    statusEl.className = 'status success';
+    
+    setTimeout(() => {
+      statusEl.textContent = '';
+    }, 3000);
+    
+  } catch (error) {
+    statusEl.textContent = '❌ Error';
+    statusEl.className = 'status error';
+    console.error('Error al publicar:', error);
+  }
+}
+
+function saveCopy() {
+  saveState();
+  const statusEl = $('#publishStatus');
+  statusEl.textContent = '💾 Guardado';
+  statusEl.className = 'status success';
+  setTimeout(() => {
+    statusEl.textContent = '';
+  }, 2000);
+}
+
+function clearAll() {
+  if (confirm('¿Estás seguro de que quieres borrar todos los datos?')) {
+    localStorage.removeItem(STORAGE_KEY);
+    location.reload();
+  }
+}
+
+function exportData() {
+  const exportData = {
+    tournamentName: state.tournamentName,
+    groups: state.groups,
+    knockout: state.knockout,
+    theme: state.theme,
+    points: state.points,
+    exportedAt: new Date().toISOString()
+  };
+  
+  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `torneo-backup-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  
+  alert('📤 Datos exportados correctamente');
+}
+
+function importData() {
+  const fileInput = $('#importFile');
+  const file = fileInput.files[0];
+  
+  if (!file) {
+    alert('Por favor selecciona un archivo JSON');
+    return;
+  }
+  
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const importedData = JSON.parse(e.target.result);
+      
+      if (!importedData.groups || !importedData.knockout) {
+        throw new Error('El archivo no tiene el formato correcto');
+      }
+      
+      if (confirm('¿Estás seguro de que quieres importar estos datos? Se perderán los datos actuales.')) {
+        // Actualizar estado
+        state.groups = importedData.groups;
+        state.knockout = importedData.knockout;
+        state.tournamentName = importedData.tournamentName || '';
+        state.theme = importedData.theme || { color: '#0284c7', bg: '#f8fafc' };
+        
+        // Actualizar UI
+        $('#ga').value = state.groups.A.teams.join('\n');
+        $('#gb').value = state.groups.B.teams.join('\n');
+        $('#gc').value = state.groups.C.teams.join('\n');
+        $('#gd').value = state.groups.D.teams.join('\n');
+        $('#tournamentName').value = state.tournamentName;
+        $('#themeColor').value = state.theme.color;
+        $('#themeBg').value = state.theme.bg;
+        
+        saveState();
+        renderGroups();
+        loadKnockoutFromState();
+        
+        alert('✅ Datos importados correctamente');
+        fileInput.value = '';
+      }
+    } catch (error) {
+      alert('❌ Error al importar: ' + error.message);
+    }
+  };
+  
+  reader.onerror = function() {
+    alert('❌ Error al leer el archivo');
+  };
+  
+  reader.readAsText(file);
+}
+
+// ===== INICIALIZACIÓN =====
+function init() {
+  // Cargar estado guardado
+  const loaded = loadState();
+  
+  // Configurar valores iniciales en UI
+  $('#ga').value = state.groups.A.teams.join('\n');
+  $('#gb').value = state.groups.B.teams.join('\n');
+  $('#gc').value = state.groups.C.teams.join('\n');
+  $('#gd').value = state.groups.D.teams.join('\n');
+  $('#tournamentName').value = state.tournamentName;
+  $('#themeColor').value = state.theme.color;
+  $('#themeBg').value = state.theme.bg;
+  
+  // Configurar event listeners
+  $('#btnGenerate').addEventListener('click', generateSchedule);
+  $('#btnPublish').addEventListener('click', publishTournament);
+  $('#btnSaveCopy').addEventListener('click', saveCopy);
+  $('#btnClearAll').addEventListener('click', clearAll);
+  $('#btnExport').addEventListener('click', exportData);
+  $('#btnImport').addEventListener('click', importData);
+  
+  // Knockout event listeners
+  const koInputs = [
+    '#sf1gh', '#sf1ga', '#sf1w', '#sf1Hour', '#sf1Place', '#sf1HomeName', '#sf1AwayName',
+    '#sf2gh', '#sf2ga', '#sf2w', '#sf2Hour', '#sf2Place', '#sf2HomeName', '#sf2AwayName',
+    '#figh', '#figa', '#fiw', '#fiHour', '#fiPlace', '#fiHomeName', '#fiAwayName',
+    '#thirdgh', '#thirdga', '#thirdw', '#thirdHour', '#thirdPlace', '#thirdHomeName', '#thirdAwayName'
+  ];
+  
+  koInputs.forEach(selector => {
+    $(selector).addEventListener('input', () => {
+      saveKnockoutToState();
+      updateKnockout();
+    });
+  });
+  
+  // Tema
+  $('#tournamentName').addEventListener('input', e => {
+    state.tournamentName = e.target.value;
+    saveState();
+  });
+  
+  $('#themeColor').addEventListener('input', e => {
+    state.theme.color = e.target.value;
+    saveState();
+  });
+  
+  $('#themeBg').addEventListener('input', e => {
+    state.theme.bg = e.target.value;
+    saveState();
+  });
+  
+  // Renderizar inicial
+  if (loaded) {
+    renderGroups();
+    loadKnockoutFromState();
+  } else {
+    generateSchedule();
+  }
+}
+
+// Iniciar la aplicación
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
+[file content end]

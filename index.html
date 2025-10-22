@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Deportivo - Gestor de Torneos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .sports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .sport-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px 20px;
+            border-radius: 15px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 2px solid transparent;
+        }
+
+        .sport-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .sport-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .sport-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .sport-links {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+
+        .sport-link {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .sport-link.admin {
+            background: #667eea;
+            color: white;
+        }
+
+        .sport-link.view {
+            background: #f8f9fa;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+        .sport-link:hover {
+            transform: scale(1.05);
+        }
+
+        .sport-link.admin:hover {
+            background: #5a6fd8;
+        }
+
+        .sport-link.view:hover {
+            background: #e9ecef;
+        }
+
+        .instructions {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        .instructions h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .instructions ul {
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .sports-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏆 Portal Deportivo</h1>
+            <p class="subtitle">Sistema unificado para la gestión de torneos multideportivos</p>
+            
+            <div class="sports-grid">
+                <div class="sport-card">
+                    <div class="sport-icon">⚽</div>
+                    <div class="sport-name">Fútbol</div>
+                    <div class="sport-links">
+                        <a href="futbol/admin.html" class="sport-link admin">Administrar</a>
+                        <a href="futbol/index.html" class="sport-link view">Ver Torneo</a>
+                    </div>
+                </div>
+                
+                <div class="sport-card">
+                    <div class="sport-icon">🏀</div>
+                    <div class="sport-name">Basquetbol</div>
+                    <div class="sport-links">
+                        <a href="basquetbol/admin.html" class="sport-link admin">Administrar</a>
+                        <a href="basquetbol/index.html" class="sport-link view">Ver Torneo</a>
+                    </div>
+                </div>
+                
+                <div class="sport-card">
+                    <div class="sport-icon">🏐</div>
+                    <div class="sport-name">Voleibol</div>
+                    <div class="sport-links">
+                        <a href="voleibol/admin.html" class="sport-link admin">Administrar</a>
+                        <a href="voleibol/index.html" class="sport-link view">Ver Torneo</a>
+                    </div>
+                </div>
+                
+                <div class="sport-card">
+                    <div class="sport-icon">🤾</div>
+                    <div class="sport-name">Handball</div>
+                    <div class="sport-links">
+                        <a href="handball/admin.html" class="sport-link admin">Administrar</a>
+                        <a href="handball/index.html" class="sport-link view">Ver Torneo</a>
+                    </div>
+                </div>
+                
+                <div class="sport-card">
+                    <div class="sport-icon">⚾</div>
+                    <div class="sport-name">Beisbol</div>
+                    <div class="sport-links">
+                        <a href="beisbol/admin.html" class="sport-link admin">Administrar</a>
+                        <a href="beisbol/index.html" class="sport-link view">Ver Torneo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="instructions">
+            <h3>📋 Instrucciones de uso:</h3>
+            <ul>
+                <li><strong>Administrar:</strong> Panel para gestionar equipos, resultados y configuración del torneo</li>
+                <li><strong>Ver Torneo:</strong> Vista pública con grupos, resultados y tablas de posiciones</li>
+                <li>Cada deporte tiene su propia carpeta con archivos independientes</li>
+                <li>Puedes personalizar cada torneo según las reglas específicas del deporte</li>
+            </ul>
+        </div>
+    </div>
+
+    <footer>
+        <p>Sistema desarrollado para la gestión de torneos multideportivos | 2024</p>
+    </footer>
+
+    <script>
+        // Efecto de partículas para el fondo (igual que antes)
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.style.cssText = `
+                position: fixed;
+                width: 4px;
+                height: 4px;
+                background: rgba(255, 255, 255, 0.5);
+                border-radius: 50%;
+                pointer-events: none;
+                z-index: -1;
+            `;
+            document.body.appendChild(particle);
+            
+            const startX = Math.random() * window.innerWidth;
+            const startY = Math.random() * window.innerHeight;
+            
+            particle.style.left = startX + 'px';
+            particle.style.top = startY + 'px';
+            
+            const animation = particle.animate([
+                { transform: 'translate(0, 0)', opacity: 1 },
+                { transform: `translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px)`, opacity: 0 }
+            ], {
+                duration: 2000 + Math.random() * 2000,
+                easing: 'ease-out'
+            });
+            
+            animation.onfinish = () => {
+                particle.remove();
+            };
+        }
+        
+        // Crear algunas partículas iniciales
+        for (let i = 0; i < 20; i++) {
+            setTimeout(createParticle, i * 200);
+        }
+        
+        // Continuar creando partículas periódicamente
+        setInterval(createParticle, 1000);
+
+        // Efecto hover en las tarjetas
+        document.querySelectorAll('.sport-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                if (!e.target.classList.contains('sport-link')) {
+                    this.style.transform = 'scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 150);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

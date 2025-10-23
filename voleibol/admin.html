@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Administrador — Torneo Voleibol 4 Grupos + Semifinales</title>
+  <style>
+    :root{ --bg:#f8fafc; --panel:#e2e8f0; --card:#ffffff; --muted:#475569; --text:#0f172a; --accent:#0284c7; --ok:#16a34a; --bad:#dc2626; --ring:0 0 0 2px var(--accent) inset; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    header{padding:20px 16px;border-bottom:2px solid #cbd5e1;background:linear-gradient(90deg,#e2e8f0,#f1f5f9);position:sticky;top:0;z-index:10}
+    .container{max-width:1200px;margin:0 auto;padding:16px}
+    h1{margin:0;font-size:clamp(22px,3.2vw,34px)}
+    .subtitle{color:var(--muted)}
+
+    .grid{display:grid;gap:16px}
+    @media(min-width:1100px){.grid{grid-template-columns:420px 1fr}}
+
+    .card{background:var(--card);border:1px solid #cbd5e1;border-radius:18px;padding:16px;box-shadow:0 3px 10px rgba(0,0,0,.1)}
+    .card h2{margin:0 0 12px;font-size:18px}
+    label{display:block;margin:8px 0 6px;color:var(--muted)}
+    textarea,input[type="text"],input[type="number"],input[type="url"],select,input[type="file"],input[type="color"]{width:100%;background:#f8fafc;color:var(--text);border:1px solid #cbd5e1;border-radius:12px;padding:10px 12px;outline:none}
+    textarea:focus,input:focus,select:focus{box-shadow:var(--ring);border-color:transparent}
+    textarea{min-height:96px;white-space:pre}
+    button{background:linear-gradient(180deg,var(--accent),#0ea5e9);color:#fff;border:none;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer}
+    button.ghost{background:transparent;color:var(--accent);border:1px solid #cbd5e1}
+    button:disabled{opacity:0.6;cursor:not-allowed}
+    .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .spacer{flex:1}
+
+    .groups{display:grid;gap:12px}
+    @media(min-width:700px){.groups{grid-template-columns:1fr 1fr}}
+
+    /* Colores por grupo */
+    .groupA{background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.45)}
+    .groupB{background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.45)}
+    .groupC{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.45)}
+    .groupD{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.45)}
+
+    .groupBox{padding:12px;border-radius:12px;margin-bottom:12px}
+
+    .matches{display:grid;gap:10px;margin-top:10px}
+    .match{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;background:#f8fafc;border:1px solid #cbd5e1;border-radius:12px;padding:10px}
+    .team{display:flex;align-items:center;gap:10px}
+    .team input{max-width:80px;text-align:center}
+    .dash{opacity:.6}
+    .info{display:flex;gap:8px;margin-top:6px}
+    .info input{background:#f8fafc;border:1px solid #cbd5e1;border-radius:10px;padding:8px 10px;font-size:14px}
+
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{padding:8px 10px;border-bottom:1px solid #cbd5e1;text-align:right}
+    th:first-child,td:first-child{text-align:left}
+    thead th{font-size:12px;color:var(--muted);font-weight:600}
+    tbody tr:hover{background:#e2e8f0}
+    .pos{font-variant-numeric:tabular-nums;color:var(--muted)}
+    .pts{font-weight:800}
+    .first{background:rgba(34,197,94,.15)}
+    .note{font-size:12px;color:var(--muted)}
+
+    /* Knockout */
+    .bracket{display:grid;gap:12px;margin-top:16px}
+    @media(min-width:900px){.bracket{grid-template-columns:1fr 1fr}}
+    .semi,.final,.third{background:#ffffff;border:1px solid #cbd5e1;border-radius:12px;padding:12px}
+    .semi h3,.final h3,.third h3{margin:0 0 8px;font-size:16px}
+
+    /* Estado de publicación */
+    .status{font-size:12px;padding:4px 8px;border-radius:6px;margin-left:8px}
+    .status.success{background:#dcfce7;color:#166534;border:1px solid #bbf7d0}
+    .status.error{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
+    .status.loading{background:#eff6ff;color:#1e40af;border:1px solid#dbeafe}
+
+    /* Import/Export section */
+    .import-export{background:#f0f9ff;border:2px dashed #bae6fd;border-radius:12px;padding:16px;margin-top:12px}
+    .import-export h3{margin:0 0 12px;font-size:16px;color:#0369a1}
+    
+    /* Resaltar Final */
+    .final {
+      position: relative;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 0 4px rgba(2,132,199,.12) inset;
+      background: #ffffff;
+      overflow: hidden;
+    }
+    .final h3{ color: var(--accent); }
+
+    .final::before {
+      content: 'FINAL 🏐';
+      position: absolute;
+      top: 12px;
+      right: -48px;
+      transform: rotate(45deg);
+      background: var(--accent);
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 4px 48px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      opacity: 0.9;
+    }
+
+    /* Estilos específicos para voleibol */
+    .sets-input {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .set-row {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .sets-input input {
+      max-width: 50px;
+      text-align: center;
+    }
+
+    .sets-separator {
+      color: var(--muted);
+      font-weight: bold;
+    }
+
+    /* Indicador de sets ganados */
+    .sets-indicator {
+      display: flex;
+      gap: 2px;
+      margin-top: 4px;
+      justify-content: center;
+    }
+
+    .set-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #cbd5e1;
+    }
+
+    .set-dot.won {
+      background-color: var(--ok);
+    }
+
+    .set-dot.lost {
+      background-color: var(--bad);
+    }
+
+    .total-sets {
+      font-weight: bold;
+      margin-top: 4px;
+      text-align: center;
+    }
+
+    .set-label {
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .points-total {
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 2px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Administrador — Torneo Voleibol 4 Grupos + Semifinales</h1>
+      <div class="subtitle">Crea y gestiona tu torneo de voleibol. Los datos se guardan localmente y puedes publicarlos online.</div>
+    </div>
+  </header>
+
+  <main class="container grid">
+    <section class="card">
+      <h2>1) Equipos por grupo</h2>
+      <div class="groups">
+        <div><label>Grupo A</label><textarea id="ga">Equipo A1
+Equipo A2
+Equipo A3</textarea></div>
+        <div><label>Grupo B</label><textarea id="gb">Equipo B1
+Equipo B2
+Equipo B3</textarea></div>
+        <div><label>Grupo C</label><textarea id="gc">Equipo C1
+Equipo C2
+Equipo C3</textarea></div>
+        <div><label>Grupo D</label><textarea id="gd">Equipo D1
+Equipo D2
+Equipo D3</textarea></div>
+      </div>
+
+      <!-- Tema (colores) -->
+      <div class="row" style="margin-top:8px">
+        <input type="text" id="tournamentName" placeholder="Nombre del torneo (opcional)" style="flex:2" />
+        <div style="display:flex; gap:8px; align-items:center">
+          <label for="themeColor" style="margin:0;color:var(--muted)">Acento</label>
+          <input type="color" id="themeColor" value="#0284c7" style="width:54px;padding:0">
+          <label for="themeBg" style="margin:0;color:var(--muted)">Fondo</label>
+          <input type="color" id="themeBg" value="#f8fafc" style="width:54px;padding:0">
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:8px">
+        <button id="btnGenerate">Generar rol por grupo</button>
+
+        <!-- PUBLICAR (para GH Pages descarga data.json) -->
+        <input type="url" id="publishURL" placeholder="(Opcional para otros backends)" style="flex:2; min-width:320px" />
+        <button id="btnPublish">Publicar <span id="publishStatus"></span></button>
+
+        <div class="spacer"></div>
+        <button id="btnSaveCopy" class="ghost">💾 Guardar copia</button>
+        <button id="btnClearAll" class="ghost">🧹 Limpiar</button>
+      </div>
+
+      <!-- SECCIÓN IMPORTAR/EXPORTAR -->
+      <div class="import-export">
+        <h3>📥 Importar / 📤 Exportar Datos</h3>
+        <div class="row">
+          <input type="file" id="importFile" accept=".json" style="flex:2">
+          <button id="btnImport" class="ghost">📥 Importar JSON</button>
+          <button id="btnExport" class="ghost">📤 Exportar JSON</button>
+        </div>
+        <div style="font-size:12px; color:var(--muted); margin-top:8px">
+          💡 Puedes importar un archivo JSON anterior para continuar donde lo dejaste
+        </div>
+      </div>
+
+      <div style="margin-top:8px; font-size:12px; color:var(--muted)">
+        💡 <strong>Para usar:</strong> 1) Agrega equipos → 2) Genera rol → 3) Ingresa resultados → 4) Publica
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Grupos y partidos</h2>
+      <div id="groupsRoot"></div>
+
+      <div class="bracket">
+        <div class="semi">
+          <h3>Semifinal 1 — A1 vs D1</h3>
+          <div class="row">
+            <div class="team" style="flex:1"><span id="sf1h">A1</span></div>
+            <div class="team" style="justify-content:center">
+              <div class="sets-input" id="sf1-sets-container">
+                <!-- Los sets se generarán dinámicamente aquí -->
+              </div>
+            </div>
+            <div class="team" style="flex:1;justify-content:flex-end"><span id="sf1a">D1</span></div>
+          </div>
+          <div class="total-sets" id="sf1-total">Total: 0-0</div>
+          <div class="points-total" id="sf1-points">Puntos: 0-0</div>
+          <div class="row" style="margin-top:6px">
+            <label style="flex:1">Si hay empate, elige ganador</label>
+            <select id="sf1w" style="max-width:260px"><option value="">— Ganador —</option></select>
+            <div class="row" style="margin-top:6px">
+              <input type="text" id="sf1Hour" placeholder="Hora (ej. 16:00)" style="max-width:180px">
+              <input type="text" id="sf1Place" placeholder="Lugar (ej. Cancha)" style="flex:1">
+            </div>
+          </div>
+          <!-- Nombres manuales (opcional) -->
+          <div class="row" style="margin-top:6px">
+            <input type="text" id="sf1HomeName" placeholder="Nombre semifinalista local (opcional)" style="flex:1">
+            <input type="text" id="sf1AwayName" placeholder="Nombre semifinalista visita (opcional)" style="flex:1">
+          </div>
+        </div>
+
+        <div class="semi">
+          <h3>Semifinal 2 — B1 vs C1</h3>
+          <div class="row">
+            <div class="team" style="flex:1"><span id="sf2h">B1</span></div>
+            <div class="team" style="justify-content:center">
+              <div class="sets-input" id="sf2-sets-container">
+                <!-- Los sets se generarán dinámicamente aquí -->
+              </div>
+            </div>
+            <div class="team" style="flex:1;justify-content:flex-end"><span id="sf2a">C1</span></div>
+          </div>
+          <div class="total-sets" id="sf2-total">Total: 0-0</div>
+          <div class="points-total" id="sf2-points">Puntos: 0-0</div>
+          <div class="row" style="margin-top:6px">
+            <label style="flex:1">Si hay empate, elige ganador</label>
+            <select id="sf2w" style="max-width:260px"><option value="">— Ganador —</option></select>
+            <div class="row" style="margin-top:6px">
+              <input type="text" id="sf2Hour" placeholder="Hora (ej. 17:00)" style="max-width:180px">
+              <input type="text" id="sf2Place" placeholder="Lugar (ej. Cancha)" style="flex:1">
+            </div>
+          </div>
+          <!-- Nombres manuales (opcional) -->
+          <div class="row" style="margin-top:6px">
+            <input type="text" id="sf2HomeName" placeholder="Nombre semifinalista local (opcional)" style="flex:1">
+            <input type="text" id="sf2AwayName" placeholder="Nombre semifinalista visita (opcional)" style="flex:1">
+          </div>
+        </div>
+
+        <div class="final">
+          <h3>Final</h3>
+          <div class="row">
+            <div class="team" style="flex:1"><span id="fih">Ganador SF1</span></div>
+            <div class="team" style="justify-content:center">
+              <div class="sets-input" id="fi-sets-container">
+                <!-- Los sets se generarán dinámicamente aquí -->
+              </div>
+            </div>
+            <div class="team" style="flex:1;justify-content:flex-end"><span id="fia">Ganador SF2</span></div>
+          </div>
+          <div class="total-sets" id="fi-total">Total: 0-0</div>
+          <div class="points-total" id="fi-points">Puntos: 0-0</div>
+          <div class="row" style="margin-top:6px">
+            <label style="flex:1">Si hay empate, elige campeón</label>
+            <select id="fiw" style="max-width:260px"><option value="">— Campeón —</option></select>
+            <div class="row" style="margin-top:6px">
+              <input type="text" id="fiHour" placeholder="Hora (ej. 19:00)" style="max-width:180px">
+              <input type="text" id="fiPlace" placeholder="Lugar (ej. Cancha)" style="flex:1">
+            </div>
+          </div>
+          <!-- Nombres manuales (opcional) -->
+          <div class="row" style="margin-top:6px">
+            <input type="text" id="fiHomeName" placeholder="Nombre finalista local (opcional)" style="flex:1">
+            <input type="text" id="fiAwayName" placeholder="Nombre finalista visita (opcional)" style="flex:1">
+          </div>
+        </div>
+
+        <div class="third">
+          <h3>Tercer Lugar</h3>
+          <div class="row">
+            <div class="team" style="flex:1"><span id="thirdh">Perdedor SF1</span></div>
+            <div class="team" style="justify-content:center">
+              <div class="sets-input" id="third-sets-container">
+                <!-- Los sets se generarán dinámicamente aquí -->
+              </div>
+            </div>
+            <div class="team" style="flex:1;justify-content:flex-end"><span id="thirda">Perdedor SF2</span></div>
+          </div>
+          <div class="total-sets" id="third-total">Total: 0-0</div>
+          <div class="points-total" id="third-points">Puntos: 0-0</div>
+          <div class="row" style="margin-top:6px">
+            <label style="flex:1">Si hay empate, elige tercero</label>
+            <select id="thirdw" style="max-width:260px"><option value="">— Tercero —</option></select>
+            <div class="row" style="margin-top:6px">
+              <input type="text" id="thirdHour" placeholder="Hora (ej. 18:00)" style="max-width:180px">
+              <input type="text" id="thirdPlace" placeholder="Lugar (ej. Cancha)" style="flex:1">
+            </div>
+          </div>
+          <!-- Nombres manuales (opcional) -->
+          <div class="row" style="margin-top:6px">
+            <input type="text" id="thirdHomeName" placeholder="Nombre local tercer lugar (opcional)" style="flex:1">
+            <input type="text" id="thirdAwayName" placeholder="Nombre visita tercer lugar (opcional)" style="flex:1">
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+<script>
+// ===== CONFIGURACIÓN =====
+const STORAGE_KEY = 'torneo_voleibol_grupos_ko_v4';
+const $ = (selector, root = document) => root.querySelector(selector);
+
+// ===== ESTADO INICIAL =====
+let state = {
+  groups: {
+    A: { teams: ['Equipo A1', 'Equipo A2', 'Equipo A3'], matches: [] },
+    B: { teams: ['Equipo B1', 'Equipo B2', 'Equipo B3'], matches: [] },
+    C: { teams: ['Equipo C1', 'Equipo C2', 'Equipo C3'], matches: [] },
+    D: { teams: ['Equipo D1', 'Equipo D2', 'Equipo D3'], matches: [] },
+  },
+  points: { win: 2, loss: 1 }, // Para voleibol: 2 puntos por victoria, 1 por derrota
+  knockout: {
+    sf1: { home: '', away: '', sets: [], winner: '', hour: '', place: '' },
+    sf2: { home: '', away: '', sets: [], winner: '', hour: '', place: '' },
+    final: { home: '', away: '', sets: [], winner: '', hour: '', place: '' },
+    third: { home: '', away: '', sets: [], winner: '', hour: '', place: '' }
+  },
+  tournamentName: '',
+  theme: { color: '#0284c7', bg: '#f8fafc' }
+};
+
+// ===== HELPERS =====
+function parseTeams(txt) {
+  return String(txt || '').split('\n').map(s => s.trim()).filter(Boolean);
+}
+
+function roundRobin3(teams) {
+  if (teams.length !== 3) return [];
+  const [a, b, c] = teams;
+  return [[a, b], [c, a], [b, c]];
+}
+
+function valInt(v) {
+  if (v === '' || v == null) return null;
+  const n = parseInt(v, 10);
+  return Number.isFinite(n) && n >= 0 ? n : null;
+}
+
+// Calcular total de sets ganados y puntos totales
+function calculateSetsAndPoints(sets) {
+  let homeSets = 0;
+  let awaySets = 0;
+  let homePoints = 0;
+  let awayPoints = 0;
+  
+  sets.forEach(set => {
+    if (set.home !== null && set.away !== null) {
+      homePoints += set.home || 0;
+      awayPoints += set.away || 0;
+      
+      if (set.home > set.away) homeSets++;
+      else if (set.away > set.home) awaySets++;
+    }
+  });
+  
+  return { 
+    homeSets, 
+    awaySets, 
+    homePoints, 
+    awayPoints,
+    pointsDifference: homePoints - awayPoints
+  };
+}
+
+// MEJORADO: Calcular tabla de posiciones con diferencia de puntos
+function computeTable(matches, teams) {
+  const table = Object.fromEntries(teams.map(team => [team, {
+    team, PJ: 0, G: 0, P: 0, 
+    SF: 0, SC: 0, DS: 0,        // Sets a favor, en contra, diferencia
+    PF: 0, PC: 0, DP: 0,        // Puntos a favor, en contra, diferencia (NUEVO)
+    Pts: 0
+  }]));
+  
+  const cfg = state.points;
+  
+  matches.forEach(match => {
+    if (!match.sets || match.sets.length === 0) return;
+    
+    const homeTeam = table[match.home];
+    const awayTeam = table[match.away];
+    if (!homeTeam || !awayTeam) return;
+    
+    // Calcular sets ganados y puntos totales
+    const result = calculateSetsAndPoints(match.sets);
+    
+    // Actualizar partidos jugados
+    homeTeam.PJ++;
+    awayTeam.PJ++;
+    
+    // Actualizar sets
+    homeTeam.SF += result.homeSets;
+    homeTeam.SC += result.awaySets;
+    awayTeam.SF += result.awaySets;
+    awayTeam.SC += result.homeSets;
+    
+    // NUEVO: Actualizar puntos
+    homeTeam.PF += result.homePoints;
+    homeTeam.PC += result.awayPoints;
+    awayTeam.PF += result.awayPoints;
+    awayTeam.PC += result.homePoints;
+    
+    // Determinar resultado (voleibol: no hay empates)
+    if (result.homeSets > result.awaySets) {
+      homeTeam.G++;
+      awayTeam.P++;
+      homeTeam.Pts += cfg.win;
+      awayTeam.Pts += cfg.loss;
+    } else {
+      awayTeam.G++;
+      homeTeam.P++;
+      awayTeam.Pts += cfg.win;
+      homeTeam.Pts += cfg.loss;
+    }
+  });
+  
+  // Calcular diferencias
+  teams.forEach(team => {
+    table[team].DS = table[team].SF - table[team].SC;
+    table[team].DP = table[team].PF - table[team].PC; // NUEVO: Diferencia de puntos
+  });
+  
+  // MEJORADO: Ordenar por puntos, diferencia de sets, diferencia de puntos, puntos a favor
+  return Object.values(table).sort((a, b) => {
+    if (b.Pts !== a.Pts) return b.Pts - a.Pts;
+    if (b.DS !== a.DS) return b.DS - a.DS;
+    if (b.DP !== a.DP) return b.DP - a.DP; // NUEVO: Diferencia de puntos
+    if (b.PF !== a.PF) return b.PF - a.PF; // NUEVO: Puntos a favor
+    return a.team.localeCompare(b.team);
+  });
+}
+
+function groupWinner(groupKey) {
+  const group = state.groups[groupKey];
+  const rows = computeTable(group.matches, group.teams);
+  return rows[0]?.team || '';
+}
+
+// ===== RENDER GRUPOS =====
+function renderGroups() {
+  const root = $('#groupsRoot');
+  root.innerHTML = '';
+  
+  ['A', 'B', 'C', 'D'].forEach(groupKey => {
+    const group = state.groups[groupKey];
+    const teams = group.teams || [];
+    
+    const groupDiv = document.createElement('div');
+    groupDiv.className = `groupBox group${groupKey}`;
+    groupDiv.innerHTML = `<h3>Grupo ${groupKey}</h3>`;
+    
+    const matchesContainer = document.createElement('div');
+    matchesContainer.className = 'matches';
+    
+    // Crear partidos
+    const calendar = roundRobin3(teams);
+    calendar.forEach(([home, away]) => {
+      const existingMatch = group.matches.find(m => m.home === home && m.away === away) || 
+                          { home, away, sets: [], hour: '', place: '' };
+      
+      const matchDiv = document.createElement('div');
+      matchDiv.className = 'match';
+      
+      // Crear contenedor de sets
+      const setsContainer = document.createElement('div');
+      setsContainer.className = 'sets-input';
+      setsContainer.id = `match-${groupKey}-${home}-${away}`;
+      
+      // Generar inputs para sets (máximo 5 sets)
+      for (let i = 0; i < 5; i++) {
+        const setRow = document.createElement('div');
+        setRow.className = 'set-row';
+        
+        const setData = existingMatch.sets[i] || { home: '', away: '' };
+        
+        setRow.innerHTML = `
+          <input type="number" min="0" class="set-home" data-group="${groupKey}" data-home="${home}" data-away="${away}" data-set="${i}" 
+                 value="${setData.home || ''}" style="max-width:50px" placeholder="0">
+          <span class="sets-separator">-</span>
+          <input type="number" min="0" class="set-away" data-group="${groupKey}" data-home="${home}" data-away="${away}" data-set="${i}" 
+                 value="${setData.away || ''}" style="max-width:50px" placeholder="0">
+          <div class="set-label">Set ${i + 1}</div>
+        `;
+        
+        setsContainer.appendChild(setRow);
+      }
+      
+      matchDiv.innerHTML = `
+        <div class="team">${home}</div>
+        <div class="team" style="justify-content:center">
+          ${setsContainer.outerHTML}
+        </div>
+        <div class="team" style="justify-content:flex-end">${away}</div>
+      `;
+      
+      // Calcular y mostrar total
+      const result = calculateSetsAndPoints(existingMatch.sets);
+      const totalDiv = document.createElement('div');
+      totalDiv.className = 'total-sets';
+      totalDiv.id = `total-${groupKey}-${home}-${away}`;
+      totalDiv.textContent = `Sets: ${result.homeSets}-${result.awaySets}`;
+      
+      // Mostrar puntos totales
+      const pointsDiv = document.createElement('div');
+      pointsDiv.className = 'points-total';
+      pointsDiv.id = `points-${groupKey}-${home}-${away}`;
+      pointsDiv.textContent = `Puntos: ${result.homePoints}-${result.awayPoints}`;
+      
+      // Indicador visual de sets
+      const setsIndicator = document.createElement('div');
+      setsIndicator.className = 'sets-indicator';
+      
+      for (let i = 0; i < result.homeSets; i++) {
+        const setDot = document.createElement('div');
+        setDot.className = 'set-dot won';
+        setsIndicator.appendChild(setDot);
+      }
+      
+      for (let i = 0; i < result.awaySets; i++) {
+        const setDot = document.createElement('div');
+        setDot.className = 'set-dot lost';
+        setsIndicator.appendChild(setDot);
+      }
+      
+      const infoDiv = document.createElement('div');
+      infoDiv.className = 'info';
+      infoDiv.innerHTML = `
+        <input type="text" class="match-hour" data-group="${groupKey}" data-home="${home}" data-away="${away}" 
+               placeholder="Hora (ej. 14:00)" value="${existingMatch.hour || ''}">
+        <input type="text" class="match-place" data-group="${groupKey}" data-home="${home}" data-away="${away}" 
+               placeholder="Lugar (ej. Cancha 1)" value="${existingMatch.place || ''}">
+      `;
+      
+      matchesContainer.appendChild(matchDiv);
+      matchesContainer.appendChild(totalDiv);
+      matchesContainer.appendChild(pointsDiv);
+      matchesContainer.appendChild(setsIndicator);
+      matchesContainer.appendChild(infoDiv);
+    });
+    
+    groupDiv.appendChild(matchesContainer);
+    
+    // Tabla de posiciones MEJORADA con puntos
+    const rows = computeTable(group.matches, teams);
+    const tableHTML = `
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>P</th>
+              <th>SF</th><th>SC</th><th>DS</th>
+              <th>PF</th><th>PC</th><th>DP</th>
+              <th>Pts</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows.map((row, index) => `
+              <tr class="${index === 0 ? 'first' : ''}">
+                <td class="pos">${index + 1}</td>
+                <td>${row.team}</td>
+                <td>${row.PJ}</td>
+                <td>${row.G}</td>
+                <td>${row.P}</td>
+                <td>${row.SF}</td>
+                <td>${row.SC}</td>
+                <td>${row.DS}</td>
+                <td>${row.PF}</td>
+                <td>${row.PC}</td>
+                <td>${row.DP}</td>
+                <td class="pts">${row.Pts}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+        <div class="note" style="margin-top: 8px;">
+          💡 Orden: Puntos → Dif. Sets → Dif. Puntos → Puntos a favor
+        </div>
+      </div>
+    `;
+    
+    groupDiv.insertAdjacentHTML('beforeend', tableHTML);
+    root.appendChild(groupDiv);
+  });
+  
+  setupGroupEventListeners();
+}
+
+// ===== EVENT LISTENERS PARA GRUPOS =====
+function setupGroupEventListeners() {
+  // Sets
+  document.querySelectorAll('.set-home, .set-away').forEach(input => {
+    input.addEventListener('input', function() {
+      const groupKey = this.dataset.group;
+      const home = this.dataset.home;
+      const away = this.dataset.away;
+      const setIndex = parseInt(this.dataset.set);
+      
+      let match = state.groups[groupKey].matches.find(m => m.home === home && m.away === away);
+      if (!match) {
+        match = { home, away, sets: [], hour: '', place: '' };
+        state.groups[groupKey].matches.push(match);
+      }
+      
+      // Asegurar que el array de sets tenga la longitud suficiente
+      while (match.sets.length <= setIndex) {
+        match.sets.push({ home: '', away: '' });
+      }
+      
+      if (this.classList.contains('set-home')) {
+        match.sets[setIndex].home = valInt(this.value);
+      } else {
+        match.sets[setIndex].away = valInt(this.value);
+      }
+      
+      // Actualizar total visualmente
+      const result = calculateSetsAndPoints(match.sets);
+      $(`#total-${groupKey}-${home}-${away}`).textContent = `Sets: ${result.homeSets}-${result.awaySets}`;
+      $(`#points-${groupKey}-${home}-${away}`).textContent = `Puntos: ${result.homePoints}-${result.awayPoints}`;
+      
+      saveState();
+      renderGroups();
+      updateKnockout();
+    });
+  });
+  
+  // Hora y lugar
+  document.querySelectorAll('.match-hour, .match-place').forEach(input => {
+    input.addEventListener('change', function() {
+      const groupKey = this.dataset.group;
+      const home = this.dataset.home;
+      const away = this.dataset.away;
+      
+      let match = state.groups[groupKey].matches.find(m => m.home === home && m.away === away);
+      if (!match) {
+        match = { home, away, sets: [], hour: '', place: '' };
+        state.groups[groupKey].matches.push(match);
+      }
+      
+      if (this.classList.contains('match-hour')) {
+        match.hour = this.value.trim();
+      } else {
+        match.place = this.value.trim();
+      }
+      
+      saveState();
+    });
+  });
+}
+
+// ===== KNOCKOUT =====
+function renderKnockoutSets() {
+  // Semifinal 1
+  renderSetsForMatch('sf1', $('#sf1-sets-container'), $('#sf1-total'), $('#sf1-points'));
+  // Semifinal 2
+  renderSetsForMatch('sf2', $('#sf2-sets-container'), $('#sf2-total'), $('#sf2-points'));
+  // Final
+  renderSetsForMatch('final', $('#fi-sets-container'), $('#fi-total'), $('#fi-points'));
+  // Tercer lugar
+  renderSetsForMatch('third', $('#third-sets-container'), $('#third-total'), $('#third-points'));
+}
+
+function renderSetsForMatch(matchKey, container, totalElement, pointsElement) {
+  const match = state.knockout[matchKey];
+  container.innerHTML = '';
+  
+  // Generar inputs para sets (máximo 5 sets)
+  for (let i = 0; i < 5; i++) {
+    const setRow = document.createElement('div');
+    setRow.className = 'set-row';
+    
+    const setData = match.sets[i] || { home: '', away: '' };
+    
+    setRow.innerHTML = `
+      <input type="number" min="0" class="set-knockout-home" data-match="${matchKey}" data-set="${i}" 
+             value="${setData.home || ''}" style="max-width:50px" placeholder="0">
+      <span class="sets-separator">-</span>
+      <input type="number" min="0" class="set-knockout-away" data-match="${matchKey}" data-set="${i}" 
+             value="${setData.away || ''}" style="max-width:50px" placeholder="0">
+      <div class="set-label">Set ${i + 1}</div>
+    `;
+    
+    container.appendChild(setRow);
+  }
+  
+  // Actualizar total y puntos
+  const result = calculateSetsAndPoints(match.sets);
+  totalElement.textContent = `Sets: ${result.homeSets}-${result.awaySets}`;
+  pointsElement.textContent = `Puntos: ${result.homePoints}-${result.awayPoints}`;
+}
+
+function updateKnockout() {
+  const A1 = groupWinner('A') || 'A1';
+  const B1 = groupWinner('B') || 'B1';
+  const C1 = groupWinner('C') || 'C1';
+  const D1 = groupWinner('D') || 'D1';
+
+  // Semifinales
+  $('#sf1h').textContent = state.knockout.sf1.home || A1;
+  $('#sf1a').textContent = state.knockout.sf1.away || D1;
+  $('#sf2h').textContent = state.knockout.sf2.home || B1;
+  $('#sf2a').textContent = state.knockout.sf2.away || C1;
+
+  // Final y tercer lugar
+  const sf1Winner = state.knockout.sf1.winner;
+  const sf2Winner = state.knockout.sf2.winner;
+  
+  // Para la final
+  $('#fih').textContent = state.knockout.final.home || (sf1Winner || 'Ganador SF1');
+  $('#fia').textContent = state.knockout.final.away || (sf2Winner || 'Ganador SF2');
+  
+  // Para tercer lugar
+  const sf1Loser = sf1Winner ? 
+    (sf1Winner === (state.knockout.sf1.home || A1) ? (state.knockout.sf1.away || D1) : (state.knockout.sf1.home || A1)) : 
+    'Perdedor SF1';
+  const sf2Loser = sf2Winner ? 
+    (sf2Winner === (state.knockout.sf2.home || B1) ? (state.knockout.sf2.away || C1) : (state.knockout.sf2.home || B1)) : 
+    'Perdedor SF2';
+  
+  $('#thirdh').textContent = state.knockout.third.home || sf1Loser;
+  $('#thirda').textContent = state.knockout.third.away || sf2Loser;
+
+  updateWinnerSelects();
+}
+
+function updateWinnerSelects() {
+  const sf1h = $('#sf1h').textContent;
+  const sf1a = $('#sf1a').textContent;
+  const sf2h = $('#sf2h').textContent;
+  const sf2a = $('#sf2a').textContent;
+  const fih = $('#fih').textContent;
+  const fia = $('#fia').textContent;
+  const thirdh = $('#thirdh').textContent;
+  const thirda = $('#thirda').textContent;
+
+  // Semifinal 1
+  $('#sf1w').innerHTML = `<option value="">— Ganador —</option>
+                          <option value="${sf1h}">${sf1h}</option>
+                          <option value="${sf1a}">${sf1a}</option>`;
+  if (state.knockout.sf1.winner) $('#sf1w').value = state.knockout.sf1.winner;
+
+  // Semifinal 2
+  $('#sf2w').innerHTML = `<option value="">— Ganador —</option>
+                          <option value="${sf2h}">${sf2h}</option>
+                          <option value="${sf2a}">${sf2a}</option>`;
+  if (state.knockout.sf2.winner) $('#sf2w').value = state.knockout.sf2.winner;
+
+  // Final
+  $('#fiw').innerHTML = `<option value="">— Campeón —</option>
+                         <option value="${fih}">${fih}</option>
+                         <option value="${fia}">${fia}</option>`;
+  if (state.knockout.final.winner) $('#fiw').value = state.knockout.final.winner;
+
+  // Tercer lugar
+  $('#thirdw').innerHTML = `<option value="">— Tercero —</option>
+                            <option value="${thirdh}">${thirdh}</option>
+                            <option value="${thirda}">${thirda}</option>`;
+  if (state.knockout.third.winner) $('#thirdw').value = state.knockout.third.winner;
+}
+
+function setupKnockoutListeners() {
+  // Sets de fase eliminatoria
+  document.addEventListener('input', function(e) {
+    if (e.target.classList.contains('set-knockout-home') || e.target.classList.contains('set-knockout-away')) {
+      const matchKey = e.target.dataset.match;
+      const setIndex = parseInt(e.target.dataset.set);
+      const match = state.knockout[matchKey];
+      
+      // Asegurar que el array de sets tenga la longitud suficiente
+      while (match.sets.length <= setIndex) {
+        match.sets.push({ home: '', away: '' });
+      }
+      
+      if (e.target.classList.contains('set-knockout-home')) {
+        match.sets[setIndex].home = valInt(e.target.value);
+      } else {
+        match.sets[setIndex].away = valInt(e.target.value);
+      }
+      
+      // Actualizar total visualmente
+      const result = calculateSetsAndPoints(match.sets);
+      $(`#${matchKey}-total`).textContent = `Sets: ${result.homeSets}-${result.awaySets}`;
+      $(`#${matchKey}-points`).textContent = `Puntos: ${result.homePoints}-${result.awayPoints}`;
+      
+      saveState();
+    }
+  });
+
+  // Selectores de ganadores
+  $('#sf1w').addEventListener('change', function() {
+    state.knockout.sf1.winner = this.value;
+    saveState();
+    updateKnockout();
+  });
+  
+  $('#sf2w').addEventListener('change', function() {
+    state.knockout.sf2.winner = this.value;
+    saveState();
+    updateKnockout();
+  });
+  
+  $('#fiw').addEventListener('change', function() {
+    state.knockout.final.winner = this.value;
+    saveState();
+  });
+  
+  $('#thirdw').addEventListener('change', function() {
+    state.knockout.third.winner = this.value;
+    saveState();
+  });
+
+  // Horas y lugares
+  const koInputs = [
+    '#sf1Hour', '#sf1Place', '#sf1HomeName', '#sf1AwayName',
+    '#sf2Hour', '#sf2Place', '#sf2HomeName', '#sf2AwayName',
+    '#fiHour', '#fiPlace', '#fiHomeName', '#fiAwayName',
+    '#thirdHour', '#thirdPlace', '#thirdHomeName', '#thirdAwayName'
+  ];
+  
+  koInputs.forEach(selector => {
+    $(selector).addEventListener('change', function() {
+      const matchKey = selector.includes('sf1') ? 'sf1' : 
+                      selector.includes('sf2') ? 'sf2' : 
+                      selector.includes('fi') ? 'final' : 'third';
+      
+      const field = selector.includes('Hour') ? 'hour' :
+                   selector.includes('Place') ? 'place' :
+                   selector.includes('HomeName') ? 'home' : 'away';
+      
+      state.knockout[matchKey][field] = this.value.trim();
+      
+      if (field === 'home' || field === 'away') {
+        updateKnockout();
+      }
+      
+      saveState();
+    });
+  });
+}
+
+// ===== PERSISTENCIA =====
+function saveState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function loadState() {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored);
+      state = { ...state, ...parsed };
+      return true;
+    } catch (e) {
+      console.error('Error loading state:', e);
+    }
+  }
+  return false;
+}
+
+// ===== GENERAR ROL =====
+function generateGroups() {
+  state.groups.A.teams = parseTeams($('#ga').value);
+  state.groups.B.teams = parseTeams($('#gb').value);
+  state.groups.C.teams = parseTeams($('#gc').value);
+  state.groups.D.teams = parseTeams($('#gd').value);
+  
+  // Reiniciar partidos
+  ['A', 'B', 'C', 'D'].forEach(groupKey => {
+    state.groups[groupKey].matches = [];
+  });
+  
+  saveState();
+  renderGroups();
+  updateKnockout();
+  renderKnockoutSets();
+}
+
+// ===== PUBLICAR =====
+async function publish() {
+  const publishURL = $('#publishURL').value.trim();
+  const statusEl = $('#publishStatus');
+  
+  statusEl.textContent = '';
+  statusEl.className = 'status loading';
+  statusEl.textContent = 'Publicando...';
+  
+  const data = {
+    ...state,
+    timestamp: new Date().toISOString()
+  };
+  
+  try {
+    if (publishURL) {
+      // Enviar a backend personalizado
+      const resp = await fetch(publishURL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      
+      statusEl.className = 'status success';
+      statusEl.textContent = '✓ Publicado';
+    } else {
+      // Descargar data.json para GitHub Pages
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'data.json';
+      a.click();
+      URL.revokeObjectURL(url);
+      
+      statusEl.className = 'status success';
+      statusEl.textContent = '✓ Descargado';
+    }
+  } catch (err) {
+    console.error('Error al publicar:', err);
+    statusEl.className = 'status error';
+    statusEl.textContent = '✗ Error';
+  }
+  
+  setTimeout(() => {
+    statusEl.textContent = '';
+    statusEl.className = '';
+  }, 3000);
+}
+
+// ===== IMPORTAR/EXPORTAR =====
+function exportData() {
+  const dataStr = JSON.stringify(state, null, 2);
+  const blob = new Blob([dataStr], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `torneo_voleibol_${new Date().toISOString().slice(0, 10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importData(file) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const imported = JSON.parse(e.target.result);
+      state = { ...state, ...imported };
+      saveState();
+      applyStateToUI();
+      renderGroups();
+      updateKnockout();
+      renderKnockoutSets();
+      alert('✅ Datos importados correctamente');
+    } catch (err) {
+      alert('❌ Error al importar: archivo JSON inválido');
+    }
+  };
+  reader.readAsText(file);
+}
+
+function applyStateToUI() {
+  // Grupos
+  $('#ga').value = state.groups.A.teams.join('\n');
+  $('#gb').value = state.groups.B.teams.join('\n');
+  $('#gc').value = state.groups.C.teams.join('\n');
+  $('#gd').value = state.groups.D.teams.join('\n');
+  
+  // Tema
+  $('#tournamentName').value = state.tournamentName || '';
+  $('#themeColor').value = state.theme?.color || '#0284c7';
+  $('#themeBg').value = state.theme?.bg || '#f8fafc';
+  applyTheme();
+  
+  // Knockout - nombres manuales
+  $('#sf1HomeName').value = state.knockout.sf1.home || '';
+  $('#sf1AwayName').value = state.knockout.sf1.away || '';
+  $('#sf2HomeName').value = state.knockout.sf2.home || '';
+  $('#sf2AwayName').value = state.knockout.sf2.away || '';
+  $('#fiHomeName').value = state.knockout.final.home || '';
+  $('#fiAwayName').value = state.knockout.final.away || '';
+  $('#thirdHomeName').value = state.knockout.third.home || '';
+  $('#thirdAwayName').value = state.knockout.third.away || '';
+  
+  // Knockout - horas y lugares
+  $('#sf1Hour').value = state.knockout.sf1.hour || '';
+  $('#sf1Place').value = state.knockout.sf1.place || '';
+  $('#sf2Hour').value = state.knockout.sf2.hour || '';
+  $('#sf2Place').value = state.knockout.sf2.place || '';
+  $('#fiHour').value = state.knockout.final.hour || '';
+  $('#fiPlace').value = state.knockout.final.place || '';
+  $('#thirdHour').value = state.knockout.third.hour || '';
+  $('#thirdPlace').value = state.knockout.third.place || '';
+}
+
+function applyTheme() {
+  document.documentElement.style.setProperty('--accent', state.theme.color);
+  document.documentElement.style.setProperty('--bg', state.theme.bg);
+}
+
+// ===== INICIALIZACIÓN =====
+function init() {
+  loadState();
+  applyStateToUI();
+  renderGroups();
+  updateKnockout();
+  renderKnockoutSets();
+  setupKnockoutListeners();
+  
+  // Event listeners
+  $('#btnGenerate').addEventListener('click', generateGroups);
+  $('#btnPublish').addEventListener('click', publish);
+  $('#btnSaveCopy').addEventListener('click', exportData);
+  $('#btnClearAll').addEventListener('click', () => {
+    if (confirm('¿Borrar todos los datos?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
+  });
+  
+  $('#btnExport').addEventListener('click', exportData);
+  $('#btnImport').addEventListener('click', () => $('#importFile').click());
+  $('#importFile').addEventListener('change', function() {
+    if (this.files.length) {
+      importData(this.files[0]);
+      this.value = '';
+    }
+  });
+  
+  $('#tournamentName').addEventListener('change', function() {
+    state.tournamentName = this.value;
+    saveState();
+  });
+  
+  $('#themeColor').addEventListener('change', function() {
+    state.theme.color = this.value;
+    saveState();
+    applyTheme();
+  });
+  
+  $('#themeBg').addEventListener('change', function() {
+    state.theme.bg = this.value;
+    saveState();
+    applyTheme();
+  });
+}
+
+// Iniciar
+init();
+</script>
+</body>
+</html>

@@ -4,132 +4,132 @@
   "groups": {
     "A": {
       "teams": [
-        "Lobos",
-        "Pumas",
-        "Panteras"
+        "A1",
+        "A2",
+        "A3"
       ],
       "matches": [
         {
-          "home": "Lobos",
-          "away": "Pumas",
-          "gh": 1,
-          "ga": 0,
-          "hour": "8:00",
-          "place": "Cancha 1"
+          "home": "A1",
+          "away": "A2",
+          "gh": null,
+          "ga": null,
+          "hour": "",
+          "place": ""
         },
         {
-          "home": "Panteras",
-          "away": "Lobos",
-          "gh": 1,
-          "ga": 1,
-          "hour": "8:00",
-          "place": "Cancha 1"
+          "home": "A3",
+          "away": "A1",
+          "gh": null,
+          "ga": null,
+          "hour": "",
+          "place": ""
         },
         {
-          "home": "Pumas",
-          "away": "Panteras",
-          "gh": 2,
-          "ga": 1,
-          "hour": "8:00",
-          "place": "Cancha 1"
+          "home": "A2",
+          "away": "A3",
+          "gh": null,
+          "ga": null,
+          "hour": "",
+          "place": ""
         }
       ]
     },
     "B": {
       "teams": [
-        "Abejas",
-        "Dragones",
-        "Liebres"
+        "B1",
+        "B2",
+        "B3"
       ],
       "matches": [
         {
-          "home": "Abejas",
-          "away": "Dragones",
-          "gh": 0,
-          "ga": 1,
-          "hour": "8:00",
-          "place": "Cancha 1"
+          "home": "B1",
+          "away": "B2",
+          "gh": null,
+          "ga": null,
+          "hour": "",
+          "place": ""
         },
         {
-          "home": "Liebres",
-          "away": "Abejas",
-          "gh": 1,
-          "ga": 1,
-          "hour": "8:00",
-          "place": "Cancha 1"
+          "home": "B3",
+          "away": "B1",
+          "gh": null,
+          "ga": null,
+          "hour": "",
+          "place": ""
         },
         {
-          "home": "Dragones",
-          "away": "Liebres",
-          "gh": 1,
-          "ga": 1,
-          "hour": "8:00",
-          "place": "Cancha 1"
+          "home": "B2",
+          "away": "B3",
+          "gh": null,
+          "ga": null,
+          "hour": "",
+          "place": ""
         }
       ]
     },
     "C": {
       "teams": [
-        "Cachorros",
-        "Potros",
-        "Armadillos"
+        "C1",
+        "C2",
+        "C3"
       ],
       "matches": [
         {
-          "home": "Cachorros",
-          "away": "Potros",
-          "gh": 1,
-          "ga": 1,
-          "hour": "8:00",
-          "place": "Cancha 1"
+          "home": "C1",
+          "away": "C2",
+          "gh": null,
+          "ga": null,
+          "hour": "",
+          "place": ""
         },
         {
-          "home": "Armadillos",
-          "away": "Cachorros",
-          "gh": 1,
-          "ga": 0,
-          "hour": "8:00",
-          "place": "Cancha 1"
+          "home": "C3",
+          "away": "C1",
+          "gh": null,
+          "ga": null,
+          "hour": "",
+          "place": ""
         },
         {
-          "home": "Potros",
-          "away": "Armadillos",
-          "gh": 1,
-          "ga": 0,
-          "hour": "8:00",
-          "place": "Cancha 1"
+          "home": "C2",
+          "away": "C3",
+          "gh": null,
+          "ga": null,
+          "hour": "",
+          "place": ""
         }
       ]
     },
     "D": {
       "teams": [
-        "Lagartos",
-        "Halcones",
-        "Toros"
+        "D1",
+        "D2",
+        "D3"
       ],
       "matches": [
         {
-          "home": "Lagartos",
-          "away": "Halcones",
-          "gh": 1,
-          "ga": 2,
-          "hour": "8:00",
-          "place": "Cancha 1"
+          "home": "D1",
+          "away": "D2",
+          "gh": null,
+          "ga": null,
+          "hour": "",
+          "place": ""
         },
         {
-          "home": "Toros",
-          "away": "Lagartos",
-          "gh": 1,
-          "ga": 0,
-          "hour": "8:00",
-          "place": "Cancha 1"
+          "home": "D3",
+          "away": "D1",
+          "gh": null,
+          "ga": null,
+          "hour": "",
+          "place": ""
         },
         {
-          "home": "Halcones",
-          "away": "Toros",
-          "gh": 1,
-          "ga": 0,
-          "hour": "8:00",
+          "home": "D2",
+          "away": "D3",
+          "gh": null,
+          "ga": null,
+          "hour": "",
           "place": ""
         }
       ]
@@ -137,22 +137,22 @@
   },
   "knockout": {
     "sf1": {
-      "home": "Lobos",
-      "away": "Halcones",
+      "home": "",
+      "away": "",
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "8:00",
-      "place": "Cancha 1"
+      "hour": "",
+      "place": ""
     },
     "sf2": {
-      "home": "Dragones",
-      "away": "Potros",
+      "home": "",
+      "away": "",
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "9:00",
-      "place": "Cancha 2"
+      "hour": "",
+      "place": ""
     },
     "final": {
       "home": "",
@@ -173,9 +173,9 @@
       "place": ""
     }
   },
-  "updatedAtLocal": "22/10/2025, 13:50:20",
+  "updatedAtLocal": "23/10/2025, 14:55:54",
   "theme": {
-    "color": "#6cc0ea",
-    "bg": "#CFF2F1"
+    "color": "#62d0df",
+    "bg": "#b2e1eb"
   }
 }

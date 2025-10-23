@@ -1,5 +1,5 @@
 {
-  "tournamentName": "",
+  "tournamentName": "Futbol Varonil",
   "subtitle": "",
   "groups": {
     "A": {
@@ -173,7 +173,7 @@
       "place": ""
     }
   },
-  "updatedAtLocal": "23/10/2025, 14:51:08",
+  "updatedAtLocal": "23/10/2025, 14:53:46",
   "theme": {
     "color": "#02aec5",
     "bg": "#b2e1eb"

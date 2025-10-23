@@ -13,7 +13,7 @@
 
         body {
             font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #6b8e23 0%, #556b2f 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -41,7 +41,7 @@
         h1 {
             font-size: 3rem;
             margin-bottom: 10px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #6b8e23, #556b2f);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -74,6 +74,7 @@
         .sport-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            border-color: rgba(107, 142, 35, 0.2);
         }
 
         .sport-icon {
@@ -104,7 +105,7 @@
         }
 
         .sport-link.admin {
-            background: #667eea;
+            background: #6b8e23;
             color: white;
         }
 
@@ -119,7 +120,7 @@
         }
 
         .sport-link.admin:hover {
-            background: #5a6fd8;
+            background: #5a7720;
         }
 
         .sport-link.view:hover {
@@ -256,11 +257,11 @@
     </div>
 
     <footer>
-        <p>Sistema desarrollado para la gestión de los torneos de la Muestra Deportiva Cobach 2025</p>
+        <p>Sistema desarrollado para la gestión de torneos multideportivos | 2024</p>
     </footer>
 
     <script>
-        // Efecto de partículas para el fondo (igual que antes)
+        // Efecto de partículas para el fondo
         function createParticle() {
             const particle = document.createElement('div');
             particle.style.cssText = `

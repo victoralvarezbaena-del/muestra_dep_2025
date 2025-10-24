@@ -759,6 +759,81 @@ function loadState() {
   }
 }
 
+// ===== FUNCIONES DE IMPORTACIÓN MEJORADAS =====
+function deepMerge(target, source) {
+  const output = {...target};
+  
+  if (isObject(target) && isObject(source)) {
+    Object.keys(source).forEach(key => {
+      if (isObject(source[key])) {
+        if (!(key in target)) {
+          output[key] = source[key];
+        } else {
+          output[key] = deepMerge(target[key], source[key]);
+        }
+      } else {
+        output[key] = source[key];
+      }
+    });
+  }
+  
+  return output;
+}
+
+function isObject(item) {
+  return item && typeof item === 'object' && !Array.isArray(item);
+}
+
+function syncUIWithState() {
+  // Actualizar textareas de equipos
+  $('#ga').value = state.groups.A.teams.join('\n');
+  $('#gb').value = state.groups.B.teams.join('\n');
+  $('#gc').value = state.groups.C.teams.join('\n');
+  $('#gd').value = state.groups.D.teams.join('\n');
+  
+  // Actualizar configuración de puntos
+  $('#pointsWin').value = state.points.win;
+  $('#pointsDraw').value = state.points.draw;
+  $('#pointsLoss').value = state.points.loss;
+  
+  // Actualizar tema
+  $('#tournamentName').value = state.tournamentName || '';
+  $('#themeColor').value = state.theme.color;
+  $('#themeBg').value = state.theme.bg;
+  
+  // Actualizar knockout
+  $('#sf1gh').value = state.knockout.sf1.gh || '';
+  $('#sf1ga').value = state.knockout.sf1.ga || '';
+  $('#sf2gh').value = state.knockout.sf2.gh || '';
+  $('#sf2ga').value = state.knockout.sf2.ga || '';
+  $('#figh').value = state.knockout.final.gh || '';
+  $('#figa').value = state.knockout.final.ga || '';
+  $('#thirdgh').value = state.knockout.third.gh || '';
+  $('#thirdga').value = state.knockout.third.ga || '';
+  
+  $('#sf1Hour').value = state.knockout.sf1.hour || '';
+  $('#sf1Place').value = state.knockout.sf1.place || '';
+  $('#sf2Hour').value = state.knockout.sf2.hour || '';
+  $('#sf2Place').value = state.knockout.sf2.place || '';
+  $('#fiHour').value = state.knockout.final.hour || '';
+  $('#fiPlace').value = state.knockout.final.place || '';
+  $('#thirdHour').value = state.knockout.third.hour || '';
+  $('#thirdPlace').value = state.knockout.third.place || '';
+  
+  $('#sf1HomeName').value = state.knockout.sf1.home || '';
+  $('#sf1AwayName').value = state.knockout.sf1.away || '';
+  $('#sf2HomeName').value = state.knockout.sf2.home || '';
+  $('#sf2AwayName').value = state.knockout.sf2.away || '';
+  $('#fiHomeName').value = state.knockout.final.home || '';
+  $('#fiAwayName').value = state.knockout.final.away || '';
+  $('#thirdHomeName').value = state.knockout.third.home || '';
+  $('#thirdAwayName').value = state.knockout.third.away || '';
+  
+  // Renderizar grupos y actualizar knockout
+  renderGroups();
+  updateKnockout();
+}
+
 // ===== INICIALIZACIÓN =====
 function init() {
   loadState();
@@ -870,10 +945,26 @@ function init() {
     reader.onload = function(event) {
       try {
         const imported = JSON.parse(event.target.result);
-        state = { ...state, ...imported };
+        
+        // Validar estructura básica
+        if (!imported.groups || !imported.knockout) {
+          throw new Error('El archivo no tiene la estructura correcta');
+        }
+        
+        // Mezcla profunda para preservar la estructura completa
+        state = deepMerge(state, imported);
+        
+        // Limpiar el input de archivo
+        e.target.value = '';
+        
         saveState();
-        location.reload();
+        
+        // Actualizar la interfaz sin recargar la página
+        syncUIWithState();
+        
+        showStatus('success', 'Datos importados correctamente');
       } catch (err) {
+        console.error('Error al importar:', err);
         alert('Error al importar el archivo: ' + err.message);
       }
     };

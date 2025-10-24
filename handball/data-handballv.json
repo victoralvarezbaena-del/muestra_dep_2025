@@ -17,24 +17,24 @@
           "away": "A2",
           "gh": null,
           "ga": null,
-          "hour": "8:00",
-          "place": "Campo 1"
+          "hour": "",
+          "place": ""
         },
         {
           "home": "A3",
           "away": "A1",
           "gh": null,
           "ga": null,
-          "hour": "8:00",
-          "place": "Campo 1"
+          "hour": "",
+          "place": ""
         },
         {
           "home": "A2",
           "away": "A3",
           "gh": null,
           "ga": null,
-          "hour": "8:00",
-          "place": "Campo 1"
+          "hour": "",
+          "place": ""
         }
       ],
       "table": [
@@ -85,24 +85,24 @@
           "away": "B2",
           "gh": null,
           "ga": null,
-          "hour": "8:00",
-          "place": "Campo 1"
+          "hour": "",
+          "place": ""
         },
         {
           "home": "B3",
           "away": "B1",
           "gh": null,
           "ga": null,
-          "hour": "8:00",
-          "place": "Campo 1"
+          "hour": "",
+          "place": ""
         },
         {
           "home": "B2",
           "away": "B3",
           "gh": null,
           "ga": null,
-          "hour": "8:00",
-          "place": "Campo 1"
+          "hour": "",
+          "place": ""
         }
       ],
       "table": [
@@ -153,24 +153,24 @@
           "away": "C2",
           "gh": null,
           "ga": null,
-          "hour": "8:00",
-          "place": "Campo 1"
+          "hour": "",
+          "place": ""
         },
         {
           "home": "C3",
           "away": "C1",
           "gh": null,
           "ga": null,
-          "hour": "8:00",
-          "place": "Campo 1"
+          "hour": "",
+          "place": ""
         },
         {
           "home": "C2",
           "away": "C3",
           "gh": null,
           "ga": null,
-          "hour": "8:00",
-          "place": "Campo 1"
+          "hour": "",
+          "place": ""
         }
       ],
       "table": [
@@ -221,24 +221,24 @@
           "away": "D2",
           "gh": null,
           "ga": null,
-          "hour": "8:00",
-          "place": "Campo 1"
+          "hour": "",
+          "place": ""
         },
         {
           "home": "D3",
           "away": "D1",
           "gh": null,
           "ga": null,
-          "hour": "8:00",
-          "place": "Campo 1"
+          "hour": "",
+          "place": ""
         },
         {
           "home": "D2",
           "away": "D3",
           "gh": null,
           "ga": null,
-          "hour": "8:00",
-          "place": "Campo 1"
+          "hour": "",
+          "place": ""
         }
       ],
       "table": [
@@ -316,5 +316,5 @@
       "place": ""
     }
   },
-  "lastUpdated": "2025-10-24T20:31:01.964Z"
+  "lastUpdated": "2025-10-24T20:37:57.394Z"
 }

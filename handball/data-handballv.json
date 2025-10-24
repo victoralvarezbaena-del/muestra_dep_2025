@@ -11,7 +11,32 @@
         "A2",
         "A3"
       ],
-      "matches": [],
+      "matches": [
+        {
+          "home": "A1",
+          "away": "A2",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Campo 1"
+        },
+        {
+          "home": "A3",
+          "away": "A1",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Campo 1"
+        },
+        {
+          "home": "A2",
+          "away": "A3",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Campo 1"
+        }
+      ],
       "table": [
         {
           "team": "A1",
@@ -54,7 +79,32 @@
         "B2",
         "B3"
       ],
-      "matches": [],
+      "matches": [
+        {
+          "home": "B1",
+          "away": "B2",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Campo 1"
+        },
+        {
+          "home": "B3",
+          "away": "B1",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Campo 1"
+        },
+        {
+          "home": "B2",
+          "away": "B3",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Campo 1"
+        }
+      ],
       "table": [
         {
           "team": "B1",
@@ -97,7 +147,32 @@
         "C2",
         "C3"
       ],
-      "matches": [],
+      "matches": [
+        {
+          "home": "C1",
+          "away": "C2",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Campo 1"
+        },
+        {
+          "home": "C3",
+          "away": "C1",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Campo 1"
+        },
+        {
+          "home": "C2",
+          "away": "C3",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Campo 1"
+        }
+      ],
       "table": [
         {
           "team": "C1",
@@ -140,7 +215,32 @@
         "D2",
         "D3"
       ],
-      "matches": [],
+      "matches": [
+        {
+          "home": "D1",
+          "away": "D2",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Campo 1"
+        },
+        {
+          "home": "D3",
+          "away": "D1",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Campo 1"
+        },
+        {
+          "home": "D2",
+          "away": "D3",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Campo 1"
+        }
+      ],
       "table": [
         {
           "team": "D1",
@@ -216,5 +316,5 @@
       "place": ""
     }
   },
-  "lastUpdated": "2025-10-24T19:29:52.200Z"
+  "lastUpdated": "2025-10-24T20:31:01.964Z"
 }

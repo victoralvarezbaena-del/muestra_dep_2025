@@ -1,8 +1,8 @@
 {
   "tournamentName": "Handball Femenil",
   "theme": {
-    "color": "#408b0e",
-    "bg": "#c7eac2"
+    "color": "#6be619",
+    "bg": "#c1f2bb"
   },
   "points": {
     "win": 2,
@@ -12,14 +12,14 @@
   "groups": {
     "A": {
       "teams": [
-        "Equipo A1",
-        "Equipo A2",
-        "Equipo A3"
+        "A1",
+        "A2",
+        "A3"
       ],
       "matches": [],
       "table": [
         {
-          "team": "Equipo A1",
+          "team": "A1",
           "PJ": 0,
           "G": 0,
           "E": 0,
@@ -30,7 +30,7 @@
           "Pts": 0
         },
         {
-          "team": "Equipo A2",
+          "team": "A2",
           "PJ": 0,
           "G": 0,
           "E": 0,
@@ -41,7 +41,7 @@
           "Pts": 0
         },
         {
-          "team": "Equipo A3",
+          "team": "A3",
           "PJ": 0,
           "G": 0,
           "E": 0,
@@ -55,14 +55,14 @@
     },
     "B": {
       "teams": [
-        "Equipo B1",
-        "Equipo B2",
-        "Equipo B3"
+        "B1",
+        "B2",
+        "B3"
       ],
       "matches": [],
       "table": [
         {
-          "team": "Equipo B1",
+          "team": "B1",
           "PJ": 0,
           "G": 0,
           "E": 0,
@@ -73,7 +73,7 @@
           "Pts": 0
         },
         {
-          "team": "Equipo B2",
+          "team": "B2",
           "PJ": 0,
           "G": 0,
           "E": 0,
@@ -84,7 +84,7 @@
           "Pts": 0
         },
         {
-          "team": "Equipo B3",
+          "team": "B3",
           "PJ": 0,
           "G": 0,
           "E": 0,
@@ -98,15 +98,15 @@
     },
     "C": {
       "teams": [
-        "Equipo C1",
-        "Equipo C2",
-        "Equipo C3",
-        "Equipo C4"
+        "C1",
+        "C2",
+        "C3",
+        "C4"
       ],
       "matches": [],
       "table": [
         {
-          "team": "Equipo C1",
+          "team": "C1",
           "PJ": 0,
           "G": 0,
           "E": 0,
@@ -117,7 +117,7 @@
           "Pts": 0
         },
         {
-          "team": "Equipo C2",
+          "team": "C2",
           "PJ": 0,
           "G": 0,
           "E": 0,
@@ -128,7 +128,7 @@
           "Pts": 0
         },
         {
-          "team": "Equipo C3",
+          "team": "C3",
           "PJ": 0,
           "G": 0,
           "E": 0,
@@ -139,7 +139,7 @@
           "Pts": 0
         },
         {
-          "team": "Equipo C4",
+          "team": "C4",
           "PJ": 0,
           "G": 0,
           "E": 0,
@@ -153,13 +153,13 @@
     }
   },
   "qualifiedTeams": {
-    "firstA": "Equipo A1",
-    "firstB": "Equipo B1",
-    "firstC": "Equipo C1",
-    "secondA": "Equipo A2",
-    "secondB": "Equipo B2",
-    "secondC": "Equipo C2",
-    "bestSecond": "Equipo B2"
+    "firstA": "A1",
+    "firstB": "B1",
+    "firstC": "C1",
+    "secondA": "A2",
+    "secondB": "B2",
+    "secondC": "C2",
+    "bestSecond": "B2"
   },
   "knockout": {
     "sf1": {
@@ -199,6 +199,6 @@
       "place": ""
     }
   },
-  "lastUpdated": "2025-10-23T19:52:40.611Z",
+  "lastUpdated": "2025-10-24T19:42:56.055Z",
   "format": "10_equipos_3_grupos"
 }

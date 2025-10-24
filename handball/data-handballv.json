@@ -1,20 +1,20 @@
 {
   "tournamentName": "Handball Varonil",
   "theme": {
-    "color": "#2e8f05",
-    "bg": "#c0e8c4"
+    "color": "#177c03",
+    "bg": "#c1f2bb"
   },
   "groups": {
     "A": {
       "teams": [
-        "Dinamo",
-        "Atlético",
-        "Vikings"
+        "A1",
+        "A2",
+        "A3"
       ],
       "matches": [],
       "table": [
         {
-          "team": "Atlético",
+          "team": "A1",
           "PJ": 0,
           "G": 0,
           "E": 0,
@@ -25,7 +25,7 @@
           "Pts": 0
         },
         {
-          "team": "Dinamo",
+          "team": "A2",
           "PJ": 0,
           "G": 0,
           "E": 0,
@@ -36,7 +36,7 @@
           "Pts": 0
         },
         {
-          "team": "Vikings",
+          "team": "A3",
           "PJ": 0,
           "G": 0,
           "E": 0,
@@ -50,14 +50,14 @@
     },
     "B": {
       "teams": [
-        "Titans",
-        "Fénix",
-        "Gladiadores"
+        "B1",
+        "B2",
+        "B3"
       ],
       "matches": [],
       "table": [
         {
-          "team": "Fénix",
+          "team": "B1",
           "PJ": 0,
           "G": 0,
           "E": 0,
@@ -68,7 +68,7 @@
           "Pts": 0
         },
         {
-          "team": "Gladiadores",
+          "team": "B2",
           "PJ": 0,
           "G": 0,
           "E": 0,
@@ -79,7 +79,7 @@
           "Pts": 0
         },
         {
-          "team": "Titans",
+          "team": "B3",
           "PJ": 0,
           "G": 0,
           "E": 0,
@@ -93,14 +93,14 @@
     },
     "C": {
       "teams": [
-        "Halcones",
-        "Leones",
-        "Águilas"
+        "C1",
+        "C2",
+        "C3"
       ],
       "matches": [],
       "table": [
         {
-          "team": "Águilas",
+          "team": "C1",
           "PJ": 0,
           "G": 0,
           "E": 0,
@@ -111,7 +111,7 @@
           "Pts": 0
         },
         {
-          "team": "Halcones",
+          "team": "C2",
           "PJ": 0,
           "G": 0,
           "E": 0,
@@ -122,7 +122,7 @@
           "Pts": 0
         },
         {
-          "team": "Leones",
+          "team": "C3",
           "PJ": 0,
           "G": 0,
           "E": 0,
@@ -136,14 +136,14 @@
     },
     "D": {
       "teams": [
-        "Dragones",
-        "Cóndores",
-        "Panteras"
+        "D1",
+        "D2",
+        "D3"
       ],
       "matches": [],
       "table": [
         {
-          "team": "Cóndores",
+          "team": "D1",
           "PJ": 0,
           "G": 0,
           "E": 0,
@@ -154,7 +154,7 @@
           "Pts": 0
         },
         {
-          "team": "Dragones",
+          "team": "D2",
           "PJ": 0,
           "G": 0,
           "E": 0,
@@ -165,7 +165,7 @@
           "Pts": 0
         },
         {
-          "team": "Panteras",
+          "team": "D3",
           "PJ": 0,
           "G": 0,
           "E": 0,
@@ -216,5 +216,5 @@
       "place": ""
     }
   },
-  "lastUpdated": "2025-10-23T19:51:38.171Z"
+  "lastUpdated": "2025-10-24T18:55:33.003Z"
 }

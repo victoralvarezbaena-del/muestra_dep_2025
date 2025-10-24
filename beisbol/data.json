@@ -2,120 +2,27 @@
   "groups": {
     "A": {
       "teams": [
-        "Lobos",
-        "Panteras",
-        "Liebres",
-        "Pumas"
+        "A1",
+        "A2",
+        "A3",
+        "A4"
       ],
-      "matches": [
-        {
-          "home": "Lobos",
-          "away": "Panteras",
-          "gh": null,
-          "ga": null,
-          "hour": "8:00",
-          "place": "Campo1"
-        },
-        {
-          "home": "Liebres",
-          "away": "Pumas",
-          "gh": null,
-          "ga": null,
-          "hour": "8:00",
-          "place": "Campo1"
-        },
-        {
-          "home": "Lobos",
-          "away": "Liebres",
-          "gh": null,
-          "ga": null,
-          "hour": "8:00",
-          "place": "Campo1"
-        },
-        {
-          "home": "Panteras",
-          "away": "Pumas",
-          "gh": null,
-          "ga": null,
-          "hour": "8:00",
-          "place": "Campo1"
-        },
-        {
-          "home": "Lobos",
-          "away": "Pumas",
-          "gh": null,
-          "ga": null,
-          "hour": "8:00",
-          "place": "Campo1"
-        },
-        {
-          "home": "Panteras",
-          "away": "Liebres",
-          "gh": null,
-          "ga": null,
-          "hour": "8:00",
-          "place": "Campo1"
-        }
-      ]
+      "matches": []
     },
     "B": {
       "teams": [
-        "Toros",
-        "Quichanes",
-        "Dragones",
-        "Tigrillos"
+        "B1",
+        "B2",
+        "B3",
+        "B4"
       ],
-      "matches": [
-        {
-          "home": "Toros",
-          "away": "Quichanes",
-          "gh": null,
-          "ga": null,
-          "hour": "8:00",
-          "place": "Campo1"
-        },
-        {
-          "home": "Dragones",
-          "away": "Tigrillos",
-          "gh": null,
-          "ga": null,
-          "hour": "8:00",
-          "place": "Campo1"
-        },
-        {
-          "home": "Toros",
-          "away": "Dragones",
-          "gh": null,
-          "ga": null,
-          "hour": "8:00",
-          "place": "Campo1"
-        },
-        {
-          "home": "Quichanes",
-          "away": "Tigrillos",
-          "gh": null,
-          "ga": null,
-          "hour": "8:00",
-          "place": "Campo1"
-        },
-        {
-          "home": "Toros",
-          "away": "Tigrillos",
-          "gh": null,
-          "ga": null,
-          "hour": "8:00",
-          "place": "Campo1"
-        },
-        {
-          "home": "Quichanes",
-          "away": "Dragones",
-          "gh": null,
-          "ga": null,
-          "hour": "8:00",
-          "place": "Campo1"
-        }
-      ]
+      "matches": []
     }
+  },
+  "points": {
+    "win": 2,
+    "draw": 1,
+    "loss": 0
   },
   "knockout": {
     "sf1": {
@@ -159,5 +66,6 @@
   "theme": {
     "color": "#0284c7",
     "bg": "#f8fafc"
-  }
+  },
+  "timestamp": "2025-10-24T16:49:53.709Z"
 }

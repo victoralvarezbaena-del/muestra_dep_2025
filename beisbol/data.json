@@ -7,7 +7,56 @@
         "Equipo A3",
         "Equipo A4"
       ],
-      "matches": []
+      "matches": [
+        {
+          "home": "Equipo A1",
+          "away": "Equipo A2",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Campo 1"
+        },
+        {
+          "home": "Equipo A3",
+          "away": "Equipo A4",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Campo 1"
+        },
+        {
+          "home": "Equipo A1",
+          "away": "Equipo A3",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Campo 1"
+        },
+        {
+          "home": "Equipo A2",
+          "away": "Equipo A4",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Campo 1"
+        },
+        {
+          "home": "Equipo A1",
+          "away": "Equipo A4",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Campo 1"
+        },
+        {
+          "home": "Equipo A2",
+          "away": "Equipo A3",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Campo 1"
+        }
+      ]
     },
     "B": {
       "teams": [

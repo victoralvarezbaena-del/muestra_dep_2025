@@ -2,70 +2,119 @@
   "groups": {
     "A": {
       "teams": [
-        "Equipo A1",
-        "Equipo A2",
-        "Equipo A3",
-        "Equipo A4"
+        "Lobos",
+        "Panteras",
+        "Liebres",
+        "Pumas"
       ],
       "matches": [
         {
-          "home": "Equipo A1",
-          "away": "Equipo A2",
+          "home": "Lobos",
+          "away": "Panteras",
           "gh": null,
           "ga": null,
           "hour": "8:00",
-          "place": "Campo 1"
+          "place": "Campo1"
         },
         {
-          "home": "Equipo A3",
-          "away": "Equipo A4",
+          "home": "Liebres",
+          "away": "Pumas",
           "gh": null,
           "ga": null,
           "hour": "8:00",
-          "place": "Campo 1"
+          "place": "Campo1"
         },
         {
-          "home": "Equipo A1",
-          "away": "Equipo A3",
+          "home": "Lobos",
+          "away": "Liebres",
           "gh": null,
           "ga": null,
           "hour": "8:00",
-          "place": "Campo 1"
+          "place": "Campo1"
         },
         {
-          "home": "Equipo A2",
-          "away": "Equipo A4",
+          "home": "Panteras",
+          "away": "Pumas",
           "gh": null,
           "ga": null,
           "hour": "8:00",
-          "place": "Campo 1"
+          "place": "Campo1"
         },
         {
-          "home": "Equipo A1",
-          "away": "Equipo A4",
+          "home": "Lobos",
+          "away": "Pumas",
           "gh": null,
           "ga": null,
           "hour": "8:00",
-          "place": "Campo 1"
+          "place": "Campo1"
         },
         {
-          "home": "Equipo A2",
-          "away": "Equipo A3",
+          "home": "Panteras",
+          "away": "Liebres",
           "gh": null,
           "ga": null,
           "hour": "8:00",
-          "place": "Campo 1"
+          "place": "Campo1"
         }
       ]
     },
     "B": {
       "teams": [
-        "Equipo B1",
-        "Equipo B2",
-        "Equipo B3",
-        "Equipo B4"
+        "Toros",
+        "Quichanes",
+        "Dragones",
+        "Tigrillos"
       ],
-      "matches": []
+      "matches": [
+        {
+          "home": "Toros",
+          "away": "Quichanes",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Campo1"
+        },
+        {
+          "home": "Dragones",
+          "away": "Tigrillos",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Campo1"
+        },
+        {
+          "home": "Toros",
+          "away": "Dragones",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Campo1"
+        },
+        {
+          "home": "Quichanes",
+          "away": "Tigrillos",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Campo1"
+        },
+        {
+          "home": "Toros",
+          "away": "Tigrillos",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Campo1"
+        },
+        {
+          "home": "Quichanes",
+          "away": "Dragones",
+          "gh": null,
+          "ga": null,
+          "hour": "8:00",
+          "place": "Campo1"
+        }
+      ]
     }
   },
   "knockout": {

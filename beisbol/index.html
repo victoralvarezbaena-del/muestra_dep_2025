@@ -27,7 +27,6 @@
       background: var(--bg);
       color: var(--text);
       line-height: 1.5;
-      transition: background-color 0.3s ease;
     }
 
     header {
@@ -37,7 +36,6 @@
       position: sticky;
       top: 0;
       z-index: 10;
-      transition: all 0.3s ease;
     }
 
     .container {
@@ -63,7 +61,6 @@
       padding: 16px;
       box-shadow: 0 3px 10px rgba(0,0,0,.1);
       margin-bottom: 16px;
-      transition: all 0.3s ease;
     }
 
     .card h2 {
@@ -202,11 +199,6 @@
       padding: 12px;
     }
 
-    .semi h3, .final h3, .third h3 {
-      margin: 0 0 8px;
-      font-size: 16px;
-    }
-
     .final {
       position: relative;
       border: 2px solid var(--accent);
@@ -281,7 +273,7 @@
       color: #92400e;
     }
 
-    /* Portada con tema personalizado */
+    /* Portada */
     .cover {
       text-align: center;
       padding: 40px 20px;
@@ -292,22 +284,6 @@
       box-shadow: 0 8px 25px rgba(0,0,0,0.15);
       position: relative;
       overflow: hidden;
-    }
-
-    .cover::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" opacity="0.1"><path d="M30,30 Q50,10 70,30 T90,50 T70,70 T50,90 T30,70 T10,50 T30,30 Z" fill="white"/></svg>') repeat;
-      background-size: 80px 80px;
-    }
-
-    .cover-content {
-      position: relative;
-      z-index: 2;
     }
 
     .cover h1 {
@@ -323,17 +299,6 @@
       margin-bottom: 15px;
     }
 
-    .cover .tournament-info {
-      background: rgba(255,255,255,0.2);
-      backdrop-filter: blur(10px);
-      padding: 15px 25px;
-      border-radius: 15px;
-      font-size: 16px;
-      display: inline-block;
-      border: 1px solid rgba(255,255,255,0.3);
-      margin-bottom: 15px;
-    }
-
     .cover .update-info {
       background: rgba(255,255,255,0.2);
       backdrop-filter: blur(10px);
@@ -344,14 +309,7 @@
       border: 1px solid rgba(255,255,255,0.3);
     }
 
-    /* Iconos de béisbol */
-    .baseball-icon {
-      font-size: 48px;
-      margin-bottom: 15px;
-      display: block;
-    }
-
-    /* Botones con tema */
+    /* Botones */
     .btn-theme {
       background: var(--accent);
       color: white;
@@ -371,43 +329,13 @@
       transform: translateY(-2px);
     }
 
-    /* Criterios de desempate */
+    /* Criterios */
     .criteria-card {
       background: #f0f9ff;
       border: 2px solid #bae6fd;
       border-radius: 12px;
       padding: 20px;
       margin: 20px 0;
-    }
-
-    .criteria-card h3 {
-      color: #0369a1;
-      margin-bottom: 15px;
-    }
-
-    .criteria-list {
-      display: grid;
-      gap: 8px;
-    }
-
-    .criteria-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-    }
-
-    .criteria-number {
-      background: var(--accent);
-      color: white;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      font-weight: bold;
-      flex-shrink: 0;
     }
 
     /* Badge mercy */
@@ -420,222 +348,135 @@
       font-weight: bold;
       margin-left: 4px;
     }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      background: #f8fafc;
+      border-radius: 12px;
+      margin: 20px 0;
+    }
   </style>
 </head>
 <body>
   <header>
     <div class="container">
-      <h1 id="tournamentTitle">Torneo de Béisbol Estudiantil</h1>
-      <div class="subtitle" id="tournamentSubtitle">Resultados en tiempo real</div>
+      <h1 id="tournamentTitle">Torneo de Béisbol</h1>
+      <div class="subtitle" id="tournamentSubtitle">Cargando...</div>
     </div>
   </header>
 
   <main class="container">
     <div id="tournamentContent">
-      <div class="loading">Cargando datos del torneo...</div>
+      <div class="loading">⏳ Cargando datos del torneo...</div>
     </div>
   </main>
 
   <script>
-    // Obtener el nombre del archivo JSON de la URL
-    function getJsonFileNameFromUrl() {
-      // Opción 1: Buscar en parámetros de URL (?t=nombre.json)
-      const urlParams = new URLSearchParams(window.location.search);
-      const tournamentParam = urlParams.get('t');
-      if (tournamentParam) {
-        // Agregar .json si no lo tiene
-        return tournamentParam.includes('.') ? tournamentParam : `${tournamentParam}.json`;
+    // Configuración
+    const JSON_FILE = 'data.json';
+    
+    // Estado por defecto
+    const defaultData = {
+      tournamentName: 'Torneo de Béisbol Estudiantil',
+      subtitle: '2 Grupos + Semifinales + Final',
+      theme: { color: '#0284c7', bg: '#f8fafc' },
+      groups: {
+        A: { teams: ['Equipo A1', 'Equipo A2', 'Equipo A3', 'Equipo A4'], matches: [] },
+        B: { teams: ['Equipo B1', 'Equipo B2', 'Equipo B3', 'Equipo B4'], matches: [] }
+      },
+      knockout: {
+        sf1: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
+        sf2: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
+        final: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
+        third: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' }
       }
-      
-      // Opción 2: Buscar en parámetros de URL (?torneo=nombre.json) - compatibilidad
-      const tournamentParamOld = urlParams.get('torneo');
-      if (tournamentParamOld) {
-        return tournamentParamOld.includes('.') ? tournamentParamOld : `${tournamentParamOld}.json`;
-      }
-      
-      // Opción 3: Buscar en el pathname (/nombre-torneo.html)
-      const pathParts = window.location.pathname.split('/');
-      const fileName = pathParts[pathParts.length - 1];
-      
-      // Si el archivo HTML tiene un nombre como "futbol-v.html", buscar "data-futbol-v.json"
-      if (fileName && fileName !== 'index.html' && fileName.endsWith('.html')) {
-        const slug = fileName.replace('.html', '');
-        return `data-${slug}.json`;
-      }
-      
-      // Opción 4: Valor por defecto
-      return 'data.json';
-    }
+    };
 
-    // Mejorar la normalización para evitar el error "Cannot read properties of undefined"
-    function normalizeImported(data) {
-      // Si data es null o undefined, crear estructura vacía
-      if (!data) {
-        data = {};
-      }
-      
-      const KO_DEF = { home:'', away:'', gh:null, ga:null, winner:'', hour:'', place:'' };
-      const safe = {
-        tournamentName: data?.tournamentName || 'Torneo de Béisbol Estudiantil',
-        subtitle: data?.subtitle || '2 Grupos + Semifinales + Final',
-        theme: Object.assign({ color:'#0284c7', bg:'#f8fafc' }, data?.theme || {}),
-        groups: { A:{teams:[],matches:[]}, B:{teams:[],matches:[]} },
-        knockout: {
-          sf1:  Object.assign({}, KO_DEF, data?.knockout?.sf1 || {}),
-          sf2:  Object.assign({}, KO_DEF, data?.knockout?.sf2 || {}),
-          final:Object.assign({}, KO_DEF, data?.knockout?.final || {}),
-          third:Object.assign({}, KO_DEF, data?.knockout?.third || {})
-        },
-        updatedAtLocal: data?.updatedAtLocal || ''
-      };
-      
-      ['A','B'].forEach(k => {
-        const g = (data?.groups && data.groups[k]) ? data.groups[k] : {};
-        const teams = Array.isArray(g.teams) ? g.teams.filter(Boolean) : [];
-        const matches = Array.isArray(g.matches) ? g.matches.filter(Boolean).map(mm => {
-          // Asegurar que cada match tenga la estructura correcta
-          const match = mm || {};
-          return Object.assign(
-            { home:'', away:'', gh:null, ga:null, hour:'', place:'' }, 
-            match
-          );
-        }) : [];
-        safe.groups[k] = { teams, matches };
-      });
-      
-      return safe;
-    }
-
-    // Cargar datos del torneo con mejor manejo de errores
+    // Cargar datos del torneo
     async function loadTournamentData() {
-      const fileName = getJsonFileNameFromUrl();
+      console.log('🔍 Buscando archivo:', JSON_FILE);
       
       try {
-        document.getElementById('tournamentContent').innerHTML = '<div class="loading">Cargando datos del torneo...</div>';
+        const response = await fetch(JSON_FILE + '?t=' + Date.now());
         
-        const response = await fetch(fileName, { cache: 'no-store' });
         if (!response.ok) {
-          throw new Error(`No se pudo cargar el archivo: ${fileName} (Error ${response.status})`);
+          throw new Error(`Archivo no encontrado: ${JSON_FILE} (Error ${response.status})`);
         }
         
-        let data = await response.json();
-        data = normalizeImported(data);
-        
-        // Aplicar tema
-        applyTheme(data.theme);
-        
-        // Actualizar título
-        document.getElementById('tournamentTitle').textContent = data.tournamentName || 'Torneo de Béisbol Estudiantil';
-        document.getElementById('tournamentSubtitle').textContent = data.subtitle || 'Resultados en tiempo real';
-        
-        // Renderizar contenido
+        const data = await response.json();
+        console.log('✅ Datos cargados:', data);
         renderTournament(data);
         
       } catch (error) {
-        console.error('Error cargando torneo:', error);
-        document.getElementById('tournamentContent').innerHTML = `
-          <div class="error">
-            <h3>Error al cargar el torneo</h3>
-            <p>${error.message}</p>
-            <p>Archivo intentado: <strong>${fileName}</strong></p>
-            <p style="margin-top: 10px; font-size: 14px;">
-              Asegúrate de que el archivo JSON existe y está en el mismo directorio.
-            </p>
-            <div style="margin-top: 15px; padding: 10px; background: #fef2f2; border-radius: 8px; font-size: 14px;">
-              <strong>Posibles soluciones:</strong>
-              <ul style="text-align: left; margin: 10px 0; padding-left: 20px;">
-                <li>Verifica que el archivo <strong>${fileName}</strong> existe en el servidor</li>
-                <li>Si usas GitHub Pages, asegúrate de que el archivo esté en el repositorio</li>
-                <li>Verifica que el nombre del archivo sea correcto (mayúsculas/minúsculas)</li>
-              </ul>
-            </div>
-            <a href="administrador.html" class="btn-theme">📊 Ir al Administrador</a>
-          </div>
-        `;
+        console.error('❌ Error cargando torneo:', error);
+        showEmptyState();
       }
     }
 
-    // Aplicar tema mejorado
+    // Mostrar estado vacío
+    function showEmptyState() {
+      const html = `
+        <div class="empty-state">
+          <div style="font-size: 48px; margin-bottom: 20px;">⚾</div>
+          <h2>Torneo de Béisbol</h2>
+          <p style="margin: 15px 0; color: var(--muted);">
+            El torneo aún no ha comenzado o no hay datos disponibles.
+          </p>
+          <div style="margin-top: 20px;">
+            <a href="admin.html" class="btn-theme">📊 Configurar Torneo</a>
+          </div>
+          <div style="margin-top: 15px; font-size: 14px; color: var(--muted);">
+            <strong>Nota:</strong> Los datos aparecerán aquí una vez que se configuren en el panel de administración.
+          </div>
+        </div>
+      `;
+      document.getElementById('tournamentContent').innerHTML = html;
+      document.getElementById('tournamentTitle').textContent = 'Torneo de Béisbol';
+      document.getElementById('tournamentSubtitle').textContent = 'Próximamente';
+    }
+
+    // Aplicar tema
     function applyTheme(theme) {
       if (!theme) return;
-      
-      const accentColor = theme.color || '#0284c7';
-      const bgColor = theme.bg || '#f8fafc';
-      
-      // Aplicar colores a las variables CSS
-      document.documentElement.style.setProperty('--accent', accentColor);
-      document.documentElement.style.setProperty('--bg', bgColor);
-      
-      // Aplicar color de fondo al body
-      document.body.style.background = bgColor;
-      
-      // Aplicar gradiente al header basado en el color de acento
-      const headerGradient = `linear-gradient(90deg, color-mix(in srgb, ${accentColor} 15%, white), color-mix(in srgb, ${accentColor} 8%, white))`;
-      const header = document.querySelector('header');
-      if (header) {
-        header.style.background = headerGradient;
-      }
+      document.documentElement.style.setProperty('--accent', theme.color || '#0284c7');
+      document.documentElement.style.setProperty('--bg', theme.bg || '#f8fafc');
     }
 
     // Calcular tabla de posiciones para béisbol
     function computeTableBaseball(matches, teams) {
       const table = Object.fromEntries(teams.map(team => [team, {
-        team, 
-        PJ: 0, G: 0, P: 0, 
-        CA: 0, CP: 0,  // Carreras Anotadas / Permitidas
-        Dif: 0, 
-        Pct: 0  // Porcentaje de victorias
+        team, PJ: 0, G: 0, P: 0, CA: 0, CP: 0, Dif: 0, Pct: 0
       }]));
       
-      matches.filter(m => m && typeof m === 'object').forEach(match => {
+      matches.forEach(match => {
         if (match.gh == null || match.ga == null) return;
         
         const homeTeam = table[match.home];
         const awayTeam = table[match.away];
         if (!homeTeam || !awayTeam) return;
         
-        // Actualizar partidos jugados
-        homeTeam.PJ++;
-        awayTeam.PJ++;
+        homeTeam.PJ++; awayTeam.PJ++;
+        homeTeam.CA += match.gh; homeTeam.CP += match.ga;
+        awayTeam.CA += match.ga; awayTeam.CP += match.gh;
         
-        // Actualizar carreras
-        homeTeam.CA += match.gh;  // Carreras anotadas como local
-        homeTeam.CP += match.ga;  // Carreras permitidas como local
-        awayTeam.CA += match.ga;  // Carreras anotadas como visitante  
-        awayTeam.CP += match.gh;  // Carreras permitidas como visitante
-        
-        // Determinar resultado (sin empates en béisbol)
         if (match.gh > match.ga) {
-          homeTeam.G++;
-          awayTeam.P++;
+          homeTeam.G++; awayTeam.P++;
         } else if (match.gh < match.ga) {
-          awayTeam.G++;
-          homeTeam.P++;
+          awayTeam.G++; homeTeam.P++;
         }
-        // En béisbol no hay empates en torneos, se juega extra innings
       });
       
-      // Calcular diferencia y porcentaje
       teams.forEach(team => {
         table[team].Dif = table[team].CA - table[team].CP;
         table[team].Pct = table[team].PJ > 0 ? (table[team].G / table[team].PJ) : 0;
       });
       
-      // Ordenar por criterios de béisbol mexicano
       return Object.values(table).sort((a, b) => {
-        // 1. Mejor porcentaje de victorias
         if (b.Pct !== a.Pct) return b.Pct - a.Pct;
-        
-        // 2. Mejor diferencia de carreras
         if (b.Dif !== a.Dif) return b.Dif - a.Dif;
-        
-        // 3. Más carreras anotadas
         if (b.CA !== a.CA) return b.CA - a.CA;
-        
-        // 4. Menos carreras permitidas
         if (a.CP !== b.CP) return a.CP - b.CP;
-        
-        // 5. Orden alfabético como último recurso
         return a.team.localeCompare(b.team);
       });
     }
@@ -646,16 +487,14 @@
       return (diff >= 15) || (diff >= 10);
     }
 
-    // Mejorar la función renderMatch para mayor robustez
+    // Renderizar partido
     function renderMatch(match, defaultHome, defaultAway) {
-      // Asegurar que match siempre sea un objeto
       const _m = Object.assign({gh:null,ga:null,hour:'',place:''}, match || {});
       const hasResult = _m.gh !== null && _m.ga !== null;
       const homeWinner = hasResult && _m.gh > _m.ga;
       const awayWinner = hasResult && _m.gh < _m.ga;
       const mercyApplied = hasResult && checkMercyRule(_m.gh, _m.ga);
       
-      // Usar nombres por defecto si no están definidos
       const homeName = _m.home || defaultHome || 'Equipo Local';
       const awayName = _m.away || defaultAway || 'Equipo Visitante';
       
@@ -681,64 +520,49 @@
       `;
     }
 
-    // Renderizar portada con tema
+    // Renderizar portada
     function renderCover(data) {
       const theme = data.theme || {};
-      const accentColor = theme.color || '#0284c7';
       const updatedAt = data.updatedAtLocal || '';
       
       let updateInfo = '';
       if (updatedAt) {
-        updateInfo = `
-          <div class="update-info">
-            📅 Última actualización: ${updatedAt}
-          </div>
-        `;
+        updateInfo = `<div class="update-info">📅 Última actualización: ${updatedAt}</div>`;
       }
       
       return `
-        <div class="cover" style="background: linear-gradient(135deg, ${accentColor}, color-mix(in srgb, ${accentColor} 80%, black));">
-          <div class="cover-content">
-            <span class="baseball-icon">⚾</span>
-            <h1>${data.tournamentName || 'Torneo de Béisbol Estudiantil'}</h1>
-            <div class="subtitle">${data.subtitle || '2 Grupos + Semifinales + Final'}</div>
-            <div class="tournament-info">
-              🏆 Sistema de Competencia Oficial
-            </div>
-            ${updateInfo}
-            <div style="margin-top: 20px;">
-              <a href="administrador.html" class="btn-theme">📊 Panel de Administración</a>
-            </div>
+        <div class="cover" style="background: linear-gradient(135deg, ${theme.color || '#0284c7'}, color-mix(in srgb, ${theme.color || '#0284c7'} 80%, black));">
+          <h1>${data.tournamentName || 'Torneo de Béisbol'}</h1>
+          <div class="subtitle">${data.subtitle || '2 Grupos + Semifinales + Final'}</div>
+          ${updateInfo}
+          <div style="margin-top: 20px;">
+            <a href="admin.html" class="btn-theme">📊 Panel de Administración</a>
           </div>
         </div>
       `;
     }
 
-    // Renderizar criterios de desempate
+    // Renderizar criterios
     function renderCriteria() {
       return `
         <div class="criteria-card">
           <h3>🏆 Criterios Oficiales de Desempate</h3>
-          <div class="criteria-list">
-            <div class="criteria-item">
-              <div class="criteria-number">1</div>
+          <div style="display: grid; gap: 8px;">
+            <div style="display: flex; align-items: flex-start; gap: 10px;">
+              <div style="background: var(--accent); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">1</div>
               <div>Mejor porcentaje de victorias (G/PJ)</div>
             </div>
-            <div class="criteria-item">
-              <div class="criteria-number">2</div>
+            <div style="display: flex; align-items: flex-start; gap: 10px;">
+              <div style="background: var(--accent); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">2</div>
               <div>Mejor diferencia de carreras (CA - CP)</div>
             </div>
-            <div class="criteria-item">
-              <div class="criteria-number">3</div>
+            <div style="display: flex; align-items: flex-start; gap: 10px;">
+              <div style="background: var(--accent); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">3</div>
               <div>Más carreras anotadas (CA)</div>
             </div>
-            <div class="criteria-item">
-              <div class="criteria-number">4</div>
+            <div style="display: flex; align-items: flex-start; gap: 10px;">
+              <div style="background: var(--accent); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">4</div>
               <div>Menos carreras permitidas (CP)</div>
-            </div>
-            <div class="criteria-item">
-              <div class="criteria-number">5</div>
-              <div>Orden alfabético</div>
             </div>
           </div>
           <div style="margin-top: 15px; padding: 10px; background: #fef2f2; border-radius: 8px;">
@@ -748,7 +572,7 @@
       `;
     }
 
-    // Renderizar fase de grupos
+    // Renderizar grupos
     function renderGroups(groups) {
       let html = '<div class="card"><h2>Fase de Grupos</h2><div class="groups">';
       
@@ -758,65 +582,51 @@
         
         const teams = group.teams;
         const matches = group.matches || [];
+        const hasMatches = matches.some(m => m.gh != null || m.ga != null);
         
-        html += `
-          <div class="groupBox group${groupKey}">
-            <h3>Grupo ${groupKey}</h3>
-            <div class="matches">
-        `;
+        html += `<div class="groupBox group${groupKey}"><h3>Grupo ${groupKey}</h3>`;
         
-        // Partidos
-        matches.filter(m => m && typeof m === 'object').forEach(match => {
-          html += renderMatch(match, match.home, match.away);
-        });
-        
-        html += `</div>`;
-        
-        // Tabla de posiciones
-        const table = computeTableBaseball(matches, teams);
-        html += `
-          <div class="table-wrap">
+        if (hasMatches) {
+          html += '<div class="matches">';
+          matches.forEach(match => {
+            html += renderMatch(match, match.home, match.away);
+          });
+          html += '</div>';
+          
+          const table = computeTableBaseball(matches, teams);
+          html += `
             <table>
               <thead>
-                <tr>
-                  <th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>P</th>
-                  <th>CA</th><th>CP</th><th>Dif</th><th>Pct</th>
-                </tr>
+                <tr><th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>P</th><th>CA</th><th>CP</th><th>Dif</th><th>Pct</th></tr>
               </thead>
               <tbody>
                 ${table.map((row, index) => `
                   <tr class="${index === 0 ? 'first' : index === 1 ? 'second' : ''}">
-                    <td class="pos">${index + 1}</td>
-                    <td>${row.team}</td>
-                    <td>${row.PJ}</td>
-                    <td>${row.G}</td>
-                    <td>${row.P</td>
-                    <td>${row.CA}</td>
-                    <td>${row.CP}</td>
-                    <td>${row.Dif}</td>
-                    <td class="pct">${row.Pct.toFixed(3)}</td>
+                    <td class="pos">${index + 1}</td><td>${row.team}</td><td>${row.PJ}</td><td>${row.G}</td>
+                    <td>${row.P}</td><td>${row.CA}</td><td>${row.CP}</td><td>${row.Dif}</td><td class="pct">${row.Pct.toFixed(3)}</td>
                   </tr>
                 `).join('')}
               </tbody>
             </table>
-          </div>
-        `;
+          `;
+        } else {
+          html += '<div style="text-align: center; padding: 20px; color: var(--muted);">Partidos por jugar</div>';
+        }
         
-        html += `</div>`;
+        html += '</div>';
       });
       
       html += '</div></div>';
       return html;
     }
 
-    // Renderizar fase eliminatoria
+    // Renderizar eliminatoria
     function renderKnockout(knockout) {
       if (!knockout) return '';
       
       const k = knockout;
       let html = '';
       
-      // Mostrar campeón destacado si existe
       if (k.final && k.final.winner) {
         html += `
           <div class="champion">
@@ -832,41 +642,22 @@
           <div class="bracket">
             <div class="semi">
               <h3>Semifinal 1 — A1 vs B2</h3>
-              ${renderMatch(
-                k.sf1, 
-                k.sf1.home || 'A1', 
-                k.sf1.away || 'B2'
-              )}
+              ${renderMatch(k.sf1, k.sf1.home || 'A1', k.sf1.away || 'B2')}
               ${k.sf1.winner ? `<div class="info"><strong>Ganador: ${k.sf1.winner}</strong></div>` : ''}
             </div>
-            
             <div class="semi">
               <h3>Semifinal 2 — B1 vs A2</h3>
-              ${renderMatch(
-                k.sf2, 
-                k.sf2.home || 'B1', 
-                k.sf2.away || 'A2'
-              )}
+              ${renderMatch(k.sf2, k.sf2.home || 'B1', k.sf2.away || 'A2')}
               ${k.sf2.winner ? `<div class="info"><strong>Ganador: ${k.sf2.winner}</strong></div>` : ''}
             </div>
-            
             <div class="third">
               <h3>Tercer Lugar</h3>
-              ${renderMatch(
-                k.third, 
-                k.third.home || 'Perdedor SF1', 
-                k.third.away || 'Perdedor SF2'
-              )}
+              ${renderMatch(k.third, k.third.home || 'Perdedor SF1', k.third.away || 'Perdedor SF2')}
               ${k.third.winner ? `<div class="info"><strong>Tercer Lugar: ${k.third.winner}</strong></div>` : ''}
             </div>
-            
             <div class="final">
               <h3>Final</h3>
-              ${renderMatch(
-                k.final, 
-                k.final.home || 'Ganador SF1', 
-                k.final.away || 'Ganador SF2'
-              )}
+              ${renderMatch(k.final, k.final.home || 'Ganador SF1', k.final.away || 'Ganador SF2')}
               ${k.final.winner ? `<div class="info"><strong>🏆 Campeón: ${k.final.winner}</strong></div>` : ''}
             </div>
           </div>
@@ -876,36 +667,27 @@
       return html;
     }
 
-    // Renderizar todo el torneo
+    // Renderizar todo
     function renderTournament(data) {
-      let html = '';
-      
-      // Portada con tema
-      html += renderCover(data);
-      
-      // Criterios de desempate
+      let html = renderCover(data);
       html += renderCriteria();
       
-      // Fase de grupos
       if (data.groups) {
         html += renderGroups(data.groups);
       }
       
-      // Fase eliminatoria
       if (data.knockout) {
         html += renderKnockout(data.knockout);
       }
       
       document.getElementById('tournamentContent').innerHTML = html;
+      document.getElementById('tournamentTitle').textContent = data.tournamentName || 'Torneo de Béisbol';
+      document.getElementById('tournamentSubtitle').textContent = data.subtitle || 'En progreso';
+      applyTheme(data.theme);
     }
 
-    // Inicialización
-    function init() {
-      loadTournamentData();
-    }
-
-    // Iniciar cuando el DOM esté listo
-    document.addEventListener('DOMContentLoaded', init);
+    // Inicializar
+    document.addEventListener('DOMContentLoaded', loadTournamentData);
   </script>
 </body>
 </html>

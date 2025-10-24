@@ -1,234 +1,521 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Visor — Torneo de Béisbol</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Torneo de Béisbol — 2 Grupos + Semifinales</title>
   <style>
-    :root { --accent:#0284c7; --bg:#f8fafc; --panel:#e2e8f0; --card:#ffffff; --muted:#475569; --text:#0f172a; --ok:#16a34a; --bad:#dc2626; }
-    *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
-    header{padding:20px 16px;border-bottom:2px solid #cbd5e1;background:linear-gradient(90deg,var(--panel),#f1f5f9);position:sticky;top:0;z-index:10}
+    :root{ --bg:#f8fafc; --panel:#e2e8f0; --card:#ffffff; --muted:#475569; --text:#0f172a; --accent:#0284c7; --ok:#16a34a; --bad:#dc2626; --ring:0 0 0 2px var(--accent) inset; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    header{padding:20px 16px;border-bottom:2px solid #cbd5e1;background:linear-gradient(90deg,#e2e8f0,#f1f5f9);position:sticky;top:0;z-index:10}
     .container{max-width:1200px;margin:0 auto;padding:16px}
-    h1{margin:0;font-size:clamp(22px,3.2vw,34px)} .subtitle{color:var(--muted);margin-top:4px}
-    .card{background:var(--card);border:1px solid #cbd5e1;border-radius:18px;padding:16px;box-shadow:0 3px 10px rgba(0,0,0,.1);margin-bottom:16px}
-    .groups{display:grid;gap:12px} @media(min-width:700px){.groups{grid-template-columns:1fr 1fr}}
-    .groupA{background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.45)} .groupB{background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.45)}
+    h1{margin:0;font-size:clamp(22px,3.2vw,34px)}
+    .subtitle{color:var(--muted)}
+
+    .grid{display:grid;gap:16px}
+    @media(min-width:1100px){.grid{grid-template-columns:420px 1fr}}
+
+    .card{background:var(--card);border:1px solid #cbd5e1;border-radius:18px;padding:16px;box-shadow:0 3px 10px rgba(0,0,0,.1)}
+    .card h2{margin:0 0 12px;font-size:18px}
+    label{display:block;margin:8px 0 6px;color:var(--muted)}
+    textarea,input[type="text"],input[type="number"],input[type="url"],select,input[type="file"],input[type="color"]{width:100%;background:#f8fafc;color:var(--text);border:1px solid #cbd5e1;border-radius:12px;padding:10px 12px;outline:none}
+    textarea:focus,input:focus,select:focus{box-shadow:var(--ring);border-color:transparent}
+    textarea{min-height:96px;white-space:pre}
+    button{background:linear-gradient(180deg,var(--accent),#0ea5e9);color:#fff;border:none;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer}
+    button.ghost{background:transparent;color:var(--accent);border:1px solid #cbd5e1}
+    button:disabled{opacity:0.6;cursor:not-allowed}
+    .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .spacer{flex:1}
+
+    .groups{display:grid;gap:12px}
+    @media(min-width:700px){.groups{grid-template-columns:1fr 1fr}}
+
+    /* Colores por grupo */
+    .groupA{background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.45)}
+    .groupB{background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.45)}
+
     .groupBox{padding:12px;border-radius:12px;margin-bottom:12px}
+
     .matches{display:grid;gap:10px;margin-top:10px}
     .match{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;background:#f8fafc;border:1px solid #cbd5e1;border-radius:12px;padding:10px}
-    .team{display:flex;align-items:center;gap:10px} .dash{opacity:.6}
+    .team{display:flex;align-items:center;gap:10px}
+    .team input{max-width:80px;text-align:center}
+    .dash{opacity:.6}
+    .info{display:flex;gap:8px;margin-top:6px}
+    .info input{background:#f8fafc;border:1px solid #cbd5e1;border-radius:10px;padding:8px 10px;font-size:14px}
+
     table{width:100%;border-collapse:collapse;margin-top:10px}
     th,td{padding:8px 10px;border-bottom:1px solid #cbd5e1;text-align:right}
-    th:first-child,td:first-child{text-align:left} thead th{font-size:12px;color:var(--muted);font-weight:600}
-    tbody tr:hover{background:#e2e8f0} .pos{font-variant-numeric:tabular-nums;color:var(--muted)} .pts{font-weight:800} .first{background:rgba(34,197,94,.15)}
-    .bracket{display:grid;gap:12px;margin-top:16px} @media(min-width:900px){.bracket{grid-template-columns:1fr 1fr}}
-    .semi,.final,.third{background:#fff;border:1px solid #cbd5e1;border-radius:12px;padding:12px}
-    .final{position:relative;border:2px solid var(--accent);box-shadow:0 0 0 4px rgba(2,132,199,.12) inset;overflow:hidden}
-    .final::before{content:'FINAL 🏆';position:absolute;top:12px;right:-48px;transform:rotate(45deg);background:var(--accent);color:#fff;font-weight:700;font-size:14px;padding:4px 48px;box-shadow:0 2px 6px rgba(0,0,0,.15);opacity:.9}
-    .winner{color:var(--ok);font-weight:800}
-    .loading,.error{text-align:center;padding:20px;color:var(--muted)} .error{color:var(--bad)}
-    .champion{text-align:center;padding:20px;background:linear-gradient(135deg,#fef3c7,#fde68a);border-radius:18px;margin:20px 0;border:2px solid #f59e0b}
-    .champion h2{color:#92400e;margin-bottom:10px} .champion .team-name{font-size:24px;font-weight:bold;color:#92400e}
-    .cover{text-align:center;padding:40px 20px;margin-bottom:30px;border-radius:18px;background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 80%, black));color:#fff;box-shadow:0 8px 25px rgba(0,0,0,.15);position:relative;overflow:hidden}
-    .cover h1{font-size:clamp(28px,4vw,48px);margin-bottom:10px} .cover .subtitle{color:rgba(255,255,255,.9);font-size:clamp(16px,2vw,20px);margin-bottom:15px}
-    .cover .update-info{background:rgba(255,255,255,.2);backdrop-filter:blur(10px);padding:8px 16px;border-radius:20px;font-size:14px;display:inline-block;border:1px solid rgba(255,255,255,.3)}
-    .mercyTag{display:inline-block;font-size:12px;background:#fde68a;border:1px solid #f59e0b;color:#92400e;padding:2px 8px;border-radius:999px;margin-left:8px;font-weight:700}
+    th:first-child,td:first-child{text-align:left}
+    thead th{font-size:12px;color:var(--muted);font-weight:600}
+    tbody tr:hover{background:#e2e8f0}
+    .pos{font-variant-numeric:tabular-nums;color:var(--muted)}
+    .pts{font-weight:800}
+    .first{background:rgba(34,197,94,.15)}
+    .second{background:rgba(251,191,36,.15)}
+    .note{font-size:12px;color:var(--muted)}
+
+    /* Knockout */
+    .bracket{display:grid;gap:12px;margin-top:16px}
+    @media(min-width:900px){.bracket{grid-template-columns:1fr 1fr}}
+    .semi,.final,.third{background:#ffffff;border:1px solid #cbd5e1;border-radius:12px;padding:12px}
+    .semi h3,.final h3,.third h3{margin:0 0 8px;font-size:16px}
+
+    /* Estado de publicación */
+    .status{font-size:12px;padding:4px 8px;border-radius:6px;margin-left:8px}
+    .status.success{background:#dcfce7;color:#166534;border:1px solid #bbf7d0}
+    .status.error{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
+    .status.loading{background:#eff6ff;color:#1e40af;border:1px solid#dbeafe}
+
+    /* Import/Export section */
+    .import-export{background:#f0f9ff;border:2px dashed #bae6fd;border-radius:12px;padding:16px;margin-top:12px}
+    .import-export h3{margin:0 0 12px;font-size:16px;color:#0369a1}
+    
+    /* Resaltar Final */
+    .final {
+      position: relative;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 0 4px rgba(2,132,199,.12) inset;
+      background: #ffffff;
+      overflow: hidden;
+    }
+    .final h3{ color: var(--accent); }
+
+    .final::before {
+      content: 'FINAL 🏆';
+      position: absolute;
+      top: 12px;
+      right: -48px;
+      transform: rotate(45deg);
+      background: var(--accent);
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 4px 48px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      opacity: 0.9;
+    }
+    
+    /* Regla Mercy */
+    .mercy-rule {
+      background: #fef3c7;
+      border: 1px solid #f59e0b;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-top: 8px;
+      font-size: 12px;
+      color: #92400e;
+    }
+    
+    /* Ganador destacado */
+    .winner {
+      background: linear-gradient(135deg, rgba(34,197,94,.15), rgba(251,191,36,.15));
+      border: 2px solid rgba(34,197,94,.5);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .winner::after {
+      content: '🏆 CAMPEÓN';
+      position: absolute;
+      top: 8px;
+      right: -40px;
+      transform: rotate(45deg);
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+      color: white;
+      font-weight: 700;
+      font-size: 12px;
+      padding: 2px 40px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    
+    /* Tercer lugar */
+    .third-place {
+      background: linear-gradient(135deg, rgba(251,191,36,.1), rgba(245,158,11,.1));
+      border: 2px solid rgba(251,191,36,.5);
+    }
   </style>
 </head>
 <body>
   <header>
     <div class="container">
-      <h1 id="tournamentTitle">Torneo de Béisbol</h1>
-      <div class="subtitle" id="tournamentSubtitle">Visualización de resultados</div>
+      <h1 id="tournamentTitle">Torneo de Béisbol — 2 Grupos + Semifinales</h1>
+      <div class="subtitle">Fase de grupos todos contra todos + Semifinales, Final y Tercer Lugar</div>
     </div>
   </header>
 
-  <main class="container">
-    <div id="tournamentContent"><div class="loading">Cargando datos del torneo...</div></div>
+  <main class="container grid">
+    <section class="card">
+      <h2>Grupos</h2>
+      <div id="groupsRoot"></div>
+    </section>
+
+    <section class="card">
+      <h2>Fase Final</h2>
+      <div class="bracket">
+        <div class="semi">
+          <h3>Semifinal 1 — A1 vs B2</h3>
+          <div class="row">
+            <div class="team" style="flex:1"><span id="sf1h">A1</span></div>
+            <div class="team" style="justify-content:center">
+              <span id="sf1gh" style="font-weight:700; min-width:24px; text-align:center">-</span> 
+              <span class="dash">—</span>
+              <span id="sf1ga" style="font-weight:700; min-width:24px; text-align:center">-</span>
+            </div>
+            <div class="team" style="flex:1;justify-content:flex-end"><span id="sf1a">B2</span></div>
+          </div>
+          <div class="row" style="margin-top:6px; font-size:14px; color:var(--muted)">
+            <span id="sf1HourPlace">-</span>
+          </div>
+          <div class="mercy-rule">
+            <strong>Regla Mercy:</strong> Diferencia de 15 carreras en la 3a entrada o 10 carreras en la 4a entrada
+          </div>
+        </div>
+
+        <div class="semi">
+          <h3>Semifinal 2 — B1 vs A2</h3>
+          <div class="row">
+            <div class="team" style="flex:1"><span id="sf2h">B1</span></div>
+            <div class="team" style="justify-content:center">
+              <span id="sf2gh" style="font-weight:700; min-width:24px; text-align:center">-</span> 
+              <span class="dash">—</span>
+              <span id="sf2ga" style="font-weight:700; min-width:24px; text-align:center">-</span>
+            </div>
+            <div class="team" style="flex:1;justify-content:flex-end"><span id="sf2a">A2</span></div>
+          </div>
+          <div class="row" style="margin-top:6px; font-size:14px; color:var(--muted)">
+            <span id="sf2HourPlace">-</span>
+          </div>
+          <div class="mercy-rule">
+            <strong>Regla Mercy:</strong> Diferencia de 15 carreras en la 3a entrada o 10 carreras en la 4a entrada
+          </div>
+        </div>
+
+        <div class="third" id="thirdPlaceMatch">
+          <h3>Tercer Lugar</h3>
+          <div class="row">
+            <div class="team" style="flex:1"><span id="thirdh">Perdedor SF1</span></div>
+            <div class="team" style="justify-content:center">
+              <span id="thirdgh" style="font-weight:700; min-width:24px; text-align:center">-</span> 
+              <span class="dash">—</span>
+              <span id="thirdga" style="font-weight:700; min-width:24px; text-align:center">-</span>
+            </div>
+            <div class="team" style="flex:1;justify-content:flex-end"><span id="thirda">Perdedor SF2</span></div>
+          </div>
+          <div class="row" style="margin-top:6px; font-size:14px; color:var(--muted)">
+            <span id="thirdHourPlace">-</span>
+          </div>
+          <div class="mercy-rule">
+            <strong>Regla Mercy:</strong> Diferencia de 15 carreras en la 3a entrada o 10 carreras en la 4a entrada
+          </div>
+        </div>
+
+        <div class="final" id="finalMatch">
+          <h3>Final</h3>
+          <div class="row">
+            <div class="team" style="flex:1"><span id="fih">Ganador SF1</span></div>
+            <div class="team" style="justify-content:center">
+              <span id="figh" style="font-weight:700; min-width:24px; text-align:center">-</span> 
+              <span class="dash">—</span>
+              <span id="figa" style="font-weight:700; min-width:24px; text-align:center">-</span>
+            </div>
+            <div class="team" style="flex:1;justify-content:flex-end"><span id="fia">Ganador SF2</span></div>
+          </div>
+          <div class="row" style="margin-top:6px; font-size:14px; color:var(--muted)">
+            <span id="fiHourPlace">-</span>
+          </div>
+          <div class="mercy-rule">
+            <strong>Regla Mercy:</strong> Diferencia de 15 carreras en la 3a entrada o 10 carreras en la 4a entrada
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <script>
-    function getJsonFileNameFromUrl(){
-      const p = new URLSearchParams(location.search).get('t');
-      if (p) return p.includes('.')?p:`${p}.json`;
-      return 'data.json';
+<script>
+// ===== CONFIGURACIÓN =====
+const DATA_URL = './data.json';
+const $ = (selector, root = document) => root.querySelector(selector);
+
+// ===== ESTADO =====
+let state = {
+  groups: {
+    A: { teams: ['A1', 'A2', 'A3', 'A4'], matches: [] },
+    B: { teams: ['B1', 'B2', 'B3', 'B4'], matches: [] }
+  },
+  points: { win: 2, draw: 1, loss: 0 },
+  knockout: {
+    sf1: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
+    sf2: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
+    final: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
+    third: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' }
+  },
+  tournamentName: '',
+  theme: { color: '#0284c7', bg: '#f8fafc' }
+};
+
+// ===== HELPERS =====
+function valInt(v) {
+  if (v === '' || v == null) return null;
+  const n = parseInt(v, 10);
+  return Number.isFinite(n) && n >= 0 ? n : null;
+}
+
+function computeTable(matches, teams) {
+  const table = Object.fromEntries(teams.map(team => [team, {
+    team, PJ: 0, G: 0, E: 0, P: 0, CF: 0, CC: 0, DC: 0, Pts: 0
+  }]));
+  
+  const cfg = state.points;
+  
+  matches.forEach(match => {
+    if (match.gh == null || match.ga == null) return;
+    
+    const homeTeam = table[match.home];
+    const awayTeam = table[match.away];
+    if (!homeTeam || !awayTeam) return;
+    
+    // Actualizar partidos jugados
+    homeTeam.PJ++;
+    awayTeam.PJ++;
+    
+    // Actualizar carreras
+    homeTeam.CF += match.gh;
+    homeTeam.CC += match.ga;
+    awayTeam.CF += match.ga;
+    awayTeam.CC += match.gh;
+    
+    // Determinar resultado
+    if (match.gh > match.ga) {
+      homeTeam.G++;
+      awayTeam.P++;
+      homeTeam.Pts += cfg.win;
+      awayTeam.Pts += cfg.loss;
+    } else if (match.gh < match.ga) {
+      awayTeam.G++;
+      homeTeam.P++;
+      awayTeam.Pts += cfg.win;
+      homeTeam.Pts += cfg.loss;
+    } else {
+      homeTeam.E++;
+      awayTeam.E++;
+      homeTeam.Pts += cfg.draw;
+      awayTeam.Pts += cfg.draw;
     }
-
-    function applyTheme(theme){
-      if (!theme) return;
-      const accent = theme.color || '#0284c7';
-      const bg = theme.bg || '#f8fafc';
-      document.documentElement.style.setProperty('--accent', accent);
-      document.documentElement.style.setProperty('--bg', bg);
-      document.body.style.background = bg;
-      const header = document.querySelector('header');
-      header.style.background = `linear-gradient(90deg, color-mix(in srgb, ${accent} 15%, white), color-mix(in srgb, ${accent} 8%, white))`;
+  });
+  
+  // Calcular diferencia de carreras
+  teams.forEach(team => {
+    table[team].DC = table[team].CF - table[team].CC;
+  });
+  
+  // Ordenar por criterios de desempate de béisbol mexicano
+  return Object.values(table).sort((a, b) => {
+    // 1. Puntos
+    if (b.Pts !== a.Pts) return b.Pts - a.Pts;
+    // 2. Diferencia de carreras
+    if (b.DC !== a.DC) return b.DC - a.DC;
+    // 3. Carreras a favor
+    if (b.CF !== a.CF) return b.CF - a.CF;
+    // 4. Enfrentamiento directo (simplificado)
+    const directMatch = matches.find(m => 
+      (m.home === a.team && m.away === b.team) || 
+      (m.home === b.team && m.away === a.team)
+    );
+    if (directMatch && directMatch.gh != null && directMatch.ga != null) {
+      if (directMatch.home === a.team && directMatch.gh > directMatch.ga) return -1;
+      if (directMatch.home === b.team && directMatch.gh < directMatch.ga) return -1;
+      if (directMatch.home === a.team && directMatch.gh < directMatch.ga) return 1;
+      if (directMatch.home === b.team && directMatch.gh > directMatch.ga) return 1;
     }
+    // 5. Alfabético como último recurso
+    return a.team.localeCompare(b.team);
+  });
+}
 
-    // ---- BEISBOL: tabla y desempates ----
-    function computeBaseballTable(matches, teams){
-      const table = Object.fromEntries(teams.map(t=>[t,{team:t,JJ:0,G:0,P:0,CF:0,CC:0,DIF:0,PCT:0}]));
-      (matches||[]).forEach(m=>{
-        if (!m || m.gh==null || m.ga==null) return;
-        const h=table[m.home], a=table[m.away]; if(!h||!a) return;
-        h.JJ++; a.JJ++; h.CF+=m.gh; h.CC+=m.ga; a.CF+=m.ga; a.CC+=m.gh;
-        if (m.gh>m.ga){h.G++;a.P++;} else if (m.ga>m.gh){a.G++;h.P++;}
-      });
-      teams.forEach(t=>{ const r=table[t]; r.DIF=r.CF-r.CC; const tot=r.G+r.P; r.PCT=tot>0?+(r.G/tot).toFixed(3):0; });
+function formatScore(score) {
+  return score == null ? '-' : score;
+}
 
-      let rows = Object.values(table).sort((a,b)=> b.PCT-a.PCT || a.team.localeCompare(b.team));
+function formatHourPlace(hour, place) {
+  if (!hour && !place) return '';
+  if (hour && place) return `${hour} • ${place}`;
+  return hour || place;
+}
 
-      function subOrder(block){
-        const names = block.map(r=>r.team);
-        const subM = (matches||[]).filter(m=>m && names.includes(m.home) && names.includes(m.away) && m.gh!=null && m.ga!=null);
-        const subT = computeBaseballTable(subM, names);
-        const map = Object.fromEntries(subT.map(r=>[r.team,r]));
-        return [...block].sort((x,y)=>{
-          const A=map[x.team]||{PCT:0,DIF:0,CF:0,CC:999999};
-          const B=map[y.team]||{PCT:0,DIF:0,CF:0,CC:999999};
-          return (B.PCT-A.PCT) || (B.DIF-A.DIF) || (B.CF-A.CF) || (A.CC-B.CC) || x.team.localeCompare(y.team);
-        });
-      }
-      let i=0, final=[]; 
-      while(i<rows.length){
-        const pct=rows[i].PCT; let j=i; while(j<rows.length && rows[j].PCT===pct) j++;
-        const block=rows.slice(i,j); final.push(...(block.length>1?subOrder(block):block)); i=j;
-      }
-      return final;
-    }
-
-    function renderMatch(m,defH,defA,mercy){
-      const _m = Object.assign({gh:null,ga:null,hour:'',place:'',inning:''}, m||{});
-      const has = _m.gh!=null && _m.ga!=null;
-      const homeWin = has && _m.gh>_m.ga, awayWin = has && _m.ga>_m.gh;
-      const mercyShow = mercy && _m.inning && ( (parseInt(_m.inning,10)>=3 && Math.abs(_m.gh-_m.ga)>=15) || (parseInt(_m.inning,10)>=4 && Math.abs(_m.gh-_m.ga)>=10) );
-      return `
-        <div class="match">
-          <div class="team ${homeWin?'winner':''}">${_m.home||defH||'Equipo A'}</div>
-          <div class="match-result">${has?`${_m.gh} <span class="dash">—</span> ${_m.ga}`:'<span class="dash">-</span>'}${mercyShow?'<span class="mercyTag">Mercy</span>':''}</div>
-          <div class="team ${awayWin?'winner':''}" style="justify-content:flex-end">${_m.away||defA||'Equipo B'}</div>
+// ===== RENDER GRUPOS =====
+function renderGroups() {
+  const root = $('#groupsRoot');
+  root.innerHTML = '';
+  
+  ['A', 'B'].forEach(groupKey => {
+    const group = state.groups[groupKey];
+    const teams = group.teams || [];
+    
+    const groupDiv = document.createElement('div');
+    groupDiv.className = `groupBox group${groupKey}`;
+    groupDiv.innerHTML = `<h3>Grupo ${groupKey}</h3>`;
+    
+    // Tabla de posiciones
+    const rows = computeTable(group.matches, teams);
+    const tableHTML = `
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>E</th><th>P</th>
+              <th>CF</th><th>CC</th><th>DC</th><th>Pts</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows.map((row, index) => `
+              <tr class="${index === 0 ? 'first' : index === 1 ? 'second' : ''}">
+                <td class="pos">${index + 1}</td>
+                <td>${row.team}</td>
+                <td>${row.PJ}</td>
+                <td>${row.G}</td>
+                <td>${row.E}</td>
+                <td>${row.P}</td>
+                <td>${row.CF}</td>
+                <td>${row.CC}</td>
+                <td>${row.DC}</td>
+                <td class="pts">${row.Pts}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <strong>Clasificación:</strong> 
+        <span style="background:rgba(34,197,94,.15); padding:2px 6px; border-radius:4px;">1º</span> Semifinales, 
+        <span style="background:rgba(251,191,36,.15); padding:2px 6px; border-radius:4px;">2º</span> Semifinales
+      </div>
+    `;
+    
+    groupDiv.insertAdjacentHTML('beforeend', tableHTML);
+    
+    // Partidos
+    const matchesContainer = document.createElement('div');
+    matchesContainer.className = 'matches';
+    matchesContainer.innerHTML = '<h4 style="margin:16px 0 8px">Partidos</h4>';
+    
+    // Crear partidos (todos contra todos)
+    const calendar = [
+      [teams[0], teams[1]],
+      [teams[2], teams[3]],
+      [teams[0], teams[2]],
+      [teams[1], teams[3]],
+      [teams[0], teams[3]],
+      [teams[1], teams[2]]
+    ];
+    
+    calendar.forEach(([home, away]) => {
+      const match = group.matches.find(m => m.home === home && m.away === away) || 
+                   { home, away, gh: null, ga: null, hour: '', place: '' };
+      
+      const matchDiv = document.createElement('div');
+      matchDiv.className = 'match';
+      matchDiv.innerHTML = `
+        <div class="team">${home}</div>
+        <div class="team" style="justify-content:center">
+          <span style="font-weight:700; min-width:24px; text-align:center">${formatScore(match.gh)}</span>
+          <span class="dash">—</span>
+          <span style="font-weight:700; min-width:24px; text-align:center">${formatScore(match.ga)}</span>
         </div>
-        ${(_m.hour||_m.place)?`<div class="info" style="display:flex;gap:8px;color:var(--muted);font-size:14px">${_m.hour?`<span>🕒 ${_m.hour}</span>`:''}${_m.place?`<span>📍 ${_m.place}</span>`:''}</div>`:''}
+        <div class="team" style="justify-content:flex-end">${away}</div>
       `;
-    }
-
-    function renderCover(d){
-      const acc = d.theme?.color || '#0284c7';
-      const up = d.updatedAtLocal || '';
-      return `
-        <div class="cover" style="background:linear-gradient(135deg, ${acc}, color-mix(in srgb, ${acc} 80%, black))">
-          <h1>${d.tournamentName||'Torneo de Béisbol'}</h1>
-          <div class="subtitle">${d.subtitle||'Visualización de resultados'}</div>
-          ${up?`<div class="update-info">📅 Última actualización: ${up}</div>`:''}
-        </div>
-      `;
-    }
-
-    function renderGroups(groups){
-      let html = '<div class="card"><h2>Fase de Grupos</h2><div class="groups">';
-      ['A','B'].forEach(k=>{
-        const g = groups[k]; if (!g || !g.teams?.length) return;
-        const teams = g.teams, matches = g.matches||[];
-        html += `<div class="groupBox group${k}"><h3>Grupo ${k}</h3><div class="matches">`;
-        matches.forEach(m=> html += renderMatch(m, m.home, m.away, false));
-        html += `</div>`;
-        const table = computeBaseballTable(matches, teams);
-        html += `
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr><th>#</th><th>Equipo</th><th>JJ</th><th>G</th><th>P</th><th>CF</th><th>CC</th><th>DIF</th><th>PCT</th></tr>
-              </thead>
-              <tbody>
-                ${table.map((r,i)=>`
-                  <tr class="${i===0?'first':''}">
-                    <td class="pos">${i+1}</td>
-                    <td>${r.team}</td>
-                    <td>${r.JJ}</td><td>${r.G}</td><td>${r.P}</td>
-                    <td>${r.CF}</td><td>${r.CC}</td><td>${r.DIF}</td>
-                    <td class="pts">${r.PCT.toFixed(3)}</td>
-                  </tr>`).join('')}
-              </tbody>
-            </table>
-            <div style="font-size:12px;color:var(--muted);margin-top:6px">
-              Desempates: PCT → Enfrentamiento directo → DIF directo → CF directo → Menos CC directo → sorteo.
-            </div>
-          </div>
-        `;
-        html += `</div>`;
-      });
-      html += '</div></div>';
-      return html;
-    }
-
-    function renderKnockout(k){
-      if (!k) return '';
-      let html = '';
-      if (k.final?.winner){
-        html += `<div class="champion"><h2>🏆 CAMPEÓN 🏆</h2><div class="team-name">${k.final.winner}</div></div>`;
+      
+      const infoDiv = document.createElement('div');
+      infoDiv.className = 'info';
+      const hourPlace = formatHourPlace(match.hour, match.place);
+      if (hourPlace) {
+        infoDiv.innerHTML = `<span style="color:var(--muted); font-size:14px">${hourPlace}</span>`;
+        matchesContainer.appendChild(infoDiv);
       }
-      html += `
-        <div class="card">
-          <h2>Fase Eliminatoria</h2>
-          <div class="bracket">
-            <div class="semi">
-              <h3>Semifinal 1</h3>
-              ${renderMatch(k.sf1, k.sf1.home||'A1', k.sf1.away||'B2', true)}
-              ${k.sf1?.winner?`<div class="info"><strong>Ganador: ${k.sf1.winner}</strong></div>`:''}
-            </div>
-            <div class="semi">
-              <h3>Semifinal 2</h3>
-              ${renderMatch(k.sf2, k.sf2.home||'B1', k.sf2.away||'A2', true)}
-              ${k.sf2?.winner?`<div class="info"><strong>Ganador: ${k.sf2.winner}</strong></div>`:''}
-            </div>
-            <div class="third">
-              <h3>Tercer Lugar</h3>
-              ${renderMatch(k.third, k.third.home||'Perdedor SF1', k.third.away||'Perdedor SF2', true)}
-              ${k.third?.winner?`<div class="info"><strong>Tercero: ${k.third.winner}</strong></div>`:''}
-            </div>
-            <div class="final">
-              <h3>Final</h3>
-              ${renderMatch(k.final, k.final.home||'Ganador SF1', k.final.away||'Ganador SF2', true)}
-              ${k.final?.winner?`<div class="info"><strong>🏆 Campeón: ${k.final.winner}</strong></div>`:''}
-            </div>
-          </div>
-        </div>
-      `;
-      return html;
-    }
+      
+      matchesContainer.appendChild(matchDiv);
+    });
+    
+    groupDiv.appendChild(matchesContainer);
+    root.appendChild(groupDiv);
+  });
+}
 
-    async function loadTournamentData(){
-      const fileName = getJsonFileNameFromUrl();
-      try{
-        document.getElementById('tournamentContent').innerHTML = '<div class="loading">Cargando datos del torneo...</div>';
-        const res = await fetch(fileName, {cache:'no-store'});
-        if (!res.ok) throw new Error('No se pudo cargar '+fileName+' ('+res.status+')');
-        let data = await res.json();
-        // normalizar mínimo
-        data = data || {};
-        data.theme = Object.assign({color:'#0284c7',bg:'#f8fafc'}, data.theme||{});
-        applyTheme(data.theme);
-        document.getElementById('tournamentTitle').textContent = data.tournamentName || 'Torneo de Béisbol';
-        document.getElementById('tournamentSubtitle').textContent = data.subtitle || 'Visualización de resultados';
+// ===== RENDER KNOCKOUT =====
+function renderKnockout() {
+  // Semifinal 1
+  $('#sf1h').textContent = state.knockout.sf1.home || 'A1';
+  $('#sf1a').textContent = state.knockout.sf1.away || 'B2';
+  $('#sf1gh').textContent = formatScore(state.knockout.sf1.gh);
+  $('#sf1ga').textContent = formatScore(state.knockout.sf1.ga);
+  $('#sf1HourPlace').textContent = formatHourPlace(state.knockout.sf1.hour, state.knockout.sf1.place);
+  
+  // Semifinal 2
+  $('#sf2h').textContent = state.knockout.sf2.home || 'B1';
+  $('#sf2a').textContent = state.knockout.sf2.away || 'A2';
+  $('#sf2gh').textContent = formatScore(state.knockout.sf2.gh);
+  $('#sf2ga').textContent = formatScore(state.knockout.sf2.ga);
+  $('#sf2HourPlace').textContent = formatHourPlace(state.knockout.sf2.hour, state.knockout.sf2.place);
+  
+  // Final
+  $('#fih').textContent = state.knockout.final.home || 'Ganador SF1';
+  $('#fia').textContent = state.knockout.final.away || 'Ganador SF2';
+  $('#figh').textContent = formatScore(state.knockout.final.gh);
+  $('#figa').textContent = formatScore(state.knockout.final.ga);
+  $('#fiHourPlace').textContent = formatHourPlace(state.knockout.final.hour, state.knockout.final.place);
+  
+  // Tercer lugar
+  $('#thirdh').textContent = state.knockout.third.home || 'Perdedor SF1';
+  $('#thirda').textContent = state.knockout.third.away || 'Perdedor SF2';
+  $('#thirdgh').textContent = formatScore(state.knockout.third.gh);
+  $('#thirdga').textContent = formatScore(state.knockout.third.ga);
+  $('#thirdHourPlace').textContent = formatHourPlace(state.knockout.third.hour, state.knockout.third.place);
+  
+  // Aplicar estilos de ganadores
+  if (state.knockout.final.winner) {
+    $('#finalMatch').classList.add('winner');
+  }
+  
+  if (state.knockout.third.winner) {
+    $('#thirdPlaceMatch').classList.add('third-place');
+  }
+}
 
-        let html = '';
-        html += `
-          <div class="cover" style="background:linear-gradient(135deg, ${data.theme.color}, color-mix(in srgb, ${data.theme.color} 80%, black))">
-            <h1>${data.tournamentName||'Torneo de Béisbol'}</h1>
-            <div class="subtitle">${data.subtitle||'Visualización de resultados'}</div>
-            ${data.updatedAtLocal?`<div class="cover update-info">📅 Última actualización: ${data.updatedAtLocal}</div>`:''}
-          </div>
-        `;
-        if (data.groups) html += renderGroups(data.groups);
-        if (data.knockout) html += renderKnockout(data.knockout);
-        document.getElementById('tournamentContent').innerHTML = html;
-      }catch(err){
-        document.getElementById('tournamentContent').innerHTML = `<div class="error"><h3>Error</h3><p>${err.message}</p><p>Archivo: <strong>${fileName}</strong></p></div>`;
-        console.error(err);
-      }
-    }
+// ===== APLICAR TEMA =====
+function applyTheme() {
+  if (state.theme) {
+    document.documentElement.style.setProperty('--accent', state.theme.color);
+    document.documentElement.style.setProperty('--bg', state.theme.bg);
+  }
+  
+  if (state.tournamentName) {
+    $('#tournamentTitle').textContent = state.tournamentName;
+  }
+}
 
-    document.addEventListener('DOMContentLoaded', loadTournamentData);
-  </script>
+// ===== CARGA DE DATOS =====
+async function loadData() {
+  try {
+    const response = await fetch(DATA_URL);
+    if (!response.ok) throw new Error('No se pudo cargar data.json');
+    
+    const data = await response.json();
+    state = { ...state, ...data };
+    
+    applyTheme();
+    renderGroups();
+    renderKnockout();
+  } catch (error) {
+    console.warn('Error cargando datos:', error);
+    // Mostrar datos de ejemplo
+    renderGroups();
+    renderKnockout();
+  }
+}
+
+// ===== INICIALIZACIÓN =====
+document.addEventListener('DOMContentLoaded', loadData);
+</script>
 </body>
 </html>

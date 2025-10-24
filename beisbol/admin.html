@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Administrador — Torneo Béisbol (2 Grupos + KO)</title>
+  <title>Administrador — Torneo Béisbol 2 Grupos + Semifinales</title>
   <style>
     :root{ --bg:#f8fafc; --panel:#e2e8f0; --card:#ffffff; --muted:#475569; --text:#0f172a; --accent:#0284c7; --ok:#16a34a; --bad:#dc2626; --ring:0 0 0 2px var(--accent) inset; }
     *{box-sizing:border-box}
@@ -31,8 +31,10 @@
     .groups{display:grid;gap:12px}
     @media(min-width:700px){.groups{grid-template-columns:1fr 1fr}}
 
+    /* Colores por grupo */
     .groupA{background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.45)}
     .groupB{background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.45)}
+
     .groupBox{padding:12px;border-radius:12px;margin-bottom:12px}
 
     .matches{display:grid;gap:10px;margin-top:10px}
@@ -51,38 +53,73 @@
     .pos{font-variant-numeric:tabular-nums;color:var(--muted)}
     .pts{font-weight:800}
     .first{background:rgba(34,197,94,.15)}
+    .second{background:rgba(251,191,36,.15)}
     .note{font-size:12px;color:var(--muted)}
 
+    /* Knockout */
     .bracket{display:grid;gap:12px;margin-top:16px}
     @media(min-width:900px){.bracket{grid-template-columns:1fr 1fr}}
     .semi,.final,.third{background:#ffffff;border:1px solid #cbd5e1;border-radius:12px;padding:12px}
     .semi h3,.final h3,.third h3{margin:0 0 8px;font-size:16px}
 
+    /* Estado de publicación */
     .status{font-size:12px;padding:4px 8px;border-radius:6px;margin-left:8px}
     .status.success{background:#dcfce7;color:#166534;border:1px solid #bbf7d0}
     .status.error{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
     .status.loading{background:#eff6ff;color:#1e40af;border:1px solid#dbeafe}
 
-    .final{position:relative;border:2px solid var(--accent);box-shadow:0 0 0 4px rgba(2,132,199,.12) inset;background:#ffffff;overflow:hidden}
-    .final h3{ color: var(--accent); }
-    .final::before{
-      content:'FINAL 🏆';position:absolute;top:12px;right:-48px;transform:rotate(45deg);
-      background:var(--accent);color:#fff;font-weight:700;font-size:14px;padding:4px 48px;box-shadow:0 2px 6px rgba(0,0,0,0.15);opacity:.9;
+    /* Import/Export section */
+    .import-export{background:#f0f9ff;border:2px dashed #bae6fd;border-radius:12px;padding:16px;margin-top:12px}
+    .import-export h3{margin:0 0 12px;font-size:16px;color:#0369a1}
+    
+    /* Resaltar Final */
+    .final {
+      position: relative;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 0 4px rgba(2,132,199,.12) inset;
+      background: #ffffff;
+      overflow: hidden;
     }
-    .mercyTag{display:inline-block;font-size:12px;background:#fde68a;border:1px solid #f59e0b;color:#92400e;padding:2px 8px;border-radius:999px;margin-left:8px;font-weight:700}
+    .final h3{ color: var(--accent); }
+
+    .final::before {
+      content: 'FINAL 🏆';
+      position: absolute;
+      top: 12px;
+      right: -48px;
+      transform: rotate(45deg);
+      background: var(--accent);
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 4px 48px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      opacity: 0.9;
+    }
+    
+    /* Regla Mercy */
+    .mercy-rule {
+      background: #fef3c7;
+      border: 1px solid #f59e0b;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-top: 8px;
+      font-size: 12px;
+      color: #92400e;
+    }
   </style>
 </head>
 <body>
   <header>
     <div class="container">
-      <h1>Administrador — Béisbol (2 Grupos + Semifinales)</h1>
-      <div class="subtitle">Crea y gestiona tu torneo de béisbol. Exporta <code>data.json</code> para el visor.</div>
+      <h1>Administrador — Torneo Béisbol 2 Grupos + Semifinales</h1>
+      <div class="subtitle">Crea y gestiona tu torneo de béisbol. Los datos se guardan localmente y puedes publicarlos online.</div>
     </div>
   </header>
 
   <main class="container grid">
     <section class="card">
-      <h2>1) Equipos por grupo (4 por grupo)</h2>
+      <h2>1) Equipos por grupo</h2>
       <div class="groups">
         <div><label>Grupo A</label><textarea id="ga">A1
 A2
@@ -94,6 +131,7 @@ B3
 B4</textarea></div>
       </div>
 
+      <!-- Tema (colores) -->
       <div class="row" style="margin-top:8px">
         <input type="text" id="tournamentName" placeholder="Nombre del torneo (opcional)" style="flex:2" />
         <div style="display:flex; gap:8px; align-items:center">
@@ -107,6 +145,7 @@ B4</textarea></div>
       <div class="row" style="margin-top:8px">
         <button id="btnGenerate">Generar rol por grupo</button>
 
+        <!-- PUBLICAR (para GH Pages descarga data.json) -->
         <input type="url" id="publishURL" placeholder="(Opcional para otros backends)" style="flex:2; min-width:320px" />
         <button id="btnPublish">Publicar <span id="publishStatus"></span></button>
 
@@ -115,8 +154,9 @@ B4</textarea></div>
         <button id="btnClearAll" class="ghost">🧹 Limpiar</button>
       </div>
 
-      <div class="import-export" style="background:#f0f9ff;border:2px dashed #bae6fd;border-radius:12px;padding:16px;margin-top:12px">
-        <h3 style="margin:0 0 12px;font-size:16px;color:#0369a1">📥 Importar / 📤 Exportar Datos</h3>
+      <!-- SECCIÓN IMPORTAR/EXPORTAR -->
+      <div class="import-export">
+        <h3>📥 Importar / 📤 Exportar Datos</h3>
         <div class="row">
           <input type="file" id="importFile" accept=".json" style="flex:2">
           <button id="btnImport" class="ghost">📥 Importar JSON</button>
@@ -128,17 +168,28 @@ B4</textarea></div>
       </div>
 
       <div style="margin-top:8px; font-size:12px; color:var(--muted)">
-        💡 <strong>Flujo:</strong> 1) Agrega equipos → 2) Genera rol → 3) Ingresa resultados → 4) Publica
+        💡 <strong>Para usar:</strong> 1) Agrega equipos → 2) Genera rol → 3) Ingresa resultados → 4) Publica
+      </div>
+      
+      <!-- Información sobre criterios de desempate -->
+      <div class="mercy-rule">
+        <strong>Criterios de desempate (Normativa Mexicana):</strong><br>
+        1. Puntos<br>
+        2. Diferencia de carreras<br>
+        3. Carreras a favor<br>
+        4. Enfrentamiento directo<br>
+        5. Menor cantidad de outs recibidos<br>
+        6. Sorteo
       </div>
     </section>
 
     <section class="card">
-      <h2>Grupos y partidos (Béisbol)</h2>
+      <h2>Grupos y partidos</h2>
       <div id="groupsRoot"></div>
 
       <div class="bracket">
         <div class="semi">
-          <h3>Semifinal 1 — A1 vs B2 <span id="sf1Mercy" class="mercyTag" style="display:none">Mercy</span></h3>
+          <h3>Semifinal 1 — A1 vs B2</h3>
           <div class="row">
             <div class="team" style="flex:1"><span id="sf1h">A1</span></div>
             <div class="team" style="justify-content:center">
@@ -148,19 +199,25 @@ B4</textarea></div>
             <div class="team" style="flex:1;justify-content:flex-end"><span id="sf1a">B2</span></div>
           </div>
           <div class="row" style="margin-top:6px">
-            <input type="text" id="sf1Inning" placeholder="Entrada (ej. 3, 4, 7…)" style="max-width:160px">
-            <div class="spacer"></div>
-            <input type="text" id="sf1Hour" placeholder="Hora (ej. 16:00)" style="max-width:180px">
-            <input type="text" id="sf1Place" placeholder="Lugar (ej. Estadio)" style="flex:1">
-          </div>
-          <div class="row" style="margin-top:6px">
-            <label style="flex:1">Si hay empate excepcional, elige ganador</label>
+            <label style="flex:1">Si hay empate, elige ganador</label>
             <select id="sf1w" style="max-width:260px"><option value="">— Ganador —</option></select>
+            <div class="row" style="margin-top:6px">
+              <input type="text" id="sf1Hour" placeholder="Hora (ej. 16:00)" style="max-width:180px">
+              <input type="text" id="sf1Place" placeholder="Lugar (ej. Estadio)" style="flex:1">
+            </div>
+          </div>
+          <!-- Nombres manuales (opcional) -->
+          <div class="row" style="margin-top:6px">
+            <input type="text" id="sf1HomeName" placeholder="Nombre semifinalista local (opcional)" style="flex:1">
+            <input type="text" id="sf1AwayName" placeholder="Nombre semifinalista visita (opcional)" style="flex:1">
+          </div>
+          <div class="mercy-rule">
+            <strong>Regla Mercy:</strong> Diferencia de 15 carreras en la 3a entrada o 10 carreras en la 4a entrada
           </div>
         </div>
 
         <div class="semi">
-          <h3>Semifinal 2 — B1 vs A2 <span id="sf2Mercy" class="mercyTag" style="display:none">Mercy</span></h3>
+          <h3>Semifinal 2 — B1 vs A2</h3>
           <div class="row">
             <div class="team" style="flex:1"><span id="sf2h">B1</span></div>
             <div class="team" style="justify-content:center">
@@ -170,19 +227,25 @@ B4</textarea></div>
             <div class="team" style="flex:1;justify-content:flex-end"><span id="sf2a">A2</span></div>
           </div>
           <div class="row" style="margin-top:6px">
-            <input type="text" id="sf2Inning" placeholder="Entrada" style="max-width:160px">
-            <div class="spacer"></div>
-            <input type="text" id="sf2Hour" placeholder="Hora (ej. 17:00)" style="max-width:180px">
-            <input type="text" id="sf2Place" placeholder="Lugar (ej. Estadio)" style="flex:1">
-          </div>
-          <div class="row" style="margin-top:6px">
-            <label style="flex:1">Si hay empate excepcional, elige ganador</label>
+            <label style="flex:1">Si hay empate, elige ganador</label>
             <select id="sf2w" style="max-width:260px"><option value="">— Ganador —</option></select>
+            <div class="row" style="margin-top:6px">
+              <input type="text" id="sf2Hour" placeholder="Hora (ej. 17:00)" style="max-width:180px">
+              <input type="text" id="sf2Place" placeholder="Lugar (ej. Estadio)" style="flex:1">
+            </div>
+          </div>
+          <!-- Nombres manuales (opcional) -->
+          <div class="row" style="margin-top:6px">
+            <input type="text" id="sf2HomeName" placeholder="Nombre semifinalista local (opcional)" style="flex:1">
+            <input type="text" id="sf2AwayName" placeholder="Nombre semifinalista visita (opcional)" style="flex:1">
+          </div>
+          <div class="mercy-rule">
+            <strong>Regla Mercy:</strong> Diferencia de 15 carreras en la 3a entrada o 10 carreras en la 4a entrada
           </div>
         </div>
 
         <div class="third">
-          <h3>Tercer Lugar <span id="thirdMercy" class="mercyTag" style="display:none">Mercy</span></h3>
+          <h3>Tercer Lugar</h3>
           <div class="row">
             <div class="team" style="flex:1"><span id="thirdh">Perdedor SF1</span></div>
             <div class="team" style="justify-content:center">
@@ -192,19 +255,25 @@ B4</textarea></div>
             <div class="team" style="flex:1;justify-content:flex-end"><span id="thirda">Perdedor SF2</span></div>
           </div>
           <div class="row" style="margin-top:6px">
-            <input type="text" id="thirdInning" placeholder="Entrada" style="max-width:160px">
-            <div class="spacer"></div>
-            <input type="text" id="thirdHour" placeholder="Hora (ej. 18:00)" style="max-width:180px">
-            <input type="text" id="thirdPlace" placeholder="Lugar (ej. Estadio)" style="flex:1">
-          </div>
-          <div class="row" style="margin-top:6px">
-            <label style="flex:1">Si hay empate excepcional, elige tercero</label>
+            <label style="flex:1">Si hay empate, elige tercero</label>
             <select id="thirdw" style="max-width:260px"><option value="">— Tercero —</option></select>
+            <div class="row" style="margin-top:6px">
+              <input type="text" id="thirdHour" placeholder="Hora (ej. 18:00)" style="max-width:180px">
+              <input type="text" id="thirdPlace" placeholder="Lugar (ej. Estadio)" style="flex:1">
+            </div>
+          </div>
+          <!-- Nombres manuales (opcional) -->
+          <div class="row" style="margin-top:6px">
+            <input type="text" id="thirdHomeName" placeholder="Nombre local tercer lugar (opcional)" style="flex:1">
+            <input type="text" id="thirdAwayName" placeholder="Nombre visita tercer lugar (opcional)" style="flex:1">
+          </div>
+          <div class="mercy-rule">
+            <strong>Regla Mercy:</strong> Diferencia de 15 carreras en la 3a entrada o 10 carreras en la 4a entrada
           </div>
         </div>
 
         <div class="final">
-          <h3>Final <span id="fiMercy" class="mercyTag" style="display:none">Mercy</span></h3>
+          <h3>Final</h3>
           <div class="row">
             <div class="team" style="flex:1"><span id="fih">Ganador SF1</span></div>
             <div class="team" style="justify-content:center">
@@ -214,14 +283,20 @@ B4</textarea></div>
             <div class="team" style="flex:1;justify-content:flex-end"><span id="fia">Ganador SF2</span></div>
           </div>
           <div class="row" style="margin-top:6px">
-            <input type="text" id="fiInning" placeholder="Entrada" style="max-width:160px">
-            <div class="spacer"></div>
-            <input type="text" id="fiHour" placeholder="Hora (ej. 19:00)" style="max-width:180px">
-            <input type="text" id="fiPlace" placeholder="Lugar (ej. Estadio)" style="flex:1">
-          </div>
-          <div class="row" style="margin-top:6px">
-            <label style="flex:1">Si hay empate excepcional, elige campeón</label>
+            <label style="flex:1">Si hay empate, elige campeón</label>
             <select id="fiw" style="max-width:260px"><option value="">— Campeón —</option></select>
+            <div class="row" style="margin-top:6px">
+              <input type="text" id="fiHour" placeholder="Hora (ej. 19:00)" style="max-width:180px">
+              <input type="text" id="fiPlace" placeholder="Lugar (ej. Estadio)" style="flex:1">
+            </div>
+          </div>
+          <!-- Nombres manuales (opcional) -->
+          <div class="row" style="margin-top:6px">
+            <input type="text" id="fiHomeName" placeholder="Nombre finalista local (opcional)" style="flex:1">
+            <input type="text" id="fiAwayName" placeholder="Nombre finalista visita (opcional)" style="flex:1">
+          </div>
+          <div class="mercy-rule">
+            <strong>Regla Mercy:</strong> Diferencia de 15 carreras en la 3a entrada o 10 carreras en la 4a entrada
           </div>
         </div>
       </div>
@@ -230,21 +305,21 @@ B4</textarea></div>
 
 <script>
 // ===== CONFIGURACIÓN =====
-const STORAGE_KEY = 'torneo_beisbol_2g_ko_v1';
+const STORAGE_KEY = 'torneo_beisbol_v1';
 const $ = (selector, root = document) => root.querySelector(selector);
 
 // ===== ESTADO INICIAL =====
 let state = {
   groups: {
-    A: { teams: ['A1','A2','A3','A4'], matches: [] },
-    B: { teams: ['B1','B2','B3','B4'], matches: [] },
+    A: { teams: ['A1', 'A2', 'A3', 'A4'], matches: [] },
+    B: { teams: ['B1', 'B2', 'B3', 'B4'], matches: [] }
   },
-  // En béisbol usamos porcentaje de ganados, no puntos
+  points: { win: 2, draw: 1, loss: 0 }, // Béisbol: 2 puntos por victoria, 1 por empate
   knockout: {
-    sf1: { home: '', away: '', gh: null, ga: null, inning: '', winner: '', hour: '', place: '' },
-    sf2: { home: '', away: '', gh: null, ga: null, inning: '', winner: '', hour: '', place: '' },
-    final:{ home: '', away: '', gh: null, ga: null, inning: '', winner: '', hour: '', place: '' },
-    third:{ home: '', away: '', gh: null, ga: null, inning: '', winner: '', hour: '', place: '' }
+    sf1: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
+    sf2: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
+    final: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
+    third: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' }
   },
   tournamentName: '',
   theme: { color: '#0284c7', bg: '#f8fafc' }
@@ -252,17 +327,19 @@ let state = {
 
 // ===== HELPERS =====
 function parseTeams(txt) {
-  return String(txt || '').split('\n').map(s => s.trim()).filter(Boolean).slice(0,4);
+  return String(txt || '').split('\n').map(s => s.trim()).filter(Boolean);
 }
 
-// Round-robin para 4 equipos (6 partidos)
-function roundRobin4(teams){
+function roundRobin4(teams) {
   if (teams.length !== 4) return [];
-  const [a,b,c,d] = teams;
+  // Todos contra todos: 6 partidos
   return [
-    [a,b],[c,d],
-    [a,c],[b,d],
-    [a,d],[b,c],
+    [teams[0], teams[1]],
+    [teams[2], teams[3]],
+    [teams[0], teams[2]],
+    [teams[1], teams[3]],
+    [teams[0], teams[3]],
+    [teams[1], teams[2]]
   ];
 }
 
@@ -272,442 +349,638 @@ function valInt(v) {
   return Number.isFinite(n) && n >= 0 ? n : null;
 }
 
-function mercyApplies(gh,ga,inning){
-  if (gh==null || ga==null) return false;
-  const diff = Math.abs(gh-ga);
-  const inn = parseInt(inning,10);
-  if (!Number.isFinite(inn)) return false;
-  // KO: 15 en 3ª, 10 en 4ª
-  if (inn >= 3 && diff >= 15) return true;
-  if (inn >= 4 && diff >= 10) return true;
-  return false;
-}
-
-// Tabla de BEISBOL con desempates MX (sin local/visitante)
-function computeBaseballTable(matches, teams){
-  const table = Object.fromEntries(teams.map(t => [t, { team:t, JJ:0,G:0,P:0,CF:0,CC:0,DIF:0,PCT:0 }]));
-
-  // Acumular
-  matches.forEach(m=>{
-    if (!m || m.gh==null || m.ga==null) return;
-    const h = table[m.home], a = table[m.away];
-    if (!h || !a) return;
-
-    h.JJ++; a.JJ++;
-    h.CF += m.gh; h.CC += m.ga;
-    a.CF += m.ga; a.CC += m.gh;
-
-    if (m.gh > m.ga){ h.G++; a.P++; }
-    else if (m.ga > m.gh){ a.G++; h.P++; }
-    else {
-      // En béisbol no hay empates: si sucede, no contamos hasta que se defina.
-      // Alternativa: permitir “ganador” manual si ingresaron empate por error.
+function computeTable(matches, teams) {
+  const table = Object.fromEntries(teams.map(team => [team, {
+    team, PJ: 0, G: 0, E: 0, P: 0, CF: 0, CC: 0, DC: 0, Pts: 0
+  }]));
+  
+  const cfg = state.points;
+  
+  matches.forEach(match => {
+    if (match.gh == null || match.ga == null) return;
+    
+    const homeTeam = table[match.home];
+    const awayTeam = table[match.away];
+    if (!homeTeam || !awayTeam) return;
+    
+    // Actualizar partidos jugados
+    homeTeam.PJ++;
+    awayTeam.PJ++;
+    
+    // Actualizar carreras
+    homeTeam.CF += match.gh;
+    homeTeam.CC += match.ga;
+    awayTeam.CF += match.ga;
+    awayTeam.CC += match.gh;
+    
+    // Determinar resultado
+    if (match.gh > match.ga) {
+      homeTeam.G++;
+      awayTeam.P++;
+      homeTeam.Pts += cfg.win;
+      awayTeam.Pts += cfg.loss;
+    } else if (match.gh < match.ga) {
+      awayTeam.G++;
+      homeTeam.P++;
+      awayTeam.Pts += cfg.win;
+      homeTeam.Pts += cfg.loss;
+    } else {
+      homeTeam.E++;
+      awayTeam.E++;
+      homeTeam.Pts += cfg.draw;
+      awayTeam.Pts += cfg.draw;
     }
   });
-
-  teams.forEach(t=>{
-    const r = table[t];
-    r.DIF = r.CF - r.CC;
-    const total = r.G + r.P;
-    r.PCT = total>0 ? +(r.G/total).toFixed(3) : 0;
+  
+  // Calcular diferencia de carreras
+  teams.forEach(team => {
+    table[team].DC = table[team].CF - table[team].CC;
   });
-
-  // Orden inicial por PCT
-  let rows = Object.values(table).sort((a,b)=>{
-    if (b.PCT !== a.PCT) return b.PCT - a.PCT;
+  
+  // Ordenar por criterios de desempate de béisbol mexicano
+  return Object.values(table).sort((a, b) => {
+    // 1. Puntos
+    if (b.Pts !== a.Pts) return b.Pts - a.Pts;
+    // 2. Diferencia de carreras
+    if (b.DC !== a.DC) return b.DC - a.DC;
+    // 3. Carreras a favor
+    if (b.CF !== a.CF) return b.CF - a.CF;
+    // 4. Enfrentamiento directo (simplificado)
+    const directMatch = matches.find(m => 
+      (m.home === a.team && m.away === b.team) || 
+      (m.home === b.team && m.away === a.team)
+    );
+    if (directMatch && directMatch.gh != null && directMatch.ga != null) {
+      if (directMatch.home === a.team && directMatch.gh > directMatch.ga) return -1;
+      if (directMatch.home === b.team && directMatch.gh < directMatch.ga) return -1;
+      if (directMatch.home === a.team && directMatch.gh < directMatch.ga) return 1;
+      if (directMatch.home === b.team && directMatch.gh > directMatch.ga) return 1;
+    }
+    // 5. Alfabético como último recurso
     return a.team.localeCompare(b.team);
   });
-
-  // Desempates MX: entre grupos de empatados por PCT
-  function headToHeadBlock(block){
-    const names = block.map(r=>r.team);
-    // Partidos solo entre los empatados
-    const subMatches = matches.filter(m=> m && names.includes(m.home) && names.includes(m.away) && m.gh!=null && m.ga!=null);
-    // Subtabla
-    const sub = computeBaseballTable(subMatches, names);
-    // Creamos mapa para consultar criterios
-    const map = Object.fromEntries(sub.map(r=>[r.team, r]));
-    // Re-orden por:
-    // 1) PCT entre ellos
-    // 2) DIF entre ellos
-    // 3) CF entre ellos
-    // 4) Menos CC entre ellos
-    return [...block].sort((x,y)=>{
-      const A = map[x.team] || {PCT:0,DIF:0,CF:0,CC:999999};
-      const B = map[y.team] || {PCT:0,DIF:0,CF:0,CC:999999};
-      if (B.PCT !== A.PCT) return B.PCT - A.PCT;
-      if (B.DIF !== A.DIF) return B.DIF - A.DIF;
-      if (B.CF  !== A.CF ) return B.CF  - A.CF ;
-      if (A.CC  !== B.CC ) return A.CC  - B.CC ;
-      // 5) sorteo (aquí: alfabético estable para determinismo)
-      return x.team.localeCompare(y.team);
-    });
-  }
-
-  // Aplicar tiebreakers por bloques con mismo PCT
-  let i=0; const finalRows=[];
-  while(i<rows.length){
-    const pct = rows[i].PCT;
-    let j=i;
-    while(j<rows.length && rows[j].PCT===pct) j++;
-    const block = rows.slice(i,j);
-    const ordered = block.length>1 ? headToHeadBlock(block) : block;
-    finalRows.push(...ordered);
-    i=j;
-  }
-  return finalRows;
 }
 
-function groupWinner(groupKey){ return computeBaseballTable(state.groups[groupKey].matches, state.groups[groupKey].teams)[0]?.team || ''; }
-function groupRunnerUp(groupKey){ return computeBaseballTable(state.groups[groupKey].matches, state.groups[groupKey].teams)[1]?.team || ''; }
+function groupWinner(groupKey) {
+  const group = state.groups[groupKey];
+  const rows = computeTable(group.matches, group.teams);
+  return rows[0]?.team || '';
+}
+
+function groupRunnerUp(groupKey) {
+  const group = state.groups[groupKey];
+  const rows = computeTable(group.matches, group.teams);
+  return rows[1]?.team || '';
+}
 
 // ===== RENDER GRUPOS =====
-function renderGroups(){
+function renderGroups() {
   const root = $('#groupsRoot');
   root.innerHTML = '';
-
-  ['A','B'].forEach(groupKey=>{
+  
+  ['A', 'B'].forEach(groupKey => {
     const group = state.groups[groupKey];
     const teams = group.teams || [];
+    
     const groupDiv = document.createElement('div');
     groupDiv.className = `groupBox group${groupKey}`;
     groupDiv.innerHTML = `<h3>Grupo ${groupKey}</h3>`;
-
+    
     const matchesContainer = document.createElement('div');
     matchesContainer.className = 'matches';
-
-    // calendario
+    
+    // Crear partidos
     const calendar = roundRobin4(teams);
-    calendar.forEach(([home,away])=>{
-      const existing = group.matches.find(m=>m.home===home && m.away===away) || {home,away,gh:null,ga:null,hour:'',place:''};
+    calendar.forEach(([home, away]) => {
+      const existingMatch = group.matches.find(m => m.home === home && m.away === away) || 
+                          { home, away, gh: null, ga: null, hour: '', place: '' };
+      
       const matchDiv = document.createElement('div');
       matchDiv.className = 'match';
       matchDiv.innerHTML = `
         <div class="team">${home}</div>
         <div class="team" style="justify-content:center">
-          <input type="number" min="0" class="score-home" data-group="${groupKey}" data-home="${home}" data-away="${away}" value="${existing.gh==null?'':existing.gh}" style="max-width:80px">
+          <input type="number" min="0" class="score-home" data-group="${groupKey}" data-home="${home}" data-away="${away}" 
+                 value="${existingMatch.gh == null ? '' : existingMatch.gh}" style="max-width:80px">
           <span class="dash">—</span>
-          <input type="number" min="0" class="score-away" data-group="${groupKey}" data-home="${home}" data-away="${away}" value="${existing.ga==null?'':existing.ga}" style="max-width:80px">
+          <input type="number" min="0" class="score-away" data-group="${groupKey}" data-home="${home}" data-away="${away}" 
+                 value="${existingMatch.ga == null ? '' : existingMatch.ga}" style="max-width:80px">
         </div>
         <div class="team" style="justify-content:flex-end">${away}</div>
       `;
+      
       const infoDiv = document.createElement('div');
-      infoDiv.className='info';
+      infoDiv.className = 'info';
       infoDiv.innerHTML = `
-        <input type="text" class="match-hour" data-group="${groupKey}" data-home="${home}" data-away="${away}" placeholder="Hora (ej. 14:00)" value="${existing.hour||''}">
-        <input type="text" class="match-place" data-group="${groupKey}" data-home="${home}" data-away="${away}" placeholder="Lugar (ej. Campo)" value="${existing.place||''}">
+        <input type="text" class="match-hour" data-group="${groupKey}" data-home="${home}" data-away="${away}" 
+               placeholder="Hora (ej. 14:00)" value="${existingMatch.hour || ''}">
+        <input type="text" class="match-place" data-group="${groupKey}" data-home="${home}" data-away="${away}" 
+               placeholder="Lugar (ej. Estadio)" value="${existingMatch.place || ''}">
       `;
+      
       matchesContainer.appendChild(matchDiv);
       matchesContainer.appendChild(infoDiv);
     });
-
+    
     groupDiv.appendChild(matchesContainer);
-
-    // tabla de posiciones BÉISBOL
-    const rows = computeBaseballTable(group.matches, teams);
+    
+    // Tabla de posiciones
+    const rows = computeTable(group.matches, teams);
     const tableHTML = `
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>#</th><th>Equipo</th><th>JJ</th><th>G</th><th>P</th>
-              <th>CF</th><th>CC</th><th>DIF</th><th>PCT</th>
+              <th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>E</th><th>P</th>
+              <th>CF</th><th>CC</th><th>DC</th><th>Pts</th>
             </tr>
           </thead>
           <tbody>
-            ${rows.map((r,idx)=>`
-              <tr class="${idx===0?'first':''}">
-                <td class="pos">${idx+1}</td>
-                <td>${r.team}</td>
-                <td>${r.JJ}</td>
-                <td>${r.G}</td>
-                <td>${r.P}</td>
-                <td>${r.CF}</td>
-                <td>${r.CC}</td>
-                <td>${r.DIF}</td>
-                <td class="pts">${r.PCT.toFixed(3)}</td>
+            ${rows.map((row, index) => `
+              <tr class="${index === 0 ? 'first' : index === 1 ? 'second' : ''}">
+                <td class="pos">${index + 1}</td>
+                <td>${row.team}</td>
+                <td>${row.PJ}</td>
+                <td>${row.G}</td>
+                <td>${row.E}</td>
+                <td>${row.P}</td>
+                <td>${row.CF}</td>
+                <td>${row.CC}</td>
+                <td>${row.DC}</td>
+                <td class="pts">${row.Pts}</td>
               </tr>
             `).join('')}
           </tbody>
         </table>
-        <div class="note">Desempates: PCT → Enfrentamiento directo → DIF directo → CF directo → Menos CC directo → sorteo.</div>
+      </div>
+      <div class="note">
+        <strong>Clasificación:</strong> 
+        <span style="background:rgba(34,197,94,.15); padding:2px 6px; border-radius:4px;">1º</span> Semifinales, 
+        <span style="background:rgba(251,191,36,.15); padding:2px 6px; border-radius:4px;">2º</span> Semifinales
       </div>
     `;
+    
     groupDiv.insertAdjacentHTML('beforeend', tableHTML);
     root.appendChild(groupDiv);
   });
-
+  
   setupGroupEventListeners();
 }
 
-// ===== EVENTOS GRUPOS =====
-function setupGroupEventListeners(){
-  document.querySelectorAll('.score-home, .score-away').forEach(input=>{
-    input.addEventListener('input', function(){
-      const g = this.dataset.group, home=this.dataset.home, away=this.dataset.away;
-      let match = state.groups[g].matches.find(m=>m.home===home && m.away===away);
-      if (!match){ match = {home,away,gh:null,ga:null,hour:'',place:''}; state.groups[g].matches.push(match); }
-      if (this.classList.contains('score-home')) match.gh = valInt(this.value);
-      else match.ga = valInt(this.value);
-      saveState(); renderGroups(); updateKnockout();
+// ===== EVENT LISTENERS PARA GRUPOS =====
+function setupGroupEventListeners() {
+  // Scores
+  document.querySelectorAll('.score-home, .score-away').forEach(input => {
+    input.addEventListener('input', function() {
+      const groupKey = this.dataset.group;
+      const home = this.dataset.home;
+      const away = this.dataset.away;
+      
+      let match = state.groups[groupKey].matches.find(m => m.home === home && m.away === away);
+      if (!match) {
+        match = { home, away, gh: null, ga: null, hour: '', place: '' };
+        state.groups[groupKey].matches.push(match);
+      }
+      
+      if (this.classList.contains('score-home')) {
+        match.gh = valInt(this.value);
+      } else {
+        match.ga = valInt(this.value);
+      }
+      
+      saveState();
+      renderGroups();
+      updateKnockout();
     });
   });
-  document.querySelectorAll('.match-hour, .match-place').forEach(input=>{
-    input.addEventListener('change', function(){
-      const g = this.dataset.group, home=this.dataset.home, away=this.dataset.away;
-      let match = state.groups[g].matches.find(m=>m.home===home && m.away===away);
-      if (!match){ match = {home,away,gh:null,ga:null,hour:'',place:''}; state.groups[g].matches.push(match); }
-      if (this.classList.contains('match-hour')) match.hour = this.value.trim();
-      else match.place = this.value.trim();
+  
+  // Hora y lugar
+  document.querySelectorAll('.match-hour, .match-place').forEach(input => {
+    input.addEventListener('change', function() {
+      const groupKey = this.dataset.group;
+      const home = this.dataset.home;
+      const away = this.dataset.away;
+      
+      let match = state.groups[groupKey].matches.find(m => m.home === home && m.away === away);
+      if (!match) {
+        match = { home, away, gh: null, ga: null, hour: '', place: '' };
+        state.groups[groupKey].matches.push(match);
+      }
+      
+      if (this.classList.contains('match-hour')) {
+        match.hour = this.value.trim();
+      } else {
+        match.place = this.value.trim();
+      }
+      
       saveState();
     });
   });
 }
 
 // ===== KNOCKOUT =====
-function updateKnockout(){
+function updateKnockout() {
   const A1 = groupWinner('A') || 'A1';
   const A2 = groupRunnerUp('A') || 'A2';
   const B1 = groupWinner('B') || 'B1';
   const B2 = groupRunnerUp('B') || 'B2';
 
-  // Cruces definidos
+  // Semifinales
   $('#sf1h').textContent = state.knockout.sf1.home || A1;
   $('#sf1a').textContent = state.knockout.sf1.away || B2;
   $('#sf2h').textContent = state.knockout.sf2.home || B1;
   $('#sf2a').textContent = state.knockout.sf2.away || A2;
 
-  const sf1W = state.knockout.sf1.winner, sf2W = state.knockout.sf2.winner;
-
-  // Final
-  $('#fih').textContent = state.knockout.final.home || (sf1W || 'Ganador SF1');
-  $('#fia').textContent = state.knockout.final.away || (sf2W || 'Ganador SF2');
-
-  // Tercer lugar
-  const sf1Loser = sf1W ? (sf1W === ($('#sf1h').textContent) ? $('#sf1a').textContent : $('#sf1h').textContent) : 'Perdedor SF1';
-  const sf2Loser = sf2W ? (sf2W === ($('#sf2h').textContent) ? $('#sf2a').textContent : $('#sf2h').textContent) : 'Perdedor SF2';
+  // Final y tercer lugar
+  const sf1Winner = state.knockout.sf1.winner;
+  const sf2Winner = state.knockout.sf2.winner;
+  
+  // Para la final
+  $('#fih').textContent = state.knockout.final.home || (sf1Winner || 'Ganador SF1');
+  $('#fia').textContent = state.knockout.final.away || (sf2Winner || 'Ganador SF2');
+  
+  // Para tercer lugar
+  const sf1Loser = sf1Winner ? 
+    (sf1Winner === (state.knockout.sf1.home || A1) ? (state.knockout.sf1.away || B2) : (state.knockout.sf1.home || A1)) : 
+    'Perdedor SF1';
+  const sf2Loser = sf2Winner ? 
+    (sf2Winner === (state.knockout.sf2.home || B1) ? (state.knockout.sf2.away || A2) : (state.knockout.sf2.home || B1)) : 
+    'Perdedor SF2';
+  
   $('#thirdh').textContent = state.knockout.third.home || sf1Loser;
   $('#thirda').textContent = state.knockout.third.away || sf2Loser;
-
-  // Mercy tags
-  const tags = [
-    {id:'sf1Mercy', m:state.knockout.sf1},
-    {id:'sf2Mercy', m:state.knockout.sf2},
-    {id:'fiMercy',  m:state.knockout.final},
-    {id:'thirdMercy', m:state.knockout.third},
-  ];
-  tags.forEach(t=>{
-    const el = document.getElementById(t.id);
-    const on = mercyApplies(t.m.gh, t.m.ga, t.m.inning);
-    el.style.display = on ? 'inline-block' : 'none';
-  });
 
   updateWinnerSelects();
 }
 
-function updateWinnerSelects(){
-  const sf1h = $('#sf1h').textContent, sf1a = $('#sf1a').textContent;
-  const sf2h = $('#sf2h').textContent, sf2a = $('#sf2a').textContent;
-  const fih = $('#fih').textContent,  fia  = $('#fia').textContent;
-  const thirdh = $('#thirdh').textContent, thirda = $('#thirda').textContent;
+function updateWinnerSelects() {
+  const sf1h = $('#sf1h').textContent;
+  const sf1a = $('#sf1a').textContent;
+  const sf2h = $('#sf2h').textContent;
+  const sf2a = $('#sf2a').textContent;
+  const fih = $('#fih').textContent;
+  const fia = $('#fia').textContent;
+  const thirdh = $('#thirdh').textContent;
+  const thirda = $('#thirda').textContent;
 
-  $('#sf1w').innerHTML = `<option value="">— Ganador —</option><option value="${sf1h}">${sf1h}</option><option value="${sf1a}">${sf1a}</option>`;
+  // Semifinal 1
+  $('#sf1w').innerHTML = `<option value="">— Ganador —</option>
+                          <option value="${sf1h}">${sf1h}</option>
+                          <option value="${sf1a}">${sf1a}</option>`;
   if (state.knockout.sf1.winner) $('#sf1w').value = state.knockout.sf1.winner;
 
-  $('#sf2w').innerHTML = `<option value="">— Ganador —</option><option value="${sf2h}">${sf2h}</option><option value="${sf2a}">${sf2a}</option>`;
+  // Semifinal 2
+  $('#sf2w').innerHTML = `<option value="">— Ganador —</option>
+                          <option value="${sf2h}">${sf2h}</option>
+                          <option value="${sf2a}">${sf2a}</option>`;
   if (state.knockout.sf2.winner) $('#sf2w').value = state.knockout.sf2.winner;
 
-  $('#fiw').innerHTML  = `<option value="">— Campeón —</option><option value="${fih}">${fih}</option><option value="${fia}">${fia}</option>`;
+  // Final
+  $('#fiw').innerHTML = `<option value="">— Campeón —</option>
+                         <option value="${fih}">${fih}</option>
+                         <option value="${fia}">${fia}</option>`;
   if (state.knockout.final.winner) $('#fiw').value = state.knockout.final.winner;
 
-  $('#thirdw').innerHTML = `<option value="">— Tercero —</option><option value="${thirdh}">${thirdh}</option><option value="${thirda}">${thirda}</option>`;
+  // Tercer lugar
+  $('#thirdw').innerHTML = `<option value="">— Tercero —</option>
+                            <option value="${thirdh}">${thirdh}</option>
+                            <option value="${thirda}">${thirda}</option>`;
   if (state.knockout.third.winner) $('#thirdw').value = state.knockout.third.winner;
 }
 
-function loadKnockoutFromState(){
-  const K = state.knockout;
-  // SF1
-  $('#sf1gh').value = K.sf1.gh??''; $('#sf1ga').value = K.sf1.ga??'';
-  $('#sf1Inning').value = K.sf1.inning||''; $('#sf1Hour').value = K.sf1.hour||''; $('#sf1Place').value = K.sf1.place||'';
-  // SF2
-  $('#sf2gh').value = K.sf2.gh??''; $('#sf2ga').value = K.sf2.ga??'';
-  $('#sf2Inning').value = K.sf2.inning||''; $('#sf2Hour').value = K.sf2.hour||''; $('#sf2Place').value = K.sf2.place||'';
-  // Final
-  $('#figh').value = K.final.gh??''; $('#figa').value = K.final.ga??'';
-  $('#fiInning').value = K.final.inning||''; $('#fiHour').value = K.final.hour||''; $('#fiPlace').value = K.final.place||'';
-  // 3º
-  $('#thirdgh').value = K.third.gh??''; $('#thirdga').value = K.third.ga??'';
-  $('#thirdInning').value = K.third.inning||''; $('#thirdHour').value = K.third.hour||''; $('#thirdPlace').value = K.third.place||'';
-  updateKnockout();
-}
+function setupKnockoutListeners() {
+  // Semifinal 1
+  $('#sf1gh').addEventListener('input', function() {
+    state.knockout.sf1.gh = valInt(this.value);
+    saveState();
+    updateKnockout();
+  });
+  $('#sf1ga').addEventListener('input', function() {
+    state.knockout.sf1.ga = valInt(this.value);
+    saveState();
+    updateKnockout();
+  });
+  $('#sf1w').addEventListener('change', function() {
+    state.knockout.sf1.winner = this.value;
+    saveState();
+    updateKnockout();
+  });
+  $('#sf1Hour').addEventListener('change', function() {
+    state.knockout.sf1.hour = this.value.trim();
+    saveState();
+  });
+  $('#sf1Place').addEventListener('change', function() {
+    state.knockout.sf1.place = this.value.trim();
+    saveState();
+  });
+  $('#sf1HomeName').addEventListener('change', function() {
+    state.knockout.sf1.home = this.value.trim();
+    saveState();
+    updateKnockout();
+  });
+  $('#sf1AwayName').addEventListener('change', function() {
+    state.knockout.sf1.away = this.value.trim();
+    saveState();
+    updateKnockout();
+  });
 
-function saveKnockoutToState(){
-  const K = state.knockout;
-  // SF1
-  K.sf1.gh = valInt($('#sf1gh').value); K.sf1.ga = valInt($('#sf1ga').value);
-  K.sf1.inning = $('#sf1Inning').value.trim(); K.sf1.winner = $('#sf1w').value;
-  K.sf1.hour = $('#sf1Hour').value.trim(); K.sf1.place = $('#sf1Place').value.trim();
-  // SF2
-  K.sf2.gh = valInt($('#sf2gh').value); K.sf2.ga = valInt($('#sf2ga').value);
-  K.sf2.inning = $('#sf2Inning').value.trim(); K.sf2.winner = $('#sf2w').value;
-  K.sf2.hour = $('#sf2Hour').value.trim(); K.sf2.place = $('#sf2Place').value.trim();
+  // Semifinal 2
+  $('#sf2gh').addEventListener('input', function() {
+    state.knockout.sf2.gh = valInt(this.value);
+    saveState();
+    updateKnockout();
+  });
+  $('#sf2ga').addEventListener('input', function() {
+    state.knockout.sf2.ga = valInt(this.value);
+    saveState();
+    updateKnockout();
+  });
+  $('#sf2w').addEventListener('change', function() {
+    state.knockout.sf2.winner = this.value;
+    saveState();
+    updateKnockout();
+  });
+  $('#sf2Hour').addEventListener('change', function() {
+    state.knockout.sf2.hour = this.value.trim();
+    saveState();
+  });
+  $('#sf2Place').addEventListener('change', function() {
+    state.knockout.sf2.place = this.value.trim();
+    saveState();
+  });
+  $('#sf2HomeName').addEventListener('change', function() {
+    state.knockout.sf2.home = this.value.trim();
+    saveState();
+    updateKnockout();
+  });
+  $('#sf2AwayName').addEventListener('change', function() {
+    state.knockout.sf2.away = this.value.trim();
+    saveState();
+    updateKnockout();
+  });
+
   // Final
-  K.final.gh = valInt($('#figh').value); K.final.ga = valInt($('#figa').value);
-  K.final.inning = $('#fiInning').value.trim(); K.final.winner = $('#fiw').value;
-  K.final.hour = $('#fiHour').value.trim(); K.final.place = $('#fiPlace').value.trim();
-  // 3º
-  K.third.gh = valInt($('#thirdgh').value); K.third.ga = valInt($('#thirdga').value);
-  K.third.inning = $('#thirdInning').value.trim(); K.third.winner = $('#thirdw').value;
-  K.third.hour = $('#thirdHour').value.trim(); K.third.place = $('#thirdPlace').value.trim();
-  saveState(); updateKnockout();
+  $('#figh').addEventListener('input', function() {
+    state.knockout.final.gh = valInt(this.value);
+    saveState();
+    updateKnockout();
+  });
+  $('#figa').addEventListener('input', function() {
+    state.knockout.final.ga = valInt(this.value);
+    saveState();
+    updateKnockout();
+  });
+  $('#fiw').addEventListener('change', function() {
+    state.knockout.final.winner = this.value;
+    saveState();
+    updateKnockout();
+  });
+  $('#fiHour').addEventListener('change', function() {
+    state.knockout.final.hour = this.value.trim();
+    saveState();
+  });
+  $('#fiPlace').addEventListener('change', function() {
+    state.knockout.final.place = this.value.trim();
+    saveState();
+  });
+  $('#fiHomeName').addEventListener('change', function() {
+    state.knockout.final.home = this.value.trim();
+    saveState();
+    updateKnockout();
+  });
+  $('#fiAwayName').addEventListener('change', function() {
+    state.knockout.final.away = this.value.trim();
+    saveState();
+    updateKnockout();
+  });
+
+  // Tercer lugar
+  $('#thirdgh').addEventListener('input', function() {
+    state.knockout.third.gh = valInt(this.value);
+    saveState();
+    updateKnockout();
+  });
+  $('#thirdga').addEventListener('input', function() {
+    state.knockout.third.ga = valInt(this.value);
+    saveState();
+    updateKnockout();
+  });
+  $('#thirdw').addEventListener('change', function() {
+    state.knockout.third.winner = this.value;
+    saveState();
+    updateKnockout();
+  });
+  $('#thirdHour').addEventListener('change', function() {
+    state.knockout.third.hour = this.value.trim();
+    saveState();
+  });
+  $('#thirdPlace').addEventListener('change', function() {
+    state.knockout.third.place = this.value.trim();
+    saveState();
+  });
+  $('#thirdHomeName').addEventListener('change', function() {
+    state.knockout.third.home = this.value.trim();
+    saveState();
+    updateKnockout();
+  });
+  $('#thirdAwayName').addEventListener('change', function() {
+    state.knockout.third.away = this.value.trim();
+    saveState();
+    updateKnockout();
+  });
 }
 
 // ===== PERSISTENCIA =====
-function saveState(){ try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){ console.error(e);} }
-function loadState(){
-  try{
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved){ Object.assign(state, JSON.parse(saved)); return true; }
-  }catch(e){ console.error(e); }
-  return false;
+function saveState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
-// ===== FUNCIONES PRINCIPALES =====
-function generateSchedule(){
-  state.groups.A.teams = parseTeams($('#ga').value);
-  state.groups.B.teams = parseTeams($('#gb').value);
-
-  ['A','B'].forEach(k=>{
-    const t = state.groups[k].teams;
-    state.groups[k].matches = roundRobin4(t).map(([home,away])=>({home,away,gh:null,ga:null,hour:'',place:''}));
-  });
-
-  state.tournamentName = $('#tournamentName').value.trim();
-  saveState(); renderGroups(); updateKnockout();
-  alert('✅ Rol generado correctamente (béisbol)');
-}
-
-function publishTournament(){
-  const statusEl = $('#publishStatus');
-  statusEl.textContent = '⏳ Generando...'; statusEl.className='status loading';
-  try{
-    const exportData = {
-      tournamentName: state.tournamentName,
-      subtitle: 'Torneo de Béisbol — 2 Grupos + KO',
-      groups: state.groups,
-      knockout: state.knockout,
-      updatedAtLocal: new Date().toLocaleString('es-ES'),
-      theme: state.theme,
-      sport: 'baseball',
-      rules: {
-        tieBreakers: ['PCT','HeadToHead','RunDiffHeadToHead','RunsForHeadToHead','FewerRunsAgainstHeadToHead','DrawLots'],
-        mercyKO: { diff15In3rd:true, diff10In4th:true }
-      }
-    };
-    const blob = new Blob([JSON.stringify(exportData,null,2)], {type:'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href = url; a.download = 'data.json';
-    document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-    statusEl.textContent = '✅ Publicado'; statusEl.className='status success';
-    setTimeout(()=>{ statusEl.textContent=''; }, 3000);
-  }catch(e){
-    statusEl.textContent = '❌ Error'; statusEl.className='status error'; console.error(e);
+function loadState() {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored);
+      state = { ...state, ...parsed };
+    } catch (e) {
+      console.warn('Error loading state, using default', e);
+    }
   }
 }
 
-function saveCopy(){ saveState(); const s=$('#publishStatus'); s.textContent='💾 Guardado'; s.className='status success'; setTimeout(()=>s.textContent='',2000); }
-function clearAll(){ if (confirm('¿Borrar todos los datos?')){ localStorage.removeItem(STORAGE_KEY); location.reload(); } }
+// ===== PUBLICACIÓN =====
+function publish() {
+  const statusEl = $('#publishStatus');
+  statusEl.textContent = '⏳';
+  statusEl.className = 'status loading';
+  
+  const data = {
+    ...state,
+    timestamp: new Date().toISOString()
+  };
+  
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'data.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  
+  statusEl.textContent = '✅';
+  statusEl.className = 'status success';
+  
+  setTimeout(() => {
+    statusEl.textContent = '';
+    statusEl.className = '';
+  }, 3000);
+}
 
-// Import/Export (compatibles)
-function normalizeImported(data){
-  const KO_DEF = { home:'',away:'',gh:null,ga:null,inning:'',winner:'',hour:'',place:'' };
-  const safe = {
-    tournamentName: data?.tournamentName || '',
-    theme: Object.assign({color:'#0284c7',bg:'#f8fafc'}, data?.theme || {}),
-    groups: { A:{teams:[],matches:[]}, B:{teams:[],matches:[]} },
-    knockout: {
-      sf1: Object.assign({}, KO_DEF, data?.knockout?.sf1||{}),
-      sf2: Object.assign({}, KO_DEF, data?.knockout?.sf2||{}),
-      final:Object.assign({}, KO_DEF, data?.knockout?.final||{}),
-      third:Object.assign({}, KO_DEF, data?.knockout?.third||{}),
+// ===== IMPORT/EXPORT =====
+function exportData() {
+  const data = {
+    ...state,
+    timestamp: new Date().toISOString()
+  };
+  
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `torneo-beisbol-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function importData(file) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const imported = JSON.parse(e.target.result);
+      state = { ...state, ...imported };
+      saveState();
+      applyStateToUI();
+      renderGroups();
+      updateKnockout();
+      alert('✅ Datos importados correctamente');
+    } catch (err) {
+      alert('❌ Error al importar: ' + err.message);
     }
   };
-  ['A','B'].forEach(k=>{
-    const g = (data?.groups && data.groups[k]) ? data.groups[k] : {};
-    const t = Array.isArray(g.teams) ? g.teams.filter(Boolean).slice(0,4) : [];
-    const m = Array.isArray(g.matches) ? g.matches.map(mm=>Object.assign({home:'',away:'',gh:null,ga:null,hour:'',place:''}, mm||{})) : [];
-    safe.groups[k] = { teams:t, matches:m };
-  });
-  return safe;
-}
-function exportData(){
-  const out = { tournamentName: state.tournamentName, groups: state.groups, knockout: state.knockout, theme: state.theme, exportedAt: new Date().toISOString(), sport:'baseball' };
-  const blob = new Blob([JSON.stringify(out,null,2)], {type:'application/json'});
-  const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`torneo-beisbol-${new Date().toISOString().slice(0,10)}.json`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-  alert('📤 Datos exportados');
-}
-function importData(){
-  const fileInput = $('#importFile'); const file = fileInput.files[0];
-  if (!file){ alert('Selecciona un archivo JSON'); return; }
-  const r = new FileReader();
-  r.onload = e=>{
-    try{
-      const data = JSON.parse(e.target.result);
-      if (!data.groups || !data.knockout) throw new Error('Formato inválido');
-      if (confirm('Importar estos datos? Se reemplazarán los actuales.')){
-        const safe = normalizeImported(data);
-        state.tournamentName = safe.tournamentName; state.theme = safe.theme; state.groups = safe.groups; state.knockout = safe.knockout;
-        $('#ga').value = state.groups.A.teams.join('\n'); $('#gb').value = state.groups.B.teams.join('\n');
-        $('#tournamentName').value = state.tournamentName; $('#themeColor').value = state.theme.color; $('#themeBg').value = state.theme.bg;
-        applyTheme(); saveState(); renderGroups(); loadKnockoutFromState(); alert('✅ Importado');
-      }
-      fileInput.value='';
-    }catch(err){ alert('❌ Error importando: '+err.message); console.error(err); }
-  };
-  r.onerror = ()=> alert('❌ Error leyendo archivo');
-  r.readAsText(file);
+  reader.readAsText(file);
 }
 
-// ===== INIT =====
-function applyTheme(){ try{
-  document.documentElement.style.setProperty('--accent', state.theme?.color||'#0284c7');
-  document.documentElement.style.setProperty('--bg', state.theme?.bg||'#f8fafc');
-  document.body.style.background = state.theme?.bg||'#f8fafc';
-}catch(e){} }
-
-function init(){
-  const loaded = loadState();
+// ===== UI STATE =====
+function applyStateToUI() {
+  // Equipos
   $('#ga').value = state.groups.A.teams.join('\n');
   $('#gb').value = state.groups.B.teams.join('\n');
-  $('#tournamentName').value = state.tournamentName;
-  $('#themeColor').value = state.theme.color;
-  $('#themeBg').value = state.theme.bg;
-
-  $('#btnGenerate').addEventListener('click', generateSchedule);
-  $('#btnPublish').addEventListener('click', publishTournament);
-  $('#btnSaveCopy').addEventListener('click', saveCopy);
-  $('#btnClearAll').addEventListener('click', clearAll);
-  $('#btnExport').addEventListener('click', exportData);
-  $('#btnImport').addEventListener('click', importData);
-  $('#importFile').addEventListener('change', importData);
-
-  // KO inputs
-  ['#sf1gh','#sf1ga','#sf1Inning','#sf1w','#sf1Hour','#sf1Place',
-   '#sf2gh','#sf2ga','#sf2Inning','#sf2w','#sf2Hour','#sf2Place',
-   '#figh','#figa','#fiInning','#fiw','#fiHour','#fiPlace',
-   '#thirdgh','#thirdga','#thirdInning','#thirdw','#thirdHour','#thirdPlace'
-  ].forEach(sel=>{
-    $(sel).addEventListener('input', saveKnockoutToState);
-  });
-
+  
   // Tema
-  $('#tournamentName').addEventListener('input', e=>{ state.tournamentName = e.target.value; saveState(); });
-  $('#themeColor').addEventListener('input', e=>{ state.theme.color = e.target.value; saveState(); applyTheme(); });
-  $('#themeBg').addEventListener('input', e=>{ state.theme.bg = e.target.value; saveState(); applyTheme(); });
-
-  if (loaded){ renderGroups(); loadKnockoutFromState(); }
-  else { generateSchedule(); }
+  $('#tournamentName').value = state.tournamentName || '';
+  $('#themeColor').value = state.theme.color || '#0284c7';
+  $('#themeBg').value = state.theme.bg || '#f8fafc';
+  
+  // Knockout scores
+  $('#sf1gh').value = state.knockout.sf1.gh == null ? '' : state.knockout.sf1.gh;
+  $('#sf1ga').value = state.knockout.sf1.ga == null ? '' : state.knockout.sf1.ga;
+  $('#sf2gh').value = state.knockout.sf2.gh == null ? '' : state.knockout.sf2.gh;
+  $('#sf2ga').value = state.knockout.sf2.ga == null ? '' : state.knockout.sf2.ga;
+  $('#figh').value = state.knockout.final.gh == null ? '' : state.knockout.final.gh;
+  $('#figa').value = state.knockout.final.ga == null ? '' : state.knockout.final.ga;
+  $('#thirdgh').value = state.knockout.third.gh == null ? '' : state.knockout.third.gh;
+  $('#thirdga').value = state.knockout.third.ga == null ? '' : state.knockout.third.ga;
+  
+  // Knockout hora y lugar
+  $('#sf1Hour').value = state.knockout.sf1.hour || '';
+  $('#sf1Place').value = state.knockout.sf1.place || '';
+  $('#sf2Hour').value = state.knockout.sf2.hour || '';
+  $('#sf2Place').value = state.knockout.sf2.place || '';
+  $('#fiHour').value = state.knockout.final.hour || '';
+  $('#fiPlace').value = state.knockout.final.place || '';
+  $('#thirdHour').value = state.knockout.third.hour || '';
+  $('#thirdPlace').value = state.knockout.third.place || '';
+  
+  // Nombres manuales
+  $('#sf1HomeName').value = state.knockout.sf1.home || '';
+  $('#sf1AwayName').value = state.knockout.sf1.away || '';
+  $('#sf2HomeName').value = state.knockout.sf2.home || '';
+  $('#sf2AwayName').value = state.knockout.sf2.away || '';
+  $('#fiHomeName').value = state.knockout.final.home || '';
+  $('#fiAwayName').value = state.knockout.final.away || '';
+  $('#thirdHomeName').value = state.knockout.third.home || '';
+  $('#thirdAwayName').value = state.knockout.third.away || '';
 }
+
+// ===== INICIALIZACIÓN =====
+function init() {
+  loadState();
+  applyStateToUI();
+  renderGroups();
+  updateKnockout();
+  setupKnockoutListeners();
+  
+  // Generar rol
+  $('#btnGenerate').addEventListener('click', function() {
+    state.groups.A.teams = parseTeams($('#ga').value);
+    state.groups.B.teams = parseTeams($('#gb').value);
+    state.groups.A.matches = [];
+    state.groups.B.matches = [];
+    saveState();
+    renderGroups();
+    updateKnockout();
+  });
+  
+  // Publicar
+  $('#btnPublish').addEventListener('click', publish);
+  
+  // Guardar copia
+  $('#btnSaveCopy').addEventListener('click', function() {
+    saveState();
+    alert('✅ Estado guardado localmente');
+  });
+  
+  // Limpiar
+  $('#btnClearAll').addEventListener('click', function() {
+    if (confirm('¿Borrar todos los datos?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
+  });
+  
+  // Importar/Exportar
+  $('#btnExport').addEventListener('click', exportData);
+  $('#btnImport').addEventListener('click', function() {
+    $('#importFile').click();
+  });
+  $('#importFile').addEventListener('change', function() {
+    if (this.files[0]) {
+      importData(this.files[0]);
+      this.value = '';
+    }
+  });
+  
+  // Tema
+  $('#tournamentName').addEventListener('change', function() {
+    state.tournamentName = this.value.trim();
+    saveState();
+  });
+  $('#themeColor').addEventListener('change', function() {
+    state.theme.color = this.value;
+    saveState();
+  });
+  $('#themeBg').addEventListener('change', function() {
+    state.theme.bg = this.value;
+    saveState();
+  });
+}
+
+// Iniciar
 document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>

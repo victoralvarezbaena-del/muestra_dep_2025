@@ -45,16 +45,18 @@
     .info{display:flex;gap:8px;margin-top:6px}
     .info input{background:#f8fafc;border:1px solid #cbd5e1;border-radius:10px;padding:8px 10px;font-size:14px}
 
-    table{width:100%;border-collapse:collapse;margin-top:10px}
-    th,td{padding:8px 10px;border-bottom:1px solid #cbd5e1;text-align:right}
+    table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+    th,td{padding:6px 8px;border-bottom:1px solid #cbd5e1;text-align:right;font-variant-numeric: tabular-nums;}
     th:first-child,td:first-child{text-align:left}
-    thead th{font-size:12px;color:var(--muted);font-weight:600}
+    th:nth-child(2),td:nth-child(2){text-align:left}
+    thead th{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
     tbody tr:hover{background:#e2e8f0}
-    .pos{font-variant-numeric:tabular-nums;color:var(--muted)}
+    .pos{font-variant-numeric:tabular-nums;color:var(--muted);font-weight:600}
     .pts{font-weight:800}
     .first{background:rgba(34,197,94,.15)}
     .second{background:rgba(251,191,36,.15)}
     .note{font-size:12px;color:var(--muted)}
+    .pct{font-weight:600;color:var(--muted)}
 
     /* Knockout */
     .bracket{display:grid;gap:12px;margin-top:16px}
@@ -107,7 +109,29 @@
       font-size: 12px;
       color: #92400e;
     }
+
+    /* Tooltip para explicar JV */
+    .tooltip {
+      position: relative;
+      cursor: help;
+      border-bottom: 1px dotted var(--muted);
+    }
     
+    .tooltip:hover::after {
+      content: "Juegos de Ventaja = (Ganados del líder - Ganados) + (Perdidos - Perdidos del líder) ÷ 2";
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--text);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      white-space: nowrap;
+      z-index: 1000;
+    }
+
     /* Ganador destacado */
     .winner {
       background: linear-gradient(135deg, rgba(34,197,94,.15), rgba(251,191,36,.15));
@@ -241,8 +265,8 @@ const $ = (selector, root = document) => root.querySelector(selector);
 // ===== ESTADO =====
 let state = {
   groups: {
-    A: { teams: ['A1', 'A2', 'A3', 'A4'], matches: [] },
-    B: { teams: ['B1', 'B2', 'B3', 'B4'], matches: [] }
+    A: { teams: ['Tigres', 'Leones', 'Águilas', 'Halcones'], matches: [] },
+    B: { teams: ['Osos', 'Toros', 'Lobos', 'Panteras'], matches: [] }
   },
   points: { win: 2, draw: 1, loss: 0 },
   knockout: {
@@ -264,7 +288,17 @@ function valInt(v) {
 
 function computeTable(matches, teams) {
   const table = Object.fromEntries(teams.map(team => [team, {
-    team, PJ: 0, G: 0, E: 0, P: 0, CF: 0, CC: 0, DC: 0, Pts: 0
+    team, 
+    JJ: 0,  // Juegos Jugados
+    G: 0,   // Ganados
+    P: 0,   // Perdidos
+    E: 0,   // Empatados
+    PCT: 0, // Porcentaje de Victorias
+    JV: 0,  // Juegos de Ventaja
+    RA: 0,  // Carreras Anotadas
+    RC: 0,  // Carreras Concedidas
+    DIF: 0, // Diferencia
+    Pts: 0  // Puntos
   }]));
   
   const cfg = state.points;
@@ -277,14 +311,14 @@ function computeTable(matches, teams) {
     if (!homeTeam || !awayTeam) return;
     
     // Actualizar partidos jugados
-    homeTeam.PJ++;
-    awayTeam.PJ++;
+    homeTeam.JJ++;
+    awayTeam.JJ++;
     
     // Actualizar carreras
-    homeTeam.CF += match.gh;
-    homeTeam.CC += match.ga;
-    awayTeam.CF += match.ga;
-    awayTeam.CC += match.gh;
+    homeTeam.RA += match.gh;
+    homeTeam.RC += match.ga;
+    awayTeam.RA += match.ga;
+    awayTeam.RC += match.gh;
     
     // Determinar resultado
     if (match.gh > match.ga) {
@@ -307,18 +341,25 @@ function computeTable(matches, teams) {
   
   // Calcular diferencia de carreras
   teams.forEach(team => {
-    table[team].DC = table[team].CF - table[team].CC;
+    table[team].DIF = table[team].RA - table[team].RC;
   });
   
-  // Ordenar por criterios de desempate de béisbol mexicano
-  return Object.values(table).sort((a, b) => {
+  // Calcular porcentaje de victorias
+  teams.forEach(team => {
+    table[team].PCT = table[team].JJ > 0 ? (table[team].G / table[team].JJ) : 0;
+  });
+  
+  // Ordenar por criterios de desempate
+  const sorted = Object.values(table).sort((a, b) => {
     // 1. Puntos
     if (b.Pts !== a.Pts) return b.Pts - a.Pts;
-    // 2. Diferencia de carreras
-    if (b.DC !== a.DC) return b.DC - a.DC;
-    // 3. Carreras a favor
-    if (b.CF !== a.CF) return b.CF - a.CF;
-    // 4. Enfrentamiento directo (simplificado)
+    // 2. Porcentaje de victorias
+    if (b.PCT !== a.PCT) return b.PCT - a.PCT;
+    // 3. Diferencia de carreras
+    if (b.DIF !== a.DIF) return b.DIF - a.DIF;
+    // 4. Carreras a favor
+    if (b.RA !== a.RA) return b.RA - a.RA;
+    // 5. Enfrentamiento directo
     const directMatch = matches.find(m => 
       (m.home === a.team && m.away === b.team) || 
       (m.home === b.team && m.away === a.team)
@@ -329,9 +370,19 @@ function computeTable(matches, teams) {
       if (directMatch.home === a.team && directMatch.gh < directMatch.ga) return 1;
       if (directMatch.home === b.team && directMatch.gh > directMatch.ga) return 1;
     }
-    // 5. Alfabético como último recurso
+    // 6. Alfabético como último recurso
     return a.team.localeCompare(b.team);
   });
+  
+  // Calcular Juegos de Ventaja después de ordenar
+  if (sorted.length > 0) {
+    const leader = sorted[0];
+    sorted.forEach(team => {
+      team.JV = ((leader.G - team.G) + (team.P - leader.P)) / 2;
+    });
+  }
+  
+  return sorted;
 }
 
 function formatScore(score) {
@@ -357,29 +408,39 @@ function renderGroups() {
     groupDiv.className = `groupBox group${groupKey}`;
     groupDiv.innerHTML = `<h3>Grupo ${groupKey}</h3>`;
     
-    // Tabla de posiciones
+    // Tabla de posiciones con nuevas estadísticas
     const rows = computeTable(group.matches, teams);
     const tableHTML = `
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>E</th><th>P</th>
-              <th>CF</th><th>CC</th><th>DC</th><th>Pts</th>
+              <th>#</th>
+              <th>Equipo</th>
+              <th>JJ</th>
+              <th>G</th>
+              <th>P</th>
+              <th>%G</th>
+              <th><span class="tooltip">JV</span></th>
+              <th>RA</th>
+              <th>RC</th>
+              <th>DIF</th>
+              <th>Pts</th>
             </tr>
           </thead>
           <tbody>
             ${rows.map((row, index) => `
               <tr class="${index === 0 ? 'first' : index === 1 ? 'second' : ''}">
                 <td class="pos">${index + 1}</td>
-                <td>${row.team}</td>
-                <td>${row.PJ}</td>
+                <td><strong>${row.team}</strong></td>
+                <td>${row.JJ}</td>
                 <td>${row.G}</td>
-                <td>${row.E}</td>
                 <td>${row.P}</td>
-                <td>${row.CF}</td>
-                <td>${row.CC}</td>
-                <td>${row.DC}</td>
+                <td class="pct">${row.PCT.toFixed(3)}</td>
+                <td>${row.JV === 0 ? '-' : row.JV.toFixed(1)}</td>
+                <td>${row.RA}</td>
+                <td>${row.RC}</td>
+                <td>${row.DIF > 0 ? '+' : ''}${row.DIF}</td>
                 <td class="pts">${row.Pts}</td>
               </tr>
             `).join('')}

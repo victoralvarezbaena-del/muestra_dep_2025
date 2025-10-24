@@ -1,0 +1,65 @@
+{
+  "groups": {
+    "A": {
+      "teams": [
+        "Equipo A1",
+        "Equipo A2",
+        "Equipo A3",
+        "Equipo A4"
+      ],
+      "matches": []
+    },
+    "B": {
+      "teams": [
+        "Equipo B1",
+        "Equipo B2",
+        "Equipo B3",
+        "Equipo B4"
+      ],
+      "matches": []
+    }
+  },
+  "knockout": {
+    "sf1": {
+      "home": "",
+      "away": "",
+      "gh": null,
+      "ga": null,
+      "winner": "",
+      "hour": "",
+      "place": ""
+    },
+    "sf2": {
+      "home": "",
+      "away": "",
+      "gh": null,
+      "ga": null,
+      "winner": "",
+      "hour": "",
+      "place": ""
+    },
+    "final": {
+      "home": "",
+      "away": "",
+      "gh": null,
+      "ga": null,
+      "winner": "",
+      "hour": "",
+      "place": ""
+    },
+    "third": {
+      "home": "",
+      "away": "",
+      "gh": null,
+      "ga": null,
+      "winner": "",
+      "hour": "",
+      "place": ""
+    }
+  },
+  "tournamentName": "",
+  "theme": {
+    "color": "#0284c7",
+    "bg": "#f8fafc"
+  }
+}

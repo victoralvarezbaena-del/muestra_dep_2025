@@ -505,17 +505,25 @@
     // Cargar datos del torneo con mejor manejo de errores
     async function loadTournamentData() {
       const fileName = getJsonFileNameFromUrl();
+      console.log('🔍 Buscando archivo:', fileName);
       
       try {
         document.getElementById('tournamentContent').innerHTML = '<div class="loading">Cargando datos del torneo...</div>';
         
+        console.log('📡 Realizando fetch...');
         const response = await fetch(fileName, { cache: 'no-store' });
+        console.log('📨 Respuesta recibida:', response.status, response.statusText);
+        
         if (!response.ok) {
           throw new Error(`No se pudo cargar el archivo: ${fileName} (Error ${response.status})`);
         }
         
+        console.log('📊 Parseando JSON...');
         let data = await response.json();
+        console.log('✅ JSON parseado correctamente:', data);
+        
         data = normalizeImported(data);
+        console.log('🔄 Datos normalizados:', data);
         
         // Aplicar tema
         applyTheme(data.theme);
@@ -525,10 +533,11 @@
         document.getElementById('tournamentSubtitle').textContent = data.subtitle || 'Visualización de resultados';
         
         // Renderizar contenido
+        console.log('🎨 Renderizando torneo...');
         renderTournament(data);
         
       } catch (error) {
-        console.error('Error cargando torneo:', error);
+        console.error('❌ Error cargando torneo:', error);
         document.getElementById('tournamentContent').innerHTML = `
           <div class="error">
             <h3>Error al cargar el torneo</h3>
@@ -538,11 +547,11 @@
               Asegúrate de que el archivo JSON existe y está en el mismo directorio.
             </p>
             <div style="margin-top: 15px; padding: 10px; background: #fef2f2; border-radius: 8px; font-size: 14px;">
-              <strong>Posibles soluciones:</strong>
+              <strong>Para diagnóstico:</strong>
               <ul style="text-align: left; margin: 10px 0; padding-left: 20px;">
-                <li>Verifica que el archivo <strong>${fileName}</strong> existe en el servidor</li>
-                <li>Si usas GitHub Pages, asegúrate de que el archivo esté en el repositorio</li>
-                <li>Verifica que el nombre del archivo sea correcto (mayúsculas/minúsculas)</li>
+                <li>Abre la consola del navegador (F12)</li>
+                <li>Verifica que el archivo <strong>${fileName}</strong> existe</li>
+                <li>Revisa la pestaña "Network" para ver las peticiones</li>
               </ul>
             </div>
           </div>
@@ -791,7 +800,7 @@
                     <td class="pos">${index + 1}</td>
                     <td>${row.team}</td>
                     <td>${row.PJ}</td>
-                    <td>${row.G</td>
+                    <td>${row.G}</td>
                     <td>${row.P}</td>
                     <td>${row.SF}</td>
                     <td>${row.SC}</td>

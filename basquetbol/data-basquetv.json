@@ -1,5 +1,5 @@
 {
-  "tournamentName": "Liga de Baloncesto 2024",
+  "tournamentName": "Basquetbol Varonil",
   "subtitle": "Torneo de Baloncesto",
   "groups": {
     "A": {
@@ -173,7 +173,7 @@
       "place": ""
     }
   },
-  "updatedAtLocal": "27/10/2025, 12:31:12",
+  "updatedAtLocal": "27/10/2025, 12:38:51",
   "theme": {
     "color": "#db6a00",
     "bg": "#eed48b"

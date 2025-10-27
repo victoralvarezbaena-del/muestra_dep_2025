@@ -5,7 +5,381 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Visualizador de Torneo de Voleibol</title>
   <style>
-    /* ... (todos los estilos se mantienen igual) ... */
+    :root {
+      --accent: #0284c7;
+      --bg: #f8fafc;
+      --panel: #e2e8f0;
+      --card: #ffffff;
+      --muted: #475569;
+      --text: #0f172a;
+      --ok: #16a34a;
+      --bad: #dc2626;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      transition: background-color 0.3s ease;
+    }
+
+    header {
+      padding: 20px 16px;
+      border-bottom: 2px solid #cbd5e1;
+      background: linear-gradient(90deg, var(--panel), #f1f5f9);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      transition: all 0.3s ease;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(22px, 3.2vw, 34px);
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid #cbd5e1;
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 3px 10px rgba(0,0,0,.1);
+      margin-bottom: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    @media (min-width: 1100px) {
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* Grupos */
+    .groups {
+      display: grid;
+      gap: 12px;
+    }
+
+    @media (min-width: 700px) {
+      .groups {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* Colores por grupo */
+    .groupA { background: rgba(56,189,248,.12); border: 1px solid rgba(56,189,248,.45) }
+    .groupB { background: rgba(168,85,247,.12); border: 1px solid rgba(168,85,247,.45) }
+    .groupC { background: rgba(251,191,36,.12); border: 1px solid rgba(251,191,36,.45) }
+    .groupD { background: rgba(34,197,94,.12); border: 1px solid rgba(34,197,94,.45) }
+
+    .groupBox {
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+
+    .matches {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .match {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 8px;
+      align-items: center;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 10px;
+    }
+
+    .team {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .dash {
+      opacity: .6;
+    }
+
+    .info {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #cbd5e1;
+      text-align: right;
+    }
+
+    th:first-child, td:first-child {
+      text-align: left;
+    }
+
+    thead th {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    tbody tr:hover {
+      background: #e2e8f0;
+    }
+
+    .pos {
+      font-variant-numeric: tabular-nums;
+      color: var(--muted);
+    }
+
+    .pts {
+      font-weight: 800;
+    }
+
+    .first {
+      background: rgba(34,197,94,.15);
+    }
+
+    /* Fase eliminatoria */
+    .bracket {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    @media (min-width: 900px) {
+      .bracket {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .semi, .final, .third {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .semi h3, .final h3, .third h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+
+    .final {
+      position: relative;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 0 4px rgba(2,132,199,.12) inset;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .final h3 {
+      color: var(--accent);
+    }
+
+    .final::before {
+      content: 'FINAL 🏐';
+      position: absolute;
+      top: 12px;
+      right: -48px;
+      transform: rotate(45deg);
+      background: var(--accent);
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 4px 48px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      opacity: 0.9;
+    }
+
+    /* Estados de partidos */
+    .match-result {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      font-weight: bold;
+    }
+
+    .winner {
+      color: var(--ok);
+      font-weight: 800;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+    }
+
+    .error {
+      text-align: center;
+      padding: 20px;
+      color: var(--bad);
+    }
+
+    /* Campeón destacado */
+    .champion {
+      text-align: center;
+      padding: 20px;
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      border-radius: 18px;
+      margin: 20px 0;
+      border: 2px solid #f59e0b;
+    }
+
+    .champion h2 {
+      color: #92400e;
+      margin-bottom: 10px;
+    }
+
+    .champion .team-name {
+      font-size: 24px;
+      font-weight: bold;
+      color: #92400e;
+    }
+
+    /* Portada con tema personalizado */
+    .cover {
+      text-align: center;
+      padding: 40px 20px;
+      margin-bottom: 30px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 80%, black));
+      color: white;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover h1 {
+      font-size: clamp(28px, 4vw, 48px);
+      margin-bottom: 10px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .cover .subtitle {
+      color: rgba(255,255,255,0.9);
+      font-size: clamp(16px, 2vw, 20px);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      margin-bottom: 15px;
+    }
+
+    .cover .update-info {
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      display: inline-block;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    /* Botones con tema */
+    .btn-theme {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-theme:hover {
+      background: color-mix(in srgb, var(--accent) 80%, black);
+      transform: translateY(-2px);
+    }
+
+    /* Indicadores de sets para voleibol */
+    .sets-indicator {
+      display: flex;
+      gap: 4px;
+      margin-top: 4px;
+      justify-content: center;
+    }
+
+    .set-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #cbd5e1;
+    }
+
+    .set-dot.won {
+      background-color: var(--ok);
+    }
+
+    .set-dot.lost {
+      background-color: var(--bad);
+    }
+
+    .sets-score {
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .sets-detail {
+      margin-top: 8px;
+      font-size: 14px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .total-sets {
+      font-weight: bold;
+      text-align: center;
+      margin: 8px 0;
+      font-size: 16px;
+    }
+
+    .points-total {
+      font-size: 14px;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 8px;
+    }
   </style>
 </head>
 <body>
@@ -51,8 +425,6 @@
     function formatTimestamp(timestamp) {
       if (!timestamp) return '';
       
-      console.log('Timestamp recibido:', timestamp, 'Tipo:', typeof timestamp);
-      
       try {
         // Si es un string, intentar convertirlo a número
         let timestampValue = timestamp;
@@ -61,10 +433,8 @@
         }
         
         const date = new Date(timestampValue);
-        console.log('Fecha parseada:', date);
         
         if (isNaN(date.getTime())) {
-          console.log('Fecha inválida');
           return '';
         }
         
@@ -75,9 +445,7 @@
         const hours = date.getHours().toString().padStart(2, '0');
         const minutes = date.getMinutes().toString().padStart(2, '0');
         
-        const formatted = `${day}/${month}/${year} ${hours}:${minutes}`;
-        console.log('Fecha formateada:', formatted);
-        return formatted;
+        return `${day}/${month}/${year} ${hours}:${minutes}`;
       } catch (error) {
         console.error('Error formateando timestamp:', error);
         return '';
@@ -99,7 +467,6 @@
       for (const field of possibleDateFields) {
         if (data[field]) {
           updatedAt = data[field];
-          console.log(`Campo de fecha encontrado: ${field} =`, updatedAt);
           break;
         }
       }
@@ -135,10 +502,9 @@
       return safe;
     }
 
-    // Cargar datos del torneo
+    // Cargar datos del torneo con mejor manejo de errores
     async function loadTournamentData() {
       const fileName = getJsonFileNameFromUrl();
-      console.log('Cargando archivo:', fileName);
       
       try {
         document.getElementById('tournamentContent').innerHTML = '<div class="loading">Cargando datos del torneo...</div>';
@@ -149,10 +515,7 @@
         }
         
         let data = await response.json();
-        console.log('Datos crudos del JSON:', data);
-        
         data = normalizeImported(data);
-        console.log('Datos normalizados:', data);
         
         // Aplicar tema
         applyTheme(data.theme);
@@ -174,22 +537,34 @@
             <p style="margin-top: 10px; font-size: 14px;">
               Asegúrate de que el archivo JSON existe y está en el mismo directorio.
             </p>
+            <div style="margin-top: 15px; padding: 10px; background: #fef2f2; border-radius: 8px; font-size: 14px;">
+              <strong>Posibles soluciones:</strong>
+              <ul style="text-align: left; margin: 10px 0; padding-left: 20px;">
+                <li>Verifica que el archivo <strong>${fileName}</strong> existe en el servidor</li>
+                <li>Si usas GitHub Pages, asegúrate de que el archivo esté en el repositorio</li>
+                <li>Verifica que el nombre del archivo sea correcto (mayúsculas/minúsculas)</li>
+              </ul>
+            </div>
           </div>
         `;
       }
     }
 
-    // Aplicar tema
+    // Aplicar tema mejorado
     function applyTheme(theme) {
       if (!theme) return;
       
       const accentColor = theme.color || '#0284c7';
       const bgColor = theme.bg || '#f8fafc';
       
+      // Aplicar colores a las variables CSS
       document.documentElement.style.setProperty('--accent', accentColor);
       document.documentElement.style.setProperty('--bg', bgColor);
+      
+      // Aplicar color de fondo al body
       document.body.style.background = bgColor;
       
+      // Aplicar gradiente al header basado en el color de acento
       const headerGradient = `linear-gradient(90deg, color-mix(in srgb, ${accentColor} 15%, white), color-mix(in srgb, ${accentColor} 8%, white))`;
       const header = document.querySelector('header');
       if (header) {
@@ -346,18 +721,15 @@
       `;
     }
 
-    // Renderizar portada con tema (CORREGIDO el error de tipeo)
+    // Renderizar portada con tema
     function renderCover(data) {
       const theme = data.theme || {};
       const accentColor = theme.color || '#0284c7';
       const updatedAt = data.updatedAtLocal || '';
       
-      console.log('Datos para portada - updatedAtLocal:', updatedAt);
-      
       let updateInfo = '';
       if (updatedAt) {
         const formattedDate = formatTimestamp(updatedAt);
-        console.log('Fecha formateada para mostrar:', formattedDate);
         if (formattedDate) {
           updateInfo = `
             <div class="update-info">
@@ -365,8 +737,6 @@
             </div>
           `;
         }
-      } else {
-        console.log('No se encontró campo de fecha en los datos');
       }
       
       return `
@@ -421,7 +791,7 @@
                     <td class="pos">${index + 1}</td>
                     <td>${row.team}</td>
                     <td>${row.PJ}</td>
-                    <td>${row.G}</td>
+                    <td>${row.G</td>
                     <td>${row.P}</td>
                     <td>${row.SF}</td>
                     <td>${row.SC}</td>
@@ -518,7 +888,7 @@
     function renderTournament(data) {
       let html = '';
       
-      // Portada con tema (AHORA INCLUYE INFORMACIÓN DE ACTUALIZACIÓN)
+      // Portada con tema
       html += renderCover(data);
       
       // Fase de grupos

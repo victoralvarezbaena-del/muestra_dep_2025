@@ -649,7 +649,7 @@
       `;
     }
 
-    // Renderizar portada con tema
+    // Renderizar portada con tema (ACTUALIZADA con información de última actualización)
     function renderCover(data) {
       const theme = data.theme || {};
       const accentColor = theme.color || '#0284c7';
@@ -813,7 +813,7 @@
     function renderTournament(data) {
       let html = '';
       
-      // Portada con tema
+      // Portada con tema (AHORA INCLUYE INFORMACIÓN DE ACTUALIZACIÓN)
       html += renderCover(data);
       
       // Fase de grupos

@@ -314,24 +314,6 @@
       display: inline-block;
       border: 1px solid rgba(255,255,255,0.3);
     }
-
-    /* Botón de actualización */
-    .refresh-btn {
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      padding: 10px 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-top: 10px;
-    }
-
-    .refresh-btn:hover {
-      background: color-mix(in srgb, var(--accent) 80%, black);
-      transform: translateY(-2px);
-    }
   </style>
 </head>
 <body>
@@ -603,7 +585,6 @@
           <h1>${data.tournamentName || 'Torneo Handball'}</h1>
           <div class="subtitle">${data.subtitle || '4 Grupos + Semifinales'}</div>
           ${updateInfo}
-          <button class="refresh-btn" onclick="location.reload()">🔄 Actualizar</button>
         </div>
       `;
     }

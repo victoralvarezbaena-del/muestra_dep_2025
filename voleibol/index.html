@@ -346,7 +346,7 @@
       `;
     }
 
-    // Renderizar portada con tema (ACTUALIZADA para manejar timestamp)
+    // Renderizar portada con tema (CORREGIDO el error de tipeo)
     function renderCover(data) {
       const theme = data.theme || {};
       const accentColor = theme.color || '#0284c7';
@@ -370,7 +370,7 @@
       }
       
       return `
-        <div class="cover" style="background: linear-gradient(135deg, ${accentColor}, color-mix(in srgb, ${accentcentColor} 80%, black));">
+        <div class="cover" style="background: linear-gradient(135deg, ${accentColor}, color-mix(in srgb, ${accentColor} 80%, black));">
           <h1>${data.tournamentName || 'Torneo de Voleibol'}</h1>
           <div class="subtitle">${data.subtitle || 'Visualización de resultados'}</div>
           ${updateInfo}

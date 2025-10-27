@@ -534,6 +534,9 @@ function renderKnockout() {
   $('#thirdHourPlace').textContent = formatHourPlace(state.knockout.third.hour, state.knockout.third.place);
   
   // Aplicar estilos de ganadores
+  $('#finalMatch').classList.remove('winner');
+  $('#thirdPlaceMatch').classList.remove('third-place');
+  
   if (state.knockout.final.winner) {
     $('#finalMatch').classList.add('winner');
   }
@@ -558,18 +561,59 @@ function applyTheme() {
 // ===== CARGA DE DATOS =====
 async function loadData() {
   try {
-    const response = await fetch(DATA_URL);
-    if (!response.ok) throw new Error('No se pudo cargar data.json');
+    // Intentar cargar desde data.json
+    const response = await fetch(DATA_URL + '?t=' + new Date().getTime());
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
     
     const data = await response.json();
-    state = { ...state, ...data };
+    
+    // Validar y fusionar datos
+    if (data && typeof data === 'object') {
+      // Fusionar datos manteniendo la estructura por defecto
+      state = {
+        ...state,
+        ...data,
+        groups: {
+          A: { ...state.groups.A, ...(data.groups?.A || {}) },
+          B: { ...state.groups.B, ...(data.groups?.B || {}) }
+        },
+        knockout: {
+          ...state.knockout,
+          ...(data.knockout || {})
+        }
+      };
+      
+      // Asegurar que los arrays de matches existan
+      if (!state.groups.A.matches) state.groups.A.matches = [];
+      if (!state.groups.B.matches) state.groups.B.matches = [];
+      
+      console.log('Datos cargados correctamente:', state);
+    }
     
     applyTheme();
     renderGroups();
     renderKnockout();
+    
   } catch (error) {
     console.warn('Error cargando datos:', error);
-    // Mostrar datos de ejemplo
+    
+    // Mostrar mensaje al usuario
+    const header = document.querySelector('header .container');
+    const errorMsg = document.createElement('div');
+    errorMsg.style.background = '#fef2f2';
+    errorMsg.style.color = '#dc2626';
+    errorMsg.style.padding = '8px 12px';
+    errorMsg.style.borderRadius = '6px';
+    errorMsg.style.marginTop = '8px';
+    errorMsg.style.fontSize = '14px';
+    errorMsg.innerHTML = `⚠️ No se pudo cargar data.json: ${error.message}. Mostrando datos de ejemplo.`;
+    
+    header.appendChild(errorMsg);
+    
+    // Mostrar datos de ejemplo como fallback
     renderGroups();
     renderKnockout();
   }

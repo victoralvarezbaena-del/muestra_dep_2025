@@ -335,7 +335,7 @@
       border-left: 4px solid #16a34a;
     }
 
-    .best-second {
+    .second-place {
       background: #fef9c3;
       border-left: 4px solid #eab308;
     }
@@ -358,31 +358,25 @@
   <script>
     // Obtener el nombre del archivo JSON de la URL
     function getJsonFileNameFromUrl() {
-      // Opción 1: Buscar en parámetros de URL (?t=nombre.json)
       const urlParams = new URLSearchParams(window.location.search);
       const tournamentParam = urlParams.get('t');
       if (tournamentParam) {
-        // Agregar .json si no lo tiene
         return tournamentParam.includes('.') ? tournamentParam : `${tournamentParam}.json`;
       }
       
-      // Opción 2: Buscar en parámetros de URL (?torneo=nombre.json) - compatibilidad
       const tournamentParamOld = urlParams.get('torneo');
       if (tournamentParamOld) {
         return tournamentParamOld.includes('.') ? tournamentParamOld : `${tournamentParamOld}.json`;
       }
       
-      // Opción 3: Buscar en el pathname (/nombre-torneo.html)
       const pathParts = window.location.pathname.split('/');
       const fileName = pathParts[pathParts.length - 1];
       
-      // Si el archivo HTML tiene un nombre como "futbol-v.html", buscar "data-futbol-v.json"
       if (fileName && fileName !== 'index.html' && fileName.endsWith('.html')) {
         const slug = fileName.replace('.html', '');
         return `data-${slug}.json`;
       }
       
-      // Opción 4: Valor por defecto
       return 'data.json';
     }
 
@@ -407,7 +401,7 @@
         },
         qualifiedTeams: data?.qualifiedTeams || {},
         lastUpdated: data?.lastUpdated || '',
-        format: data?.format || '10_equipos_3_grupos'
+        format: data?.format || '10_equipos_3_grupos_sf'
       };
       
       ['A','B','C'].forEach(k => {
@@ -461,14 +455,6 @@
             <p style="margin-top: 10px; font-size: 14px;">
               Asegúrate de que el archivo JSON existe y está en el mismo directorio.
             </p>
-            <div style="margin-top: 15px; padding: 10px; background: #fef2f2; border-radius: 8px; font-size: 14px;">
-              <strong>Posibles soluciones:</strong>
-              <ul style="text-align: left; margin: 10px 0; padding-left: 20px;">
-                <li>Verifica que el archivo <strong>${fileName}</strong> existe en el servidor</li>
-                <li>Si usas GitHub Pages, asegúrate de que el archivo esté en el repositorio</li>
-                <li>Verifica que el nombre del archivo sea correcto (mayúsculas/minúsculas)</li>
-              </ul>
-            </div>
           </div>
         `;
       }
@@ -481,14 +467,10 @@
       const accentColor = theme.color || '#0284c7';
       const bgColor = theme.bg || '#f8fafc';
       
-      // Aplicar colores a las variables CSS
       document.documentElement.style.setProperty('--accent', accentColor);
       document.documentElement.style.setProperty('--bg', bgColor);
-      
-      // Aplicar color de fondo al body
       document.body.style.background = bgColor;
       
-      // Aplicar gradiente al header basado en el color de acento
       const headerGradient = `linear-gradient(90deg, color-mix(in srgb, ${accentColor} 15%, white), color-mix(in srgb, ${accentColor} 8%, white))`;
       const header = document.querySelector('header');
       if (header) {
@@ -509,17 +491,14 @@
         const awayTeam = table[match.away];
         if (!homeTeam || !awayTeam) return;
         
-        // Actualizar partidos jugados
         homeTeam.PJ++;
         awayTeam.PJ++;
         
-        // Actualizar goles
         homeTeam.GF += match.gh;
         homeTeam.GC += match.ga;
         awayTeam.GF += match.ga;
         awayTeam.GC += match.gh;
         
-        // Determinar resultado
         if (match.gh > match.ga) {
           homeTeam.G++;
           awayTeam.P++;
@@ -538,12 +517,10 @@
         }
       });
       
-      // Calcular diferencia de goles
       teams.forEach(team => {
         table[team].DG = table[team].GF - table[team].GC;
       });
       
-      // Ordenar por puntos, diferencia de goles, goles a favor
       return Object.values(table).sort((a, b) => {
         if (b.Pts !== a.Pts) return b.Pts - a.Pts;
         if (b.DG !== a.DG) return b.DG - a.DG;
@@ -623,18 +600,11 @@
       const qt = qualifiedTeams;
       let html = '<div class="qualification"><h3>📊 Clasificación a Semifinales</h3>';
       
-      // Equipos clasificados automáticamente (primeros)
-      html += '<div><strong>Clasificados directos:</strong></div>';
+      html += '<div><strong>Clasificados:</strong></div>';
       if (qt.firstA) html += `<div class="qualified-team">🥇 ${qt.firstA} (1º Grupo A)</div>`;
       if (qt.firstB) html += `<div class="qualified-team">🥇 ${qt.firstB} (1º Grupo B)</div>`;
       if (qt.firstC) html += `<div class="qualified-team">🥇 ${qt.firstC} (1º Grupo C)</div>`;
-      
-      // Mejor segundo
-      html += '<div style="margin-top: 8px;"><strong>Mejor segundo (Grupos A/B):</strong></div>';
-      if (qt.bestSecond) {
-        const isFromA = qt.bestSecond === qt.secondA;
-        html += `<div class="qualified-team best-second">🥈 ${qt.bestSecond} (2º Grupo ${isFromA ? 'A' : 'B'})</div>`;
-      }
+      if (qt.secondC) html += `<div class="qualified-team second-place">🥈 ${qt.secondC} (2º Grupo C)</div>`;
       
       html += '</div>';
       return html;
@@ -644,7 +614,6 @@
     function renderGroups(groups, pointsConfig, qualifiedTeams) {
       let html = '<div class="card"><h2>Fase de Grupos</h2>';
       
-      // Información de clasificación
       html += renderQualificationInfo(qualifiedTeams);
       html += '<div class="groups">';
       
@@ -661,14 +630,12 @@
             <div class="matches">
         `;
         
-        // Partidos
         matches.filter(m => m && typeof m === 'object').forEach(match => {
           html += renderMatch(match, match.home, match.away);
         });
         
         html += `</div>`;
         
-        // Tabla de posiciones
         const table = computeTable(matches, teams, pointsConfig);
         html += `
           <div class="table-wrap">
@@ -714,7 +681,6 @@
       const qt = qualifiedTeams || {};
       let html = '';
       
-      // Mostrar campeón destacado si existe
       if (k.final && k.final.winner) {
         html += `
           <div class="champion">
@@ -729,11 +695,11 @@
           <h2>Fase Eliminatoria</h2>
           <div class="bracket">
             <div class="semi">
-              <h3>Semifinal 1 — ${qt.firstA || '1º Grupo A'} vs ${qt.bestSecond || 'Mejor 2º'}</h3>
+              <h3>Semifinal 1 — ${qt.firstA || '1º Grupo A'} vs ${qt.secondC || '2º Grupo C'}</h3>
               ${renderMatch(
                 k.sf1, 
                 k.sf1.home || (qt.firstA || '1º Grupo A'), 
-                k.sf1.away || (qt.bestSecond || 'Mejor 2º')
+                k.sf1.away || (qt.secondC || '2º Grupo C')
               )}
               ${k.sf1.winner ? `<div class="info"><strong>Ganador: ${k.sf1.winner}</strong></div>` : ''}
             </div>
@@ -778,15 +744,12 @@
     function renderTournament(data) {
       let html = '';
       
-      // Portada con tema
       html += renderCover(data);
       
-      // Fase de grupos
       if (data.groups) {
         html += renderGroups(data.groups, data.points, data.qualifiedTeams);
       }
       
-      // Fase eliminatoria
       if (data.knockout) {
         html += renderKnockout(data.knockout, data.qualifiedTeams);
       }
@@ -794,12 +757,10 @@
       document.getElementById('tournamentContent').innerHTML = html;
     }
 
-    // Inicialización
     function init() {
       loadTournamentData();
     }
 
-    // Iniciar cuando el DOM esté listo
     document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>

@@ -2,119 +2,21 @@
   "groups": {
     "A": {
       "teams": [
-        "Tigres",
-        "Leones",
-        "Águilas",
-        "Halcones"
+        "A1",
+        "A2",
+        "A3",
+        "A4"
       ],
-      "matches": [
-        {
-          "home": "Tigres",
-          "away": "Leones",
-          "gh": null,
-          "ga": null,
-          "hour": "8:00",
-          "place": "Campo 1"
-        },
-        {
-          "home": "Águilas",
-          "away": "Halcones",
-          "gh": null,
-          "ga": null,
-          "hour": "8:00",
-          "place": "Campo 1"
-        },
-        {
-          "home": "Tigres",
-          "away": "Águilas",
-          "gh": null,
-          "ga": null,
-          "hour": "8:00",
-          "place": "Campo 1"
-        },
-        {
-          "home": "Leones",
-          "away": "Halcones",
-          "gh": null,
-          "ga": null,
-          "hour": "8:00",
-          "place": "Campo 1"
-        },
-        {
-          "home": "Tigres",
-          "away": "Halcones",
-          "gh": null,
-          "ga": null,
-          "hour": "8:00",
-          "place": "Campo 1"
-        },
-        {
-          "home": "Leones",
-          "away": "Águilas",
-          "gh": null,
-          "ga": null,
-          "hour": "8:00",
-          "place": "Campo 1"
-        }
-      ]
+      "matches": []
     },
     "B": {
       "teams": [
-        "Osos",
-        "Toros",
-        "Lobos",
-        "Panteras"
+        "B1",
+        "B2",
+        "B3",
+        "B4"
       ],
-      "matches": [
-        {
-          "home": "Osos",
-          "away": "Toros",
-          "gh": null,
-          "ga": null,
-          "hour": "8:00",
-          "place": "Campo 1"
-        },
-        {
-          "home": "Lobos",
-          "away": "Panteras",
-          "gh": null,
-          "ga": null,
-          "hour": "8:00",
-          "place": "Campo 1"
-        },
-        {
-          "home": "Osos",
-          "away": "Lobos",
-          "gh": null,
-          "ga": null,
-          "hour": "8:00",
-          "place": "Campo 1"
-        },
-        {
-          "home": "Toros",
-          "away": "Panteras",
-          "gh": null,
-          "ga": null,
-          "hour": "8:00",
-          "place": "Campo 1"
-        },
-        {
-          "home": "Osos",
-          "away": "Panteras",
-          "gh": null,
-          "ga": null,
-          "hour": "8:00",
-          "place": "Campo 1"
-        },
-        {
-          "home": "Toros",
-          "away": "Lobos",
-          "gh": null,
-          "ga": null,
-          "hour": "8:00",
-          "place": "Campo 1"
-        }
-      ]
+      "matches": []
     }
   },
   "points": {
@@ -162,8 +64,8 @@
   },
   "tournamentName": "",
   "theme": {
-    "color": "#04496c",
-    "bg": "#94c4f4"
+    "color": "#004b70",
+    "bg": "#cce0f5"
   },
-  "timestamp": "2025-10-24T17:19:55.698Z"
+  "timestamp": "2025-10-27T20:31:29.946Z"
 }

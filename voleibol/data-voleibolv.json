@@ -6,29 +6,7 @@
         "Equipo A2",
         "Equipo A3"
       ],
-      "matches": [
-        {
-          "home": "Equipo A1",
-          "away": "Equipo A2",
-          "sets": [],
-          "hour": "8:00",
-          "place": "Cancha 1"
-        },
-        {
-          "home": "Equipo A3",
-          "away": "Equipo A1",
-          "sets": [],
-          "hour": "8:00",
-          "place": "Cancha 1"
-        },
-        {
-          "home": "Equipo A2",
-          "away": "Equipo A3",
-          "sets": [],
-          "hour": "8:00",
-          "place": "Cancha 1"
-        }
-      ]
+      "matches": []
     },
     "B": {
       "teams": [
@@ -36,29 +14,7 @@
         "Equipo B2",
         "Equipo B3"
       ],
-      "matches": [
-        {
-          "home": "Equipo B1",
-          "away": "Equipo B2",
-          "sets": [],
-          "hour": "8:00",
-          "place": "Cancha 1"
-        },
-        {
-          "home": "Equipo B3",
-          "away": "Equipo B1",
-          "sets": [],
-          "hour": "8:00",
-          "place": "Cancha 1"
-        },
-        {
-          "home": "Equipo B2",
-          "away": "Equipo B3",
-          "sets": [],
-          "hour": "8:00",
-          "place": "Cancha 1"
-        }
-      ]
+      "matches": []
     },
     "C": {
       "teams": [
@@ -66,29 +22,7 @@
         "Equipo C2",
         "Equipo C3"
       ],
-      "matches": [
-        {
-          "home": "Equipo C1",
-          "away": "Equipo C2",
-          "sets": [],
-          "hour": "8:00",
-          "place": "Cancha 1"
-        },
-        {
-          "home": "Equipo C3",
-          "away": "Equipo C1",
-          "sets": [],
-          "hour": "8:00",
-          "place": "Cancha 1"
-        },
-        {
-          "home": "Equipo C2",
-          "away": "Equipo C3",
-          "sets": [],
-          "hour": "8:00",
-          "place": "Cancha 1"
-        }
-      ]
+      "matches": []
     },
     "D": {
       "teams": [
@@ -96,29 +30,7 @@
         "Equipo D2",
         "Equipo D3"
       ],
-      "matches": [
-        {
-          "home": "Equipo D1",
-          "away": "Equipo D2",
-          "sets": [],
-          "hour": "8:00",
-          "place": "Cancha 1"
-        },
-        {
-          "home": "Equipo D3",
-          "away": "Equipo D1",
-          "sets": [],
-          "hour": "8:00",
-          "place": "Cancha 1"
-        },
-        {
-          "home": "Equipo D2",
-          "away": "Equipo D3",
-          "sets": [],
-          "hour": "8:00",
-          "place": "Cancha 1"
-        }
-      ]
+      "matches": []
     }
   },
   "points": {
@@ -159,10 +71,10 @@
       "place": ""
     }
   },
-  "tournamentName": "Voleibol Varonil",
+  "tournamentName": "",
   "theme": {
     "color": "#8308e7",
     "bg": "#dcc8ea"
   },
-  "timestamp": "2025-10-27T17:19:06.483Z"
+  "timestamp": "2025-10-27T17:35:10.357Z"
 }

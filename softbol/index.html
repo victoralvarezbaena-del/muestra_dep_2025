@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carátula — Torneo de Softbol</title>
+  <style>
+    :root{ --bg:#f8fafc; --panel:#e2e8f0; --card:#ffffff; --muted:#475569; --text:#0f172a; --accent:#0284c7; --ok:#16a34a; --bad:#dc2626; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    header{padding:20px 16px;border-bottom:2px solid #cbd5e1;background:linear-gradient(90deg,var(--panel),#f1f5f9);position:sticky;top:0;z-index:10}
+    .container{max-width:1200px;margin:0 auto;padding:16px}
+    h1{margin:0;font-size:clamp(22px,3.2vw,34px)}
+    .subtitle{color:var(--muted)}
+
+    .card{background:var(--card);border:1px solid #cbd5e1;border-radius:18px;padding:16px;box-shadow:0 3px 10px rgba(0,0,0,.1)}
+    .card h2{margin:0 0 12px;font-size:18px}
+
+    .groups{display:grid;gap:12px}
+    @media(min-width:700px){.groups{grid-template-columns:1fr 1fr 1fr}}
+
+    /* Colores por grupo */
+    .groupA{background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.45)}
+    .groupB{background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.45)}
+    .groupC{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.45)}
+
+    .groupBox{padding:12px;border-radius:12px;margin-bottom:12px}
+
+    table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+    th,td{padding:6px 8px;border-bottom:1px solid #cbd5e1;text-align:right;font-variant-numeric: tabular-nums;}
+    th:first-child,td:first-child{text-align:left}
+    th:nth-child(2),td:nth-child(2){text-align:left}
+    thead th{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+    tbody tr:hover{background:#e2e8f0}
+    .pos{font-variant-numeric:tabular-nums;color:var(--muted);font-weight:600}
+    .pts{font-weight:800}
+    .first{background:rgba(34,197,94,.15)}
+    .second{background:rgba(251,191,36,.15)}
+    .third{background:rgba(248,113,113,.15)}
+    .note{font-size:12px;color:var(--muted)}
+    .pct{font-weight:600;color:var(--muted)}
+
+    /* Knockout */
+    .bracket{display:grid;gap:12px;margin-top:16px}
+    @media(min-width:900px){.bracket{grid-template-columns:1fr 1fr}}
+    .semi,.final,.third{background:#ffffff;border:1px solid #cbd5e1;border-radius:12px;padding:12px}
+    .semi h3,.final h3,.third h3{margin:0 0 8px;font-size:16px}
+
+    /* Resaltar Final */
+    .final {
+      position: relative;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 0 4px rgba(2,132,199,.12) inset;
+      background: #ffffff;
+      overflow: hidden;
+    }
+    .final h3{ color: var(--accent); }
+
+    .final::before {
+      content: 'FINAL 🏆';
+      position: absolute;
+      top: 12px;
+      right: -48px;
+      transform: rotate(45deg);
+      background: var(--accent);
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 4px 48px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      opacity: 0.9;
+    }
+    
+    /* Regla Mercy */
+    .mercy-rule {
+      background: #fef3c7;
+      border: 1px solid #f59e0b;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-top: 8px;
+      font-size: 12px;
+      color: #92400e;
+    }
+
+    /* Tooltip para explicar JV */
+    .tooltip {
+      position: relative;
+      cursor: help;
+      border-bottom: 1px dotted var(--muted);
+    }
+    
+    .tooltip:hover::after {
+      content: "Juegos de Ventaja = (Ganados del líder - Ganados) + (Perdidos - Perdidos del líder) ÷ 2";
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--text);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      white-space: nowrap;
+      z-index: 1000;
+    }
+
+    /* Estados de partidos */
+    .match-result {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      font-weight: bold;
+    }
+
+    .winner {
+      color: var(--ok);
+      font-weight: 800;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+    }
+
+    .error {
+      text-align: center;
+      padding: 20px;
+      color: var(--bad);
+    }
+
+    /* Campeón destacado */
+    .champion {
+      text-align: center;
+      padding: 20px;
+      background: linear-gradient(135deg, rgba(34,197,94,.15), rgba(251,191,36,.15));
+      border-radius: 18px;
+      margin: 20px 0;
+      border: 2px solid rgba(34,197,94,.5);
+    }
+
+    .champion h2 {
+      color: #166534;
+      margin-bottom: 10px;
+    }
+
+    .champion .team-name {
+      font-size: 24px;
+      font-weight: bold;
+      color: #166534;
+    }
+
+    /* Tercer lugar destacado */
+    .third-place {
+      background: linear-gradient(135deg, rgba(251,191,36,.1), rgba(245,158,11,.1));
+      border: 2px solid rgba(251,191,36,.5);
+    }
+
+    /* Información de actualización */
+    .update-info {
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      display: inline-block;
+      border: 1px solid rgba(255,255,255,0.3);
+      margin-top: 10px;
+    }
+
+    /* Portada con tema */
+    .cover {
+      text-align: center;
+      padding: 40px 20px;
+      margin-bottom: 30px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 80%, black));
+      color: white;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover h1 {
+      font-size: clamp(28px, 4vw, 48px);
+      margin-bottom: 10px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .cover .subtitle {
+      color: rgba(255,255,255,0.9);
+      font-size: clamp(16px, 2vw, 20px);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      margin-bottom: 15px;
+    }
+
+    /* Partido programado - sin resultado */
+    .scheduled {
+      opacity: 0.8;
+    }
+
+    .scheduled .match-result {
+      color: var(--muted);
+      font-weight: normal;
+    }
+
+    /* Estructura de la carátula */
+    .tournament-structure {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .structure-card {
+      background: var(--card);
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .structure-card h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+      color: var(--accent);
+    }
+
+    .softball-icon {
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin: 24px 0;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: color-mix(in srgb, var(--accent) 80%, black);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: var(--panel);
+      color: var(--text);
+      border: 1px solid #cbd5e1;
+    }
+
+    .btn-secondary:hover {
+      background: color-mix(in srgb, var(--panel) 80%, black);
+      transform: translateY(-2px);
+    }
+
+    /* Mejor segundo lugar */
+    .best-second {
+      background: rgba(251,191,36,.15);
+      border: 1px solid rgba(251,191,36,.45);
+      padding: 12px;
+      border-radius: 12px;
+      margin-top: 16px;
+    }
+
+    .best-second h4 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+
+    /* Visualización de bracket */
+    .bracket-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+
+    .bracket-node {
+      background: var(--card);
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 12px;
+      min-width: 160px;
+      text-align: center;
+      position: relative;
+    }
+
+    .bracket-node::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: -10px;
+      width: 10px;
+      height: 2px;
+      background: #cbd5e1;
+    }
+
+    .bracket-node:last-child::after {
+      display: none;
+    }
+
+    .bracket-connector {
+      display: flex;
+      align-items: center;
+    }
+
+    .bracket-connector::before {
+      content: '';
+      width: 20px;
+      height: 2px;
+      background: #cbd5e1;
+    }
+
+    .final-node {
+      background: linear-gradient(135deg, rgba(2,132,199,.1), rgba(2,132,199,.2));
+      border: 2px solid var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1 id="tournamentTitle">Torneo de Softbol — 3 Grupos + Semifinales</h1>
+      <div class="subtitle" id="tournamentSubtitle">Fase de grupos todos contra todos + Semifinales, Final y Tercer Lugar</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="tournamentContent">
+      <div class="loading">Cargando datos del torneo...</div>
+    </div>
+  </main>
+
+<script>
+// ===== CONFIGURACIÓN =====
+const DATA_URL = './data.json';
+
+// ===== ESTADO =====
+let tournamentData = null;
+
+// ===== FUNCIONES DE CARGA =====
+async function loadTournamentData() {
+  try {
+    const response = await fetch(DATA_URL + '?t=' + new Date().getTime());
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    tournamentData = normalizeData(data);
+    
+    console.log('Datos normalizados:', tournamentData);
+    
+    applyTheme();
+    renderTournament();
+    
+  } catch (error) {
+    console.error('Error cargando datos:', error);
+    showError(error);
+  }
+}
+
+function normalizeData(data) {
+  if (!data) return null;
+  
+  // Estructura básica esperada del admin
+  const normalized = {
+    tournamentName: data.tournamentName || 'Torneo de Softbol',
+    subtitle: data.subtitle || 'Fase de grupos todos contra todos + Semifinales, Final y Tercer Lugar',
+    theme: data.theme || { color: '#0284c7', bg: '#f8fafc' },
+    points: data.points || { win: 2, draw: 1, loss: 0 },
+    groups: {
+      A: { teams: [], matches: [] },
+      B: { teams: [], matches: [] },
+      C: { teams: [], matches: [] }
+    },
+    knockout: {
+      sf1: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' },
+      sf2: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' },
+      final: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' },
+      third: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' }
+    },
+    updatedAtLocal: data.updatedAtLocal || (data.timestamp ? formatDate(data.timestamp) : '')
+  };
+  
+  // Normalizar grupos
+  if (data.groups) {
+    ['A', 'B', 'C'].forEach(groupKey => {
+      if (data.groups[groupKey]) {
+        const groupData = data.groups[groupKey];
+        
+        // Preservar equipos
+        normalized.groups[groupKey].teams = Array.isArray(groupData.teams) ? groupData.teams : [];
+        
+        // Preservar partidos con TODOS los datos
+        if (Array.isArray(groupData.matches)) {
+          normalized.groups[groupKey].matches = groupData.matches.map(match => ({
+            home: match.home || '',
+            away: match.away || '',
+            gh: match.gh !== undefined ? match.gh : null,
+            ga: match.ga !== undefined ? match.ga : null,
+            hour: match.hour || '',
+            place: match.place || ''
+          }));
+        }
+      }
+    });
+  }
+  
+  // Normalizar knockout
+  if (data.knockout) {
+    Object.keys(normalized.knockout).forEach(key => {
+      if (data.knockout[key]) {
+        const knockoutData = data.knockout[key];
+        normalized.knockout[key] = { 
+          ...normalized.knockout[key], 
+          ...knockoutData,
+          hour: knockoutData.hour || '',
+          place: knockoutData.place || '',
+          homeName: knockoutData.homeName || '',
+          awayName: knockoutData.awayName || ''
+        };
+      }
+    });
+  }
+  
+  return normalized;
+}
+
+function formatDate(dateString) {
+  if (!dateString) return '';
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  } catch (e) {
+    return dateString;
+  }
+}
+
+function applyTheme() {
+  if (!tournamentData?.theme) return;
+  
+  const theme = tournamentData.theme;
+  document.documentElement.style.setProperty('--accent', theme.color);
+  document.documentElement.style.setProperty('--bg', theme.bg);
+  
+  // Actualizar header con gradiente del tema
+  const header = document.querySelector('header');
+  if (header) {
+    header.style.background = `linear-gradient(90deg, color-mix(in srgb, ${theme.color} 15%, white), color-mix(in srgb, ${theme.color} 8%, white))`;
+  }
+}
+
+function showError(error) {
+  const content = document.getElementById('tournamentContent');
+  content.innerHTML = `
+    <div class="error">
+      <h3>Error al cargar el torneo</h3>
+      <p>${error.message}</p>
+      <p>Verifica que el archivo <strong>data.json</strong> existe y contiene datos válidos.</p>
+    </div>
+  `;
+}
+
+// ===== FUNCIONES DE RENDERIZADO =====
+function renderTournament() {
+  if (!tournamentData) return;
+  
+  const content = document.getElementById('tournamentContent');
+  
+  // Actualizar título
+  document.getElementById('tournamentTitle').textContent = tournamentData.tournamentName;
+  document.getElementById('tournamentSubtitle').textContent = tournamentData.subtitle;
+  
+  let html = '';
+  
+  // Renderizar portada con información de actualización
+  html += renderCover();
+  
+  // Renderizar campeón si existe
+  if (tournamentData.knockout.final.winner) {
+    html += renderChampion();
+  }
+  
+  // Renderizar estructura del torneo
+  html += renderTournamentStructure();
+  
+  // Renderizar grupos
+  html += renderGroups();
+  
+  // Renderizar fase final
+  html += renderKnockout();
+  
+  content.innerHTML = html;
+}
+
+function renderCover() {
+  const theme = tournamentData.theme;
+  const accentColor = theme?.color || '#0284c7';
+  const updatedAt = tournamentData.updatedAtLocal;
+  
+  let updateInfo = '';
+  if (updatedAt) {
+    updateInfo = `
+      <div class="update-info">
+        📅 Última actualización: ${updatedAt}
+      </div>
+    `;
+  }
+  
+  return `
+    <div class="cover" style="background: linear-gradient(135deg, ${accentColor}, color-mix(in srgb, ${accentColor} 80%, black));">
+      <h1>${tournamentData.tournamentName}</h1>
+      <div class="subtitle">${tournamentData.subtitle}</div>
+      ${updateInfo}
+      <div class="cta-buttons">
+        <a href="admin.html" class="btn btn-primary">
+          <span>🏟️ Administrar Torneo</span>
+        </a>
+        <a href="index.html" class="btn btn-secondary">
+          <span>📊 Ver Resultados</span>
+        </a>
+      </div>
+    </div>
+  `;
+}
+
+function renderChampion() {
+  const champion = tournamentData.knockout.final.winner;
+  return `
+    <div class="champion">
+      <h2>🏆 CAMPEÓN DEL TORNEO 🏆</h2>
+      <div class="team-name">${champion}</div>
+    </div>
+  `;
+}
+
+function renderTournamentStructure() {
+  return `
+    <div class="card">
+      <h2>Estructura del Torneo</h2>
+      <div class="tournament-structure">
+        <div class="structure-card">
+          <div class="softball-icon">⚾</div>
+          <h3>Fase de Grupos</h3>
+          <p>Tres grupos de tres equipos cada uno. Todos contra todos dentro de cada grupo.</p>
+        </div>
+        
+        <div class="structure-card">
+          <div class="softball-icon">🏆</div>
+          <h3>Clasificación</h3>
+          <p>Clasifican los primeros de cada grupo y el mejor segundo lugar de los tres grupos.</p>
+        </div>
+        
+        <div class="structure-card">
+          <div class="softball-icon">🎯</div>
+          <h3>Fase Final</h3>
+          <p>Semifinales, partido por el tercer lugar y la Gran Final para coronar al campeón.</p>
+        </div>
+      </div>
+      
+      <div class="bracket-visual">
+        <div class="bracket-node">
+          <strong>Semifinal 1</strong>
+          <p>1° Grupo A vs Mejor 2°</p>
+        </div>
+        
+        <div class="bracket-connector"></div>
+        
+        <div class="bracket-node final-node">
+          <strong>Final</strong>
+          <p>Ganador SF1 vs Ganador SF2</p>
+        </div>
+        
+        <div class="bracket-connector"></div>
+        
+        <div class="bracket-node">
+          <strong>Semifinal 2</strong>
+          <p>1° Grupo B vs 1° Grupo C</p>
+        </div>
+      </div>
+      
+      <div class="bracket-visual">
+        <div class="bracket-node">
+          <strong>Tercer Lugar</strong>
+          <p>Perdedor SF1 vs Perdedor SF2</p>
+        </div>
+      </div>
+      
+      <div class="mercy-rule">
+        <strong>Reglas del Torneo:</strong><br>
+        • Sistema de puntuación: Victoria = 2 puntos, Empate = 1 punto, Derrota = 0 puntos<br>
+        • Regla Mercy: Diferencia de 15 carreras en la 3ª entrada o 10 carreras en la 4ª entrada<br>
+        • Criterios de desempate: Puntos → Diferencia de carreras → Carreras a favor → Enfrentamiento directo
+      </div>
+    </div>
+  `;
+}
+
+function renderGroups() {
+  let html = '<div class="card"><h2>Fase de Grupos</h2><div class="groups">';
+  
+  ['A', 'B', 'C'].forEach(groupKey => {
+    const group = tournamentData.groups[groupKey];
+    if (!group || !group.teams || group.teams.length === 0) return;
+    
+    html += `
+      <div class="groupBox group${groupKey}">
+        <h3>Grupo ${groupKey}</h3>
+    `;
+    
+    // Tabla de posiciones
+    const table = computeTable(group.matches, group.teams, tournamentData.points);
+    html += `
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Equipo</th>
+              <th>JJ</th>
+              <th>G</th>
+              <th>P</th>
+              <th>%G</th>
+              <th><span class="tooltip">JV</span></th>
+              <th>RA</th>
+              <th>RC</th>
+              <th>DIF</th>
+              <th>Pts</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${table.map((row, index) => `
+              <tr class="${index === 0 ? 'first' : index === 1 ? 'second' : index === 2 ? 'third' : ''}">
+                <td class="pos">${index + 1}</td>
+                <td><strong>${row.team}</strong></td>
+                <td>${row.JJ}</td>
+                <td>${row.G}</td>
+                <td>${row.P}</td>
+                <td class="pct">${row.PCT.toFixed(3)}</td>
+                <td>${row.JV === 0 ? '-' : row.JV.toFixed(1)}</td>
+                <td>${row.RA}</td>
+                <td>${row.RC}</td>
+                <td>${row.DIF > 0 ? '+' : ''}${row.DIF}</td>
+                <td class="pts">${row.Pts}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <strong>Clasificación:</strong> 
+        <span style="background:rgba(34,197,94,.15); padding:2px 6px; border-radius:4px;">1º</span> Semifinales, 
+        <span style="background:rgba(251,191,36,.15); padding:2px 6px; border-radius:4px;">2º</span> Posible mejor segundo
+      </div>
+    `;
+    
+    html += '</div>';
+  });
+  
+  html += '</div></div>';
+  
+  // Añadir información del mejor segundo lugar
+  const bestSecond = getBestSecondPlace();
+  if (bestSecond) {
+    html += `
+      <div class="best-second">
+        <h4>Mejor Segundo Lugar</h4>
+        <div><strong>${bestSecond.team}</strong> (Grupo ${bestSecond.group})</div>
+        <div style="font-size:14px; margin-top:4px">
+          Puntos: ${bestSecond.points} | %Victorias: ${bestSecond.PCT.toFixed(3)} | Diferencia: ${bestSecond.DIF > 0 ? '+' : ''}${bestSecond.DIF}
+        </div>
+      </div>
+    `;
+  }
+  
+  return html;
+}
+
+function renderKnockout() {
+  const k = tournamentData.knockout;
+  
+  // Obtener clasificados
+  const winnerA = groupWinner('A');
+  const winnerB = groupWinner('B');
+  const winnerC = groupWinner('C');
+  const bestSecond = getBestSecondPlace();
+  
+  return `
+    <div class="card">
+      <h2>Fase Final</h2>
+      <div class="bracket">
+        <div class="semi">
+          <h3>Semifinal 1 — 1° Grupo A vs Mejor 2°</h3>
+          ${renderKnockoutMatch(k.sf1, k.sf1.homeName || winnerA || '1° Grupo A', k.sf1.awayName || (bestSecond ? `${bestSecond.team} (2° Grupo ${bestSecond.group})` : 'Mejor 2°'))}
+          ${k.sf1.winner ? `<div class="info"><strong>✅ Ganador: ${k.sf1.winner}</strong></div>` : ''}
+          <div class="mercy-rule">
+            <strong>Regla Mercy:</strong> Diferencia de 15 carreras en la 3a entrada o 10 carreras en la 4a entrada
+          </div>
+        </div>
+
+        <div class="semi">
+          <h3>Semifinal 2 — 1° Grupo B vs 1° Grupo C</h3>
+          ${renderKnockoutMatch(k.sf2, k.sf2.homeName || winnerB || '1° Grupo B', k.sf2.awayName || winnerC || '1° Grupo C')}
+          ${k.sf2.winner ? `<div class="info"><strong>✅ Ganador: ${k.sf2.winner}</strong></div>` : ''}
+          <div class="mercy-rule">
+            <strong>Regla Mercy:</strong> Diferencia de 15 carreras en la 3a entrada o 10 carreras en la 4a entrada
+          </div>
+        </div>
+
+        <div class="third ${k.third.winner ? 'third-place' : ''}" id="thirdPlaceMatch">
+          <h3>Tercer Lugar</h3>
+          ${renderKnockoutMatch(k.third, k.third.homeName || k.third.home || 'Perdedor SF1', k.third.awayName || k.third.away || 'Perdedor SF2')}
+          ${k.third.winner ? `<div class="info"><strong>🥉 Tercer Lugar: ${k.third.winner}</strong></div>` : ''}
+          <div class="mercy-rule">
+            <strong>Regla Mercy:</strong> Diferencia de 15 carreras en la 3a entrada o 10 carreras en la 4a entrada
+          </div>
+        </div>
+
+        <div class="final ${k.final.winner ? 'winner' : ''}" id="finalMatch">
+          <h3>Final</h3>
+          ${renderKnockoutMatch(k.final, k.final.homeName || k.final.home || 'Ganador SF1', k.final.awayName || k.final.away || 'Ganador SF2')}
+          ${k.final.winner ? `<div class="info"><strong>🏆 Campeón: ${k.final.winner}</strong></div>` : ''}
+          <div class="mercy-rule">
+            <strong>Regla Mercy:</strong> Diferencia de 15 carreras en la 3a entrada o 10 carreras en la 4a entrada
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderMatch(match, defaultHome, defaultAway) {
+  const hasResult = match.gh !== null && match.ga !== null;
+  const homeWinner = hasResult && match.gh > match.ga;
+  const awayWinner = hasResult && match.gh < match.ga;
+  
+  const homeName = match.home || defaultHome;
+  const awayName = match.away || defaultAway;
+  
+  // Clase para partidos sin resultado (programados)
+  const scheduledClass = !hasResult ? 'scheduled' : '';
+  
+  let infoHtml = '';
+  // MOSTRAR HORARIOS Y LUGARES SIEMPRE, aunque no haya marcador
+  if (match.hour || match.place) {
+    infoHtml = `
+      <div class="info">
+        ${match.hour ? `<span>🕒 ${match.hour}</span>` : ''}
+        ${match.place ? `<span>📍 ${match.place}</span>` : ''}
+      </div>
+    `;
+  }
+  
+  return `
+    <div class="match ${scheduledClass}">
+      <div class="team ${homeWinner ? 'winner' : ''}">${homeName}</div>
+      <div class="match-result">
+        ${hasResult ? `
+          <span>${match.gh}</span>
+          <span class="dash">—</span>
+          <span>${match.ga}</span>
+        ` : '<span class="dash">-</span>'}
+      </div>
+      <div class="team ${awayWinner ? 'winner' : ''}" style="justify-content:flex-end">${awayName}</div>
+    </div>
+    ${infoHtml}
+  `;
+}
+
+function renderKnockoutMatch(match, defaultHome, defaultAway) {
+  return renderMatch(match, defaultHome, defaultAway);
+}
+
+// ===== CÁLCULO DE TABLAS =====
+function computeTable(matches, teams, pointsConfig) {
+  const table = Object.fromEntries(teams.map(team => [team, {
+    team, 
+    JJ: 0, G: 0, P: 0, E: 0, PCT: 0, JV: 0, RA: 0, RC: 0, DIF: 0, Pts: 0
+  }]));
+  
+  matches.forEach(match => {
+    if (match.gh == null || match.ga == null) return;
+    
+    const homeTeam = table[match.home];
+    const awayTeam = table[match.away];
+    if (!homeTeam || !awayTeam) return;
+    
+    homeTeam.JJ++; awayTeam.JJ++;
+    homeTeam.RA += match.gh; homeTeam.RC += match.ga;
+    awayTeam.RA += match.ga; awayTeam.RC += match.gh;
+    
+    if (match.gh > match.ga) {
+      homeTeam.G++; awayTeam.P++;
+      homeTeam.Pts += pointsConfig.win; awayTeam.Pts += pointsConfig.loss;
+    } else if (match.gh < match.ga) {
+      awayTeam.G++; homeTeam.P++;
+      awayTeam.Pts += pointsConfig.win; homeTeam.Pts += pointsConfig.loss;
+    } else {
+      homeTeam.E++; awayTeam.E++;
+      homeTeam.Pts += pointsConfig.draw; awayTeam.Pts += pointsConfig.draw;
+    }
+  });
+  
+  teams.forEach(team => {
+    table[team].DIF = table[team].RA - table[team].RC;
+    table[team].PCT = table[team].JJ > 0 ? (table[team].G / table[team].JJ) : 0;
+  });
+  
+  const sorted = Object.values(table).sort((a, b) => {
+    if (b.Pts !== a.Pts) return b.Pts - a.Pts;
+    if (b.PCT !== a.PCT) return b.PCT - a.PCT;
+    if (b.DIF !== a.DIF) return b.DIF - a.DIF;
+    if (b.RA !== a.RA) return b.RA - a.RA;
+    const directMatch = matches.find(m => 
+      (m.home === a.team && m.away === b.team) || 
+      (m.home === b.team && m.away === a.team)
+    );
+    if (directMatch && directMatch.gh != null && directMatch.ga != null) {
+      if (directMatch.home === a.team && directMatch.gh > directMatch.ga) return -1;
+      if (directMatch.home === b.team && directMatch.gh < directMatch.ga) return -1;
+      if (directMatch.home === a.team && directMatch.gh < directMatch.ga) return 1;
+      if (directMatch.home === b.team && directMatch.gh > directMatch.ga) return 1;
+    }
+    return a.team.localeCompare(b.team);
+  });
+  
+  if (sorted.length > 0) {
+    const leader = sorted[0];
+    sorted.forEach(team => {
+      team.JV = ((leader.G - team.G) + (team.P - leader.P)) / 2;
+    });
+  }
+  
+  return sorted;
+}
+
+// ===== FUNCIONES PARA 3 GRUPOS =====
+function groupWinner(groupKey) {
+  const group = tournamentData.groups[groupKey];
+  const rows = computeTable(group.matches, group.teams, tournamentData.points);
+  return rows[0]?.team || '';
+}
+
+function groupRunnerUp(groupKey) {
+  const group = tournamentData.groups[groupKey];
+  const rows = computeTable(group.matches, group.teams, tournamentData.points);
+  return rows[1]?.team || '';
+}
+
+function getBestSecondPlace() {
+  const secondPlaces = [];
+  
+  // Obtener los segundos lugares de cada grupo
+  ['A', 'B', 'C'].forEach(groupKey => {
+    const group = tournamentData.groups[groupKey];
+    const rows = computeTable(group.matches, group.teams, tournamentData.points);
+    if (rows.length > 1) {
+      secondPlaces.push({
+        team: rows[1].team,
+        group: groupKey,
+        points: rows[1].Pts,
+        PCT: rows[1].PCT,
+        DIF: rows[1].DIF,
+        RA: rows[1].RA
+      });
+    }
+  });
+  
+  // Ordenar por criterios de desempate
+  if (secondPlaces.length > 0) {
+    secondPlaces.sort((a, b) => {
+      // 1. Puntos
+      if (b.points !== a.points) return b.points - a.points;
+      // 2. Porcentaje de victorias
+      if (b.PCT !== a.PCT) return b.PCT - a.PCT;
+      // 3. Diferencia de carreras
+      if (b.DIF !== a.DIF) return b.DIF - a.DIF;
+      // 4. Carreras a favor
+      if (b.RA !== a.RA) return b.RA - a.RA;
+      return 0;
+    });
+    
+    return secondPlaces[0];
+  }
+  
+  return null;
+}
+
+// ===== INICIALIZACIÓN =====
+document.addEventListener('DOMContentLoaded', loadTournamentData);
+</script>
+</body>
+</html>

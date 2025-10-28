@@ -34,7 +34,16 @@
     .dash{opacity:.6}
     .info{display:flex;gap:8px;margin-top:6px;font-size:14px;color:var(--muted)}
 
-    table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+    /* Contenedor para tablas con scroll horizontal en móviles */
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-top: 10px;
+      border-radius: 8px;
+    }
+    
+    table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px;min-width: 650px}
     th,td{padding:6px 8px;border-bottom:1px solid #cbd5e1;text-align:right;font-variant-numeric: tabular-nums;}
     th:first-child,td:first-child{text-align:left}
     th:nth-child(2),td:nth-child(2){text-align:left}

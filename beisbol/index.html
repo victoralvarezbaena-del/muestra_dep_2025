@@ -246,6 +246,8 @@ async function loadTournamentData() {
     const data = await response.json();
     tournamentData = normalizeData(data);
     
+    console.log('Datos normalizados:', tournamentData); // Para debug
+    
     applyTheme();
     renderTournament();
     
@@ -274,37 +276,46 @@ function normalizeData(data) {
       final: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' },
       third: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' }
     },
-    updatedAtLocal: data.updatedAtLocal || data.timestamp ? formatDate(data.timestamp) : ''
+    updatedAtLocal: data.updatedAtLocal || (data.timestamp ? formatDate(data.timestamp) : '')
   };
   
-  // Normalizar grupos
+  // Normalizar grupos - CORREGIDO para preservar horarios y lugares
   if (data.groups) {
     ['A', 'B'].forEach(groupKey => {
       if (data.groups[groupKey]) {
-        normalized.groups[groupKey] = {
-          teams: Array.isArray(data.groups[groupKey].teams) ? data.groups[groupKey].teams : [],
-          matches: Array.isArray(data.groups[groupKey].matches) ? data.groups[groupKey].matches.map(match => ({
+        const groupData = data.groups[groupKey];
+        
+        // Preservar equipos
+        normalized.groups[groupKey].teams = Array.isArray(groupData.teams) ? groupData.teams : [];
+        
+        // Preservar partidos con TODOS los datos
+        if (Array.isArray(groupData.matches)) {
+          normalized.groups[groupKey].matches = groupData.matches.map(match => ({
             home: match.home || '',
             away: match.away || '',
-            gh: match.gh,
-            ga: match.ga,
+            gh: match.gh !== undefined ? match.gh : null,
+            ga: match.ga !== undefined ? match.ga : null,
             hour: match.hour || '',
             place: match.place || ''
-          })) : []
-        };
+          }));
+        }
       }
     });
   }
   
-  // Normalizar knockout
+  // Normalizar knockout - CORREGIDO para preservar horarios y lugares
   if (data.knockout) {
     Object.keys(normalized.knockout).forEach(key => {
       if (data.knockout[key]) {
+        const knockoutData = data.knockout[key];
         normalized.knockout[key] = { 
           ...normalized.knockout[key], 
-          ...data.knockout[key],
-          homeName: data.knockout[key].homeName || '',
-          awayName: data.knockout[key].awayName || ''
+          ...knockoutData,
+          // Asegurar que los campos de hora y lugar se preserven
+          hour: knockoutData.hour || '',
+          place: knockoutData.place || '',
+          homeName: knockoutData.homeName || '',
+          awayName: knockoutData.awayName || ''
         };
       }
     });

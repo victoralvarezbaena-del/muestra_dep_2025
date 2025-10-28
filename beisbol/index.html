@@ -201,6 +201,16 @@
       text-shadow: 0 1px 2px rgba(0,0,0,0.3);
       margin-bottom: 15px;
     }
+
+    /* Partido programado - sin resultado */
+    .scheduled {
+      opacity: 0.8;
+    }
+
+    .scheduled .match-result {
+      color: var(--muted);
+      font-weight: normal;
+    }
   </style>
 </head>
 <body>
@@ -545,7 +555,11 @@ function renderMatch(match, defaultHome, defaultAway) {
   const homeName = match.home || defaultHome;
   const awayName = match.away || defaultAway;
   
+  // Clase para partidos sin resultado (programados)
+  const scheduledClass = !hasResult ? 'scheduled' : '';
+  
   let infoHtml = '';
+  // MOSTRAR HORARIOS Y LUGARES SIEMPRE, aunque no haya marcador
   if (match.hour || match.place) {
     infoHtml = `
       <div class="info">
@@ -556,7 +570,7 @@ function renderMatch(match, defaultHome, defaultAway) {
   }
   
   return `
-    <div class="match">
+    <div class="match ${scheduledClass}">
       <div class="team ${homeWinner ? 'winner' : ''}">${homeName}</div>
       <div class="match-result">
         ${hasResult ? `

@@ -16,7 +16,7 @@
     .grid{display:grid;gap:16px}
     @media(min-width:1100px){.grid{grid-template-columns:1fr 1fr}}
 
-    .card{background:var(--card);border:1px solid #cbd5e1;border-radius:18px;padding:16px;box-shadow:0 3px 10px rgba(0,0,0,.1)}
+    .card{background:var(--card);border:1px solid #cbd5e1;border-radius:18px;padding:16px;box-shadow:0 3px 10px rgba(0,0,0,.1);overflow:hidden}
     .card h2{margin:0 0 12px;font-size:18px}
 
     .groups{display:grid;gap:12px}
@@ -26,7 +26,7 @@
     .groupA{background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.45)}
     .groupB{background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.45)}
 
-    .groupBox{padding:12px;border-radius:12px;margin-bottom:12px}
+    .groupBox{padding:12px;border-radius:12px;margin-bottom:12px;overflow:hidden}
 
     .matches{display:grid;gap:10px;margin-top:10px}
     .match{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;background:#f8fafc;border:1px solid #cbd5e1;border-radius:12px;padding:10px}
@@ -43,7 +43,7 @@
       border-radius: 8px;
     }
     
-    table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px;min-width: 650px}
+    table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
     th,td{padding:6px 8px;border-bottom:1px solid #cbd5e1;text-align:right;font-variant-numeric: tabular-nums;}
     th:first-child,td:first-child{text-align:left}
     th:nth-child(2),td:nth-child(2){text-align:left}
@@ -53,13 +53,39 @@
     .pts{font-weight:800}
     .first{background:rgba(34,197,94,.15)}
     .second{background:rgba(251,191,36,.15)}
-    .note{font-size:12px;color:var(--muted)}
+    .note{font-size:12px;color:var(--muted);margin-top:8px}
     .pct{font-weight:600;color:var(--muted)}
+
+    /* Ajustes responsivos para tablas */
+    @media (max-width: 768px) {
+      table {
+        font-size: 12px;
+        min-width: 650px; /* Solo en móviles forzamos ancho mínimo */
+      }
+      th, td {
+        padding: 4px 6px;
+      }
+      .table-wrap {
+        border: 1px solid #e2e8f0;
+        margin-left: -8px;
+        margin-right: -8px;
+        width: calc(100% + 16px);
+      }
+    }
+
+    @media (max-width: 480px) {
+      table {
+        font-size: 11px;
+      }
+      th, td {
+        padding: 3px 4px;
+      }
+    }
 
     /* Knockout */
     .bracket{display:grid;gap:12px;margin-top:16px}
     @media(min-width:900px){.bracket{grid-template-columns:1fr 1fr}}
-    .semi,.final,.third{background:#ffffff;border:1px solid #cbd5e1;border-radius:12px;padding:12px}
+    .semi,.final,.third{background:#ffffff;border:1px solid #cbd5e1;border-radius:12px;padding:12px;overflow:hidden}
     .semi h3,.final h3,.third h3{margin:0 0 8px;font-size:16px}
 
     /* Resaltar Final */

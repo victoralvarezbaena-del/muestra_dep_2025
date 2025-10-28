@@ -7,7 +7,56 @@
         "A3",
         "A4"
       ],
-      "matches": []
+      "matches": [
+        {
+          "home": "A1",
+          "away": "A2",
+          "gh": null,
+          "ga": null,
+          "hour": "9:00  19/11/2025",
+          "place": "Estadio"
+        },
+        {
+          "home": "A3",
+          "away": "A4",
+          "gh": null,
+          "ga": null,
+          "hour": "11:00  19/11/2025",
+          "place": "Estadio"
+        },
+        {
+          "home": "A1",
+          "away": "A3",
+          "gh": null,
+          "ga": null,
+          "hour": "13:00  19/11/2025",
+          "place": "Estadio"
+        },
+        {
+          "home": "A2",
+          "away": "A4",
+          "gh": null,
+          "ga": null,
+          "hour": "15:00 19/11/2025",
+          "place": "Estadio"
+        },
+        {
+          "home": "A1",
+          "away": "A4",
+          "gh": null,
+          "ga": null,
+          "hour": "9:00  20/11/2025",
+          "place": "Estadio"
+        },
+        {
+          "home": "A2",
+          "away": "A3",
+          "gh": null,
+          "ga": null,
+          "hour": "11:00  20/11/2025",
+          "place": "Estadio"
+        }
+      ]
     },
     "B": {
       "teams": [
@@ -16,7 +65,56 @@
         "B3",
         "B4"
       ],
-      "matches": []
+      "matches": [
+        {
+          "home": "B1",
+          "away": "B2",
+          "gh": null,
+          "ga": null,
+          "hour": "9:00  19/11/2025",
+          "place": "La Diana"
+        },
+        {
+          "home": "B3",
+          "away": "B4",
+          "gh": null,
+          "ga": null,
+          "hour": "11.00  19/11/2025",
+          "place": "La Diana"
+        },
+        {
+          "home": "B1",
+          "away": "B3",
+          "gh": null,
+          "ga": null,
+          "hour": "13:00  19/11/2025",
+          "place": "La Diana"
+        },
+        {
+          "home": "B2",
+          "away": "B4",
+          "gh": null,
+          "ga": null,
+          "hour": "15:00  19/11/2025",
+          "place": "La Diana"
+        },
+        {
+          "home": "B1",
+          "away": "B4",
+          "gh": null,
+          "ga": null,
+          "hour": "9:00  20/11/2025",
+          "place": "La Diana"
+        },
+        {
+          "home": "B2",
+          "away": "B3",
+          "gh": null,
+          "ga": null,
+          "hour": "11:00  20/11/2025",
+          "place": "La Diana"
+        }
+      ]
     }
   },
   "points": {
@@ -67,5 +165,5 @@
     "color": "#004b70",
     "bg": "#cce0f5"
   },
-  "timestamp": "2025-10-27T20:11:55.368Z"
+  "timestamp": "2025-10-28T15:02:50.266Z"
 }

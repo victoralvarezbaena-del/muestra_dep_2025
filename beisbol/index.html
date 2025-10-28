@@ -163,6 +163,44 @@
       background: linear-gradient(135deg, rgba(251,191,36,.1), rgba(245,158,11,.1));
       border: 2px solid rgba(251,191,36,.5);
     }
+
+    /* Información de actualización */
+    .update-info {
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      display: inline-block;
+      border: 1px solid rgba(255,255,255,0.3);
+      margin-top: 10px;
+    }
+
+    /* Portada con tema */
+    .cover {
+      text-align: center;
+      padding: 40px 20px;
+      margin-bottom: 30px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 80%, black));
+      color: white;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover h1 {
+      font-size: clamp(28px, 4vw, 48px);
+      margin-bottom: 10px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .cover .subtitle {
+      color: rgba(255,255,255,0.9);
+      font-size: clamp(16px, 2vw, 20px);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      margin-bottom: 15px;
+    }
   </style>
 </head>
 <body>
@@ -213,6 +251,7 @@ function normalizeData(data) {
   // Estructura básica esperada del admin
   const normalized = {
     tournamentName: data.tournamentName || 'Torneo de Béisbol',
+    subtitle: data.subtitle || 'Fase de grupos todos contra todos + Semifinales, Final y Tercer Lugar',
     theme: data.theme || { color: '#0284c7', bg: '#f8fafc' },
     points: data.points || { win: 2, draw: 1, loss: 0 },
     groups: {
@@ -220,11 +259,12 @@ function normalizeData(data) {
       B: { teams: [], matches: [] }
     },
     knockout: {
-      sf1: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
-      sf2: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
-      final: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
-      third: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' }
-    }
+      sf1: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' },
+      sf2: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' },
+      final: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' },
+      third: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' }
+    },
+    updatedAtLocal: data.updatedAtLocal || data.timestamp ? formatDate(data.timestamp) : ''
   };
   
   // Normalizar grupos
@@ -233,7 +273,14 @@ function normalizeData(data) {
       if (data.groups[groupKey]) {
         normalized.groups[groupKey] = {
           teams: Array.isArray(data.groups[groupKey].teams) ? data.groups[groupKey].teams : [],
-          matches: Array.isArray(data.groups[groupKey].matches) ? data.groups[groupKey].matches : []
+          matches: Array.isArray(data.groups[groupKey].matches) ? data.groups[groupKey].matches.map(match => ({
+            home: match.home || '',
+            away: match.away || '',
+            gh: match.gh,
+            ga: match.ga,
+            hour: match.hour || '',
+            place: match.place || ''
+          })) : []
         };
       }
     });
@@ -243,12 +290,33 @@ function normalizeData(data) {
   if (data.knockout) {
     Object.keys(normalized.knockout).forEach(key => {
       if (data.knockout[key]) {
-        normalized.knockout[key] = { ...normalized.knockout[key], ...data.knockout[key] };
+        normalized.knockout[key] = { 
+          ...normalized.knockout[key], 
+          ...data.knockout[key],
+          homeName: data.knockout[key].homeName || '',
+          awayName: data.knockout[key].awayName || ''
+        };
       }
     });
   }
   
   return normalized;
+}
+
+function formatDate(dateString) {
+  if (!dateString) return '';
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  } catch (e) {
+    return dateString;
+  }
 }
 
 function applyTheme() {
@@ -284,8 +352,12 @@ function renderTournament() {
   
   // Actualizar título
   document.getElementById('tournamentTitle').textContent = tournamentData.tournamentName;
+  document.getElementById('tournamentSubtitle').textContent = tournamentData.subtitle;
   
   let html = '';
+  
+  // Renderizar portada con información de actualización
+  html += renderCover();
   
   // Renderizar campeón si existe
   if (tournamentData.knockout.final.winner) {
@@ -299,6 +371,29 @@ function renderTournament() {
   html += renderKnockout();
   
   content.innerHTML = html;
+}
+
+function renderCover() {
+  const theme = tournamentData.theme;
+  const accentColor = theme?.color || '#0284c7';
+  const updatedAt = tournamentData.updatedAtLocal;
+  
+  let updateInfo = '';
+  if (updatedAt) {
+    updateInfo = `
+      <div class="update-info">
+        📅 Última actualización: ${updatedAt}
+      </div>
+    `;
+  }
+  
+  return `
+    <div class="cover" style="background: linear-gradient(135deg, ${accentColor}, color-mix(in srgb, ${accentColor} 80%, black));">
+      <h1>${tournamentData.tournamentName}</h1>
+      <div class="subtitle">${tournamentData.subtitle}</div>
+      ${updateInfo}
+    </div>
+  `;
 }
 
 function renderChampion() {
@@ -385,32 +480,7 @@ function renderGroups() {
       const match = group.matches.find(m => m.home === home && m.away === away) || 
                    { home, away, gh: null, ga: null, hour: '', place: '' };
       
-      const hasResult = match.gh !== null && match.ga !== null;
-      const homeWinner = hasResult && match.gh > match.ga;
-      const awayWinner = hasResult && match.gh < match.ga;
-      
-      html += `
-        <div class="match">
-          <div class="team ${homeWinner ? 'winner' : ''}">${home}</div>
-          <div class="match-result">
-            ${hasResult ? `
-              <span>${match.gh}</span>
-              <span class="dash">—</span>
-              <span>${match.ga}</span>
-            ` : '<span class="dash">-</span>'}
-          </div>
-          <div class="team ${awayWinner ? 'winner' : ''}" style="justify-content:flex-end">${away}</div>
-        </div>
-      `;
-      
-      if (match.hour || match.place) {
-        html += `
-          <div class="info">
-            ${match.hour ? `<span>🕒 ${match.hour}</span>` : ''}
-            ${match.place ? `<span>📍 ${match.place}</span>` : ''}
-          </div>
-        `;
-      }
+      html += renderMatch(match, home, away);
     });
     
     html += '</div></div>';
@@ -429,7 +499,7 @@ function renderKnockout() {
       <div class="bracket">
         <div class="semi">
           <h3>Semifinal 1 — A1 vs B2</h3>
-          ${renderKnockoutMatch(k.sf1, k.sf1.home || 'A1', k.sf1.away || 'B2')}
+          ${renderKnockoutMatch(k.sf1, k.sf1.homeName || k.sf1.home || 'A1', k.sf1.awayName || k.sf1.away || 'B2')}
           ${k.sf1.winner ? `<div class="info"><strong>✅ Ganador: ${k.sf1.winner}</strong></div>` : ''}
           <div class="mercy-rule">
             <strong>Regla Mercy:</strong> Diferencia de 15 carreras en la 3a entrada o 10 carreras en la 4a entrada
@@ -438,7 +508,7 @@ function renderKnockout() {
 
         <div class="semi">
           <h3>Semifinal 2 — B1 vs A2</h3>
-          ${renderKnockoutMatch(k.sf2, k.sf2.home || 'B1', k.sf2.away || 'A2')}
+          ${renderKnockoutMatch(k.sf2, k.sf2.homeName || k.sf2.home || 'B1', k.sf2.awayName || k.sf2.away || 'A2')}
           ${k.sf2.winner ? `<div class="info"><strong>✅ Ganador: ${k.sf2.winner}</strong></div>` : ''}
           <div class="mercy-rule">
             <strong>Regla Mercy:</strong> Diferencia de 15 carreras en la 3a entrada o 10 carreras en la 4a entrada
@@ -447,7 +517,7 @@ function renderKnockout() {
 
         <div class="third ${k.third.winner ? 'third-place' : ''}" id="thirdPlaceMatch">
           <h3>Tercer Lugar</h3>
-          ${renderKnockoutMatch(k.third, k.third.home || 'Perdedor SF1', k.third.away || 'Perdedor SF2')}
+          ${renderKnockoutMatch(k.third, k.third.homeName || k.third.home || 'Perdedor SF1', k.third.awayName || k.third.away || 'Perdedor SF2')}
           ${k.third.winner ? `<div class="info"><strong>🥉 Tercer Lugar: ${k.third.winner}</strong></div>` : ''}
           <div class="mercy-rule">
             <strong>Regla Mercy:</strong> Diferencia de 15 carreras en la 3a entrada o 10 carreras en la 4a entrada
@@ -456,7 +526,7 @@ function renderKnockout() {
 
         <div class="final ${k.final.winner ? 'winner' : ''}" id="finalMatch">
           <h3>Final</h3>
-          ${renderKnockoutMatch(k.final, k.final.home || 'Ganador SF1', k.final.away || 'Ganador SF2')}
+          ${renderKnockoutMatch(k.final, k.final.homeName || k.final.home || 'Ganador SF1', k.final.awayName || k.final.away || 'Ganador SF2')}
           ${k.final.winner ? `<div class="info"><strong>🏆 Campeón: ${k.final.winner}</strong></div>` : ''}
           <div class="mercy-rule">
             <strong>Regla Mercy:</strong> Diferencia de 15 carreras en la 3a entrada o 10 carreras en la 4a entrada
@@ -467,13 +537,23 @@ function renderKnockout() {
   `;
 }
 
-function renderKnockoutMatch(match, defaultHome, defaultAway) {
+function renderMatch(match, defaultHome, defaultAway) {
   const hasResult = match.gh !== null && match.ga !== null;
   const homeWinner = hasResult && match.gh > match.ga;
   const awayWinner = hasResult && match.gh < match.ga;
   
   const homeName = match.home || defaultHome;
   const awayName = match.away || defaultAway;
+  
+  let infoHtml = '';
+  if (match.hour || match.place) {
+    infoHtml = `
+      <div class="info">
+        ${match.hour ? `<span>🕒 ${match.hour}</span>` : ''}
+        ${match.place ? `<span>📍 ${match.place}</span>` : ''}
+      </div>
+    `;
+  }
   
   return `
     <div class="match">
@@ -487,13 +567,12 @@ function renderKnockoutMatch(match, defaultHome, defaultAway) {
       </div>
       <div class="team ${awayWinner ? 'winner' : ''}" style="justify-content:flex-end">${awayName}</div>
     </div>
-    ${(match.hour || match.place) ? `
-      <div class="info">
-        ${match.hour ? `<span>🕒 ${match.hour}</span>` : ''}
-        ${match.place ? `<span>📍 ${match.place}</span>` : ''}
-      </div>
-    ` : ''}
+    ${infoHtml}
   `;
+}
+
+function renderKnockoutMatch(match, defaultHome, defaultAway) {
+  return renderMatch(match, defaultHome, defaultAway);
 }
 
 // ===== CÁLCULO DE TABLAS (igual que en admin) =====

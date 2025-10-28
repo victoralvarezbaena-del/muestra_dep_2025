@@ -364,10 +364,10 @@ let state = {
   },
   points: { win: 2, draw: 1, loss: 0 },
   knockout: {
-    sf1: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
-    sf2: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
-    final: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
-    third: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' }
+    sf1: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' },
+    sf2: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' },
+    final: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' },
+    third: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' }
   },
   tournamentName: '',
   theme: { color: '#0284c7', bg: '#f8fafc' }
@@ -648,8 +648,8 @@ function renderGroups() {
   // Actualizar mejor segundo lugar
   updateBestSecondPlace();
   
-  // Vincular eventos
-  bindEvents();
+  // Vincular eventos de los inputs de partidos
+  setupGroupEventListeners();
 }
 
 function updateBestSecondPlace() {
@@ -672,131 +672,25 @@ function updateBestSecondPlace() {
   }
 }
 
-// ===== ACTUALIZAR SEMIFINALES Y FINALES =====
-function updateKnockout() {
-  // Obtener clasificados
-  const winnerA = groupWinner('A');
-  const winnerB = groupWinner('B');
-  const winnerC = groupWinner('C');
-  const bestSecond = getBestSecondPlace();
-  
-  // Actualizar nombres en semifinales
-  $('#sf1h').textContent = winnerA || '1° Grupo A';
-  $('#sf1a').textContent = bestSecond ? `${bestSecond.team} (2° Grupo ${bestSecond.group})` : 'Mejor 2°';
-  
-  $('#sf2h').textContent = winnerB || '1° Grupo B';
-  $('#sf2a').textContent = winnerC || '1° Grupo C';
-  
-  // Actualizar opciones de ganadores en semifinales
-  updateWinnerOptions('sf1', winnerA, bestSecond?.team);
-  updateWinnerOptions('sf2', winnerB, winnerC);
-  
-  // Actualizar partido por tercer lugar
-  const sf1Winner = state.knockout.sf1.winner;
-  const sf2Winner = state.knockout.sf2.winner;
-  
-  let thirdHome = '', thirdAway = '';
-  if (sf1Winner && sf2Winner) {
-    thirdHome = sf1Winner === winnerA ? bestSecond?.team : winnerA;
-    thirdAway = sf2Winner === winnerB ? winnerC : winnerB;
-  }
-  
-  $('#thirdh').textContent = thirdHome || 'Perdedor SF1';
-  $('#thirda').textContent = thirdAway || 'Perdedor SF2';
-  
-  // Actualizar opciones de tercer lugar
-  updateThirdPlaceOptions(thirdHome, thirdAway);
-  
-  // Actualizar final
-  const finalHome = sf1Winner || 'Ganador SF1';
-  const finalAway = sf2Winner || 'Ganador SF2';
-  
-  $('#fih').textContent = finalHome;
-  $('#fia').textContent = finalAway;
-  
-  // Actualizar opciones de campeón
-  updateFinalOptions(finalHome, finalAway);
-}
-
-function updateWinnerOptions(matchId, homeTeam, awayTeam) {
-  const select = $(`#${matchId}w`);
-  select.innerHTML = '<option value="">— Ganador —</option>';
-  
-  if (homeTeam) {
-    select.insertAdjacentHTML('beforeend', `<option value="${homeTeam}">${homeTeam}</option>`);
-  }
-  if (awayTeam) {
-    select.insertAdjacentHTML('beforeend', `<option value="${awayTeam}">${awayTeam}</option>`);
-  }
-  
-  // Restaurar selección guardada
-  if (state.knockout[matchId].winner) {
-    select.value = state.knockout[matchId].winner;
-  }
-}
-
-function updateThirdPlaceOptions(homeTeam, awayTeam) {
-  const select = $('#thirdw');
-  select.innerHTML = '<option value="">— Tercero —</option>';
-  
-  if (homeTeam) {
-    select.insertAdjacentHTML('beforeend', `<option value="${homeTeam}">${homeTeam}</option>`);
-  }
-  if (awayTeam) {
-    select.insertAdjacentHTML('beforeend', `<option value="${awayTeam}">${awayTeam}</option>`);
-  }
-  
-  // Restaurar selección guardada
-  if (state.knockout.third.winner) {
-    select.value = state.knockout.third.winner;
-  }
-}
-
-function updateFinalOptions(homeTeam, awayTeam) {
-  const select = $('#fiw');
-  select.innerHTML = '<option value="">— Campeón —</option>';
-  
-  if (homeTeam) {
-    select.insertAdjacentHTML('beforeend', `<option value="${homeTeam}">${homeTeam}</option>`);
-  }
-  if (awayTeam) {
-    select.insertAdjacentHTML('beforeend', `<option value="${awayTeam}">${awayTeam}</option>`);
-  }
-  
-  // Restaurar selección guardada
-  if (state.knockout.final.winner) {
-    select.value = state.knockout.final.winner;
-  }
-}
-
-// ===== VINCULAR EVENTOS =====
-function bindEvents() {
-  // Cambios en equipos de grupos
-  ['ga', 'gb', 'gc'].forEach(id => {
-    $(`#${id}`).addEventListener('input', () => {
-      const groupKey = id.toUpperCase();
-      state.groups[groupKey].teams = parseTeams($(`#${id}`).value);
-      saveState();
-    });
-  });
-  
-  // Cambios en partidos de grupos
+// ===== EVENT LISTENERS PARA GRUPOS =====
+function setupGroupEventListeners() {
+  // Scores
   document.querySelectorAll('.score-home, .score-away').forEach(input => {
-    input.addEventListener('input', e => {
-      const { group, home, away } = e.target.dataset;
-      const isHome = e.target.classList.contains('score-home');
-      const value = valInt(e.target.value);
+    input.addEventListener('input', function() {
+      const groupKey = this.dataset.group;
+      const home = this.dataset.home;
+      const away = this.dataset.away;
       
-      let match = state.groups[group].matches.find(m => m.home === home && m.away === away);
+      let match = state.groups[groupKey].matches.find(m => m.home === home && m.away === away);
       if (!match) {
         match = { home, away, gh: null, ga: null, hour: '', place: '' };
-        state.groups[group].matches.push(match);
+        state.groups[groupKey].matches.push(match);
       }
       
-      if (isHome) {
-        match.gh = value;
+      if (this.classList.contains('score-home')) {
+        match.gh = valInt(this.value);
       } else {
-        match.ga = value;
+        match.ga = valInt(this.value);
       }
       
       saveState();
@@ -805,201 +699,104 @@ function bindEvents() {
     });
   });
   
-  // Cambios en hora y lugar de partidos
+  // Hora y lugar
   document.querySelectorAll('.match-hour, .match-place').forEach(input => {
-    input.addEventListener('input', e => {
-      const { group, home, away } = e.target.dataset;
-      const isHour = e.target.classList.contains('match-hour');
-      const value = e.target.value;
+    input.addEventListener('change', function() {
+      const groupKey = this.dataset.group;
+      const home = this.dataset.home;
+      const away = this.dataset.away;
       
-      let match = state.groups[group].matches.find(m => m.home === home && m.away === away);
+      let match = state.groups[groupKey].matches.find(m => m.home === home && m.away === away);
       if (!match) {
         match = { home, away, gh: null, ga: null, hour: '', place: '' };
-        state.groups[group].matches.push(match);
+        state.groups[groupKey].matches.push(match);
       }
       
-      if (isHour) {
-        match.hour = value;
+      if (this.classList.contains('match-hour')) {
+        match.hour = this.value.trim();
       } else {
-        match.place = value;
+        match.place = this.value.trim();
       }
       
       saveState();
     });
   });
-  
-  // Cambios en partidos de eliminatoria
-  ['sf1', 'sf2', 'final', 'third'].forEach(matchId => {
-    // Goles
-    $(`#${matchId}gh`).addEventListener('input', e => {
-      state.knockout[matchId].gh = valInt(e.target.value);
-      saveState();
-      updateKnockout();
-    });
-    
-    $(`#${matchId}ga`).addEventListener('input', e => {
-      state.knockout[matchId].ga = valInt(e.target.value);
-      saveState();
-      updateKnockout();
-    });
-    
-    // Ganador
-    $(`#${matchId}w`).addEventListener('change', e => {
-      state.knockout[matchId].winner = e.target.value;
-      saveState();
-      updateKnockout();
-    });
-    
-    // Hora y lugar
-    $(`#${matchId}Hour`).addEventListener('input', e => {
-      state.knockout[matchId].hour = e.target.value;
-      saveState();
-    });
-    
-    $(`#${matchId}Place`).addEventListener('input', e => {
-      state.knockout[matchId].place = e.target.value;
-      saveState();
-    });
-    
-    // Nombres manuales
-    $(`#${matchId}HomeName`).addEventListener('input', e => {
-      state.knockout[matchId].homeName = e.target.value;
-      saveState();
-    });
-    
-    $(`#${matchId}AwayName`).addEventListener('input', e => {
-      state.knockout[matchId].awayName = e.target.value;
-      saveState();
-    });
-  });
-  
-  // Generar rol
-  $('#btnGenerate').addEventListener('click', () => {
-    ['A', 'B', 'C'].forEach(groupKey => {
-      state.groups[groupKey].matches = [];
-    });
-    saveState();
-    renderGroups();
-    updateKnockout();
-  });
-  
-  // Guardar estado en localStorage
-  $('#tournamentName').addEventListener('input', e => {
-    state.tournamentName = e.target.value;
-    saveState();
-  });
-  
-  // Cambiar tema
-  $('#themeColor').addEventListener('input', e => {
-    state.theme.color = e.target.value;
-    applyTheme();
-    saveState();
-  });
-  
-  $('#themeBg').addEventListener('input', e => {
-    state.theme.bg = e.target.value;
-    applyTheme();
-    saveState();
-  });
-  
-  // Limpiar todo
-  $('#btnClearAll').addEventListener('click', () => {
-    if (confirm('¿Estás seguro de que quieres limpiar todos los datos?')) {
-      localStorage.removeItem(STORAGE_KEY);
-      location.reload();
-    }
-  });
-  
-  // Guardar copia
-  $('#btnSaveCopy').addEventListener('click', () => {
-    const dataStr = JSON.stringify(state, null, 2);
-    const blob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `torneo-softbol-${new Date().toISOString().slice(0, 10)}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  });
-  
-  // Importar JSON
-  $('#btnImport').addEventListener('click', () => {
-    $('#importFile').click();
-  });
-  
-  $('#importFile').addEventListener('change', e => {
-    const file = e.target.files[0];
-    if (!file) return;
-    
-    const reader = new FileReader();
-    reader.onload = event => {
-      try {
-        const importedState = JSON.parse(event.target.result);
-        state = importedState;
-        loadStateIntoUI();
-        renderGroups();
-        updateKnockout();
-        applyTheme();
-        alert('Datos importados correctamente');
-      } catch (err) {
-        alert('Error al importar el archivo: ' + err.message);
-      }
-    };
-    reader.readAsText(file);
-    e.target.value = '';
-  });
-  
-  // Exportar JSON
-  $('#btnExport').addEventListener('click', () => {
-    $('#btnSaveCopy').click();
-  });
-  
-  // Publicar
-  $('#btnPublish').addEventListener('click', publish);
 }
 
-function applyTheme() {
-  document.documentElement.style.setProperty('--accent', state.theme.color);
-  document.documentElement.style.setProperty('--bg', state.theme.bg);
+// ===== KNOCKOUT =====
+function updateKnockout() {
+  const A1 = groupWinner('A') || 'A1';
+  const A2 = groupRunnerUp('A') || 'A2';
+  const B1 = groupWinner('B') || 'B1';
+  const B2 = groupRunnerUp('B') || 'B2';
+  const C1 = groupWinner('C') || 'C1';
+  const C2 = groupRunnerUp('C') || 'C2';
+
+  // Obtener el mejor segundo lugar
+  const bestSecond = getBestSecondPlace();
+  const bestSecondTeam = bestSecond ? bestSecond.team : 'Mejor 2°';
+
+  // Semifinales
+  $('#sf1h').textContent = state.knockout.sf1.home || A1;
+  $('#sf1a').textContent = state.knockout.sf1.away || bestSecondTeam;
+  $('#sf2h').textContent = state.knockout.sf2.home || B1;
+  $('#sf2a').textContent = state.knockout.sf2.away || C1;
+
+  // Final y tercer lugar
+  const sf1Winner = state.knockout.sf1.winner;
+  const sf2Winner = state.knockout.sf2.winner;
+  
+  // Para la final
+  $('#fih').textContent = state.knockout.final.home || (sf1Winner || 'Ganador SF1');
+  $('#fia').textContent = state.knockout.final.away || (sf2Winner || 'Ganador SF2');
+  
+  // Para tercer lugar
+  const sf1Loser = sf1Winner ? 
+    (sf1Winner === (state.knockout.sf1.home || A1) ? (state.knockout.sf1.away || bestSecondTeam) : (state.knockout.sf1.home || A1)) : 
+    'Perdedor SF1';
+  const sf2Loser = sf2Winner ? 
+    (sf2Winner === (state.knockout.sf2.home || B1) ? (state.knockout.sf2.away || C1) : (state.knockout.sf2.home || B1)) : 
+    'Perdedor SF2';
+  
+  $('#thirdh').textContent = state.knockout.third.home || sf1Loser;
+  $('#thirda').textContent = state.knockout.third.away || sf2Loser;
+
+  updateWinnerSelects();
 }
 
-// ===== PUBLICAR =====
-function publish() {
-  const statusEl = $('#publishStatus');
-  statusEl.textContent = '';
-  statusEl.className = 'status loading';
-  statusEl.textContent = 'Publicando...';
-  
-  // Simular publicación (en un caso real, aquí se enviaría a un servidor)
-  setTimeout(() => {
-    statusEl.className = 'status success';
-    statusEl.textContent = '✓ Publicado';
-    
-    // Crear archivo JSON para descargar (simulación de publicación)
-    const dataStr = JSON.stringify(state, null, 2);
-    const blob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    
-    // En un caso real, aquí se subiría a un servidor
-    console.log('Datos listos para publicar:', state);
-    
-    // Por ahora, solo ofrecemos descargar el archivo
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'torneo-data.json';
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    
-    setTimeout(() => {
-      statusEl.textContent = '';
-      statusEl.className = '';
-    }, 3000);
-  }, 1000);
+function updateWinnerSelects() {
+  const sf1h = $('#sf1h').textContent;
+  const sf1a = $('#sf1a').textContent;
+  const sf2h = $('#sf2h').textContent;
+  const sf2a = $('#sf2a').textContent;
+  const fih = $('#fih').textContent;
+  const fia = $('#fia').textContent;
+  const thirdh = $('#thirdh').textContent;
+  const thirda = $('#thirda').textContent;
+
+  // Semifinal 1
+  $('#sf1w').innerHTML = `<option value="">— Ganador —</option>
+                          <option value="${sf1h}">${sf1h}</option>
+                          <option value="${sf1a}">${sf1a}</option>`;
+  if (state.knockout.sf1.winner) $('#sf1w').value = state.knockout.sf1.winner;
+
+  // Semifinal 2
+  $('#sf2w').innerHTML = `<option value="">— Ganador —</option>
+                          <option value="${sf2h}">${sf2h}</option>
+                          <option value="${sf2a}">${sf2a}</option>`;
+  if (state.knockout.sf2.winner) $('#sf2w').value = state.knockout.sf2.winner;
+
+  // Final
+  $('#fiw').innerHTML = `<option value="">— Campeón —</option>
+                         <option value="${fih}">${fih}</option>
+                         <option value="${fia}">${fia}</option>`;
+  if (state.knockout.final.winner) $('#fiw').value = state.knockout.final.winner;
+
+  // Tercer lugar
+  $('#thirdw').innerHTML = `<option value="">— Tercero —</option>
+                            <option value="${thirdh}">${thirdh}</option>
+                            <option value="${thirda}">${thirda}</option>`;
+  if (state.knockout.third.winner) $('#thirdw').value = state.knockout.third.winner;
 }
 
 // ===== PERSISTENCIA =====
@@ -1008,58 +805,201 @@ function saveState() {
 }
 
 function loadState() {
-  const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved) {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (stored) {
     try {
-      const parsed = JSON.parse(saved);
+      const parsed = JSON.parse(stored);
       state = { ...state, ...parsed };
     } catch (e) {
-      console.warn('Error loading state:', e);
+      console.warn('Error loading state, using default', e);
     }
   }
 }
 
-function loadStateIntoUI() {
-  // Cargar equipos
+// ===== PUBLICACIÓN =====
+function publish() {
+  const statusEl = $('#publishStatus');
+  statusEl.textContent = '⏳';
+  statusEl.className = 'status loading';
+  
+  const data = {
+    ...state,
+    timestamp: new Date().toISOString(),
+    updatedAtLocal: new Date().toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    })
+  };
+  
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'data.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  
+  statusEl.textContent = '✅';
+  statusEl.className = 'status success';
+  
+  setTimeout(() => {
+    statusEl.textContent = '';
+    statusEl.className = '';
+  }, 3000);
+}
+
+// ===== IMPORT/EXPORT =====
+function exportData() {
+  const data = {
+    ...state,
+    timestamp: new Date().toISOString()
+  };
+  
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `torneo-beisbol-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function importData(file) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const imported = JSON.parse(e.target.result);
+      state = { ...state, ...imported };
+      saveState();
+      applyStateToUI();
+      renderGroups();
+      updateKnockout();
+      alert('✅ Datos importados correctamente');
+    } catch (err) {
+      alert('❌ Error al importar: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+// ===== UI STATE =====
+function applyStateToUI() {
+  // Equipos
   $('#ga').value = state.groups.A.teams.join('\n');
   $('#gb').value = state.groups.B.teams.join('\n');
   $('#gc').value = state.groups.C.teams.join('\n');
   
-  // Cargar nombre del torneo
+  // Tema
   $('#tournamentName').value = state.tournamentName || '';
-  
-  // Cargar colores del tema
   $('#themeColor').value = state.theme.color || '#0284c7';
   $('#themeBg').value = state.theme.bg || '#f8fafc';
   
-  // Cargar datos de eliminatoria
-  ['sf1', 'sf2', 'final', 'third'].forEach(matchId => {
-    const match = state.knockout[matchId];
-    $(`#${matchId}gh`).value = match.gh == null ? '' : match.gh;
-    $(`#${matchId}ga`).value = match.ga == null ? '' : match.ga;
-    $(`#${matchId}w`).value = match.winner || '';
-    $(`#${matchId}Hour`).value = match.hour || '';
-    $(`#${matchId}Place`).value = match.place || '';
-    $(`#${matchId}HomeName`).value = match.homeName || '';
-    $(`#${matchId}AwayName`).value = match.awayName || '';
-  });
+  // Knockout scores
+  $('#sf1gh').value = state.knockout.sf1.gh == null ? '' : state.knockout.sf1.gh;
+  $('#sf1ga').value = state.knockout.sf1.ga == null ? '' : state.knockout.sf1.ga;
+  $('#sf2gh').value = state.knockout.sf2.gh == null ? '' : state.knockout.sf2.gh;
+  $('#sf2ga').value = state.knockout.sf2.ga == null ? '' : state.knockout.sf2.ga;
+  $('#figh').value = state.knockout.final.gh == null ? '' : state.knockout.final.gh;
+  $('#figa').value = state.knockout.final.ga == null ? '' : state.knockout.final.ga;
+  $('#thirdgh').value = state.knockout.third.gh == null ? '' : state.knockout.third.gh;
+  $('#thirdga').value = state.knockout.third.ga == null ? '' : state.knockout.third.ga;
+  
+  // Knockout hora y lugar
+  $('#sf1Hour').value = state.knockout.sf1.hour || '';
+  $('#sf1Place').value = state.knockout.sf1.place || '';
+  $('#sf2Hour').value = state.knockout.sf2.hour || '';
+  $('#sf2Place').value = state.knockout.sf2.place || '';
+  $('#fiHour').value = state.knockout.final.hour || '';
+  $('#fiPlace').value = state.knockout.final.place || '';
+  $('#thirdHour').value = state.knockout.third.hour || '';
+  $('#thirdPlace').value = state.knockout.third.place || '';
+  
+  // Nombres manuales
+  $('#sf1HomeName').value = state.knockout.sf1.homeName || '';
+  $('#sf1AwayName').value = state.knockout.sf1.awayName || '';
+  $('#sf2HomeName').value = state.knockout.sf2.homeName || '';
+  $('#sf2AwayName').value = state.knockout.sf2.awayName || '';
+  $('#fiHomeName').value = state.knockout.final.homeName || '';
+  $('#fiAwayName').value = state.knockout.final.awayName || '';
+  $('#thirdHomeName').value = state.knockout.third.homeName || '';
+  $('#thirdAwayName').value = state.knockout.third.awayName || '';
 }
 
 // ===== INICIALIZACIÓN =====
 function init() {
   loadState();
-  loadStateIntoUI();
+  applyStateToUI();
   renderGroups();
   updateKnockout();
-  applyTheme();
+  
+  // Generar rol
+  $('#btnGenerate').addEventListener('click', function() {
+    state.groups.A.teams = parseTeams($('#ga').value);
+    state.groups.B.teams = parseTeams($('#gb').value);
+    state.groups.C.teams = parseTeams($('#gc').value);
+    state.groups.A.matches = [];
+    state.groups.B.matches = [];
+    state.groups.C.matches = [];
+    saveState();
+    renderGroups();
+    updateKnockout();
+  });
+  
+  // Publicar
+  $('#btnPublish').addEventListener('click', publish);
+  
+  // Guardar copia
+  $('#btnSaveCopy').addEventListener('click', function() {
+    saveState();
+    alert('✅ Estado guardado localmente');
+  });
+  
+  // Limpiar
+  $('#btnClearAll').addEventListener('click', function() {
+    if (confirm('¿Borrar todos los datos?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
+  });
+  
+  // Importar/Exportar
+  $('#btnExport').addEventListener('click', exportData);
+  $('#btnImport').addEventListener('click', function() {
+    $('#importFile').click();
+  });
+  $('#importFile').addEventListener('change', function() {
+    if (this.files[0]) {
+      importData(this.files[0]);
+      this.value = '';
+    }
+  });
+  
+  // Tema
+  $('#tournamentName').addEventListener('change', function() {
+    state.tournamentName = this.value.trim();
+    saveState();
+  });
+  $('#themeColor').addEventListener('change', function() {
+    state.theme.color = this.value;
+    saveState();
+  });
+  $('#themeBg').addEventListener('change', function() {
+    state.theme.bg = this.value;
+    saveState();
+  });
 }
 
-// Iniciar cuando el DOM esté listo
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
-} else {
-  init();
-}
+// Iniciar
+document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
 </html>

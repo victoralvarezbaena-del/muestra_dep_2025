@@ -1,0 +1,86 @@
+{
+  "groups": {
+    "A": {
+      "teams": [
+        "A1",
+        "A2",
+        "A3"
+      ],
+      "matches": []
+    },
+    "B": {
+      "teams": [
+        "B1",
+        "B2",
+        "B3"
+      ],
+      "matches": []
+    },
+    "C": {
+      "teams": [
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "matches": []
+    }
+  },
+  "points": {
+    "win": 2,
+    "draw": 1,
+    "loss": 0
+  },
+  "knockout": {
+    "sf1": {
+      "home": "",
+      "away": "",
+      "gh": null,
+      "ga": null,
+      "winner": "",
+      "hour": "",
+      "place": "",
+      "homeName": "",
+      "awayName": ""
+    },
+    "sf2": {
+      "home": "",
+      "away": "",
+      "gh": null,
+      "ga": null,
+      "winner": "",
+      "hour": "",
+      "place": "",
+      "homeName": "",
+      "awayName": ""
+    },
+    "final": {
+      "home": "",
+      "away": "",
+      "gh": null,
+      "ga": null,
+      "winner": "",
+      "hour": "",
+      "place": "",
+      "homeName": "",
+      "awayName": ""
+    },
+    "third": {
+      "home": "",
+      "away": "",
+      "gh": null,
+      "ga": null,
+      "winner": "",
+      "hour": "",
+      "place": "",
+      "homeName": "",
+      "awayName": ""
+    }
+  },
+  "tournamentName": "",
+  "theme": {
+    "color": "#487a93",
+    "bg": "#cce0f5"
+  },
+  "timestamp": "2025-10-28T17:47:34.704Z",
+  "updatedAtLocal": "28 de octubre de 2025, 11:47"
+}

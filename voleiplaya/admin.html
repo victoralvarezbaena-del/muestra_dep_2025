@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Administrador — Torneo Vóley Playa 7 Equipos</title>
   <style>
     :root {
@@ -103,6 +103,12 @@
       padding: 10px 14px;
       font-weight: 700;
       cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
     }
 
     button.ghost {
@@ -114,6 +120,7 @@
     button:disabled {
       opacity: 0.6;
       cursor: not-allowed;
+      transform: none !important;
     }
 
     .row {
@@ -618,10 +625,10 @@ Equipo B4</textarea>
       },
       points: { win: 2, loss: 1 }, // Para vóley playa: 2 puntos por victoria, 1 por derrota
       knockout: {
-        sf1: { home: '', away: '', sets: [], winner: '', hour: '', place: '' },
-        sf2: { home: '', away: '', sets: [], winner: '', hour: '', place: '' },
-        final: { home: '', away: '', sets: [], winner: '', hour: '', place: '' },
-        third: { home: '', away: '', sets: [], winner: '', hour: '', place: '' }
+        sf1: { home: '', away: '', sets: [], winner: '', hour: '', place: '', homeName: '', awayName: '' },
+        sf2: { home: '', away: '', sets: [], winner: '', hour: '', place: '', homeName: '', awayName: '' },
+        final: { home: '', away: '', sets: [], winner: '', hour: '', place: '', homeName: '', awayName: '' },
+        third: { home: '', away: '', sets: [], winner: '', hour: '', place: '', homeName: '', awayName: '' }
       },
       tournamentName: '',
       theme: { color: '#f59e0b', bg: '#f8fafc' }
@@ -1188,61 +1195,7 @@ Equipo B4</textarea>
       }
     }
 
-    // ===== INICIALIZACIÓN =====
-    function init() {
-      loadState();
-      
-      // Cargar valores iniciales
-      $('#ga').value = state.groups.A.teams.join('\n');
-      $('#gb').value = state.groups.B.teams.join('\n');
-      $('#tournamentName').value = state.tournamentName || '';
-      $('#themeColor').value = state.theme.color;
-      $('#themeBg').value = state.theme.bg;
-      
-      // Cargar datos de fase eliminatoria
-      ['sf1', 'sf2', 'final', 'third'].forEach(key => {
-        $(`#${key}Hour`).value = state.knockout[key].hour || '';
-        $(`#${key}Place`).value = state.knockout[key].place || '';
-        
-        // Nombres manuales
-        if (state.knockout[key].homeName) $(`#${key}HomeName`).value = state.knockout[key].homeName;
-        if (state.knockout[key].awayName) $(`#${key}AwayName`).value = state.knockout[key].awayName;
-      });
-      
-      // Renderizar grupos y fase eliminatoria
-      renderGroups();
-      renderKnockoutSets();
-      updateKnockoutTeams();
-      
-      // Event listeners principales
-      $('#btnGenerate').addEventListener('click', generateGroups);
-      $('#btnSaveCopy').addEventListener('click', saveCopy);
-      $('#btnClearAll').addEventListener('click', clearAll);
-      $('#btnPublish').addEventListener('click', publish);
-      $('#btnImport').addEventListener('click', importData);
-      $('#btnExport').addEventListener('click', exportData);
-      
-      // Event listeners para tema
-      $('#tournamentName').addEventListener('input', function() {
-        state.tournamentName = this.value;
-        saveState();
-      });
-      
-      $('#themeColor').addEventListener('input', function() {
-        state.theme.color = this.value;
-        saveState();
-        updateTheme();
-      });
-      
-      $('#themeBg').addEventListener('input', function() {
-        state.theme.bg = this.value;
-        saveState();
-        updateTheme();
-      });
-      
-      updateTheme();
-    }
-
+    // ===== FUNCIONES DE LOS BOTONES =====
     function generateGroups() {
       state.groups.A.teams = parseTeams($('#ga').value);
       state.groups.B.teams = parseTeams($('#gb').value);
@@ -1254,6 +1207,9 @@ Equipo B4</textarea>
       saveState();
       renderGroups();
       updateKnockoutTeams();
+      renderKnockoutSets();
+      
+      alert('✅ Rol de partidos generado correctamente');
     }
 
     function saveCopy() {
@@ -1262,11 +1218,13 @@ Equipo B4</textarea>
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `torneo-voley-${new Date().toISOString().slice(0, 10)}.json`;
+      a.download = `torneo-voley-playa-${new Date().toISOString().slice(0, 10)}.json`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
+      
+      alert('✅ Copia de seguridad guardada');
     }
 
     function clearAll() {
@@ -1281,7 +1239,19 @@ Equipo B4</textarea>
       statusEl.textContent = '⏳';
       statusEl.className = 'status loading';
       
-      // Simular publicación (en un caso real, aquí se enviaría a un servidor)
+      // Crear archivo data.json para publicación
+      const dataStr = JSON.stringify(state, null, 2);
+      const blob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'data.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      // Simular publicación
       setTimeout(() => {
         statusEl.textContent = '✅';
         statusEl.className = 'status success';
@@ -1321,6 +1291,64 @@ Equipo B4</textarea>
     function updateTheme() {
       document.documentElement.style.setProperty('--accent', state.theme.color);
       document.documentElement.style.setProperty('--bg', state.theme.bg);
+    }
+
+    // ===== INICIALIZACIÓN =====
+    function init() {
+      loadState();
+      
+      // Cargar valores iniciales
+      $('#ga').value = state.groups.A.teams.join('\n');
+      $('#gb').value = state.groups.B.teams.join('\n');
+      $('#tournamentName').value = state.tournamentName || '';
+      $('#themeColor').value = state.theme.color;
+      $('#themeBg').value = state.theme.bg;
+      
+      // Cargar datos de fase eliminatoria
+      ['sf1', 'sf2', 'final', 'third'].forEach(key => {
+        $(`#${key}Hour`).value = state.knockout[key].hour || '';
+        $(`#${key}Place`).value = state.knockout[key].place || '';
+        
+        // Nombres manuales
+        if (state.knockout[key].homeName) $(`#${key}HomeName`).value = state.knockout[key].homeName;
+        if (state.knockout[key].awayName) $(`#${key}AwayName`).value = state.knockout[key].awayName;
+      });
+      
+      // Renderizar grupos y fase eliminatoria
+      renderGroups();
+      renderKnockoutSets();
+      updateKnockoutTeams();
+      
+      // Event listeners principales
+      $('#btnGenerate').addEventListener('click', generateGroups);
+      $('#btnSaveCopy').addEventListener('click', saveCopy);
+      $('#btnClearAll').addEventListener('click', clearAll);
+      $('#btnPublish').addEventListener('click', publish);
+      $('#btnImport').addEventListener('click', () => $('#importFile').click());
+      $('#btnExport').addEventListener('click', exportData);
+      
+      // Event listeners para tema
+      $('#tournamentName').addEventListener('input', function() {
+        state.tournamentName = this.value;
+        saveState();
+      });
+      
+      $('#themeColor').addEventListener('input', function() {
+        state.theme.color = this.value;
+        saveState();
+        updateTheme();
+      });
+      
+      $('#themeBg').addEventListener('input', function() {
+        state.theme.bg = this.value;
+        saveState();
+        updateTheme();
+      });
+      
+      // Event listener para importar archivo
+      $('#importFile').addEventListener('change', importData);
+      
+      updateTheme();
     }
 
     // Inicializar la aplicación

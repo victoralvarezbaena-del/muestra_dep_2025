@@ -623,7 +623,7 @@ Equipo B4</textarea>
         A: { teams: ['Equipo A1', 'Equipo A2', 'Equipo A3'], matches: [] },
         B: { teams: ['Equipo B1', 'Equipo B2', 'Equipo B3', 'Equipo B4'], matches: [] }
       },
-      points: { win: 2, loss: 1 }, // Para vóley playa: 2 puntos por victoria, 1 por derrota
+      points: { win: 2, loss: 1 },
       knockout: {
         sf1: { home: '', away: '', sets: [], winner: '', hour: '', place: '', homeName: '', awayName: '' },
         sf2: { home: '', away: '', sets: [], winner: '', hour: '', place: '', homeName: '', awayName: '' },
@@ -634,22 +634,19 @@ Equipo B4</textarea>
       theme: { color: '#f59e0b', bg: '#f8fafc' }
     };
 
-    // ===== HELPERS =====
+    // ===== FUNCIONES BÁSICAS =====
     function parseTeams(txt) {
       return String(txt || '').split('\n').map(s => s.trim()).filter(Boolean);
     }
 
-    // Sistema de todos contra todos para grupos de 3 y 4 equipos
     function roundRobin(teams) {
       const matches = [];
       const n = teams.length;
-      
       for (let i = 0; i < n; i++) {
         for (let j = i + 1; j < n; j++) {
           matches.push([teams[i], teams[j]]);
         }
       }
-      
       return matches;
     }
 
@@ -659,108 +656,66 @@ Equipo B4</textarea>
       return Number.isFinite(n) && n >= 0 ? n : null;
     }
 
-    // Calcular total de sets ganados y puntos totales
     function calculateSetsAndPoints(sets) {
-      let homeSets = 0;
-      let awaySets = 0;
-      let homePoints = 0;
-      let awayPoints = 0;
-      
+      let homeSets = 0, awaySets = 0, homePoints = 0, awayPoints = 0;
       sets.forEach(set => {
         if (set.home !== null && set.away !== null) {
           homePoints += set.home || 0;
           awayPoints += set.away || 0;
-          
           if (set.home > set.away) homeSets++;
           else if (set.away > set.home) awaySets++;
         }
       });
-      
-      return { 
-        homeSets, 
-        awaySets, 
-        homePoints, 
-        awayPoints,
-        pointsDifference: homePoints - awayPoints
-      };
+      return { homeSets, awaySets, homePoints, awayPoints };
     }
 
-    // Calcular tabla de posiciones con diferencia de puntos
     function computeTable(matches, teams) {
       const table = Object.fromEntries(teams.map(team => [team, {
-        team, PJ: 0, G: 0, P: 0, 
-        SF: 0, SC: 0, DS: 0,        // Sets a favor, en contra, diferencia
-        PF: 0, PC: 0, DP: 0,        // Puntos a favor, en contra, diferencia
-        Pts: 0
+        team, PJ: 0, G: 0, P: 0, SF: 0, SC: 0, DS: 0, PF: 0, PC: 0, DP: 0, Pts: 0
       }]));
-      
-      const cfg = state.points;
       
       matches.forEach(match => {
         if (!match.sets || match.sets.length === 0) return;
-        
         const homeTeam = table[match.home];
         const awayTeam = table[match.away];
         if (!homeTeam || !awayTeam) return;
         
-        // Calcular sets ganados y puntos totales
         const result = calculateSetsAndPoints(match.sets);
+        homeTeam.PJ++; awayTeam.PJ++;
+        homeTeam.SF += result.homeSets; homeTeam.SC += result.awaySets;
+        awayTeam.SF += result.awaySets; awayTeam.SC += result.homeSets;
+        homeTeam.PF += result.homePoints; homeTeam.PC += result.awayPoints;
+        awayTeam.PF += result.awayPoints; awayTeam.PC += result.homePoints;
         
-        // Actualizar partidos jugados
-        homeTeam.PJ++;
-        awayTeam.PJ++;
-        
-        // Actualizar sets
-        homeTeam.SF += result.homeSets;
-        homeTeam.SC += result.awaySets;
-        awayTeam.SF += result.awaySets;
-        awayTeam.SC += result.homeSets;
-        
-        // Actualizar puntos
-        homeTeam.PF += result.homePoints;
-        homeTeam.PC += result.awayPoints;
-        awayTeam.PF += result.awayPoints;
-        awayTeam.PC += result.homePoints;
-        
-        // Determinar resultado (vóley playa: no hay empates)
         if (result.homeSets > result.awaySets) {
-          homeTeam.G++;
-          awayTeam.P++;
-          homeTeam.Pts += cfg.win;
-          awayTeam.Pts += cfg.loss;
+          homeTeam.G++; awayTeam.P++;
+          homeTeam.Pts += state.points.win; awayTeam.Pts += state.points.loss;
         } else {
-          awayTeam.G++;
-          homeTeam.P++;
-          awayTeam.Pts += cfg.win;
-          homeTeam.Pts += cfg.loss;
+          awayTeam.G++; homeTeam.P++;
+          awayTeam.Pts += state.points.win; homeTeam.Pts += state.points.loss;
         }
       });
       
-      // Calcular diferencias
       teams.forEach(team => {
         table[team].DS = table[team].SF - table[team].SC;
         table[team].DP = table[team].PF - table[team].PC;
       });
       
-      // Ordenar por puntos, diferencia de sets, diferencia de puntos, puntos a favor
       return Object.values(table).sort((a, b) => {
         if (b.Pts !== a.Pts) return b.Pts - a.Pts;
         if (b.DS !== a.DS) return b.DS - a.DS;
         if (b.DP !== a.DP) return b.DP - a.DP;
-        if (b.PF !== a.PF) return b.PF - a.PF;
-        return a.team.localeCompare(b.team);
+        return b.PF - a.PF;
       });
     }
 
     function groupWinner(groupKey) {
-      const group = state.groups[groupKey];
-      const rows = computeTable(group.matches, group.teams);
+      const rows = computeTable(state.groups[groupKey].matches, state.groups[groupKey].teams);
       return rows[0]?.team || '';
     }
 
     function groupRunnerUp(groupKey) {
-      const group = state.groups[groupKey];
-      const rows = computeTable(group.matches, group.teams);
+      const rows = computeTable(state.groups[groupKey].matches, state.groups[groupKey].teams);
       return rows[1]?.team || '';
     }
 
@@ -780,7 +735,6 @@ Equipo B4</textarea>
         const matchesContainer = document.createElement('div');
         matchesContainer.className = 'matches';
         
-        // Crear partidos (todos contra todos)
         const calendar = roundRobin(teams);
         calendar.forEach(([home, away]) => {
           const existingMatch = group.matches.find(m => m.home === home && m.away === away) || 
@@ -789,74 +743,60 @@ Equipo B4</textarea>
           const matchDiv = document.createElement('div');
           matchDiv.className = 'match';
           
-          // Crear contenedor de sets
           const setsContainer = document.createElement('div');
           setsContainer.className = 'sets-input';
           setsContainer.id = `match-${groupKey}-${home}-${away}`;
           
-          // Generar inputs para sets (máximo 3 sets para vóley playa)
           for (let i = 0; i < 3; i++) {
             const setRow = document.createElement('div');
             setRow.className = 'set-row';
-            
             const setData = existingMatch.sets[i] || { home: '', away: '' };
-            
             setRow.innerHTML = `
               <input type="number" min="0" class="set-home" data-group="${groupKey}" data-home="${home}" data-away="${away}" data-set="${i}" 
-                     value="${setData.home || ''}" style="max-width:50px" placeholder="0">
+                     value="${setData.home || ''}" placeholder="0">
               <span class="sets-separator">-</span>
               <input type="number" min="0" class="set-away" data-group="${groupKey}" data-home="${home}" data-away="${away}" data-set="${i}" 
-                     value="${setData.away || ''}" style="max-width:50px" placeholder="0">
+                     value="${setData.away || ''}" placeholder="0">
               <div class="set-label">Set ${i + 1}</div>
             `;
-            
             setsContainer.appendChild(setRow);
           }
           
           matchDiv.innerHTML = `
             <div class="team">${home}</div>
-            <div class="team" style="justify-content:center">
-              ${setsContainer.outerHTML}
-            </div>
+            <div class="team" style="justify-content:center">${setsContainer.outerHTML}</div>
             <div class="team" style="justify-content:flex-end">${away}</div>
           `;
           
-          // Calcular y mostrar total
           const result = calculateSetsAndPoints(existingMatch.sets);
           const totalDiv = document.createElement('div');
           totalDiv.className = 'total-sets';
-          totalDiv.id = `total-${groupKey}-${home}-${away}`;
           totalDiv.textContent = `Sets: ${result.homeSets}-${result.awaySets}`;
           
-          // Mostrar puntos totales
           const pointsDiv = document.createElement('div');
           pointsDiv.className = 'points-total';
-          pointsDiv.id = `points-${groupKey}-${home}-${away}`;
           pointsDiv.textContent = `Puntos: ${result.homePoints}-${result.awayPoints}`;
           
-          // Indicador visual de sets
           const setsIndicator = document.createElement('div');
           setsIndicator.className = 'sets-indicator';
-          
           for (let i = 0; i < result.homeSets; i++) {
-            const setDot = document.createElement('div');
-            setDot.className = 'set-dot won';
-            setsIndicator.appendChild(setDot);
+            const dot = document.createElement('div');
+            dot.className = 'set-dot won';
+            setsIndicator.appendChild(dot);
           }
-          
           for (let i = 0; i < result.awaySets; i++) {
-            const setDot = document.createElement('div');
-            setDot.className = 'set-dot lost';
-            setsIndicator.appendChild(setDot);
+            const dot = document.createElement('div');
+            dot.className = 'set-dot lost';
+            setsIndicator.appendChild(dot);
           }
           
           const infoDiv = document.createElement('div');
           infoDiv.className = 'info';
           infoDiv.innerHTML = `
             <input type="text" class="match-hour" data-group="${groupKey}" data-home="${home}" data-away="${away}" 
-                   placeholder="Hora (ej. 14:00)" value="${existingMatch.hour || ''}">
+                   placeholder="Hora" value="${existingMatch.hour || ''}">
             <input type="text" class="match-place" data-group="${groupKey}" data-home="${home}" data-away="${away}" 
-                   placeholder="Lugar (ej. Cancha 1)" value="${existingMatch.place || ''}">
+                   placeholder="Lugar" value="${existingMatch.place || ''}">
           `;
           
           matchesContainer.appendChild(matchDiv);
@@ -868,44 +808,35 @@ Equipo B4</textarea>
         
         groupDiv.appendChild(matchesContainer);
         
-        // Tabla de posiciones
         const rows = computeTable(group.matches, teams);
         const tableHTML = `
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>P</th>
-                  <th>SF</th><th>SC</th><th>DS</th>
-                  <th>PF</th><th>PC</th><th>DP</th>
-                  <th>Pts</th>
+          <table>
+            <thead>
+              <tr>
+                <th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>P</th>
+                <th>SF</th><th>SC</th><th>DS</th><th>PF</th><th>PC</th><th>DP</th><th>Pts</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows.map((row, index) => `
+                <tr class="${index === 0 ? 'first' : ''}">
+                  <td class="pos">${index + 1}</td>
+                  <td>${row.team}</td>
+                  <td>${row.PJ}</td>
+                  <td>${row.G}</td>
+                  <td>${row.P}</td>
+                  <td>${row.SF}</td>
+                  <td>${row.SC}</td>
+                  <td>${row.DS}</td>
+                  <td>${row.PF}</td>
+                  <td>${row.PC}</td>
+                  <td>${row.DP}</td>
+                  <td class="pts">${row.Pts}</td>
                 </tr>
-              </thead>
-              <tbody>
-                ${rows.map((row, index) => `
-                  <tr class="${index === 0 ? 'first' : ''}">
-                    <td class="pos">${index + 1}</td>
-                    <td>${row.team}</td>
-                    <td>${row.PJ}</td>
-                    <td>${row.G}</td>
-                    <td>${row.P}</td>
-                    <td>${row.SF}</td>
-                    <td>${row.SC}</td>
-                    <td>${row.DS}</td>
-                    <td>${row.PF}</td>
-                    <td>${row.PC}</td>
-                    <td>${row.DP}</td>
-                    <td class="pts">${row.Pts}</td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-            <div class="note" style="margin-top: 8px;">
-              💡 Orden: Puntos → Dif. Sets → Dif. Puntos → Puntos a favor
-            </div>
-          </div>
+              `).join('')}
+            </tbody>
+          </table>
         `;
-        
         groupDiv.insertAdjacentHTML('beforeend', tableHTML);
         root.appendChild(groupDiv);
       });
@@ -929,9 +860,7 @@ Equipo B4</textarea>
             state.groups[groupKey].matches.push(match);
           }
           
-          if (!match.sets[setIndex]) {
-            match.sets[setIndex] = { home: null, away: null };
-          }
+          if (!match.sets[setIndex]) match.sets[setIndex] = { home: null, away: null };
           
           const val = valInt(this.value);
           if (this.classList.contains('set-home')) {
@@ -940,30 +869,8 @@ Equipo B4</textarea>
             match.sets[setIndex].away = val;
           }
           
-          // Actualizar total
-          const result = calculateSetsAndPoints(match.sets);
-          const totalEl = $(`#total-${groupKey}-${home}-${away}`);
-          const pointsEl = $(`#points-${groupKey}-${home}-${away}`);
-          if (totalEl) totalEl.textContent = `Sets: ${result.homeSets}-${result.awaySets}`;
-          if (pointsEl) pointsEl.textContent = `Puntos: ${result.homePoints}-${result.awayPoints}`;
-          
-          // Actualizar indicador visual de sets
-          const setsIndicator = totalEl?.nextElementSibling?.nextElementSibling;
-          if (setsIndicator) {
-            setsIndicator.innerHTML = '';
-            for (let i = 0; i < result.homeSets; i++) {
-              const setDot = document.createElement('div');
-              setDot.className = 'set-dot won';
-              setsIndicator.appendChild(setDot);
-            }
-            for (let i = 0; i < result.awaySets; i++) {
-              const setDot = document.createElement('div');
-              setDot.className = 'set-dot lost';
-              setsIndicator.appendChild(setDot);
-            }
-          }
-          
           saveState();
+          renderGroups();
           updateKnockoutTeams();
         });
       });
@@ -994,45 +901,48 @@ Equipo B4</textarea>
 
     // ===== FASE ELIMINATORIA =====
     function updateKnockoutTeams() {
-      // Actualizar equipos en semifinales
       const a1 = groupWinner('A') || 'A1';
       const a2 = groupRunnerUp('A') || 'A2';
       const b1 = groupWinner('B') || 'B1';
       const b2 = groupRunnerUp('B') || 'B2';
       
-      // Semifinal 1: A1 vs B2
+      // Actualizar semifinales
       $('#sf1h').textContent = a1;
       $('#sf1a').textContent = b2;
       state.knockout.sf1.home = a1;
       state.knockout.sf1.away = b2;
       
-      // Semifinal 2: B1 vs A2
       $('#sf2h').textContent = b1;
       $('#sf2a').textContent = a2;
       state.knockout.sf2.home = b1;
       state.knockout.sf2.away = a2;
       
-      // Actualizar opciones de ganadores
-      updateWinnerOptions('sf1', [a1, b2]);
-      updateWinnerOptions('sf2', [b1, a2]);
-      
-      // Actualizar final y tercer lugar
+      updateWinnerOptions();
       updateFinalAndThird();
-      
       saveState();
     }
 
-    function updateWinnerOptions(knockoutKey, teams) {
-      const select = $(`#${knockoutKey}w`);
-      select.innerHTML = '<option value="">— Ganador —</option>';
-      teams.forEach(team => {
+    function updateWinnerOptions() {
+      // Semifinal 1
+      const sf1Select = $('#sf1w');
+      sf1Select.innerHTML = '<option value="">— Ganador —</option>';
+      [state.knockout.sf1.home, state.knockout.sf1.away].forEach(team => {
         const option = document.createElement('option');
         option.value = team;
         option.textContent = team;
-        if (state.knockout[knockoutKey].winner === team) {
-          option.selected = true;
-        }
-        select.appendChild(option);
+        if (state.knockout.sf1.winner === team) option.selected = true;
+        sf1Select.appendChild(option);
+      });
+      
+      // Semifinal 2
+      const sf2Select = $('#sf2w');
+      sf2Select.innerHTML = '<option value="">— Ganador —</option>';
+      [state.knockout.sf2.home, state.knockout.sf2.away].forEach(team => {
+        const option = document.createElement('option');
+        option.value = team;
+        option.textContent = team;
+        if (state.knockout.sf2.winner === team) option.selected = true;
+        sf2Select.appendChild(option);
       });
     }
 
@@ -1040,58 +950,67 @@ Equipo B4</textarea>
       const sf1Winner = state.knockout.sf1.winner || 'Ganador SF1';
       const sf2Winner = state.knockout.sf2.winner || 'Ganador SF2';
       const sf1Loser = state.knockout.sf1.winner ? 
-        (state.knockout.sf1.winner === state.knockout.sf1.home ? 
-          state.knockout.sf1.away : state.knockout.sf1.home) : 'Perdedor SF1';
+        (state.knockout.sf1.winner === state.knockout.sf1.home ? state.knockout.sf1.away : state.knockout.sf1.home) : 'Perdedor SF1';
       const sf2Loser = state.knockout.sf2.winner ? 
-        (state.knockout.sf2.winner === state.knockout.sf2.home ? 
-          state.knockout.sf2.away : state.knockout.sf2.home) : 'Perdedor SF2';
+        (state.knockout.sf2.winner === state.knockout.sf2.home ? state.knockout.sf2.away : state.knockout.sf2.home) : 'Perdedor SF2';
       
       // Final
       $('#fih').textContent = sf1Winner;
       $('#fia').textContent = sf2Winner;
       state.knockout.final.home = sf1Winner;
       state.knockout.final.away = sf2Winner;
-      updateWinnerOptions('final', [sf1Winner, sf2Winner]);
       
       // Tercer lugar
       $('#thirdh').textContent = sf1Loser;
       $('#thirda').textContent = sf2Loser;
       state.knockout.third.home = sf1Loser;
       state.knockout.third.away = sf2Loser;
-      updateWinnerOptions('third', [sf1Loser, sf2Loser]);
+      
+      // Actualizar selects
+      const finalSelect = $('#fiw');
+      finalSelect.innerHTML = '<option value="">— Campeón —</option>';
+      [sf1Winner, sf2Winner].forEach(team => {
+        const option = document.createElement('option');
+        option.value = team;
+        option.textContent = team;
+        if (state.knockout.final.winner === team) option.selected = true;
+        finalSelect.appendChild(option);
+      });
+      
+      const thirdSelect = $('#thirdw');
+      thirdSelect.innerHTML = '<option value="">— Tercero —</option>';
+      [sf1Loser, sf2Loser].forEach(team => {
+        const option = document.createElement('option');
+        option.value = team;
+        option.textContent = team;
+        if (state.knockout.third.winner === team) option.selected = true;
+        thirdSelect.appendChild(option);
+      });
     }
 
     function renderKnockoutSets() {
-      // Para cada partido eliminatorio, crear inputs de sets
       ['sf1', 'sf2', 'final', 'third'].forEach(key => {
         const container = $(`#${key}-sets-container`);
         container.innerHTML = '';
         
-        // En vóley playa se juegan máximo 3 sets
         for (let i = 0; i < 3; i++) {
           const setRow = document.createElement('div');
           setRow.className = 'set-row';
-          
           const setData = state.knockout[key].sets[i] || { home: '', away: '' };
-          
           setRow.innerHTML = `
             <input type="number" min="0" class="knockout-set-home" data-key="${key}" data-set="${i}" 
-                   value="${setData.home || ''}" style="max-width:50px" placeholder="0">
+                   value="${setData.home || ''}" placeholder="0">
             <span class="sets-separator">-</span>
             <input type="number" min="0" class="knockout-set-away" data-key="${key}" data-set="${i}" 
-                   value="${setData.away || ''}" style="max-width:50px" placeholder="0">
+                   value="${setData.away || ''}" placeholder="0">
             <div class="set-label">Set ${i + 1}</div>
           `;
-          
           container.appendChild(setRow);
         }
         
-        // Actualizar total
         const result = calculateSetsAndPoints(state.knockout[key].sets);
-        const totalEl = $(`#${key}-total`);
-        const pointsEl = $(`#${key}-points`);
-        if (totalEl) totalEl.textContent = `Sets: ${result.homeSets}-${result.awaySets}`;
-        if (pointsEl) pointsEl.textContent = `Puntos: ${result.homePoints}-${result.awayPoints}`;
+        $(`#${key}-total`).textContent = `Sets: ${result.homeSets}-${result.awaySets}`;
+        $(`#${key}-points`).textContent = `Puntos: ${result.homePoints}-${result.awayPoints}`;
       });
       
       setupKnockoutEventListeners();
@@ -1115,12 +1034,9 @@ Equipo B4</textarea>
             state.knockout[key].sets[setIndex].away = val;
           }
           
-          // Actualizar total
           const result = calculateSetsAndPoints(state.knockout[key].sets);
-          const totalEl = $(`#${key}-total`);
-          const pointsEl = $(`#${key}-points`);
-          if (totalEl) totalEl.textContent = `Sets: ${result.homeSets}-${result.awaySets}`;
-          if (pointsEl) pointsEl.textContent = `Puntos: ${result.homePoints}-${result.awayPoints}`;
+          $(`#${key}-total`).textContent = `Sets: ${result.homeSets}-${result.awaySets}`;
+          $(`#${key}-points`).textContent = `Puntos: ${result.homePoints}-${result.awayPoints}`;
           
           saveState();
         });
@@ -1144,7 +1060,6 @@ Equipo B4</textarea>
                      id.includes('sf2') ? 'sf2' : 
                      id.includes('fi') ? 'final' : 'third';
           const field = id.includes('Hour') ? 'hour' : 'place';
-          
           state.knockout[key][field] = this.value;
           saveState();
         });
@@ -1155,20 +1070,13 @@ Equipo B4</textarea>
         input.addEventListener('input', function() {
           const id = this.id;
           let key, field;
+          if (id.includes('sf1')) key = 'sf1';
+          else if (id.includes('sf2')) key = 'sf2';
+          else if (id.includes('fi')) key = 'final';
+          else if (id.includes('third')) key = 'third';
           
-          if (id.includes('sf1')) {
-            key = 'sf1';
-            field = id.includes('HomeName') ? 'homeName' : 'awayName';
-          } else if (id.includes('sf2')) {
-            key = 'sf2';
-            field = id.includes('HomeName') ? 'homeName' : 'awayName';
-          } else if (id.includes('fi')) {
-            key = 'final';
-            field = id.includes('HomeName') ? 'homeName' : 'awayName';
-          } else if (id.includes('third')) {
-            key = 'third';
-            field = id.includes('HomeName') ? 'homeName' : 'awayName';
-          }
+          if (id.includes('HomeName')) field = 'homeName';
+          else if (id.includes('AwayName')) field = 'awayName';
           
           if (key && field) {
             state.knockout[key][field] = this.value;
@@ -1178,29 +1086,12 @@ Equipo B4</textarea>
       });
     }
 
-    // ===== PERSISTENCIA =====
-    function saveState() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    }
-
-    function loadState() {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        try {
-          const parsed = JSON.parse(stored);
-          state = { ...state, ...parsed };
-        } catch (e) {
-          console.warn('No se pudo cargar el estado guardado', e);
-        }
-      }
-    }
-
-    // ===== FUNCIONES DE LOS BOTONES =====
+    // ===== FUNCIONES DE BOTONES =====
     function generateGroups() {
       state.groups.A.teams = parseTeams($('#ga').value);
       state.groups.B.teams = parseTeams($('#gb').value);
       
-      // Limpiar partidos anteriores
+      // Limpiar partidos existentes
       state.groups.A.matches = [];
       state.groups.B.matches = [];
       
@@ -1223,7 +1114,6 @@ Equipo B4</textarea>
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      
       alert('✅ Copia de seguridad guardada');
     }
 
@@ -1239,7 +1129,6 @@ Equipo B4</textarea>
       statusEl.textContent = '⏳';
       statusEl.className = 'status loading';
       
-      // Crear archivo data.json para publicación
       const dataStr = JSON.stringify(state, null, 2);
       const blob = new Blob([dataStr], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
@@ -1251,20 +1140,16 @@ Equipo B4</textarea>
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
       
-      // Simular publicación
       setTimeout(() => {
         statusEl.textContent = '✅';
         statusEl.className = 'status success';
-        setTimeout(() => {
-          statusEl.textContent = '';
-        }, 3000);
+        setTimeout(() => statusEl.textContent = '', 3000);
       }, 1000);
     }
 
     function importData() {
       const fileInput = $('#importFile');
       const file = fileInput.files[0];
-      
       if (!file) {
         alert('Selecciona un archivo JSON para importar');
         return;
@@ -1274,11 +1159,15 @@ Equipo B4</textarea>
       reader.onload = function(e) {
         try {
           const importedState = JSON.parse(e.target.result);
-          state = { ...state, ...importedState };
+          Object.assign(state, importedState);
           saveState();
-          location.reload();
+          applyStateToUI();
+          renderGroups();
+          updateKnockoutTeams();
+          renderKnockoutSets();
+          alert('✅ Datos importados correctamente');
         } catch (err) {
-          alert('Error al importar el archivo: ' + err.message);
+          alert('❌ Error al importar: ' + err.message);
         }
       };
       reader.readAsText(file);
@@ -1288,36 +1177,49 @@ Equipo B4</textarea>
       saveCopy();
     }
 
-    function updateTheme() {
-      document.documentElement.style.setProperty('--accent', state.theme.color);
-      document.documentElement.style.setProperty('--bg', state.theme.bg);
-    }
-
-    // ===== INICIALIZACIÓN =====
-    function init() {
-      loadState();
-      
-      // Cargar valores iniciales
+    function applyStateToUI() {
       $('#ga').value = state.groups.A.teams.join('\n');
       $('#gb').value = state.groups.B.teams.join('\n');
       $('#tournamentName').value = state.tournamentName || '';
       $('#themeColor').value = state.theme.color;
       $('#themeBg').value = state.theme.bg;
       
-      // Cargar datos de fase eliminatoria
       ['sf1', 'sf2', 'final', 'third'].forEach(key => {
         $(`#${key}Hour`).value = state.knockout[key].hour || '';
         $(`#${key}Place`).value = state.knockout[key].place || '';
-        
-        // Nombres manuales
-        if (state.knockout[key].homeName) $(`#${key}HomeName`).value = state.knockout[key].homeName;
-        if (state.knockout[key].awayName) $(`#${key}AwayName`).value = state.knockout[key].awayName;
+        $(`#${key}HomeName`).value = state.knockout[key].homeName || '';
+        $(`#${key}AwayName`).value = state.knockout[key].awayName || '';
       });
-      
-      // Renderizar grupos y fase eliminatoria
+    }
+
+    function updateTheme() {
+      document.documentElement.style.setProperty('--accent', state.theme.color);
+      document.documentElement.style.setProperty('--bg', state.theme.bg);
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function loadState() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          Object.assign(state, parsed);
+        } catch (e) {
+          console.warn('Error cargando estado:', e);
+        }
+      }
+    }
+
+    // ===== INICIALIZACIÓN =====
+    function init() {
+      loadState();
+      applyStateToUI();
       renderGroups();
-      renderKnockoutSets();
       updateKnockoutTeams();
+      renderKnockoutSets();
       
       // Event listeners principales
       $('#btnGenerate').addEventListener('click', generateGroups);
@@ -1326,8 +1228,9 @@ Equipo B4</textarea>
       $('#btnPublish').addEventListener('click', publish);
       $('#btnImport').addEventListener('click', () => $('#importFile').click());
       $('#btnExport').addEventListener('click', exportData);
+      $('#importFile').addEventListener('change', importData);
       
-      // Event listeners para tema
+      // Tema
       $('#tournamentName').addEventListener('input', function() {
         state.tournamentName = this.value;
         saveState();
@@ -1345,13 +1248,10 @@ Equipo B4</textarea>
         updateTheme();
       });
       
-      // Event listener para importar archivo
-      $('#importFile').addEventListener('change', importData);
-      
       updateTheme();
     }
 
-    // Inicializar la aplicación
+    // Iniciar
     document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>

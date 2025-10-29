@@ -70,6 +70,9 @@
     .champion{ text-align:center; padding:20px; background:linear-gradient(135deg,#fef3c7,#fde68a); border-radius:18px; margin:20px 0; border:2px solid #f59e0b; }
     .champion h2{ color:#92400e; margin-bottom:10px; }
     .champion .team-name{ font-size:24px; font-weight:bold; color:#92400e; }
+
+    .loading{ text-align:center; padding:40px; color:var(--muted); }
+    .error{ background:#fef2f2; border:1px solid #fecaca; color:#dc2626; padding:16px; border-radius:12px; }
   </style>
 </head>
 <body>
@@ -82,7 +85,9 @@
 
   <main class="container">
     <div id="tournamentContent">
-      <div class="card"><div class="subtitle">Cargando datos del torneo...</div></div>
+      <div class="card loading">
+        <div class="subtitle">Cargando datos del torneo...</div>
+      </div>
     </div>
   </main>
 
@@ -90,7 +95,7 @@
     function getJsonFileNameFromUrl() {
       const urlParams = new URLSearchParams(window.location.search);
       const t = urlParams.get('t') || urlParams.get('torneo');
-      if (t) return t.includes('.') ? t : \`\${t}.json\`;
+      if (t) return t.includes('.') ? t : `${t}.json`;
       return 'data.json';
     }
 
@@ -99,14 +104,17 @@
       try {
         let val = ts;
         if (typeof ts === 'string') val = ts.includes('-') ? ts : parseInt(ts);
-        const d = new Date(val); if (isNaN(d.getTime())) return '';
+        const d = new Date(val); 
+        if (isNaN(d.getTime())) return '';
         const dd = String(d.getDate()).padStart(2,'0');
         const mm = String(d.getMonth()+1).padStart(2,'0');
         const yy = d.getFullYear();
         const hh = String(d.getHours()).padStart(2,'0');
         const mi = String(d.getMinutes()).padStart(2,'0');
-        return \`\${dd}/\${mm}/\${yy} \${hh}:\${mi}\`;
-      } catch { return ''; }
+        return `${dd}/${mm}/${yy} ${hh}:${mi}`;
+      } catch { 
+        return ''; 
+      }
     }
 
     function applyTheme(theme) {
@@ -117,84 +125,120 @@
       document.documentElement.style.setProperty('--bg', bg);
       document.body.style.background = bg;
       const header = document.querySelector('header');
-      header.style.background = \`linear-gradient(90deg, color-mix(in srgb, \${accent} 15%, white), color-mix(in srgb, \${accent} 8%, white))\`;
+      if (header) {
+        header.style.background = `linear-gradient(90deg, color-mix(in srgb, ${accent} 15%, white), color-mix(in srgb, ${accent} 8%, white))`;
+      }
     }
 
     function calculateSetsAndPoints(sets) {
       let hs=0, as=0, hp=0, ap=0;
-      sets.forEach(s=>{ if(s && s.home!=null && s.away!=null){ hp += s.home||0; ap += s.away||0; if(s.home>s.away) hs++; else if(s.away>s.home) as++; }});
-      return {homeSets:hs, awaySets:as, homePoints:hp, awayPoints:ap, pointsDifference:hp-ap};
+      sets.forEach(s => { 
+        if(s && s.home != null && s.away != null){ 
+          hp += s.home || 0; 
+          ap += s.away || 0; 
+          if(s.home > s.away) hs++; 
+          else if(s.away > s.home) as++; 
+        }
+      });
+      return {homeSets: hs, awaySets: as, homePoints: hp, awayPoints: ap, pointsDifference: hp - ap};
     }
 
-    function computeTable(matches, teams, cfg = {win:2, loss:1}) {
-      const table = Object.fromEntries(teams.map(t => [t, {team:t,PJ:0,G:0,P:0,SF:0,SC:0,DS:0,PF:0,PC:0,DP:0,Pts:0}]));
-      (matches||[]).forEach(m=>{
+    function computeTable(matches, teams, cfg = {win: 2, loss: 1}) {
+      const table = Object.fromEntries(teams.map(t => [t, {team: t, PJ: 0, G: 0, P: 0, SF: 0, SC: 0, DS: 0, PF: 0, PC: 0, DP: 0, Pts: 0}]));
+      (matches || []).forEach(m => {
         if(!m || !m.sets || !m.sets.length) return;
-        const h = table[m.home], a = table[m.away]; if(!h || !a) return;
+        const h = table[m.home], a = table[m.away]; 
+        if(!h || !a) return;
         const r = calculateSetsAndPoints(m.sets);
-        h.PJ++; a.PJ++; h.SF+=r.homeSets; h.SC+=r.awaySets; a.SF+=r.awaySets; a.SC+=r.homeSets;
-        h.PF+=r.homePoints; h.PC+=r.awayPoints; a.PF+=r.awayPoints; a.PC+=r.homePoints;
-        if(r.homeSets>r.awaySets){ h.G++; a.P++; h.Pts+=cfg.win; a.Pts+=cfg.loss; } else { a.G++; h.P++; a.Pts+=cfg.win; h.Pts+=cfg.loss; }
+        h.PJ++; a.PJ++; 
+        h.SF += r.homeSets; h.SC += r.awaySets; 
+        a.SF += r.awaySets; a.SC += r.homeSets;
+        h.PF += r.homePoints; h.PC += r.awayPoints; 
+        a.PF += r.awayPoints; a.PC += r.homePoints;
+        if(r.homeSets > r.awaySets){ 
+          h.G++; a.P++; 
+          h.Pts += cfg.win; a.Pts += cfg.loss; 
+        } else { 
+          a.G++; h.P++; 
+          a.Pts += cfg.win; h.Pts += cfg.loss; 
+        }
       });
-      teams.forEach(t=>{ table[t].DS = table[t].SF - table[t].SC; table[t].DP = table[t].PF - table[t].PC; });
-      return Object.values(table).sort((a,b)=> b.Pts-a.Pts || b.DS-a.DS || b.DP-a.DP || b.PF-a.PF || a.team.localeCompare(b.team));
+      teams.forEach(t => { 
+        table[t].DS = table[t].SF - table[t].SC; 
+        table[t].DP = table[t].PF - table[t].PC; 
+      });
+      return Object.values(table).sort((a,b) => 
+        b.Pts - a.Pts || b.DS - a.DS || b.DP - a.DP || b.PF - a.PF || a.team.localeCompare(b.team)
+      );
     }
 
     function renderMatch(m, defHome, defAway) {
-      const _m = Object.assign({sets:[],hour:'',place:''}, m||{});
-      const has = _m.sets && _m.sets.length>0;
-      const res = has ? calculateSetsAndPoints(_m.sets) : {homeSets:0, awaySets:0, homePoints:0, awayPoints:0};
-      const hw = has && res.homeSets>res.awaySets, aw = has && res.awaySets>res.homeSets;
+      const _m = Object.assign({sets: [], hour: '', place: ''}, m || {});
+      const has = _m.sets && _m.sets.length > 0;
+      const res = has ? calculateSetsAndPoints(_m.sets) : {homeSets: 0, awaySets: 0, homePoints: 0, awayPoints: 0};
+      const hw = has && res.homeSets > res.awaySets, 
+            aw = has && res.awaySets > res.homeSets;
       const home = _m.home || defHome || 'Equipo Local';
       const away = _m.away || defAway || 'Equipo Visitante';
       let detail = '';
+      
       if (has) {
-        const s = _m.sets.map((set,i)=> (set && set.home!=null && set.away!=null) ? \`Set \${i+1}: \${set.home}-\${set.away}\` : '').filter(Boolean).join(' | ');
-        if (s) detail = \`<div class="sets-detail">\${s}</div>\`;
+        const s = _m.sets.map((set, i) => 
+          (set && set.home != null && set.away != null) ? `Set ${i+1}: ${set.home}-${set.away}` : ''
+        ).filter(Boolean).join(' | ');
+        if (s) detail = `<div class="sets-detail">${s}</div>`;
       }
-      return \`
+      
+      return `
         <div class="match">
-          <div class="team \${hw ? 'winner' : ''}">\${home}</div>
+          <div class="team ${hw ? 'winner' : ''}">${home}</div>
           <div class="match-result">
-            \${has ? \`<span class="sets-score">\${res.homeSets}</span><span class="dash">-</span><span class="sets-score">\${res.awaySets}</span>\` : '<span class="dash">-</span>'}
+            ${has ? `<span class="sets-score">${res.homeSets}</span><span class="dash">-</span><span class="sets-score">${res.awaySets}</span>` : '<span class="dash">-</span>'}
           </div>
-          <div class="team \${aw ? 'winner' : ''}" style="justify-content:flex-end">\${away}</div>
+          <div class="team ${aw ? 'winner' : ''}" style="justify-content:flex-end">${away}</div>
         </div>
-        \${has ? \`
-          <div class="points-total">Puntos: \${res.homePoints}-\${res.awayPoints}</div>
-          <div class="sets-indicator">\${Array(res.homeSets).fill('<div class="set-dot won"></div>').join('')}\${Array(res.awaySets).fill('<div class="set-dot lost"></div>').join('')}</div>
-          \${detail}
-        \` : ''}
-        \${(_m.hour||_m.place) ? \`<div class="info">\${_m.hour ? '🕒 '+_m.hour : ''} \${_m.place ? '📍 '+_m.place : ''}</div>\` : ''}
-      \`;
+        ${has ? `
+          <div class="points-total">Puntos: ${res.homePoints}-${res.awayPoints}</div>
+          <div class="sets-indicator">${Array(res.homeSets).fill('<div class="set-dot won"></div>').join('')}${Array(res.awaySets).fill('<div class="set-dot lost"></div>').join('')}</div>
+          ${detail}
+        ` : ''}
+        ${(_m.hour || _m.place) ? `<div class="info">${_m.hour ? '🕒 '+_m.hour : ''} ${_m.place ? '📍 '+_m.place : ''}</div>` : ''}
+      `;
     }
 
     function renderCover(data) {
       const theme = data.theme || {};
       const accent = theme.color || '#0284c7';
       const updatedAt = data.updatedAtLocal || data.timestamp || '';
-      const info = updatedAt ? \`<div class="subtitle">📅 Última actualización: \${formatTimestamp(updatedAt)}</div>\` : '';
-      return \`
-        <div class="card" style="background: linear-gradient(135deg, \${accent}, color-mix(in srgb, \${accent} 80%, black)); color:white;">
-          <h2 style="font-size:clamp(26px,4vw,42px); margin-bottom:6px;">\${data.tournamentName || 'Voleibol de Playa'}</h2>
+      const info = updatedAt ? `<div class="subtitle">📅 Última actualización: ${formatTimestamp(updatedAt)}</div>` : '';
+      return `
+        <div class="card" style="background: linear-gradient(135deg, ${accent}, color-mix(in srgb, ${accent} 80%, black)); color:white;">
+          <h2 style="font-size:clamp(26px,4vw,42px); margin-bottom:6px;">${data.tournamentName || 'Voleibol de Playa'}</h2>
           <div class="subtitle" style="color:rgba(255,255,255,0.95)">
-            \${data.subtitle || 'Fase de grupos y eliminatoria'}
+            ${data.subtitle || 'Fase de grupos y eliminatoria'}
           </div>
-          \${info}
+          ${info}
         </div>
-      \`;
+      `;
     }
 
     function renderGroups(groups) {
       let html = '<div class="card"><h2>Fase de Grupos</h2><div class="groups">';
-      ['A','B'].forEach(k=>{
-        const g = groups[k]; if(!g || !g.teams || !g.teams.length) return;
-        const teams = g.teams; const matches = g.matches||[];
-        html += \`<div class="groupBox group\${k}"><h3>Grupo \${k}</h3><div class="matches">\`;
-        matches.filter(m=>m && typeof m==='object').forEach(m=>{ html += renderMatch(m, m.home, m.away); });
+      ['A','B'].forEach(k => {
+        const g = groups[k]; 
+        if(!g || !g.teams || !g.teams.length) return;
+        
+        const teams = g.teams; 
+        const matches = g.matches || [];
+        html += `<div class="groupBox group${k}"><h3>Grupo ${k}</h3><div class="matches">`;
+        
+        matches.filter(m => m && typeof m === 'object').forEach(m => { 
+          html += renderMatch(m, m.home, m.away); 
+        });
+        
         html += '</div>';
         const table = computeTable(matches, teams);
-        html += \`
+        html += `
           <div class="table-wrap">
             <table>
               <thead>
@@ -206,26 +250,26 @@
                 </tr>
               </thead>
               <tbody>
-                \${table.map((row,i)=>\`
-                  <tr class="\${i===0 ? 'first' : ''}">
-                    <td class="pos">\${i+1}</td>
-                    <td>\${row.team}</td>
-                    <td>\${row.PJ}</td>
-                    <td>\${row.G}</td>
-                    <td>\${row.P}</td>
-                    <td>\${row.SF}</td>
-                    <td>\${row.SC}</td>
-                    <td>\${row.DS}</td>
-                    <td>\${row.PF}</td>
-                    <td>\${row.PC}</td>
-                    <td>\${row.DP}</td>
-                    <td class="pts">\${row.Pts}</td>
-                  </tr>\`).join('')}
+                ${table.map((row, i) => `
+                  <tr class="${i === 0 ? 'first' : ''}">
+                    <td class="pos">${i+1}</td>
+                    <td>${row.team}</td>
+                    <td>${row.PJ}</td>
+                    <td>${row.G}</td>
+                    <td>${row.P}</td>
+                    <td>${row.SF}</td>
+                    <td>${row.SC}</td>
+                    <td>${row.DS}</td>
+                    <td>${row.PF}</td>
+                    <td>${row.PC}</td>
+                    <td>${row.DP}</td>
+                    <td class="pts">${row.Pts}</td>
+                  </tr>`).join('')}
               </tbody>
             </table>
             <div class="subtitle" style="margin-top:8px;">💡 Orden: Puntos → Dif. Sets → Dif. Puntos → Puntos a favor</div>
           </div>
-        \`;
+        `;
         html += '</div>';
       });
       html += '</div></div>';
@@ -236,85 +280,120 @@
       if (!k) return '';
       let html = '';
       if (k.final && k.final.winner) {
-        html += \`
+        html += `
           <div class="champion">
             <h2>🏆 CAMPEÓN 🏆</h2>
-            <div class="team-name">\${k.final.winner}</div>
+            <div class="team-name">${k.final.winner}</div>
           </div>
-        \`;
+        `;
       }
-      html += \`
+      html += `
         <div class="card">
           <h2>Fase Eliminatoria</h2>
           <div class="bracket">
             <div class="semi">
               <h3>Semifinal 1 (A1 vs B2)</h3>
-              \${renderMatch(k.sf1, k.sf1.home || 'A1', k.sf1.away || 'B2')}
-              \${k.sf1.winner ? \`<div class="info"><strong>Ganador: \${k.sf1.winner}</strong></div>\` : ''}
+              ${renderMatch(k.sf1, k.sf1.home || 'A1', k.sf1.away || 'B2')}
+              ${k.sf1.winner ? `<div class="info"><strong>Ganador: ${k.sf1.winner}</strong></div>` : ''}
             </div>
             <div class="semi">
               <h3>Semifinal 2 (B1 vs A2)</h3>
-              \${renderMatch(k.sf2, k.sf2.home || 'B1', k.sf2.away || 'A2')}
-              \${k.sf2.winner ? \`<div class="info"><strong>Ganador: \${k.sf2.winner}</strong></div>\` : ''}
+              ${renderMatch(k.sf2, k.sf2.home || 'B1', k.sf2.away || 'A2')}
+              ${k.sf2.winner ? `<div class="info"><strong>Ganador: ${k.sf2.winner}</strong></div>` : ''}
             </div>
             <div class="third">
               <h3>Tercer Lugar</h3>
-              \${renderMatch(k.third, k.third.home || 'Perdedor SF1', k.third.away || 'Perdedor SF2')}
-              \${k.third.winner ? \`<div class="info"><strong>Tercero: \${k.third.winner}</strong></div>\` : ''}
+              ${renderMatch(k.third, k.third.home || 'Perdedor SF1', k.third.away || 'Perdedor SF2')}
+              ${k.third.winner ? `<div class="info"><strong>Tercero: ${k.third.winner}</strong></div>` : ''}
             </div>
             <div class="final">
               <h3>Final</h3>
-              \${renderMatch(k.final, k.final.home || 'Ganador SF1', k.final.away || 'Ganador SF2')}
-              \${k.final.winner ? \`<div class="info"><strong>🏆 Campeón: \${k.final.winner}</strong></div>\` : ''}
+              ${renderMatch(k.final, k.final.home || 'Ganador SF1', k.final.away || 'Ganador SF2')}
+              ${k.final.winner ? `<div class="info"><strong>🏆 Campeón: ${k.final.winner}</strong></div>` : ''}
             </div>
           </div>
         </div>
-      \`;
+      `;
       return html;
     }
 
     async function loadData() {
       const fileName = getJsonFileNameFromUrl();
+      console.log('Intentando cargar:', fileName);
+      
       try {
         const res = await fetch(fileName, { cache: 'no-store' });
-        if (!res.ok) throw new Error(\`No se pudo cargar \${fileName} (HTTP \${res.status})\`);
-        let data = await res.json();
+        if (!res.ok) {
+          throw new Error(`No se pudo cargar ${fileName} (HTTP ${res.status})`);
+        }
+        
+        const data = await res.json();
+        console.log('Datos cargados:', data);
 
         // Normaliza estructura mínima esperada
-        data = {
+        const normalizedData = {
           tournamentName: data.tournamentName || 'Voleibol de Playa',
           subtitle: data.subtitle || 'Visualización de resultados',
-          theme: Object.assign({color:'#0284c7', bg:'#f8fafc'}, data.theme || {}),
-          points: Object.assign({win:2, loss:1}, data.points || {}),
+          theme: Object.assign({color: '#0284c7', bg: '#f8fafc'}, data.theme || {}),
+          points: Object.assign({win: 2, loss: 1}, data.points || {}),
           groups: {
-            A: (data.groups && data.groups.A) ? data.groups.A : { teams:[], matches:[] },
-            B: (data.groups && data.groups.B) ? data.groups.B : { teams:[], matches:[] }
+            A: (data.groups && data.groups.A) ? data.groups.A : { teams: [], matches: [] },
+            B: (data.groups && data.groups.B) ? data.groups.B : { teams: [], matches: [] }
           },
-          knockout: Object.assign({ sf1:{}, sf2:{}, final:{}, third:{} }, data.knockout || {}),
+          knockout: Object.assign({ sf1: {}, sf2: {}, final: {}, third: {} }, data.knockout || {}),
           updatedAtLocal: data.updatedAtLocal || data.timestamp || ''
         };
 
-        applyTheme(data.theme);
-        document.getElementById('tournamentTitle').textContent = data.tournamentName || 'Voleibol de Playa';
-        document.getElementById('tournamentSubtitle').textContent = data.subtitle || 'Visualización de resultados';
+        applyTheme(normalizedData.theme);
+        
+        const titleElement = document.getElementById('tournamentTitle');
+        const subtitleElement = document.getElementById('tournamentSubtitle');
+        
+        if (titleElement) titleElement.textContent = normalizedData.tournamentName;
+        if (subtitleElement) subtitleElement.textContent = normalizedData.subtitle;
 
         let html = '';
-        html += renderCover(data);
-        html += renderGroups(data.groups);
-        html += renderKnockout(data.knockout);
+        html += renderCover(normalizedData);
+        html += renderGroups(normalizedData.groups);
+        html += renderKnockout(normalizedData.knockout);
 
-        document.getElementById('tournamentContent').innerHTML = html;
+        const contentElement = document.getElementById('tournamentContent');
+        if (contentElement) {
+          contentElement.innerHTML = html;
+        }
+        
       } catch (e) {
-        document.getElementById('tournamentContent').innerHTML = \`
-          <div class="card">
-            <h2>Error al cargar datos</h2>
-            <p style="margin-top:8px;">\${e.message}</p>
-            <p style="font-size:14px; color:var(--muted); margin-top:8px;">Verifica que <strong>\${fileName}</strong> existe junto a este archivo.</p>
-          </div>\`;
+        console.error('Error cargando datos:', e);
+        const contentElement = document.getElementById('tournamentContent');
+        if (contentElement) {
+          contentElement.innerHTML = `
+            <div class="card error">
+              <h2>Error al cargar datos</h2>
+              <p style="margin-top:8px;">${e.message}</p>
+              <p style="font-size:14px; color:var(--muted); margin-top:8px;">
+                Verifica que <strong>${fileName}</strong> existe junto a este archivo.
+                <br>También puedes especificar un archivo diferente usando el parámetro URL: 
+                <code>?t=nombre-del-archivo</code>
+              </p>
+              <div style="margin-top:12px; font-size:14px;">
+                <strong>Posibles soluciones:</strong>
+                <ul style="margin-top:8px; padding-left:20px;">
+                  <li>Asegúrate de que el archivo JSON existe en el mismo directorio</li>
+                  <li>Verifica que el JSON tenga un formato válido</li>
+                  <li>Usa el administrador para generar el archivo data.json</li>
+                </ul>
+              </div>
+            </div>`;
+        }
       }
     }
 
-    document.addEventListener('DOMContentLoaded', loadData);
+    // Cargar datos cuando el DOM esté listo
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadData);
+    } else {
+      loadData();
+    }
   </script>
 </body>
 </html>

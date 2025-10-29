@@ -22,9 +22,10 @@
     textarea,input[type="text"],input[type="number"],input[type="url"],select,input[type="file"],input[type="color"]{width:100%;background:#f8fafc;color:var(--text);border:1px solid #cbd5e1;border-radius:12px;padding:10px 12px;outline:none}
     textarea:focus,input:focus,select:focus{box-shadow:var(--ring);border-color:transparent}
     textarea{min-height:96px;white-space:pre}
-    button{background:linear-gradient(180deg,var(--accent),#e11d48);color:#fff;border:none;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer}
+    button{background:linear-gradient(180deg,var(--accent),#e11d48);color:#fff;border:none;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer;transition:all 0.2s ease}
+    button:hover{transform:translateY(-1px);box-shadow:0 4px 8px rgba(0,0,0,0.15)}
     button.ghost{background:transparent;color:var(--accent);border:1px solid #cbd5e1}
-    button:disabled{opacity:0.6;cursor:not-allowed}
+    button:disabled{opacity:0.6;cursor:not-allowed;transform:none !important}
     .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
     .spacer{flex:1}
 
@@ -115,6 +116,24 @@
       color: #ea580c;
       font-size: 14px;
     }
+
+    /* Mensajes de estado */
+    .message {
+      padding: 12px;
+      border-radius: 8px;
+      margin: 8px 0;
+      font-size: 14px;
+    }
+    .message.success {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+    .message.error {
+      background: #fef2f2;
+      color: #dc2626;
+      border: 1px solid #fecaca;
+    }
   </style>
 </head>
 <body>
@@ -128,6 +147,8 @@
   <main class="container grid">
     <section class="card">
       <h2>1) Equipos por grupo</h2>
+      <div id="statusMessage"></div>
+      
       <div class="groups">
         <div><label>Grupo A (3 equipos)</label><textarea id="ga">Equipo A1
 Equipo A2
@@ -178,13 +199,10 @@ Equipo G4</textarea></div>
         </div>
       </div>
 
-      <div class="row" style="margin-top:8px">
-        <button id="btnGenerate">Generar calendario</button>
-
-        <!-- PUBLICAR (para GH Pages descarga data.json) -->
-        <input type="url" id="publishURL" placeholder="(Opcional para otros backends)" style="flex:2; min-width:320px" />
-        <button id="btnPublish">Publicar <span id="publishStatus"></span></button>
-
+      <div class="row" style="margin-top:16px">
+        <button id="btnGenerate">🔄 Generar calendario</button>
+        <button id="btnPublish">📤 Publicar <span id="publishStatus"></span></button>
+        
         <div class="spacer"></div>
         <button id="btnSaveCopy" class="ghost">💾 Guardar copia</button>
         <button id="btnClearAll" class="ghost">🧹 Limpiar</button>
@@ -227,10 +245,10 @@ Equipo G4</textarea></div>
           <div class="row" style="margin-top:6px">
             <label style="flex:1">Si hay empate, elige ganador</label>
             <select id="qf1w" style="max-width:260px"><option value="">— Ganador —</option></select>
-            <div class="row" style="margin-top:6px">
-              <input type="text" id="qf1Hour" placeholder="Hora (ej. 16:00)" style="max-width:180px">
-              <input type="text" id="qf1Place" placeholder="Lugar (ej. Cancha 1)" style="flex:1">
-            </div>
+          </div>
+          <div class="row" style="margin-top:6px">
+            <input type="text" id="qf1Hour" placeholder="Hora (ej. 16:00)" style="max-width:180px">
+            <input type="text" id="qf1Place" placeholder="Lugar (ej. Cancha 1)" style="flex:1">
           </div>
           <!-- Nombres manuales (opcional) -->
           <div class="row" style="margin-top:6px">
@@ -252,10 +270,10 @@ Equipo G4</textarea></div>
           <div class="row" style="margin-top:6px">
             <label style="flex:1">Si hay empate, elige ganador</label>
             <select id="qf2w" style="max-width:260px"><option value="">— Ganador —</option></select>
-            <div class="row" style="margin-top:6px">
-              <input type="text" id="qf2Hour" placeholder="Hora (ej. 16:30)" style="max-width:180px">
-              <input type="text" id="qf2Place" placeholder="Lugar (ej. Cancha 1)" style="flex:1">
-            </div>
+          </div>
+          <div class="row" style="margin-top:6px">
+            <input type="text" id="qf2Hour" placeholder="Hora (ej. 16:30)" style="max-width:180px">
+            <input type="text" id="qf2Place" placeholder="Lugar (ej. Cancha 1)" style="flex:1">
           </div>
           <!-- Nombres manuales (opcional) -->
           <div class="row" style="margin-top:6px">
@@ -277,10 +295,10 @@ Equipo G4</textarea></div>
           <div class="row" style="margin-top:6px">
             <label style="flex:1">Si hay empate, elige ganador</label>
             <select id="qf3w" style="max-width:260px"><option value="">— Ganador —</option></select>
-            <div class="row" style="margin-top:6px">
-              <input type="text" id="qf3Hour" placeholder="Hora (ej. 17:00)" style="max-width:180px">
-              <input type="text" id="qf3Place" placeholder="Lugar (ej. Cancha 1)" style="flex:1">
-            </div>
+          </div>
+          <div class="row" style="margin-top:6px">
+            <input type="text" id="qf3Hour" placeholder="Hora (ej. 17:00)" style="max-width:180px">
+            <input type="text" id="qf3Place" placeholder="Lugar (ej. Cancha 1)" style="flex:1">
           </div>
           <!-- Nombres manuales (opcional) -->
           <div class="row" style="margin-top:6px">
@@ -302,10 +320,10 @@ Equipo G4</textarea></div>
           <div class="row" style="margin-top:6px">
             <label style="flex:1">Si hay empate, elige ganador</label>
             <select id="qf4w" style="max-width:260px"><option value="">— Ganador —</option></select>
-            <div class="row" style="margin-top:6px">
-              <input type="text" id="qf4Hour" placeholder="Hora (ej. 17:30)" style="max-width:180px">
-              <input type="text" id="qf4Place" placeholder="Lugar (ej. Cancha 1)" style="flex:1">
-            </div>
+          </div>
+          <div class="row" style="margin-top:6px">
+            <input type="text" id="qf4Hour" placeholder="Hora (ej. 17:30)" style="max-width:180px">
+            <input type="text" id="qf4Place" placeholder="Lugar (ej. Cancha 1)" style="flex:1">
           </div>
           <!-- Nombres manuales (opcional) -->
           <div class="row" style="margin-top:6px">
@@ -328,10 +346,10 @@ Equipo G4</textarea></div>
           <div class="row" style="margin-top:6px">
             <label style="flex:1">Si hay empate, elige ganador</label>
             <select id="sf1w" style="max-width:260px"><option value="">— Ganador —</option></select>
-            <div class="row" style="margin-top:6px">
-              <input type="text" id="sf1Hour" placeholder="Hora (ej. 18:00)" style="max-width:180px">
-              <input type="text" id="sf1Place" placeholder="Lugar (ej. Cancha 1)" style="flex:1">
-            </div>
+          </div>
+          <div class="row" style="margin-top:6px">
+            <input type="text" id="sf1Hour" placeholder="Hora (ej. 18:00)" style="max-width:180px">
+            <input type="text" id="sf1Place" placeholder="Lugar (ej. Cancha 1)" style="flex:1">
           </div>
           <!-- Nombres manuales (opcional) -->
           <div class="row" style="margin-top:6px">
@@ -353,10 +371,10 @@ Equipo G4</textarea></div>
           <div class="row" style="margin-top:6px">
             <label style="flex:1">Si hay empate, elige ganador</label>
             <select id="sf2w" style="max-width:260px"><option value="">— Ganador —</option></select>
-            <div class="row" style="margin-top:6px">
-              <input type="text" id="sf2Hour" placeholder="Hora (ej. 18:30)" style="max-width:180px">
-              <input type="text" id="sf2Place" placeholder="Lugar (ej. Cancha 1)" style="flex:1">
-            </div>
+          </div>
+          <div class="row" style="margin-top:6px">
+            <input type="text" id="sf2Hour" placeholder="Hora (ej. 18:30)" style="max-width:180px">
+            <input type="text" id="sf2Place" placeholder="Lugar (ej. Cancha 1)" style="flex:1">
           </div>
           <!-- Nombres manuales (opcional) -->
           <div class="row" style="margin-top:6px">
@@ -379,10 +397,10 @@ Equipo G4</textarea></div>
           <div class="row" style="margin-top:6px">
             <label style="flex:1">Si hay empate, elige campeón</label>
             <select id="fiw" style="max-width:260px"><option value="">— Campeón —</option></select>
-            <div class="row" style="margin-top:6px">
-              <input type="text" id="fiHour" placeholder="Hora (ej. 19:00)" style="max-width:180px">
-              <input type="text" id="fiPlace" placeholder="Lugar (ej. Cancha 1)" style="flex:1">
-            </div>
+          </div>
+          <div class="row" style="margin-top:6px">
+            <input type="text" id="fiHour" placeholder="Hora (ej. 19:00)" style="max-width:180px">
+            <input type="text" id="fiPlace" placeholder="Lugar (ej. Cancha 1)" style="flex:1">
           </div>
           <!-- Nombres manuales (opcional) -->
           <div class="row" style="margin-top:6px">
@@ -404,10 +422,10 @@ Equipo G4</textarea></div>
           <div class="row" style="margin-top:6px">
             <label style="flex:1">Si hay empate, elige tercero</label>
             <select id="thirdw" style="max-width:260px"><option value="">— Tercero —</option></select>
-            <div class="row" style="margin-top:6px">
-              <input type="text" id="thirdHour" placeholder="Hora (ej. 18:30)" style="max-width:180px">
-              <input type="text" id="thirdPlace" placeholder="Lugar (ej. Cancha 1)" style="flex:1">
-            </div>
+          </div>
+          <div class="row" style="margin-top:6px">
+            <input type="text" id="thirdHour" placeholder="Hora (ej. 18:30)" style="max-width:180px">
+            <input type="text" id="thirdPlace" placeholder="Lugar (ej. Cancha 1)" style="flex:1">
           </div>
           <!-- Nombres manuales (opcional) -->
           <div class="row" style="margin-top:6px">
@@ -421,7 +439,7 @@ Equipo G4</textarea></div>
 
 <script>
 // ===== CONFIGURACIÓN =====
-const STORAGE_KEY = 'torneo_3x3_v1';
+const STORAGE_KEY = 'torneo_3x3_v2';
 const $ = (selector, root = document) => root.querySelector(selector);
 
 // ===== ESTADO INICIAL =====
@@ -435,22 +453,30 @@ let state = {
     F: { teams: ['Equipo F1', 'Equipo F2', 'Equipo F3'], matches: [] },
     G: { teams: ['Equipo G1', 'Equipo G2', 'Equipo G3', 'Equipo G4'], matches: [] }
   },
-  points: { win: 2, loss: 0 }, // Baloncesto: 2 puntos por victoria, 0 por derrota
+  points: { win: 2, loss: 0 },
   knockout: {
-    qf1: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
-    qf2: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
-    qf3: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
-    qf4: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
-    sf1: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
-    sf2: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
-    final: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
-    third: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' }
+    qf1: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' },
+    qf2: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' },
+    qf3: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' },
+    qf4: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' },
+    sf1: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' },
+    sf2: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' },
+    final: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' },
+    third: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' }
   },
   tournamentName: 'Torneo 3x3 Baloncesto 2024',
   theme: { color: '#dc2626', bg: '#f8fafc' }
 };
 
-// ===== HELPERS =====
+// ===== FUNCIONES AUXILIARES =====
+function showMessage(message, type = 'success') {
+  const messageEl = $('#statusMessage');
+  messageEl.innerHTML = `<div class="message ${type}">${message}</div>`;
+  setTimeout(() => {
+    messageEl.innerHTML = '';
+  }, 3000);
+}
+
 function parseTeams(txt) {
   return String(txt || '').split('\n').map(s => s.trim()).filter(Boolean);
 }
@@ -473,31 +499,217 @@ function valInt(v) {
   return Number.isFinite(n) && n >= 0 ? n : null;
 }
 
+// ===== FUNCIONES PRINCIPALES =====
+function generateSchedule() {
+  try {
+    // Actualizar equipos desde textareas
+    ['A', 'B', 'C', 'D', 'E', 'F', 'G'].forEach(key => {
+      const textarea = $(`#g${key.toLowerCase()}`);
+      state.groups[key].teams = parseTeams(textarea.value);
+    });
+
+    // Validar que todos los grupos tengan equipos
+    let hasEmptyGroups = false;
+    ['A', 'B', 'C', 'D', 'E', 'F'].forEach(key => {
+      if (state.groups[key].teams.length !== 3) {
+        hasEmptyGroups = true;
+        showMessage(`El grupo ${key} debe tener exactamente 3 equipos`, 'error');
+      }
+    });
+    
+    if (state.groups.G.teams.length !== 4) {
+      hasEmptyGroups = true;
+      showMessage('El grupo G debe tener exactamente 4 equipos', 'error');
+    }
+
+    if (hasEmptyGroups) return;
+
+    // Generar partidos para cada grupo
+    ['A', 'B', 'C', 'D', 'E', 'F'].forEach(key => {
+      const teams = state.groups[key].teams;
+      state.groups[key].matches = roundRobin3(teams).map(([home, away]) => ({
+        home, away, gh: null, ga: null, hour: '', place: ''
+      }));
+    });
+
+    // Grupo G (4 equipos)
+    const teamsG = state.groups.G.teams;
+    state.groups.G.matches = roundRobin4(teamsG).map(([home, away]) => ({
+      home, away, gh: null, ga: null, hour: '', place: ''
+    }));
+
+    // Actualizar configuración
+    state.points.win = parseInt($('#pointsWin').value) || 2;
+    state.points.loss = parseInt($('#pointsLoss').value) || 0;
+    state.tournamentName = $('#tournamentName').value || 'Torneo 3x3 Baloncesto';
+    state.theme.color = $('#themeColor').value;
+    state.theme.bg = $('#themeBg').value;
+
+    saveState();
+    renderGroups();
+    updateKnockout();
+    applyTheme();
+
+    showMessage('✅ Calendario generado correctamente');
+  } catch (error) {
+    console.error('Error generando calendario:', error);
+    showMessage('❌ Error al generar el calendario', 'error');
+  }
+}
+
+function publishTournament() {
+  const statusEl = $('#publishStatus');
+  statusEl.textContent = '⏳';
+  statusEl.className = 'status loading';
+
+  try {
+    // Preparar datos para exportar
+    const exportData = {
+      tournamentName: state.tournamentName,
+      subtitle: 'Torneo 3x3 Baloncesto - 22 equipos',
+      groups: state.groups,
+      knockout: state.knockout,
+      updatedAtLocal: new Date().toLocaleString('es-ES'),
+      theme: state.theme,
+      points: state.points,
+      sport: 'basketball'
+    };
+
+    // Crear y descargar archivo
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'data.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    statusEl.textContent = '✅';
+    statusEl.className = 'status success';
+    showMessage('✅ Archivo data.json descargado correctamente');
+
+    setTimeout(() => {
+      statusEl.textContent = '';
+      statusEl.className = '';
+    }, 3000);
+
+  } catch (error) {
+    statusEl.textContent = '❌';
+    statusEl.className = 'status error';
+    showMessage('❌ Error al publicar el torneo', 'error');
+    console.error('Error al publicar:', error);
+  }
+}
+
+function saveCopy() {
+  saveState();
+  showMessage('💾 Datos guardados correctamente');
+}
+
+function clearAll() {
+  if (confirm('¿Estás seguro de que quieres borrar todos los datos? Esta acción no se puede deshacer.')) {
+    localStorage.removeItem(STORAGE_KEY);
+    location.reload();
+  }
+}
+
+function exportData() {
+  try {
+    const exportData = {
+      ...state,
+      exportedAt: new Date().toISOString()
+    };
+
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `torneo-3x3-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    showMessage('📤 Datos exportados correctamente');
+  } catch (error) {
+    showMessage('❌ Error al exportar los datos', 'error');
+  }
+}
+
+function importData() {
+  const fileInput = $('#importFile');
+  const file = fileInput.files[0];
+
+  if (!file) {
+    showMessage('❌ Por favor selecciona un archivo JSON', 'error');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const importedData = JSON.parse(e.target.result);
+
+      if (confirm('¿Estás seguro de que quieres importar estos datos? Se perderán los datos actuales.')) {
+        // Actualizar estado
+        Object.assign(state, importedData);
+
+        // Actualizar UI
+        ['A', 'B', 'C', 'D', 'E', 'F', 'G'].forEach(key => {
+          $(`#g${key.toLowerCase()}`).value = state.groups[key].teams.join('\n');
+        });
+
+        $('#tournamentName').value = state.tournamentName;
+        $('#themeColor').value = state.theme.color;
+        $('#themeBg').value = state.theme.bg;
+        $('#pointsWin').value = state.points.win;
+        $('#pointsLoss').value = state.points.loss;
+
+        applyTheme();
+        saveState();
+        renderGroups();
+        updateKnockout();
+
+        showMessage('✅ Datos importados correctamente');
+        fileInput.value = '';
+      }
+    } catch (error) {
+      showMessage('❌ Error al importar: ' + error.message, 'error');
+    }
+  };
+
+  reader.onerror = function() {
+    showMessage('❌ Error al leer el archivo', 'error');
+  };
+
+  reader.readAsText(file);
+}
+
+// ===== RENDERIZADO =====
 function computeTable(matches, teams) {
   const table = Object.fromEntries(teams.map(team => [team, {
     team, PJ: 0, G: 0, P: 0, PF: 0, PC: 0, Dif: 0, Pts: 0
   }]));
-  
+
   const cfg = state.points;
-  
+
   matches.forEach(match => {
     if (match.gh == null || match.ga == null) return;
-    
+
     const homeTeam = table[match.home];
     const awayTeam = table[match.away];
     if (!homeTeam || !awayTeam) return;
-    
-    // Actualizar partidos jugados
+
     homeTeam.PJ++;
     awayTeam.PJ++;
-    
-    // Actualizar puntos a favor y en contra
+
     homeTeam.PF += match.gh;
     homeTeam.PC += match.ga;
     awayTeam.PF += match.ga;
     awayTeam.PC += match.gh;
-    
-    // Determinar resultado (baloncesto: no hay empates)
+
     if (match.gh > match.ga) {
       homeTeam.G++;
       awayTeam.P++;
@@ -510,13 +722,11 @@ function computeTable(matches, teams) {
       homeTeam.Pts += cfg.loss;
     }
   });
-  
-  // Calcular diferencia de puntos
+
   teams.forEach(team => {
     table[team].Dif = table[team].PF - table[team].PC;
   });
-  
-  // Ordenar por puntos, diferencia, puntos a favor
+
   return Object.values(table).sort((a, b) => {
     if (b.Pts !== a.Pts) return b.Pts - a.Pts;
     if (b.Dif !== a.Dif) return b.Dif - a.Dif;
@@ -525,83 +735,59 @@ function computeTable(matches, teams) {
   });
 }
 
-function groupWinner(groupKey) {
-  const group = state.groups[groupKey];
-  const rows = computeTable(group.matches, group.teams);
-  return rows[0]?.team || '';
-}
-
-function groupSecond(groupKey) {
-  const group = state.groups[groupKey];
-  const rows = computeTable(group.matches, group.teams);
-  return rows[1]?.team || '';
-}
-
-// ===== RENDER GRUPOS =====
 function renderGroups() {
   const root = $('#groupsRoot');
   root.innerHTML = '';
-  
+
   ['A', 'B', 'C', 'D', 'E', 'F', 'G'].forEach(groupKey => {
     const group = state.groups[groupKey];
     const isGroupG = groupKey === 'G';
-    
+
     const groupDiv = document.createElement('div');
     groupDiv.className = `groupBox group${groupKey}`;
-    
+
     const title = document.createElement('h3');
     title.textContent = `Grupo ${groupKey} (${group.teams.length} equipos)`;
     groupDiv.appendChild(title);
-    
+
     // Tabla de posiciones
     const table = document.createElement('table');
+    const rows = computeTable(group.matches, group.teams);
+
     table.innerHTML = `
       <thead>
         <tr>
-          <th>Equipo</th>
-          <th>PJ</th>
-          <th>G</th>
-          <th>P</th>
-          <th>PF</th>
-          <th>PC</th>
-          <th>Dif</th>
-          <th>Pts</th>
+          <th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>P</th>
+          <th>PF</th><th>PC</th><th>Dif</th><th>Pts</th>
         </tr>
       </thead>
-      <tbody></tbody>
+      <tbody>
+        ${rows.map((row, idx) => `
+          <tr class="${idx === 0 ? 'first' : ''} ${idx === 1 && isGroupG ? 'second' : ''}">
+            <td class="pos">${idx + 1}</td>
+            <td>${row.team}</td>
+            <td>${row.PJ}</td>
+            <td>${row.G}</td>
+            <td>${row.P}</td>
+            <td>${row.PF}</td>
+            <td>${row.PC}</td>
+            <td>${row.Dif > 0 ? '+' : ''}${row.Dif}</td>
+            <td class="pts">${row.Pts}</td>
+          </tr>
+        `).join('')}
+      </tbody>
     `;
-    
-    const tbody = table.querySelector('tbody');
-    const rows = computeTable(group.matches, group.teams);
-    
-    rows.forEach((row, idx) => {
-      const tr = document.createElement('tr');
-      if (idx === 0) tr.classList.add('first');
-      if (idx === 1 && isGroupG) tr.classList.add('second');
-      
-      tr.innerHTML = `
-        <td>${row.team}</td>
-        <td>${row.PJ}</td>
-        <td>${row.G}</td>
-        <td>${row.P}</td>
-        <td>${row.PF}</td>
-        <td>${row.PC}</td>
-        <td>${row.Dif > 0 ? '+' : ''}${row.Dif}</td>
-        <td class="pts">${row.Pts}</td>
-      `;
-      tbody.appendChild(tr);
-    });
-    
+
     groupDiv.appendChild(table);
-    
+
     // Partidos
     const matchesDiv = document.createElement('div');
     matchesDiv.className = 'matches';
-    
+
     group.matches.forEach((match, idx) => {
       const matchDiv = document.createElement('div');
       matchDiv.className = 'match';
-      
+
       matchDiv.innerHTML = `
         <div class="team">${match.home}</div>
         <div class="team">
@@ -615,408 +801,277 @@ function renderGroups() {
           <input type="text" data-group="${groupKey}" data-match="${idx}" data-type="place" value="${match.place || ''}" placeholder="Lugar">
         </div>
       `;
-      
+
       matchesDiv.appendChild(matchDiv);
     });
-    
+
     groupDiv.appendChild(matchesDiv);
     root.appendChild(groupDiv);
   });
+
+  setupGroupEventListeners();
 }
 
-// ===== RENDER ELIMINATORIAS =====
-function renderKnockout() {
+function updateKnockout() {
   // Actualizar nombres de equipos en cuartos
-  $('#qf1h').textContent = groupWinner('A') || 'A1';
-  $('#qf1a').textContent = groupWinner('B') || 'B1';
-  $('#qf2h').textContent = groupWinner('C') || 'C1';
-  $('#qf2a').textContent = groupWinner('D') || 'D1';
-  $('#qf3h').textContent = groupWinner('E') || 'E1';
-  $('#qf3a').textContent = groupWinner('F') || 'F1';
-  $('#qf4h').textContent = groupWinner('G') || 'G1';
-  $('#qf4a').textContent = groupSecond('G') || 'G2';
-  
+  $('#qf1h').textContent = state.knockout.qf1.homeName || 'A1';
+  $('#qf1a').textContent = state.knockout.qf1.awayName || 'B1';
+  $('#qf2h').textContent = state.knockout.qf2.homeName || 'C1';
+  $('#qf2a').textContent = state.knockout.qf2.awayName || 'D1';
+  $('#qf3h').textContent = state.knockout.qf3.homeName || 'E1';
+  $('#qf3a').textContent = state.knockout.qf3.awayName || 'F1';
+  $('#qf4h').textContent = state.knockout.qf4.homeName || 'G1';
+  $('#qf4a').textContent = state.knockout.qf4.awayName || 'G2';
+
   // Actualizar selectores de ganadores
   updateWinnerSelectors();
-  
+
   // Actualizar nombres en semifinales
-  const qf1Winner = state.knockout.qf1.winner || 'Ganador QF1';
-  const qf2Winner = state.knockout.qf2.winner || 'Ganador QF2';
-  const qf3Winner = state.knockout.qf3.winner || 'Ganador QF3';
-  const qf4Winner = state.knockout.qf4.winner || 'Ganador QF4';
-  
-  $('#sf1h').textContent = qf1Winner;
-  $('#sf1a').textContent = qf2Winner;
-  $('#sf2h').textContent = qf3Winner;
-  $('#sf2a').textContent = qf4Winner;
-  
+  const sf1Home = state.knockout.sf1.homeName || state.knockout.sf1.winner || 'Ganador QF1';
+  const sf1Away = state.knockout.sf1.awayName || state.knockout.sf2.winner || 'Ganador QF2';
+  const sf2Home = state.knockout.sf2.homeName || state.knockout.sf3.winner || 'Ganador QF3';
+  const sf2Away = state.knockout.sf2.awayName || state.knockout.sf4.winner || 'Ganador QF4';
+
+  $('#sf1h').textContent = sf1Home;
+  $('#sf1a').textContent = sf1Away;
+  $('#sf2h').textContent = sf2Home;
+  $('#sf2a').textContent = sf2Away;
+
   // Actualizar nombres en final y tercer lugar
-  const sf1Winner = state.knockout.sf1.winner || 'Ganador SF1';
-  const sf2Winner = state.knockout.sf2.winner || 'Ganador SF2';
-  const sf1Loser = state.knockout.sf1.winner ? 
-    (state.knockout.sf1.home === state.knockout.sf1.winner ? state.knockout.sf1.away : state.knockout.sf1.home) : 'Perdedor SF1';
-  const sf2Loser = state.knockout.sf2.winner ? 
-    (state.knockout.sf2.home === state.knockout.sf2.winner ? state.knockout.sf2.away : state.knockout.sf2.home) : 'Perdedor SF2';
+  const finalHome = state.knockout.final.homeName || state.knockout.sf1.winner || 'Ganador SF1';
+  const finalAway = state.knockout.final.awayName || state.knockout.sf2.winner || 'Ganador SF2';
   
-  $('#fih').textContent = sf1Winner;
-  $('#fia').textContent = sf2Winner;
-  $('#thirdh').textContent = sf1Loser;
-  $('#thirda').textContent = sf2Loser;
+  $('#fih').textContent = finalHome;
+  $('#fia').textContent = finalAway;
+
+  const thirdHome = state.knockout.third.homeName || 'Perdedor SF1';
+  const thirdAway = state.knockout.third.awayName || 'Perdedor SF2';
+  
+  $('#thirdh').textContent = thirdHome;
+  $('#thirda').textContent = thirdAway;
 }
 
 function updateWinnerSelectors() {
-  // Cuartos de final
-  updateWinnerSelector('qf1', $('#qf1w'), $('#qf1h').textContent, $('#qf1a').textContent);
-  updateWinnerSelector('qf2', $('#qf2w'), $('#qf2h').textContent, $('#qf2a').textContent);
-  updateWinnerSelector('qf3', $('#qf3w'), $('#qf3h').textContent, $('#qf3a').textContent);
-  updateWinnerSelector('qf4', $('#qf4w'), $('#qf4h').textContent, $('#qf4a').textContent);
+  const knockoutKeys = ['qf1', 'qf2', 'qf3', 'qf4', 'sf1', 'sf2', 'final', 'third'];
   
-  // Semifinales
-  updateWinnerSelector('sf1', $('#sf1w'), $('#sf1h').textContent, $('#sf1a').textContent);
-  updateWinnerSelector('sf2', $('#sf2w'), $('#sf2h').textContent, $('#sf2a').textContent);
-  
-  // Final y tercer lugar
-  updateWinnerSelector('final', $('#fiw'), $('#fih').textContent, $('#fia').textContent);
-  updateWinnerSelector('third', $('#thirdw'), $('#thirdh').textContent, $('#thirda').textContent);
-}
-
-function updateWinnerSelector(knockoutKey, selectEl, homeTeam, awayTeam) {
-  const current = state.knockout[knockoutKey].winner;
-  selectEl.innerHTML = `<option value="">— Ganador —</option>`;
-  
-  if (homeTeam && !homeTeam.includes('Ganador') && !homeTeam.includes('Perdedor')) {
-    const opt1 = document.createElement('option');
-    opt1.value = homeTeam;
-    opt1.textContent = homeTeam;
-    opt1.selected = current === homeTeam;
-    selectEl.appendChild(opt1);
-  }
-  
-  if (awayTeam && !awayTeam.includes('Ganador') && !awayTeam.includes('Perdedor')) {
-    const opt2 = document.createElement('option');
-    opt2.value = awayTeam;
-    opt2.textContent = awayTeam;
-    opt2.selected = current === awayTeam;
-    selectEl.appendChild(opt2);
-  }
-}
-
-// ===== GUARDAR Y CARGAR ESTADO =====
-function saveState() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
-
-function loadState() {
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored) {
-    try {
-      const parsed = JSON.parse(stored);
-      state = { ...state, ...parsed };
-    } catch (e) {
-      console.warn('Error loading state:', e);
-    }
-  }
-}
-
-function exportData() {
-  const dataStr = JSON.stringify(state, null, 2);
-  const dataBlob = new Blob([dataStr], { type: 'application/json' });
-  const url = URL.createObjectURL(dataBlob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = `torneo-3x3-${new Date().toISOString().slice(0, 10)}.json`;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
-}
-
-function importData(file) {
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      const imported = JSON.parse(e.target.result);
-      state = { ...state, ...imported };
-      applyStateToUI();
-      saveState();
-      alert('✅ Datos importados correctamente');
-    } catch (err) {
-      alert('❌ Error al importar: ' + err.message);
-    }
-  };
-  reader.readAsText(file);
-}
-
-function applyStateToUI() {
-  // Aplicar equipos a textareas
-  Object.keys(state.groups).forEach(key => {
-    const textarea = $(`#g${key.toLowerCase()}`);
-    if (textarea) {
-      textarea.value = state.groups[key].teams.join('\n');
-    }
-  });
-  
-  // Aplicar configuración de puntos
-  $('#pointsWin').value = state.points.win;
-  $('#pointsLoss').value = state.points.loss;
-  
-  // Aplicar nombre del torneo
-  $('#tournamentName').value = state.tournamentName;
-  
-  // Aplicar tema
-  $('#themeColor').value = state.theme.color;
-  $('#themeBg').value = state.theme.bg;
-  applyTheme();
-  
-  // Generar calendario
-  generateSchedule();
-  
-  // Aplicar resultados de partidos de grupos
-  Object.keys(state.groups).forEach(groupKey => {
-    const group = state.groups[groupKey];
-    group.matches.forEach((match, matchIdx) => {
-      const homeInput = $(`[data-group="${groupKey}"][data-match="${matchIdx}"][data-side="home"]`);
-      const awayInput = $(`[data-group="${groupKey}"][data-match="${matchIdx}"][data-side="away"]`);
-      const hourInput = $(`[data-group="${groupKey}"][data-match="${matchIdx}"][data-type="hour"]`);
-      const placeInput = $(`[data-group="${groupKey}"][data-match="${matchIdx}"][data-type="place"]`);
-      
-      if (homeInput) homeInput.value = match.gh ?? '';
-      if (awayInput) awayInput.value = match.ga ?? '';
-      if (hourInput) hourInput.value = match.hour ?? '';
-      if (placeInput) placeInput.value = match.place ?? '';
-    });
-  });
-  
-  // Aplicar eliminatorias
-  Object.keys(state.knockout).forEach(key => {
-    const match = state.knockout[key];
-    $(`#${key}gh`).value = match.gh ?? '';
-    $(`#${key}ga`).value = match.ga ?? '';
-    $(`#${key}Hour`).value = match.hour ?? '';
-    $(`#${key}Place`).value = match.place ?? '';
+  knockoutKeys.forEach(key => {
+    const selectEl = $(`#${key}w`);
+    const homeEl = $(`#${key}h`);
+    const awayEl = $(`#${key}a`);
     
-    // Nombres manuales
-    const homeNameInput = $(`#${key}HomeName`);
-    const awayNameInput = $(`#${key}AwayName`);
-    if (homeNameInput) homeNameInput.value = match.homeName ?? '';
-    if (awayNameInput) awayNameInput.value = match.awayName ?? '';
-  });
-  
-  renderKnockout();
-}
-
-function applyTheme() {
-  document.documentElement.style.setProperty('--accent', state.theme.color);
-  document.documentElement.style.setProperty('--bg', state.theme.bg);
-}
-
-// ===== GENERAR CALENDARIO =====
-function generateSchedule() {
-  // Actualizar equipos desde textareas
-  Object.keys(state.groups).forEach(key => {
-    const textarea = $(`#g${key.toLowerCase()}`);
-    state.groups[key].teams = parseTeams(textarea.value);
-  });
-  
-  // Generar partidos para cada grupo
-  Object.keys(state.groups).forEach(key => {
-    const group = state.groups[key];
-    const teams = group.teams;
-    
-    if (teams.length === 3) {
-      group.matches = roundRobin3(teams).map(([home, away]) => ({
-        home, away, gh: null, ga: null, hour: '', place: ''
-      }));
-    } else if (teams.length === 4) {
-      group.matches = roundRobin4(teams).map(([home, away]) => ({
-        home, away, gh: null, ga: null, hour: '', place: ''
-      }));
+    if (selectEl && homeEl && awayEl) {
+      const homeTeam = homeEl.textContent;
+      const awayTeam = awayEl.textContent;
+      const currentWinner = state.knockout[key].winner;
+      
+      selectEl.innerHTML = `<option value="">— Ganador —</option>`;
+      
+      if (homeTeam && !homeTeam.includes('Ganador') && !homeTeam.includes('Perdedor')) {
+        const opt1 = document.createElement('option');
+        opt1.value = homeTeam;
+        opt1.textContent = homeTeam;
+        opt1.selected = currentWinner === homeTeam;
+        selectEl.appendChild(opt1);
+      }
+      
+      if (awayTeam && !awayTeam.includes('Ganador') && !awayTeam.includes('Perdedor')) {
+        const opt2 = document.createElement('option');
+        opt2.value = awayTeam;
+        opt2.textContent = awayTeam;
+        opt2.selected = currentWinner === awayTeam;
+        selectEl.appendChild(opt2);
+      }
     }
   });
-  
-  // Actualizar puntos
-  state.points.win = parseInt($('#pointsWin').value) || 2;
-  state.points.loss = parseInt($('#pointsLoss').value) || 0;
-  
-  // Actualizar nombre del torneo
-  state.tournamentName = $('#tournamentName').value || 'Torneo 3x3 Baloncesto';
-  
-  // Actualizar tema
-  state.theme.color = $('#themeColor').value;
-  state.theme.bg = $('#themeBg').value;
-  applyTheme();
-  
-  renderGroups();
-  renderKnockout();
-  saveState();
-}
-
-// ===== PUBLICAR =====
-async function publish() {
-  const statusEl = $('#publishStatus');
-  statusEl.textContent = '';
-  statusEl.className = 'status loading';
-  statusEl.textContent = 'Publicando...';
-  
-  try {
-    // Preparar datos para publicación
-    const publishData = {
-      tournamentName: state.tournamentName,
-      groups: {},
-      knockout: state.knockout,
-      theme: state.theme,
-      timestamp: new Date().toISOString()
-    };
-    
-    // Calcular tablas de posiciones para cada grupo
-    Object.keys(state.groups).forEach(key => {
-      const group = state.groups[key];
-      publishData.groups[key] = {
-        teams: group.teams,
-        matches: group.matches,
-        table: computeTable(group.matches, group.teams)
-      };
-    });
-    
-    // Si hay una URL especificada, intentar publicar allí
-    const url = $('#publishURL').value.trim();
-    if (url) {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(publishData)
-      });
-      
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      
-      statusEl.className = 'status success';
-      statusEl.textContent = '✅ Publicado';
-    } else {
-      // Descargar data.json para GitHub Pages
-      const dataStr = JSON.stringify(publishData, null, 2);
-      const blob = new Blob([dataStr], { type: 'application/json' });
-      const dataUrl = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = dataUrl;
-      a.download = 'data.json';
-      a.click();
-      URL.revokeObjectURL(dataUrl);
-      
-      statusEl.className = 'status success';
-      statusEl.textContent = '✅ Descargado data.json';
-    }
-  } catch (err) {
-    console.error('Publish error:', err);
-    statusEl.className = 'status error';
-    statusEl.textContent = '❌ Error';
-  }
-  
-  setTimeout(() => {
-    statusEl.textContent = '';
-    statusEl.className = '';
-  }, 3000);
 }
 
 // ===== EVENT LISTENERS =====
-function setupEventListeners() {
-  // Generar calendario
-  $('#btnGenerate').addEventListener('click', generateSchedule);
-  
-  // Publicar
-  $('#btnPublish').addEventListener('click', publish);
-  
-  // Guardar copia
-  $('#btnSaveCopy').addEventListener('click', exportData);
-  
-  // Limpiar todo
-  $('#btnClearAll').addEventListener('click', () => {
-    if (confirm('¿Estás seguro de que quieres limpiar todos los datos?')) {
-      localStorage.removeItem(STORAGE_KEY);
-      location.reload();
+function setupGroupEventListeners() {
+  // Scores
+  document.querySelectorAll('input[type="number"]').forEach(input => {
+    if (input.dataset.group && input.dataset.match !== undefined) {
+      input.addEventListener('input', function() {
+        const groupKey = this.dataset.group;
+        const matchIdx = parseInt(this.dataset.match, 10);
+        const side = this.dataset.side;
+        
+        const match = state.groups[groupKey].matches[matchIdx];
+        if (match) {
+          match[side === 'home' ? 'gh' : 'ga'] = valInt(this.value);
+          saveState();
+          renderGroups();
+          updateKnockout();
+        }
+      });
     }
   });
-  
-  // Importar/Exportar
-  $('#btnExport').addEventListener('click', exportData);
-  $('#btnImport').addEventListener('click', () => $('#importFile').click());
-  $('#importFile').addEventListener('change', e => {
-    if (e.target.files[0]) importData(e.target.files[0]);
+
+  // Hora y lugar
+  document.querySelectorAll('input[type="text"]').forEach(input => {
+    if (input.dataset.group && input.dataset.match !== undefined) {
+      input.addEventListener('change', function() {
+        const groupKey = this.dataset.group;
+        const matchIdx = parseInt(this.dataset.match, 10);
+        const type = this.dataset.type;
+        
+        const match = state.groups[groupKey].matches[matchIdx];
+        if (match) {
+          match[type] = this.value.trim();
+          saveState();
+        }
+      });
+    }
   });
-  
-  // Cambios en partidos de grupos (delegación de eventos)
-  $('#groupsRoot').addEventListener('input', e => {
-    const target = e.target;
-    const groupKey = target.dataset.group;
-    const matchIdx = parseInt(target.dataset.match, 10);
-    const side = target.dataset.side;
-    const type = target.dataset.type;
+}
+
+function setupKnockoutEventListeners() {
+  // Eliminatorias - scores
+  document.querySelectorAll('input[type="number"]').forEach(input => {
+    const id = input.id;
+    const match = id.match(/^(qf[1-4]|sf[1-2]|final|third)(gh|ga)$/);
     
-    if (groupKey && matchIdx >= 0) {
-      const match = state.groups[groupKey].matches[matchIdx];
-      
-      if (side === 'home' || side === 'away') {
-        match[side === 'home' ? 'gh' : 'ga'] = valInt(target.value);
-      } else if (type === 'hour' || type === 'place') {
-        match[type] = target.value;
-      }
-      
-      saveState();
-      renderGroups();
-      renderKnockout();
+    if (match) {
+      input.addEventListener('input', function() {
+        const [, key, field] = match;
+        state.knockout[key][field] = valInt(this.value);
+        saveState();
+        updateKnockout();
+      });
     }
   });
-  
-  // Cambios en eliminatorias
-  document.addEventListener('input', e => {
-    const target = e.target;
-    const id = target.id;
+
+  // Eliminatorias - hora y lugar
+  document.querySelectorAll('input[type="text"]').forEach(input => {
+    const id = input.id;
+    const match = id.match(/^(qf[1-4]|sf[1-2]|final|third)(Hour|Place|HomeName|AwayName)$/);
     
-    // Detectar inputs de eliminatorias (qf1gh, qf1ga, qf1Hour, qf1Place, etc.)
-    const knockoutMatch = id.match(/^(qf[1-4]|sf[1-2]|final|third)(gh|ga|Hour|Place|HomeName|AwayName)$/);
-    if (knockoutMatch) {
-      const [, key, field] = knockoutMatch;
-      if (field === 'gh' || field === 'ga') {
-        state.knockout[key][field] = valInt(target.value);
-      } else if (field === 'HomeName' || field === 'AwayName') {
-        // Guardar nombres manuales
-        state.knockout[key][field === 'HomeName' ? 'homeName' : 'awayName'] = target.value;
-      } else {
-        state.knockout[key][field.toLowerCase()] = target.value;
-      }
-      
-      saveState();
-      renderKnockout();
+    if (match) {
+      input.addEventListener('input', function() {
+        const [, key, field] = match;
+        const fieldName = field === 'HomeName' ? 'homeName' : 
+                         field === 'AwayName' ? 'awayName' : 
+                         field.toLowerCase();
+        
+        state.knockout[key][fieldName] = this.value.trim();
+        saveState();
+        updateKnockout();
+      });
     }
   });
-  
-  // Cambios en selectores de ganadores
-  document.addEventListener('change', e => {
-    const target = e.target;
-    const id = target.id;
+
+  // Eliminatorias - ganadores
+  document.querySelectorAll('select').forEach(select => {
+    const id = select.id;
+    const match = id.match(/^(qf[1-4]|sf[1-2]|final|third)w$/);
     
-    const winnerMatch = id.match(/^(qf[1-4]|sf[1-2]|final|third)w$/);
-    if (winnerMatch) {
-      const key = winnerMatch[1];
-      state.knockout[key].winner = target.value;
-      saveState();
-      renderKnockout();
+    if (match) {
+      select.addEventListener('change', function() {
+        const key = match[1];
+        state.knockout[key].winner = this.value;
+        saveState();
+        updateKnockout();
+      });
     }
   });
+}
+
+// ===== PERSISTENCIA =====
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) {
+    console.error('Error guardando estado:', e);
+  }
+}
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      Object.assign(state, parsed);
+      return true;
+    }
+  } catch (e) {
+    console.error('Error cargando estado:', e);
+  }
+  return false;
+}
+
+function applyTheme() {
+  try {
+    document.documentElement.style.setProperty('--accent', state.theme?.color || '#dc2626');
+    document.documentElement.style.setProperty('--bg', state.theme?.bg || '#f8fafc');
+    if (document.body) document.body.style.background = state.theme?.bg || '#f8fafc';
+  } catch(e) { /* no-op */ }
 }
 
 // ===== INICIALIZACIÓN =====
 function init() {
-  loadState();
-  applyStateToUI();
-  setupEventListeners();
+  // Cargar estado guardado
+  const loaded = loadState();
+  
+  // Configurar valores iniciales en UI
+  ['A', 'B', 'C', 'D', 'E', 'F', 'G'].forEach(key => {
+    $(`#g${key.toLowerCase()}`).value = state.groups[key].teams.join('\n');
+  });
+  
+  $('#tournamentName').value = state.tournamentName;
+  $('#themeColor').value = state.theme.color;
+  $('#themeBg').value = state.theme.bg;
+  $('#pointsWin').value = state.points.win;
+  $('#pointsLoss').value = state.points.loss;
+  
+  // Configurar event listeners principales
+  $('#btnGenerate').addEventListener('click', generateSchedule);
+  $('#btnPublish').addEventListener('click', publishTournament);
+  $('#btnSaveCopy').addEventListener('click', saveCopy);
+  $('#btnClearAll').addEventListener('click', clearAll);
+  $('#btnExport').addEventListener('click', exportData);
+  $('#btnImport').addEventListener('click', importData);
+  
+  // Configurar event listeners de knockout
+  setupKnockoutEventListeners();
+  
+  // Tema
+  $('#tournamentName').addEventListener('input', e => {
+    state.tournamentName = e.target.value;
+    saveState();
+  });
+  
+  $('#themeColor').addEventListener('input', e => { 
+    state.theme.color = e.target.value; 
+    saveState(); 
+    applyTheme(); 
+  });
+  
+  $('#themeBg').addEventListener('input', e => { 
+    state.theme.bg = e.target.value; 
+    saveState(); 
+    applyTheme(); 
+  });
+  
+  // Sistema de puntos
+  $('#pointsWin').addEventListener('input', e => { 
+    state.points.win = parseInt(e.target.value) || 2; 
+    saveState(); 
+    renderGroups(); 
+  });
+  
+  $('#pointsLoss').addEventListener('input', e => { 
+    state.points.loss = parseInt(e.target.value) || 0; 
+    saveState(); 
+    renderGroups(); 
+  });
+
+  // Renderizar inicial
+  applyTheme();
+  renderGroups();
+  updateKnockout();
 }
 
-// Iniciar cuando el DOM esté listo
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
-} else {
-  init();
-}
+// Iniciar la aplicación
+document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
 </html>

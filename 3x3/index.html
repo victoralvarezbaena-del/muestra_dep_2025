@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Torneo 3x3 Baloncesto</title>
+  <style>
+    :root {
+      --accent: #dc2626;
+      --bg: #f8fafc;
+      --panel: #e2e8f0;
+      --card: #ffffff;
+      --muted: #475569;
+      --text: #0f172a;
+      --ok: #16a34a;
+      --bad: #dc2626;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      transition: background-color 0.3s ease;
+    }
+
+    header {
+      padding: 20px 16px;
+      border-bottom: 2px solid #cbd5e1;
+      background: linear-gradient(90deg, var(--panel), #f1f5f9);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      transition: all 0.3s ease;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(22px, 3.2vw, 34px);
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid #cbd5e1;
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 3px 10px rgba(0,0,0,.1);
+      margin-bottom: 16px;
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    @media (min-width: 1100px) {
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* Grupos */
+    .groups {
+      display: grid;
+      gap: 12px;
+    }
+
+    @media (min-width: 700px) {
+      .groups {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (min-width: 1000px) {
+      .groups {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+    }
+
+    /* Colores por grupo */
+    .groupA { background: rgba(56,189,248,.12); border: 1px solid rgba(56,189,248,.45) }
+    .groupB { background: rgba(168,85,247,.12); border: 1px solid rgba(168,85,247,.45) }
+    .groupC { background: rgba(251,191,36,.12); border: 1px solid rgba(251,191,36,.45) }
+    .groupD { background: rgba(34,197,94,.12); border: 1px solid rgba(34,197,94,.45) }
+    .groupE { background: rgba(239,68,68,.12); border: 1px solid rgba(239,68,68,.45) }
+    .groupF { background: rgba(14,165,233,.12); border: 1px solid rgba(14,165,233,.45) }
+    .groupG { background: rgba(139,92,246,.12); border: 1px solid rgba(139,92,246,.45) }
+
+    .groupBox {
+      padding: 12px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .matches {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .match {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 8px;
+      align-items: center;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 10px;
+      min-width: 0;
+    }
+
+    @media (max-width: 480px) {
+      .match {
+        grid-template-columns: 1fr auto 1fr;
+        gap: 6px;
+        padding: 8px;
+        font-size: 14px;
+      }
+      
+      .team {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    .team {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .team-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .dash {
+      opacity: .6;
+    }
+
+    .info {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+      font-size: 14px;
+      color: var(--muted);
+      flex-wrap: wrap;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      overflow-x: auto;
+      display: block;
+    }
+
+    th, td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #cbd5e1;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    th:first-child, td:first-child {
+      text-align: left;
+    }
+
+    thead th {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    tbody tr:hover {
+      background: #e2e8f0;
+    }
+
+    .pos {
+      font-variant-numeric: tabular-nums;
+      color: var(--muted);
+    }
+
+    .pts {
+      font-weight: 800;
+    }
+
+    .first {
+      background: rgba(34,197,94,.15);
+    }
+
+    .second {
+      background: rgba(253,224,71,.15);
+    }
+
+    /* Fase eliminatoria */
+    .bracket {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    @media (min-width: 900px) {
+      .bracket {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .quarter, .semi, .final, .third {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 12px;
+      overflow: hidden;
+    }
+
+    .quarter h3, .semi h3, .final h3, .third h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+
+    .final {
+      position: relative;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 0 4px rgba(220,38,38,.12) inset;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .final h3 {
+      color: var(--accent);
+    }
+
+    .final::before {
+      content: 'FINAL 🏀';
+      position: absolute;
+      top: 12px;
+      right: -48px;
+      transform: rotate(45deg);
+      background: var(--accent);
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 4px 48px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      opacity: 0.9;
+    }
+
+    /* Estados de partidos */
+    .match-result {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      font-weight: bold;
+      min-width: 60px;
+    }
+
+    .winner {
+      color: var(--ok);
+      font-weight: 800;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+    }
+
+    .error {
+      text-align: center;
+      padding: 20px;
+      color: var(--bad);
+    }
+
+    /* Campeón destacado */
+    .champion {
+      text-align: center;
+      padding: 20px;
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      border-radius: 18px;
+      margin: 20px 0;
+      border: 2px solid #f59e0b;
+    }
+
+    .champion h2 {
+      color: #92400e;
+      margin-bottom: 10px;
+    }
+
+    .champion .team-name {
+      font-size: 24px;
+      font-weight: bold;
+      color: #92400e;
+    }
+
+    /* Portada con tema personalizado */
+    .cover {
+      text-align: center;
+      padding: 40px 20px;
+      margin-bottom: 30px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 80%, black));
+      color: white;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover h1 {
+      font-size: clamp(28px, 4vw, 48px);
+      margin-bottom: 10px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .cover .subtitle {
+      color: rgba(255,255,255,0.9);
+      font-size: clamp(16px, 2vw, 20px);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      margin-bottom: 15px;
+    }
+
+    .cover .update-info {
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      display: inline-block;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    /* Baloncesto específico */
+    .basketball-icon {
+      font-size: 24px;
+      margin-right: 8px;
+    }
+
+    /* Mejoras adicionales para móviles */
+    @media (max-width: 480px) {
+      .container {
+        padding: 12px;
+      }
+      
+      .card {
+        padding: 12px;
+        border-radius: 14px;
+      }
+      
+      .groupBox {
+        padding: 10px;
+      }
+      
+      .info {
+        font-size: 13px;
+      }
+      
+      .table-wrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      table {
+        font-size: 13px;
+      }
+      
+      th, td {
+        padding: 6px 8px;
+      }
+      
+      .final::before {
+        font-size: 12px;
+        padding: 3px 40px;
+        right: -40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1 id="tournamentTitle">Torneo 3x3 Baloncesto</h1>
+      <div class="subtitle" id="tournamentSubtitle">22 equipos - 7 grupos</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="tournamentContent">
+      <div class="loading">Cargando datos del torneo...</div>
+    </div>
+  </main>
+
+  <script>
+    // Obtener el nombre del archivo JSON de la URL
+    function getJsonFileNameFromUrl() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const tournamentParam = urlParams.get('t');
+      if (tournamentParam) {
+        return tournamentParam.includes('.') ? tournamentParam : `${tournamentParam}.json`;
+      }
+      
+      // Valor por defecto para baloncesto 3x3
+      return 'data.json';
+    }
+
+    // Normalización de datos
+    function normalizeImported(data) {
+      if (!data) {
+        data = {};
+      }
+      
+      const KO_DEF = { home:'', away:'', gh:null, ga:null, winner:'', hour:'', place:'' };
+      const safe = {
+        tournamentName: data?.tournamentName || 'Torneo 3x3 Baloncesto',
+        subtitle: data?.subtitle || '22 equipos - 7 grupos',
+        theme: Object.assign({ color:'#dc2626', bg:'#f8fafc' }, data?.theme || {}),
+        points: Object.assign({ win:2, loss:0 }, data?.points || {}),
+        groups: { 
+          A:{teams:[],matches:[]}, B:{teams:[],matches:[]}, C:{teams:[],matches:[]}, 
+          D:{teams:[],matches:[]}, E:{teams:[],matches:[]}, F:{teams:[],matches:[]}, 
+          G:{teams:[],matches:[]} 
+        },
+        knockout: {
+          qf1:  Object.assign({}, KO_DEF, data?.knockout?.qf1 || {}),
+          qf2:  Object.assign({}, KO_DEF, data?.knockout?.qf2 || {}),
+          qf3:  Object.assign({}, KO_DEF, data?.knockout?.qf3 || {}),
+          qf4:  Object.assign({}, KO_DEF, data?.knockout?.qf4 || {}),
+          sf1:  Object.assign({}, KO_DEF, data?.knockout?.sf1 || {}),
+          sf2:  Object.assign({}, KO_DEF, data?.knockout?.sf2 || {}),
+          final:Object.assign({}, KO_DEF, data?.knockout?.final || {}),
+          third:Object.assign({}, KO_DEF, data?.knockout?.third || {})
+        },
+        updatedAtLocal: data?.updatedAtLocal || ''
+      };
+      
+      ['A','B','C','D','E','F','G'].forEach(k => {
+        const g = (data?.groups && data.groups[k]) ? data.groups[k] : {};
+        const teams = Array.isArray(g.teams) ? g.teams.filter(Boolean) : [];
+        const matches = Array.isArray(g.matches) ? g.matches.filter(Boolean).map(mm => {
+          const match = mm || {};
+          return Object.assign(
+            { home:'', away:'', gh:null, ga:null, hour:'', place:'' }, 
+            match
+          );
+        }) : [];
+        safe.groups[k] = { teams, matches };
+      });
+      
+      return safe;
+    }
+
+    // Cargar datos del torneo
+    async function loadTournamentData() {
+      const fileName = getJsonFileNameFromUrl();
+      
+      try {
+        document.getElementById('tournamentContent').innerHTML = '<div class="loading">Cargando datos del torneo...</div>';
+        
+        const response = await fetch(fileName, { cache: 'no-store' });
+        if (!response.ok) {
+          throw new Error(`No se pudo cargar el archivo: ${fileName} (Error ${response.status})`);
+        }
+        
+        let data = await response.json();
+        data = normalizeImported(data);
+        
+        // Aplicar tema
+        applyTheme(data.theme);
+        
+        // Actualizar título
+        document.getElementById('tournamentTitle').textContent = data.tournamentName || 'Torneo 3x3 Baloncesto';
+        document.getElementById('tournamentSubtitle').textContent = data.subtitle || '22 equipos - 7 grupos';
+        
+        // Renderizar contenido
+        renderTournament(data);
+        
+      } catch (error) {
+        console.error('Error cargando torneo:', error);
+        document.getElementById('tournamentContent').innerHTML = `
+          <div class="error">
+            <h3>Error al cargar el torneo</h3>
+            <p>${error.message}</p>
+            <p>Archivo intentado: <strong>${fileName}</strong></p>
+            <p style="margin-top: 10px; font-size: 14px;">
+              Asegúrate de que el archivo JSON existe y está en el mismo directorio.
+            </p>
+          </div>
+        `;
+      }
+    }
+
+    // Aplicar tema
+    function applyTheme(theme) {
+      if (!theme) return;
+      
+      const accentColor = theme.color || '#dc2626';
+      const bgColor = theme.bg || '#f8fafc';
+      
+      document.documentElement.style.setProperty('--accent', accentColor);
+      document.documentElement.style.setProperty('--bg', bgColor);
+      document.body.style.background = bgColor;
+      
+      const headerGradient = `linear-gradient(90deg, color-mix(in srgb, ${accentColor} 15%, white), color-mix(in srgb, ${accentColor} 8%, white))`;
+      const header = document.querySelector('header');
+      if (header) {
+        header.style.background = headerGradient;
+      }
+    }
+
+    // Calcular tabla de posiciones (baloncesto)
+    function computeTable(matches, teams, pointsConfig = { win: 2, loss: 0 }) {
+      const table = Object.fromEntries(teams.map(team => [team, {
+        team, PJ: 0, G: 0, P: 0, PF: 0, PC: 0, Dif: 0, Pts: 0
+      }]));
+      
+      matches.filter(m => m && typeof m === 'object').forEach(match => {
+        if (match.gh == null || match.ga == null) return;
+        
+        const homeTeam = table[match.home];
+        const awayTeam = table[match.away];
+        if (!homeTeam || !awayTeam) return;
+        
+        homeTeam.PJ++;
+        awayTeam.PJ++;
+        
+        homeTeam.PF += match.gh;
+        homeTeam.PC += match.ga;
+        awayTeam.PF += match.ga;
+        awayTeam.PC += match.gh;
+        
+        // Baloncesto: no hay empates
+        if (match.gh > match.ga) {
+          homeTeam.G++;
+          awayTeam.P++;
+          homeTeam.Pts += pointsConfig.win;
+          awayTeam.Pts += pointsConfig.loss;
+        } else {
+          awayTeam.G++;
+          homeTeam.P++;
+          awayTeam.Pts += pointsConfig.win;
+          homeTeam.Pts += pointsConfig.loss;
+        }
+      });
+      
+      teams.forEach(team => {
+        table[team].Dif = table[team].PF - table[team].PC;
+      });
+      
+      return Object.values(table).sort((a, b) => {
+        if (b.Pts !== a.Pts) return b.Pts - a.Pts;
+        if (b.Dif !== a.Dif) return b.Dif - a.Dif;
+        if (b.PF !== a.PF) return b.PF - a.PF;
+        return a.team.localeCompare(b.team);
+      });
+    }
+
+    // Renderizar partido
+    function renderMatch(match, defaultHome, defaultAway) {
+      const _m = Object.assign({gh:null,ga:null,hour:'',place:''}, match || {});
+      const hasResult = _m.gh !== null && _m.ga !== null;
+      const homeWinner = hasResult && _m.gh > _m.ga;
+      const awayWinner = hasResult && _m.gh < _m.ga;
+      
+      const homeName = _m.home || defaultHome || 'Equipo Local';
+      const awayName = _m.away || defaultAway || 'Equipo Visitante';
+      
+      return `
+        <div class="match">
+          <div class="team ${homeWinner ? 'winner' : ''}">
+            <span class="team-name">${homeName}</span>
+          </div>
+          <div class="match-result">
+            ${hasResult ? `
+              <span>${_m.gh}</span>
+              <span class="dash">—</span>
+              <span>${_m.ga}</span>
+            ` : '<span class="dash">-</span>'}
+          </div>
+          <div class="team ${awayWinner ? 'winner' : ''}" style="justify-content:flex-end">
+            <span class="team-name">${awayName}</span>
+          </div>
+        </div>
+        ${(_m.hour || _m.place) ? `
+          <div class="info">
+            ${_m.hour ? `<span>🕒 ${_m.hour}</span>` : ''}
+            ${_m.place ? `<span>📍 ${_m.place}</span>` : ''}
+          </div>
+        ` : ''}
+      `;
+    }
+
+    // Renderizar portada
+    function renderCover(data) {
+      const theme = data.theme || {};
+      const accentColor = theme.color || '#dc2626';
+      const updatedAt = data.updatedAtLocal || '';
+      
+      let updateInfo = '';
+      if (updatedAt) {
+        updateInfo = `
+          <div class="update-info">
+            📅 Última actualización: ${updatedAt}
+          </div>
+        `;
+      }
+      
+      return `
+        <div class="cover" style="background: linear-gradient(135deg, ${accentColor}, color-mix(in srgb, ${accentColor} 80%, black));">
+          <h1>🏀 ${data.tournamentName || 'Torneo 3x3 Baloncesto'}</h1>
+          <div class="subtitle">${data.subtitle || '22 equipos - 7 grupos'}</div>
+          ${updateInfo}
+        </div>
+      `;
+    }
+
+    // Renderizar fase de grupos
+    function renderGroups(groups, pointsConfig) {
+      let html = '<div class="card"><h2>🏀 Fase de Grupos</h2><div class="groups">';
+      
+      ['A', 'B', 'C', 'D', 'E', 'F', 'G'].forEach(groupKey => {
+        const group = groups[groupKey];
+        if (!group || !group.teams || group.teams.length === 0) return;
+        
+        const teams = group.teams;
+        const matches = group.matches || [];
+        
+        html += `
+          <div class="groupBox group${groupKey}">
+            <h3>Grupo ${groupKey} (${teams.length} equipos)</h3>
+            <div class="matches">
+        `;
+        
+        matches.filter(m => m && typeof m === 'object').forEach(match => {
+          html += renderMatch(match, match.home, match.away);
+        });
+        
+        html += `</div>`;
+        
+        // Tabla de posiciones específica de baloncesto
+        const table = computeTable(matches, teams, pointsConfig);
+        html += `
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>P</th>
+                  <th>PF</th><th>PC</th><th>Dif</th><th>Pts</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${table.map((row, index) => `
+                  <tr class="${index === 0 ? 'first' : ''} ${index === 1 && groupKey === 'G' ? 'second' : ''}">
+                    <td class="pos">${index + 1}</td>
+                    <td>${row.team}</td>
+                    <td>${row.PJ}</td>
+                    <td>${row.G}</td>
+                    <td>${row.P}</td>
+                    <td>${row.PF}</td>
+                    <td>${row.PC}</td>
+                    <td>${row.Dif > 0 ? '+' : ''}${row.Dif}</td>
+                    <td class="pts">${row.Pts}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+        
+        html += `</div>`;
+      });
+      
+      html += '</div></div>';
+      return html;
+    }
+
+    // Renderizar fase eliminatoria
+    function renderKnockout(knockout, groups) {
+      if (!knockout) return '';
+      
+      const k = knockout;
+      let html = '';
+      
+      // Mostrar campeón destacado si existe
+      if (k.final && k.final.winner) {
+        html += `
+          <div class="champion">
+            <h2>🏆 CAMPEÓN 🏆</h2>
+            <div class="team-name">${k.final.winner}</div>
+          </div>
+        `;
+      }
+      
+      html += `
+        <div class="card">
+          <h2>🏀 Fase Eliminatoria</h2>
+          <div class="bracket">
+            <!-- Cuartos de final -->
+            <div class="quarter">
+              <h3>Cuartos de Final 1 — A1 vs B1</h3>
+              ${renderMatch(
+                k.qf1, 
+                k.qf1.home || 'A1', 
+                k.qf1.away || 'B1'
+              )}
+              ${k.qf1.winner ? `<div class="info"><strong>Ganador: ${k.qf1.winner}</strong></div>` : ''}
+            </div>
+            
+            <div class="quarter">
+              <h3>Cuartos de Final 2 — C1 vs D1</h3>
+              ${renderMatch(
+                k.qf2, 
+                k.qf2.home || 'C1', 
+                k.qf2.away || 'D1'
+              )}
+              ${k.qf2.winner ? `<div class="info"><strong>Ganador: ${k.qf2.winner}</strong></div>` : ''}
+            </div>
+            
+            <div class="quarter">
+              <h3>Cuartos de Final 3 — E1 vs F1</h3>
+              ${renderMatch(
+                k.qf3, 
+                k.qf3.home || 'E1', 
+                k.qf3.away || 'F1'
+              )}
+              ${k.qf3.winner ? `<div class="info"><strong>Ganador: ${k.qf3.winner}</strong></div>` : ''}
+            </div>
+            
+            <div class="quarter">
+              <h3>Cuartos de Final 4 — G1 vs G2</h3>
+              ${renderMatch(
+                k.qf4, 
+                k.qf4.home || 'G1', 
+                k.qf4.away || 'G2'
+              )}
+              ${k.qf4.winner ? `<div class="info"><strong>Ganador: ${k.qf4.winner}</strong></div>` : ''}
+            </div>
+            
+            <!-- Semifinales -->
+            <div class="semi">
+              <h3>Semifinal 1</h3>
+              ${renderMatch(
+                k.sf1, 
+                k.sf1.home || 'Ganador QF1', 
+                k.sf1.away || 'Ganador QF2'
+              )}
+              ${k.sf1.winner ? `<div class="info"><strong>Ganador: ${k.sf1.winner}</strong></div>` : ''}
+            </div>
+            
+            <div class="semi">
+              <h3>Semifinal 2</h3>
+              ${renderMatch(
+                k.sf2, 
+                k.sf2.home || 'Ganador QF3', 
+                k.sf2.away || 'Ganador QF4'
+              )}
+              ${k.sf2.winner ? `<div class="info"><strong>Ganador: ${k.sf2.winner}</strong></div>` : ''}
+            </div>
+            
+            <!-- Tercer lugar y Final -->
+            <div class="third">
+              <h3>Tercer Lugar</h3>
+              ${renderMatch(
+                k.third, 
+                k.third.home || 'Perdedor SF1', 
+                k.third.away || 'Perdedor SF2'
+              )}
+              ${k.third.winner ? `<div class="info"><strong>Tercero: ${k.third.winner}</strong></div>` : ''}
+            </div>
+            
+            <div class="final">
+              <h3>Final</h3>
+              ${renderMatch(
+                k.final, 
+                k.final.home || 'Ganador SF1', 
+                k.final.away || 'Ganador SF2'
+              )}
+              ${k.final.winner ? `<div class="info"><strong>🏆 Campeón: ${k.final.winner}</strong></div>` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+      
+      return html;
+    }
+
+    // Renderizar todo el torneo
+    function renderTournament(data) {
+      let html = '';
+      
+      // Portada con tema
+      html += renderCover(data);
+      
+      // Fase de grupos
+      if (data.groups) {
+        html += renderGroups(data.groups, data.points);
+      }
+      
+      // Fase eliminatoria
+      if (data.knockout) {
+        html += renderKnockout(data.knockout, data.groups);
+      }
+      
+      document.getElementById('tournamentContent').innerHTML = html;
+    }
+
+    // Inicialización
+    function init() {
+      loadTournamentData();
+    }
+
+    // Iniciar cuando el DOM esté listo
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

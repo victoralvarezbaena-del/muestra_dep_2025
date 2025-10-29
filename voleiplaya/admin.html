@@ -238,14 +238,11 @@ let state = {
 };
 
 function parseTeams(txt){
-  return String(txt||'')
-    .replace(/
-?/g,'
-')              // normaliza CRLF a LF
-    .split(/
-+|[,;]+/)                  // permite saltos de línea, comas o punto y coma
-    .map(s=>s.trim())
-    .filter(Boolean);
+  return String(txt || '')
+    .replace(/\r\n?/g, '\n') // normaliza CRLF a LF
+    .split(/\n+|[,;]+/) // permite saltos de línea, comas o punto y coma
+    .map(s => s.trim())
+    .filter(s => s !== '');
 }
 function roundRobin3([a,b,c]){ return [[a,b],[c,a],[b,c]]; }
 function roundRobin4([a,b,c,d]){ return [[a,b],[c,d],[a,c],[b,d],[a,d],[b,c]]; }
@@ -383,10 +380,52 @@ function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); 
 function loadState(){ try{ const s=localStorage.getItem(STORAGE_KEY); if(s){ state={...state, ...JSON.parse(s)}; return true; } }catch(e){ console.error(e);} return false; }
 
 function generateGroups(){
-  state.groups.A.teams = parseTeams($('#ga')?.value||'');
-  state.groups.B.teams = parseTeams($('#gb')?.value||'');
-  ['A','B'].forEach(k=> state.groups[k].matches=[]);
-  saveState(); renderGroups(); updateKnockout(); renderKnockoutSets();
+  try {
+    // Obtener equipos de los textareas
+    const groupAText = $('#ga')?.value || '';
+    const groupBText = $('#gb')?.value || '';
+    
+    state.groups.A.teams = parseTeams(groupAText);
+    state.groups.B.teams = parseTeams(groupBText);
+    
+    // Limpiar partidos existentes
+    state.groups.A.matches = [];
+    state.groups.B.matches = [];
+    
+    // Generar nuevos partidos automáticamente basados en los equipos
+    const calA = buildCalendar(state.groups.A.teams);
+    const calB = buildCalendar(state.groups.B.teams);
+    
+    calA.forEach(([home, away]) => {
+      state.groups.A.matches.push({
+        home: home,
+        away: away,
+        sets: [],
+        hour: '',
+        place: ''
+      });
+    });
+    
+    calB.forEach(([home, away]) => {
+      state.groups.B.matches.push({
+        home: home,
+        away: away,
+        sets: [],
+        hour: '',
+        place: ''
+      });
+    });
+    
+    saveState();
+    renderGroups();
+    updateKnockout();
+    renderKnockoutSets();
+    
+    console.log('Grupos generados exitosamente');
+  } catch (error) {
+    console.error('Error generando grupos:', error);
+    alert('Error al generar los grupos. Verifica los datos.');
+  }
 }
 
 async function publish(){
@@ -412,34 +451,128 @@ async function publish(){
 }
 
 function applyStateToUI(){
-  const a=$('#ga'), b=$('#gb'); if(a) a.value = (state.groups.A.teams||[]).join('\\n'); if(b) b.value = (state.groups.B.teams||[]).join('\\n');
-  const tn=$('#tournamentName'), tc=$('#themeColor'), tb=$('#themeBg'); if(tn) tn.value = state.tournamentName||''; if(tc) tc.value = state.theme?.color||'#0284c7'; if(tb) tb.value = state.theme?.bg||'#f8fafc';
+  const a = $('#ga'), b = $('#gb'); 
+  if(a) a.value = (state.groups.A.teams || []).join('\n'); 
+  if(b) b.value = (state.groups.B.teams || []).join('\n');
+  
+  const tn = $('#tournamentName'), tc = $('#themeColor'), tb = $('#themeBg'); 
+  if(tn) tn.value = state.tournamentName || ''; 
+  if(tc) tc.value = state.theme?.color || '#0284c7'; 
+  if(tb) tb.value = state.theme?.bg || '#f8fafc';
+  
   applyTheme();
 }
 
 function applyTheme(){ document.documentElement.style.setProperty('--accent', state.theme.color); document.documentElement.style.setProperty('--bg', state.theme.bg); }
 
 function wireButtons(){
-  $('#btnGenerate')?.addEventListener('click', generateGroups);
-  $('#btnPublish')?.addEventListener('click', publish);
-  $('#btnSaveCopy')?.addEventListener('click', exportData);
-  $('#btnClearAll')?.addEventListener('click', ()=>{ if(confirm('¿Borrar todos los datos?')){ localStorage.removeItem(STORAGE_KEY); location.reload(); } });
-  $('#btnExport')?.addEventListener('click', exportData);
-  $('#btnImport')?.addEventListener('click', ()=> $('#importFile')?.click());
-  $('#importFile')?.addEventListener('change', function(){ if(this.files?.length){ importData(this.files[0]); this.value=''; }});
-  $('#tournamentName')?.addEventListener('change', function(){ state.tournamentName=this.value; saveState(); });
-  $('#themeColor')?.addEventListener('change', function(){ state.theme.color=this.value; saveState(); applyTheme(); });
-  $('#themeBg')?.addEventListener('change', function(){ state.theme.bg=this.value; saveState(); applyTheme(); });
+  // Botón Generar
+  $('#btnGenerate')?.addEventListener('click', function(e) {
+    e.preventDefault();
+    generateGroups();
+  });
+  
+  // Botón Publicar
+  $('#btnPublish')?.addEventListener('click', function(e) {
+    e.preventDefault();
+    publish();
+  });
+  
+  // Botón Guardar Copia
+  $('#btnSaveCopy')?.addEventListener('click', function(e) {
+    e.preventDefault();
+    exportData();
+  });
+  
+  // Botón Limpiar
+  $('#btnClearAll')?.addEventListener('click', function(e) {
+    e.preventDefault();
+    if(confirm('¿Estás seguro de que quieres borrar todos los datos?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
+  });
+  
+  // Botones Importar/Exportar
+  $('#btnExport')?.addEventListener('click', function(e) {
+    e.preventDefault();
+    exportData();
+  });
+  
+  $('#btnImport')?.addEventListener('click', function(e) {
+    e.preventDefault();
+    $('#importFile')?.click();
+  });
+  
+  $('#importFile')?.addEventListener('change', function(e) {
+    if(this.files?.length) {
+      importData(this.files[0]);
+      this.value = '';
+    }
+  });
+  
+  // Inputs de tema y nombre del torneo
+  $('#tournamentName')?.addEventListener('change', function() {
+    state.tournamentName = this.value;
+    saveState();
+  });
+  
+  $('#themeColor')?.addEventListener('change', function() {
+    state.theme.color = this.value;
+    saveState();
+    applyTheme();
+  });
+  
+  $('#themeBg')?.addEventListener('change', function() {
+    state.theme.bg = this.value;
+    saveState();
+    applyTheme();
+  });
 }
 
 function exportData(){ const str=JSON.stringify(state,null,2); const blob=new Blob([str],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`torneo_playa_${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(url); }
 function importData(file){ const r=new FileReader(); r.onload = e=>{ try{ const imp=JSON.parse(e.target.result); state={...state, ...imp}; saveState(); applyStateToUI(); renderGroups(); updateKnockout(); renderKnockoutSets(); alert('✅ Datos importados correctamente'); }catch{ alert('❌ Error al importar: JSON inválido'); } }; r.readAsText(file); }
 
 function init(){
-  loadState(); applyStateToUI(); renderGroups(); updateKnockout(); renderKnockoutSets(); setupKnockoutListeners(); wireButtons();
+  // Cargar estado primero
+  if (!loadState()) {
+    // Si no hay estado guardado, inicializar con valores por defecto
+    state = {
+      groups: { 
+        A: { teams: ['Equipo A1', 'Equipo A2', 'Equipo A3'], matches: [] }, 
+        B: { teams: ['Equipo B1', 'Equipo B2', 'Equipo B3', 'Equipo B4'], matches: [] } 
+      },
+      points: { win: 2, loss: 1 },
+      knockout: { 
+        sf1: { home: '', away: '', sets: [], winner: '', hour: '', place: '' }, 
+        sf2: { home: '', away: '', sets: [], winner: '', hour: '', place: '' }, 
+        final: { home: '', away: '', sets: [], winner: '', hour: '', place: '' }, 
+        third: { home: '', away: '', sets: [], winner: '', hour: '', place: '' } 
+      },
+      tournamentName: '', 
+      theme: { color: '#0284c7', bg: '#f8fafc' }
+    };
+  }
+  
+  applyStateToUI();
+  renderGroups();
+  updateKnockout();
+  renderKnockoutSets();
+  setupKnockoutListeners();
+  wireButtons();
+  
+  // Forzar una generación inicial si no hay partidos
+  if (state.groups.A.matches.length === 0 && state.groups.B.matches.length === 0) {
+    generateGroups();
+  }
 }
 
-document.addEventListener('DOMContentLoaded', init);
+// Asegurar que el DOM esté completamente cargado
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
 </script>
 </body>
 </html>

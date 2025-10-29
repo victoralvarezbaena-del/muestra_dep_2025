@@ -19,7 +19,7 @@
     label{display:block;margin:8px 0 6px;color:var(--muted)}
     textarea,input[type="text"],input[type="number"],input[type="url"],select,input[type="file"],input[type="color"]{width:100%;background:#f8fafc;color:var(--text);border:1px solid #cbd5e1;border-radius:12px;padding:10px 12px;outline:none}
     textarea:focus,input:focus,select:focus{box-shadow:var(--ring);border-color:transparent}
-    textarea{min-height:96px;white-space:pre}
+    textarea{min-height:120px;white-space:pre-wrap}
     button{background:linear-gradient(180deg,var(--accent),#0ea5e9);color:#fff;border:none;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer}
     button.ghost{background:transparent;color:var(--accent);border:1px solid #cbd5e1}
     button:disabled{opacity:0.6;cursor:not-allowed}
@@ -237,7 +237,16 @@ let state = {
   tournamentName:'', theme:{color:'#0284c7', bg:'#f8fafc'}
 };
 
-function parseTeams(txt){ return String(txt||'').split('\\n').map(s=>s.trim()).filter(Boolean); }
+function parseTeams(txt){
+  return String(txt||'')
+    .replace(/
+?/g,'
+')              // normaliza CRLF a LF
+    .split(/
++|[,;]+/)                  // permite saltos de línea, comas o punto y coma
+    .map(s=>s.trim())
+    .filter(Boolean);
+}
 function roundRobin3([a,b,c]){ return [[a,b],[c,a],[b,c]]; }
 function roundRobin4([a,b,c,d]){ return [[a,b],[c,d],[a,c],[b,d],[a,d],[b,c]]; }
 function buildCalendar(t){ if(t.length===3) return roundRobin3(t); if(t.length===4) return roundRobin4(t); return []; }

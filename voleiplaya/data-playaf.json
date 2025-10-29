@@ -1,0 +1,130 @@
+{
+  "groups": {
+    "A": {
+      "teams": [
+        "A1",
+        "A2",
+        "A3"
+      ],
+      "matches": [
+        {
+          "home": "A1",
+          "away": "A2",
+          "sets": [],
+          "hour": "",
+          "place": ""
+        },
+        {
+          "home": "A3",
+          "away": "A1",
+          "sets": [],
+          "hour": "",
+          "place": ""
+        },
+        {
+          "home": "A2",
+          "away": "A3",
+          "sets": [],
+          "hour": "",
+          "place": ""
+        }
+      ]
+    },
+    "B": {
+      "teams": [
+        "B1",
+        "B2",
+        "B3",
+        "B4"
+      ],
+      "matches": [
+        {
+          "home": "B1",
+          "away": "B2",
+          "sets": [],
+          "hour": "",
+          "place": ""
+        },
+        {
+          "home": "B3",
+          "away": "B4",
+          "sets": [],
+          "hour": "",
+          "place": ""
+        },
+        {
+          "home": "B1",
+          "away": "B3",
+          "sets": [],
+          "hour": "",
+          "place": ""
+        },
+        {
+          "home": "B2",
+          "away": "B4",
+          "sets": [],
+          "hour": "",
+          "place": ""
+        },
+        {
+          "home": "B1",
+          "away": "B4",
+          "sets": [],
+          "hour": "",
+          "place": ""
+        },
+        {
+          "home": "B2",
+          "away": "B3",
+          "sets": [],
+          "hour": "",
+          "place": ""
+        }
+      ]
+    }
+  },
+  "points": {
+    "win": 2,
+    "loss": 1
+  },
+  "knockout": {
+    "sf1": {
+      "home": "",
+      "away": "",
+      "sets": [],
+      "winner": "",
+      "hour": "",
+      "place": ""
+    },
+    "sf2": {
+      "home": "",
+      "away": "",
+      "sets": [],
+      "winner": "",
+      "hour": "",
+      "place": ""
+    },
+    "final": {
+      "home": "",
+      "away": "",
+      "sets": [],
+      "winner": "",
+      "hour": "",
+      "place": ""
+    },
+    "third": {
+      "home": "",
+      "away": "",
+      "sets": [],
+      "winner": "",
+      "hour": "",
+      "place": ""
+    }
+  },
+  "tournamentName": "Voleibol de playa Femenil",
+  "theme": {
+    "color": "#ab75d7",
+    "bg": "#4c2361"
+  },
+  "timestamp": "2025-10-29T19:32:30.753Z"
+}

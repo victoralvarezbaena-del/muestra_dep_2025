@@ -1,5 +1,5 @@
 {
-  "tournamentName": " Baloncesto 3x3 femenil",
+  "tournamentName": " Baloncesto 3x3 Femenil",
   "subtitle": "Torneo 3x3 Baloncesto - 22 equipos",
   "groups": {
     "A": {
@@ -266,8 +266,8 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "",
-      "place": "",
+      "hour": "20/11/2025   10:00",
+      "place": "Gomez Morin Cancha 1",
       "homeName": "",
       "awayName": ""
     },
@@ -277,8 +277,8 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "",
-      "place": "",
+      "hour": "20/11/2025   10:00",
+      "place": "Gomez Morin Cancha 2",
       "homeName": "",
       "awayName": ""
     },
@@ -288,8 +288,8 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "",
-      "place": "",
+      "hour": "20/11/2025   10:00",
+      "place": "Gomez Morin Cancha 3",
       "homeName": "",
       "awayName": ""
     },
@@ -299,8 +299,8 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "",
-      "place": "",
+      "hour": "20/11/2025   10:00",
+      "place": "Gomez Morin Cancha 4",
       "homeName": "",
       "awayName": ""
     },
@@ -310,8 +310,8 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "",
-      "place": "",
+      "hour": "20/11/2025   11:40",
+      "place": "Gomez Morin Cancha 3",
       "homeName": "",
       "awayName": ""
     },
@@ -321,8 +321,8 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "",
-      "place": "",
+      "hour": "20/11/2025   11:40",
+      "place": "Gomez Morin Cancha 4",
       "homeName": "",
       "awayName": ""
     },
@@ -343,13 +343,13 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "",
-      "place": "",
+      "hour": "21/11/2025   8:30",
+      "place": "Gomez Morin Cancha 3",
       "homeName": "",
       "awayName": ""
     }
   },
-  "updatedAtLocal": "3/11/2025, 14:59:57",
+  "updatedAtLocal": "5/11/2025, 10:36:50",
   "theme": {
     "color": "#df944e",
     "bg": "#ecb009"

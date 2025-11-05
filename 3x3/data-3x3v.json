@@ -1,63 +1,262 @@
 {
-  "tournamentName": "Baloncesto 3x3 Varonil",
+  "tournamentName": " Baloncesto 3x3 Varonil",
   "subtitle": "Torneo 3x3 Baloncesto - 22 equipos",
   "groups": {
     "A": {
       "teams": [
-        "Equipo A1",
-        "Equipo A2",
-        "Equipo A3"
+        "1",
+        "2",
+        "3"
       ],
-      "matches": []
+      "matches": [
+        {
+          "home": "1",
+          "away": "2",
+          "gh": null,
+          "ga": null,
+          "hour": "19/11/2025  9:05",
+          "place": "Gomez Morin Cancha 1"
+        },
+        {
+          "home": "3",
+          "away": "1",
+          "gh": null,
+          "ga": null,
+          "hour": "19/11/2025  11:45",
+          "place": "Gomez Morin Cancha 1"
+        },
+        {
+          "home": "2",
+          "away": "3",
+          "gh": null,
+          "ga": null,
+          "hour": "19/11/2025  9:35",
+          "place": "Gomez Morin Cancha 1"
+        }
+      ]
     },
     "B": {
       "teams": [
-        "Equipo B1",
-        "Equipo B2",
-        "Equipo B3"
+        "4",
+        "5",
+        "6"
       ],
-      "matches": []
+      "matches": [
+        {
+          "home": "4",
+          "away": "5",
+          "gh": null,
+          "ga": null,
+          "hour": "19/11/2025  9:05",
+          "place": "Gomez Morin Cancha 1"
+        },
+        {
+          "home": "6",
+          "away": "4",
+          "gh": null,
+          "ga": null,
+          "hour": "19/11/2025  11:45",
+          "place": "Gomez Morin Cancha 1"
+        },
+        {
+          "home": "5",
+          "away": "6",
+          "gh": null,
+          "ga": null,
+          "hour": "19/11/2025  9:20",
+          "place": "Gomez Morin Cancha 1"
+        }
+      ]
     },
     "C": {
       "teams": [
-        "Equipo C1",
-        "Equipo C2",
-        "Equipo C3"
+        "7",
+        "8",
+        "9"
       ],
-      "matches": []
+      "matches": [
+        {
+          "home": "7",
+          "away": "8",
+          "gh": null,
+          "ga": null,
+          "hour": "19/11/2025  9:05",
+          "place": "Gomez Morin Cancha 2"
+        },
+        {
+          "home": "9",
+          "away": "7",
+          "gh": null,
+          "ga": null,
+          "hour": "19/11/2025  11:45",
+          "place": "Gomez Morin Cancha 2"
+        },
+        {
+          "home": "8",
+          "away": "9",
+          "gh": null,
+          "ga": null,
+          "hour": "19/11/2025  9:20",
+          "place": "Gomez Morin Cancha 2"
+        }
+      ]
     },
     "D": {
       "teams": [
-        "Equipo D1",
-        "Equipo D2",
-        "Equipo D3"
+        "10",
+        "11",
+        "12"
       ],
-      "matches": []
+      "matches": [
+        {
+          "home": "10",
+          "away": "11",
+          "gh": null,
+          "ga": null,
+          "hour": "19/11/2025  9:05",
+          "place": "Gomez Morin Cancha 2"
+        },
+        {
+          "home": "12",
+          "away": "10",
+          "gh": null,
+          "ga": null,
+          "hour": "19/11/2025  11:45",
+          "place": "Gomez Morin Cancha 2"
+        },
+        {
+          "home": "11",
+          "away": "12",
+          "gh": null,
+          "ga": null,
+          "hour": "19/11/2025  9:20",
+          "place": "Gomez Morin Cancha 2"
+        }
+      ]
     },
     "E": {
       "teams": [
-        "Equipo E1",
-        "Equipo E2",
-        "Equipo E3"
+        "13",
+        "14",
+        "15"
       ],
-      "matches": []
+      "matches": [
+        {
+          "home": "13",
+          "away": "14",
+          "gh": null,
+          "ga": null,
+          "hour": "19/11/2025  9:05",
+          "place": "Gomez Morin Cancha 3"
+        },
+        {
+          "home": "15",
+          "away": "13",
+          "gh": null,
+          "ga": null,
+          "hour": "19/11/2025  11:45",
+          "place": "Gomez Morin Cancha 3"
+        },
+        {
+          "home": "14",
+          "away": "15",
+          "gh": null,
+          "ga": null,
+          "hour": "19/11/2025  9:20",
+          "place": "Gomez Morin Cancha 3"
+        }
+      ]
     },
     "F": {
       "teams": [
-        "Equipo F1",
-        "Equipo F2",
-        "Equipo F3"
+        "16",
+        "17",
+        "18"
       ],
-      "matches": []
+      "matches": [
+        {
+          "home": "16",
+          "away": "17",
+          "gh": null,
+          "ga": null,
+          "hour": "19/11/2025  9:05",
+          "place": "Gomez Morin Cancha 3"
+        },
+        {
+          "home": "18",
+          "away": "16",
+          "gh": null,
+          "ga": null,
+          "hour": "19/11/2025  11:45",
+          "place": "Gomez Morin Cancha 3"
+        },
+        {
+          "home": "17",
+          "away": "18",
+          "gh": null,
+          "ga": null,
+          "hour": "19/11/2025  9:20",
+          "place": "Gomez Morin Cancha 3"
+        }
+      ]
     },
     "G": {
       "teams": [
-        "Equipo G1",
-        "Equipo G2",
-        "Equipo G3",
-        "Equipo G4"
+        "19",
+        "20",
+        "21",
+        "22"
       ],
-      "matches": []
+      "matches": [
+        {
+          "home": "19",
+          "away": "20",
+          "gh": null,
+          "ga": null,
+          "hour": "19/11/2025  9:05",
+          "place": "Gomez Morin Cancha 4"
+        },
+        {
+          "home": "21",
+          "away": "22",
+          "gh": null,
+          "ga": null,
+          "hour": "19/11/2025  9:05",
+          "place": "Gomez Morin Cancha 4"
+        },
+        {
+          "home": "19",
+          "away": "21",
+          "gh": null,
+          "ga": null,
+          "hour": "19/11/2025  9:20",
+          "place": "Gomez Morin Cancha 4"
+        },
+        {
+          "home": "20",
+          "away": "22",
+          "gh": null,
+          "ga": null,
+          "hour": "19/11/2025  9:20",
+          "place": "Gomez Morin Cancha 4"
+        },
+        {
+          "home": "19",
+          "away": "22",
+          "gh": null,
+          "ga": null,
+          "hour": "19/11/2025  11:45",
+          "place": "Gomez Morin Cancha 4"
+        },
+        {
+          "home": "20",
+          "away": "21",
+          "gh": null,
+          "ga": null,
+          "hour": "19/11/2025  11:45",
+          "place": "Gomez Morin Cancha 4"
+        }
+      ]
     }
   },
   "knockout": {
@@ -67,8 +266,8 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "",
-      "place": "",
+      "hour": "20/11/2025   9:30",
+      "place": "Gomez Morin Cancha 1",
       "homeName": "",
       "awayName": ""
     },
@@ -78,8 +277,8 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "",
-      "place": "",
+      "hour": "20/11/2025   9:30",
+      "place": "Gomez Morin Cancha 2",
       "homeName": "",
       "awayName": ""
     },
@@ -89,8 +288,8 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "",
-      "place": "",
+      "hour": "20/11/2025   9:30",
+      "place": "Gomez Morin Cancha 3",
       "homeName": "",
       "awayName": ""
     },
@@ -100,8 +299,8 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "",
-      "place": "",
+      "hour": "20/11/2025   9:30",
+      "place": "Gomez Morin Cancha 4",
       "homeName": "",
       "awayName": ""
     },
@@ -111,8 +310,8 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "",
-      "place": "",
+      "hour": "20/11/2025   11:40",
+      "place": "Gomez Morin Cancha 1",
       "homeName": "",
       "awayName": ""
     },
@@ -122,8 +321,8 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "",
-      "place": "",
+      "hour": "20/11/2025   11:40",
+      "place": "Gomez Morin Cancha 2",
       "homeName": "",
       "awayName": ""
     },
@@ -144,13 +343,13 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "",
-      "place": "",
+      "hour": "21/11/2025   8:30",
+      "place": "Gomez Morin Cancha 1",
       "homeName": "",
       "awayName": ""
     }
   },
-  "updatedAtLocal": "29/10/2025, 10:14:27",
+  "updatedAtLocal": "5/11/2025, 10:53:19",
   "theme": {
     "color": "#db6a00",
     "bg": "#ecb009"

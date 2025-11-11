@@ -98,7 +98,15 @@
       opacity: 0.9;
     }
     
-    /* Eliminados los estilos de clasificación */
+    /* Información de clasificación */
+    .qualification-info {
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      border-radius: 12px;
+      padding: 12px;
+      margin: 12px 0;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
@@ -150,6 +158,28 @@ Equipo C4</textarea>
         </div>
       </div>
 
+      <!-- Equipos Semifinalistas Personalizados -->
+      <div class="card" style="margin-top:16px;">
+        <h2>Equipos Semifinalistas (Para la visualización pública)</h2>
+        <div class="groups">
+          <div>
+            <label>Semifinal 1 - Local</label>
+            <input type="text" id="sf1HomeTeam" placeholder="1º Grupo A" style="margin-bottom:8px;">
+            <label>Semifinal 1 - Visitante</label>
+            <input type="text" id="sf1AwayTeam" placeholder="2º Grupo C">
+          </div>
+          <div>
+            <label>Semifinal 2 - Local</label>
+            <input type="text" id="sf2HomeTeam" placeholder="1º Grupo B" style="margin-bottom:8px;">
+            <label>Semifinal 2 - Visitante</label>
+            <input type="text" id="sf2AwayTeam" placeholder="1º Grupo C">
+          </div>
+        </div>
+        <div style="margin-top:8px; font-size:12px; color:var(--muted);">
+          💡 Estos nombres se mostrarán en la visualización pública. Déjalos vacíos para usar los nombres automáticos.
+        </div>
+      </div>
+
       <!-- Tema (colores) -->
       <div class="row" style="margin-top:8px">
         <input type="text" id="tournamentName" placeholder="Nombre del torneo (opcional)" style="flex:2" />
@@ -194,8 +224,6 @@ Equipo C4</textarea>
     <section class="card">
       <h2>Grupos y partidos</h2>
       
-      <!-- ELIMINADO: Bloque de clasificación a semifinales -->
-      
       <div id="groupsRoot"></div>
 
       <div class="bracket">
@@ -207,7 +235,7 @@ Equipo C4</textarea>
               <input type="number" min="0" inputmode="numeric" id="sf1gh" style="max-width:80px"> <span class="dash">—</span>
               <input type="number" min="0" inputmode="numeric" id="sf1ga" style="max-width:80px">
             </div>
-            <div class="team" style="flex:1;justify-content:flex-end"><span id="sf1a">Mejor 2º</span></div>
+            <div class="team" style="flex:1;justify-content:flex-end"><span id="sf1a">2º Grupo C</span></div>
           </div>
           <div class="row" style="margin-top:6px">
             <label style="flex:1">Si hay empate, elige ganador</label>
@@ -284,7 +312,7 @@ Equipo C4</textarea>
 
 <script>
 // ===== CONFIGURACIÓN =====
-const STORAGE_KEY = 'torneo_handball_10_equipos_v2';
+const STORAGE_KEY = 'torneo_handball_10_equipos_v3';
 const $ = (selector, root = document) => root.querySelector(selector);
 
 // ===== ESTADO INICIAL =====
@@ -294,12 +322,19 @@ let state = {
     B: { teams: ['Equipo B1', 'Equipo B2', 'Equipo B3'], matches: [] },
     C: { teams: ['Equipo C1', 'Equipo C2', 'Equipo C3', 'Equipo C4'], matches: [] }
   },
-  points: { win: 2, draw: 1, loss: 0 }, // Puntos típicos en handball
+  points: { win: 2, draw: 1, loss: 0 },
   knockout: {
     sf1: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
     sf2: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
     final: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
     third: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' }
+  },
+  // NUEVO: Nombres personalizados para semifinales
+  semifinalTeams: {
+    sf1Home: '',
+    sf1Away: '', 
+    sf2Home: '',
+    sf2Away: ''
   },
   tournamentName: '',
   theme: { color: '#0284c7', bg: '#f8fafc' }
@@ -392,8 +427,7 @@ function computeTable(matches, teams) {
 function getQualifiedTeams() {
   const qualified = {
     firstA: '', firstB: '', firstC: '',
-    secondA: '', secondB: '', secondC: '',
-    bestSecond: ''
+    secondA: '', secondB: '', secondC: ''
   };
   
   // Obtener primeros y segundos de cada grupo
@@ -407,46 +441,55 @@ function getQualifiedTeams() {
     }
   });
   
-  // Determinar el mejor segundo entre grupos A y B
-  const secondA = computeTable(state.groups.A.matches, state.groups.A.teams)[1];
-  const secondB = computeTable(state.groups.B.matches, state.groups.B.teams)[1];
-  
-  if (secondA && secondB) {
-    // Comparar por puntos, diferencia de goles, goles a favor
-    if (secondA.Pts > secondB.Pts) {
-      qualified.bestSecond = secondA.team;
-    } else if (secondB.Pts > secondA.Pts) {
-      qualified.bestSecond = secondB.team;
-    } else if (secondA.DG > secondB.DG) {
-      qualified.bestSecond = secondA.team;
-    } else if (secondB.DG > secondA.DG) {
-      qualified.bestSecond = secondB.team;
-    } else if (secondA.GF > secondB.GF) {
-      qualified.bestSecond = secondA.team;
-    } else {
-      qualified.bestSecond = secondB.team;
-    }
-  } else if (secondA) {
-    qualified.bestSecond = secondA.team;
-  } else if (secondB) {
-    qualified.bestSecond = secondB.team;
-  }
-  
   return qualified;
 }
 
-// ELIMINADA: función updateQualificationInfo()
+// ===== FUNCIÓN PARA MOSTRAR CLASIFICACIÓN EN ADMIN =====
+function updateQualificationInfo() {
+  const qualified = getQualifiedTeams();
+  
+  // Crear o actualizar el elemento de información de clasificación
+  let infoEl = document.getElementById('qualificationInfo');
+  if (!infoEl) {
+    infoEl = document.createElement('div');
+    infoEl.id = 'qualificationInfo';
+    infoEl.className = 'qualification-info';
+    
+    // Insertar después del título "Grupos y partidos"
+    const groupsTitle = document.querySelector('section.card h2');
+    if (groupsTitle) {
+      groupsTitle.parentNode.insertBefore(infoEl, groupsTitle.nextSibling);
+    }
+  }
+  
+  infoEl.innerHTML = `
+    <h3 style="margin: 0 0 8px 0; color: #0369a1;">📊 Clasificación a Semifinales (Automática)</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+      <div>
+        <strong>Semifinal 1:</strong><br>
+        <span style="color: var(--muted)">${qualified.firstA || '1º Grupo A'} vs ${qualified.secondC || '2º Grupo C'}</span>
+      </div>
+      <div>
+        <strong>Semifinal 2:</strong><br>
+        <span style="color: var(--muted)">${qualified.firstB || '1º Grupo B'} vs ${qualified.firstC || '1º Grupo C'}</span>
+      </div>
+    </div>
+    <div style="margin-top: 8px; font-size: 12px; color: var(--muted);">
+      💡 Puedes sobrescribir estos nombres en "Equipos Semifinalistas"
+    </div>
+  `;
+}
 
+// ===== ACTUALIZAR KNOCKOUT =====
 function updateKnockout() {
   const qualified = getQualifiedTeams();
   
-  // Semifinal 1: 1º Grupo A vs Mejor 2º
-  $('#sf1h').textContent = qualified.firstA || '1º Grupo A';
-  $('#sf1a').textContent = qualified.bestSecond || 'Mejor 2º';
+  // Usar nombres personalizados si están definidos, sino los automáticos
+  $('#sf1h').textContent = state.semifinalTeams.sf1Home || qualified.firstA || '1º Grupo A';
+  $('#sf1a').textContent = state.semifinalTeams.sf1Away || qualified.secondC || '2º Grupo C';
   
-  // Semifinal 2: 1º Grupo B vs 1º Grupo C
-  $('#sf2h').textContent = qualified.firstB || '1º Grupo B';
-  $('#sf2a').textContent = qualified.firstC || '1º Grupo C';
+  $('#sf2h').textContent = state.semifinalTeams.sf2Home || qualified.firstB || '1º Grupo B';
+  $('#sf2a').textContent = state.semifinalTeams.sf2Away || qualified.firstC || '1º Grupo C';
   
   // Final y tercer lugar
   const sf1Winner = state.knockout.sf1.winner;
@@ -458,16 +501,21 @@ function updateKnockout() {
   
   // Para tercer lugar
   const sf1Loser = sf1Winner ? 
-    (sf1Winner === (state.knockout.sf1.home || qualified.firstA) ? (state.knockout.sf1.away || qualified.bestSecond) : (state.knockout.sf1.home || qualified.firstA)) : 
+    (sf1Winner === (state.knockout.sf1.home || state.semifinalTeams.sf1Home || qualified.firstA) ? 
+     (state.knockout.sf1.away || state.semifinalTeams.sf1Away || qualified.secondC) : 
+     (state.knockout.sf1.home || state.semifinalTeams.sf1Home || qualified.firstA)) : 
     'Perdedor SF1';
   const sf2Loser = sf2Winner ? 
-    (sf2Winner === (state.knockout.sf2.home || qualified.firstB) ? (state.knockout.sf2.away || qualified.firstC) : (state.knockout.sf2.home || qualified.firstB)) : 
+    (sf2Winner === (state.knockout.sf2.home || state.semifinalTeams.sf2Home || qualified.firstB) ? 
+     (state.knockout.sf2.away || state.semifinalTeams.sf2Away || qualified.firstC) : 
+     (state.knockout.sf2.home || state.semifinalTeams.sf2Home || qualified.firstB)) : 
     'Perdedor SF2';
   
   $('#thirdh').textContent = state.knockout.third.home || sf1Loser;
   $('#thirda').textContent = state.knockout.third.away || sf2Loser;
 
   updateWinnerSelects();
+  updateQualificationInfo(); // Mostrar información de clasificación
 }
 
 // ===== RENDER GRUPOS =====
@@ -563,7 +611,7 @@ function renderGroups() {
   });
   
   setupGroupEventListeners();
-  updateKnockout(); // Solo actualizar knockout, sin mostrar clasificación
+  updateKnockout();
 }
 
 // ===== EVENT LISTENERS PARA GRUPOS =====
@@ -844,6 +892,12 @@ function loadUIFromState() {
   $('#pointsDraw').value = state.points.draw;
   $('#pointsLoss').value = state.points.loss;
   
+  // Semifinales personalizadas
+  $('#sf1HomeTeam').value = state.semifinalTeams.sf1Home;
+  $('#sf1AwayTeam').value = state.semifinalTeams.sf1Away;
+  $('#sf2HomeTeam').value = state.semifinalTeams.sf2Home;
+  $('#sf2AwayTeam').value = state.semifinalTeams.sf2Away;
+  
   // Tema
   $('#tournamentName').value = state.tournamentName;
   $('#themeColor').value = state.theme.color;
@@ -873,6 +927,8 @@ function publishData() {
       points: state.points,
       groups: {},
       qualifiedTeams: qualified,
+      // INCLUIR nombres personalizados de semifinales
+      semifinalTeams: state.semifinalTeams,
       knockout: state.knockout,
       lastUpdated: new Date().toISOString(),
       format: '10_equipos_3_grupos'
@@ -928,6 +984,28 @@ function init() {
   renderGroups();
   loadKnockoutFromState();
   setupKnockoutEventListeners();
+  
+  // Event listeners para nombres personalizados de semifinales
+  $('#sf1HomeTeam').addEventListener('change', () => {
+    state.semifinalTeams.sf1Home = $('#sf1HomeTeam').value.trim();
+    saveState();
+    updateKnockout();
+  });
+  $('#sf1AwayTeam').addEventListener('change', () => {
+    state.semifinalTeams.sf1Away = $('#sf1AwayTeam').value.trim();
+    saveState();
+    updateKnockout();
+  });
+  $('#sf2HomeTeam').addEventListener('change', () => {
+    state.semifinalTeams.sf2Home = $('#sf2HomeTeam').value.trim();
+    saveState();
+    updateKnockout();
+  });
+  $('#sf2AwayTeam').addEventListener('change', () => {
+    state.semifinalTeams.sf2Away = $('#sf2AwayTeam').value.trim();
+    saveState();
+    updateKnockout();
+  });
   
   // Botón generar
   $('#btnGenerate').addEventListener('click', () => {
@@ -1003,7 +1081,7 @@ function init() {
     }
   });
   
-  // Publicar (CORREGIDO - ahora genera JSON)
+  // Publicar
   $('#btnPublish').addEventListener('click', publishData);
 }
 

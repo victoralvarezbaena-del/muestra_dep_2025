@@ -98,14 +98,13 @@
       opacity: 0.9;
     }
     
-    /* Información de clasificación */
-    .qualification-info {
+    /* Nombres personalizados de semifinales */
+    .semifinal-custom {
       background: #f0f9ff;
       border: 1px solid #bae6fd;
       border-radius: 12px;
-      padding: 12px;
-      margin: 12px 0;
-      font-size: 14px;
+      padding: 16px;
+      margin-top: 16px;
     }
   </style>
 </head>
@@ -158,21 +157,21 @@ Equipo C4</textarea>
         </div>
       </div>
 
-      <!-- Equipos Semifinalistas Personalizados -->
-      <div class="card" style="margin-top:16px;">
-        <h2>Equipos Semifinalistas (Para la visualización pública)</h2>
+      <!-- Nombres personalizados de semifinalistas -->
+      <div class="semifinal-custom">
+        <h2>Nombres de Semifinalistas (Para la visualización pública)</h2>
         <div class="groups">
           <div>
-            <label>Semifinal 1 - Local</label>
-            <input type="text" id="sf1HomeTeam" placeholder="1º Grupo A" style="margin-bottom:8px;">
-            <label>Semifinal 1 - Visitante</label>
-            <input type="text" id="sf1AwayTeam" placeholder="2º Grupo C">
+            <label>Semifinal 1 - Equipo Local</label>
+            <input type="text" id="sf1HomeTeam" placeholder="Ej: Los Campeones" style="margin-bottom:8px;">
+            <label>Semifinal 1 - Equipo Visitante</label>
+            <input type="text" id="sf1AwayTeam" placeholder="Ej: Los Guerreros">
           </div>
           <div>
-            <label>Semifinal 2 - Local</label>
-            <input type="text" id="sf2HomeTeam" placeholder="1º Grupo B" style="margin-bottom:8px;">
-            <label>Semifinal 2 - Visitante</label>
-            <input type="text" id="sf2AwayTeam" placeholder="1º Grupo C">
+            <label>Semifinal 2 - Equipo Local</label>
+            <input type="text" id="sf2HomeTeam" placeholder="Ej: Los Titanes" style="margin-bottom:8px;">
+            <label>Semifinal 2 - Equipo Visitante</label>
+            <input type="text" id="sf2AwayTeam" placeholder="Ej: Los Invictos">
           </div>
         </div>
         <div style="margin-top:8px; font-size:12px; color:var(--muted);">
@@ -444,42 +443,6 @@ function getQualifiedTeams() {
   return qualified;
 }
 
-// ===== FUNCIÓN PARA MOSTRAR CLASIFICACIÓN EN ADMIN =====
-function updateQualificationInfo() {
-  const qualified = getQualifiedTeams();
-  
-  // Crear o actualizar el elemento de información de clasificación
-  let infoEl = document.getElementById('qualificationInfo');
-  if (!infoEl) {
-    infoEl = document.createElement('div');
-    infoEl.id = 'qualificationInfo';
-    infoEl.className = 'qualification-info';
-    
-    // Insertar después del título "Grupos y partidos"
-    const groupsTitle = document.querySelector('section.card h2');
-    if (groupsTitle) {
-      groupsTitle.parentNode.insertBefore(infoEl, groupsTitle.nextSibling);
-    }
-  }
-  
-  infoEl.innerHTML = `
-    <h3 style="margin: 0 0 8px 0; color: #0369a1;">📊 Clasificación a Semifinales (Automática)</h3>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-      <div>
-        <strong>Semifinal 1:</strong><br>
-        <span style="color: var(--muted)">${qualified.firstA || '1º Grupo A'} vs ${qualified.secondC || '2º Grupo C'}</span>
-      </div>
-      <div>
-        <strong>Semifinal 2:</strong><br>
-        <span style="color: var(--muted)">${qualified.firstB || '1º Grupo B'} vs ${qualified.firstC || '1º Grupo C'}</span>
-      </div>
-    </div>
-    <div style="margin-top: 8px; font-size: 12px; color: var(--muted);">
-      💡 Puedes sobrescribir estos nombres en "Equipos Semifinalistas"
-    </div>
-  `;
-}
-
 // ===== ACTUALIZAR KNOCKOUT =====
 function updateKnockout() {
   const qualified = getQualifiedTeams();
@@ -515,7 +478,6 @@ function updateKnockout() {
   $('#thirda').textContent = state.knockout.third.away || sf2Loser;
 
   updateWinnerSelects();
-  updateQualificationInfo(); // Mostrar información de clasificación
 }
 
 // ===== RENDER GRUPOS =====

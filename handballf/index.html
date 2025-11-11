@@ -28,7 +28,7 @@
       color: var(--text);
       line-height: 1.5;
       transition: background-color 0.3s ease;
-      overflow-x: hidden; /* Prevenir desbordamiento horizontal */
+      overflow-x: hidden;
     }
 
     header {
@@ -46,7 +46,7 @@
       margin: 0 auto;
       padding: 16px;
       width: 100%;
-      overflow-x: hidden; /* Prevenir desbordamiento */
+      overflow-x: hidden;
     }
 
     h1 {
@@ -68,7 +68,7 @@
       box-shadow: 0 3px 10px rgba(0,0,0,.1);
       margin-bottom: 16px;
       transition: all 0.3s ease;
-      overflow: hidden; /* Prevenir desbordamiento interno */
+      overflow: hidden;
     }
 
     .card h2 {
@@ -108,7 +108,7 @@
       padding: 12px;
       border-radius: 12px;
       margin-bottom: 12px;
-      overflow: hidden; /* Prevenir desbordamiento */
+      overflow: hidden;
     }
 
     .matches {
@@ -126,14 +126,14 @@
       border: 1px solid #cbd5e1;
       border-radius: 12px;
       padding: 10px;
-      min-width: 0; /* Permitir que el contenido se ajuste */
+      min-width: 0;
     }
 
     .team {
       display: flex;
       align-items: center;
       gap: 10px;
-      min-width: 0; /* Permitir que el texto se trunque si es necesario */
+      min-width: 0;
       overflow: hidden;
     }
 
@@ -153,12 +153,12 @@
       margin-top: 6px;
       font-size: clamp(12px, 2vw, 14px);
       color: var(--muted);
-      flex-wrap: wrap; /* Permitir que los elementos se envuelvan en móviles */
+      flex-wrap: wrap;
     }
 
     .table-wrap {
-      overflow-x: auto; /* Scroll horizontal para tablas en móviles */
-      -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
       margin-top: 10px;
     }
 
@@ -166,7 +166,7 @@
       width: 100%;
       border-collapse: collapse;
       font-size: clamp(12px, 2vw, 14px);
-      min-width: 500px; /* Ancho mínimo para mantener legibilidad */
+      min-width: 500px;
     }
 
     th, td {
@@ -265,7 +265,7 @@
       align-items: center;
       gap: 8px;
       font-weight: bold;
-      flex-shrink: 0; /* Evitar que se encoja demasiado */
+      flex-shrink: 0;
     }
 
     .winner {
@@ -359,7 +359,7 @@
       border-radius: 8px;
       margin: 4px 0;
       border-left: 4px solid #16a34a;
-      word-break: break-word; /* Permitir que palabras largas se dividan */
+      word-break: break-word;
     }
 
     .second-place {
@@ -513,6 +513,8 @@
         theme: Object.assign({ color:'#0284c7', bg:'#f8fafc' }, data?.theme || {}),
         points: Object.assign({ win:2, draw:1, loss:0 }, data?.points || {}),
         groups: { A:{teams:[],matches:[]}, B:{teams:[],matches:[]}, C:{teams:[],matches:[]} },
+        // INCLUIR datos de semifinales personalizadas
+        semifinalTeams: Object.assign({ sf1Home:'', sf1Away:'', sf2Home:'', sf2Away:'' }, data?.semifinalTeams || {}),
         knockout: {
           sf1:  Object.assign({}, KO_DEF, data?.knockout?.sf1 || {}),
           sf2:  Object.assign({}, KO_DEF, data?.knockout?.sf2 || {}),
@@ -717,13 +719,29 @@
       `;
     }
 
-  
+    // Renderizar información de clasificación
+    function renderQualificationInfo(qualifiedTeams) {
+      if (!qualifiedTeams) return '';
+      
+      const qt = qualifiedTeams;
+      let html = '<div class="qualification"><h3>📊 Clasificación a Semifinales</h3>';
+      
+      html += '<div><strong>Clasificados:</strong></div>';
+      if (qt.firstA) html += `<div class="qualified-team">🥇 ${qt.firstA} (1º Grupo A)</div>`;
+      if (qt.firstB) html += `<div class="qualified-team">🥇 ${qt.firstB} (1º Grupo B)</div>`;
+      if (qt.firstC) html += `<div class="qualified-team">🥇 ${qt.firstC} (1º Grupo C)</div>`;
+      if (qt.secondC) html += `<div class="qualified-team second-place">🥈 ${qt.secondC} (2º Grupo C)</div>`;
+      
+      html += '</div>';
+      return html;
+    }
 
     // Renderizar fase de grupos
     function renderGroups(groups, pointsConfig, qualifiedTeams) {
       let html = '<div class="card"><h2>Fase de Grupos</h2>';
       
-          html += '<div class="groups">';
+      html += renderQualificationInfo(qualifiedTeams);
+      html += '<div class="groups">';
       
       ['A', 'B', 'C'].forEach(groupKey => {
         const group = groups[groupKey];
@@ -782,11 +800,13 @@
     }
 
     // Renderizar fase eliminatoria
-    function renderKnockout(knockout, qualifiedTeams) {
+    function renderKnockout(knockout, qualifiedTeams, semifinalTeams) {
       if (!knockout) return '';
       
       const k = knockout;
       const qt = qualifiedTeams || {};
+      const st = semifinalTeams || {};
+      
       let html = '';
       
       if (k.final && k.final.winner) {
@@ -798,26 +818,32 @@
         `;
       }
       
+      // Usar nombres personalizados si existen, sino los automáticos
+      const sf1Home = st.sf1Home || qt.firstA || '1º Grupo A';
+      const sf1Away = st.sf1Away || qt.secondC || '2º Grupo C';
+      const sf2Home = st.sf2Home || qt.firstB || '1º Grupo B';
+      const sf2Away = st.sf2Away || qt.firstC || '1º Grupo C';
+      
       html += `
         <div class="card">
           <h2>Fase Eliminatoria</h2>
           <div class="bracket">
             <div class="semi">
-              <h3>Semifinal 1 — ${qt.firstA || '1º Grupo A'} vs ${qt.secondC || '2º Grupo C'}</h3>
+              <h3>Semifinal 1 — ${sf1Home} vs ${sf1Away}</h3>
               ${renderMatch(
                 k.sf1, 
-                k.sf1.home || (qt.firstA || '1º Grupo A'), 
-                k.sf1.away || (qt.secondC || '2º Grupo C')
+                k.sf1.home || sf1Home, 
+                k.sf1.away || sf1Away
               )}
               ${k.sf1.winner ? `<div class="info"><strong>Ganador: ${k.sf1.winner}</strong></div>` : ''}
             </div>
             
             <div class="semi">
-              <h3>Semifinal 2 — ${qt.firstB || '1º Grupo B'} vs ${qt.firstC || '1º Grupo C'}</h3>
+              <h3>Semifinal 2 — ${sf2Home} vs ${sf2Away}</h3>
               ${renderMatch(
                 k.sf2, 
-                k.sf2.home || (qt.firstB || '1º Grupo B'), 
-                k.sf2.away || (qt.firstC || '1º Grupo C')
+                k.sf2.home || sf2Home, 
+                k.sf2.away || sf2Away
               )}
               ${k.sf2.winner ? `<div class="info"><strong>Ganador: ${k.sf2.winner}</strong></div>` : ''}
             </div>
@@ -859,7 +885,7 @@
       }
       
       if (data.knockout) {
-        html += renderKnockout(data.knockout, data.qualifiedTeams);
+        html += renderKnockout(data.knockout, data.qualifiedTeams, data.semifinalTeams);
       }
       
       document.getElementById('tournamentContent').innerHTML = html;

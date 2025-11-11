@@ -4,30 +4,30 @@
   "groups": {
     "A": {
       "teams": [
-        "1",
-        "2",
-        "3"
+        "1 CAIMANES PL27",
+        "2 VENADOS PL09",
+        "3 COYOTES PL05"
       ],
       "matches": [
         {
-          "home": "1",
-          "away": "2",
+          "home": "1 CAIMANES PL27",
+          "away": "2 VENADOS PL09",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   9:50",
           "place": "Gómez Morín Cancha 1"
         },
         {
-          "home": "3",
-          "away": "1",
+          "home": "3 COYOTES PL05",
+          "away": "1 CAIMANES PL27",
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   8:00",
           "place": "Gómez Morín Cancha 1"
         },
         {
-          "home": "2",
-          "away": "3",
+          "home": "2 VENADOS PL09",
+          "away": "3 COYOTES PL05",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   12:00",
@@ -37,30 +37,30 @@
     },
     "B": {
       "teams": [
-        "4",
-        "5",
-        "6"
+        "4 TIGRES PL06",
+        "5 TIGRILLOS PL14",
+        "6 CORRECAMINOS PL20"
       ],
       "matches": [
         {
-          "home": "4",
-          "away": "5",
+          "home": "4 TIGRES PL06",
+          "away": "5 TIGRILLOS PL14",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   9:50",
           "place": "Gómez Morín Cancha 2"
         },
         {
-          "home": "6",
-          "away": "4",
+          "home": "6 CORRECAMINOS PL20",
+          "away": "4 TIGRES PL06",
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   8:00",
           "place": "Gómez Morín Cancha 2"
         },
         {
-          "home": "5",
-          "away": "6",
+          "home": "5 TIGRILLOS PL14",
+          "away": "6 CORRECAMINOS PL20",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   12:00",
@@ -70,30 +70,30 @@
     },
     "C": {
       "teams": [
-        "7",
-        "8",
-        "9"
+        "7 BUHOS PL25",
+        "8 MAPACHES PL24",
+        "9 HALCONES PL26"
       ],
       "matches": [
         {
-          "home": "7",
-          "away": "8",
+          "home": "7 BUHOS PL25",
+          "away": "8 MAPACHES PL24",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   9:50",
           "place": "Gómez Morín Cancha 3"
         },
         {
-          "home": "9",
-          "away": "7",
+          "home": "9 HALCONES PL26",
+          "away": "7 BUHOS PL25",
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   8:00",
           "place": "Gómez Morín Cancha 3"
         },
         {
-          "home": "8",
-          "away": "9",
+          "home": "8 MAPACHES PL24",
+          "away": "9 HALCONES PL26",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   12:00",
@@ -103,30 +103,30 @@
     },
     "D": {
       "teams": [
-        "10",
-        "11",
-        "12"
+        "10 GAVILANES PL38",
+        "11 LIEBRES PL01",
+        "12 PANTERAS PL28"
       ],
       "matches": [
         {
-          "home": "10",
-          "away": "11",
+          "home": "10 GAVILANES PL38",
+          "away": "11 LIEBRES PL01",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   9:50",
           "place": "Gómez Morín Cancha 4"
         },
         {
-          "home": "12",
-          "away": "10",
+          "home": "12 PANTERAS PL28",
+          "away": "10 GAVILANES PL38",
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   8:00",
           "place": "Gómez Morín Cancha 4"
         },
         {
-          "home": "11",
-          "away": "12",
+          "home": "11 LIEBRES PL01",
+          "away": "12 PANTERAS PL28",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   12:00",
@@ -173,7 +173,7 @@
       "place": "Gómez Morín Cancha 1"
     }
   },
-  "updatedAtLocal": "5/11/2025, 13:05:04",
+  "updatedAtLocal": "11/11/2025, 9:39:57",
   "theme": {
     "color": "#db6a00",
     "bg": "#eed48b"

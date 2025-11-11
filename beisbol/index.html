@@ -252,7 +252,7 @@
   <header>
     <div class="container">
       <h1 id="tournamentTitle">Torneo de Béisbol — 2 Grupos + Semifinales</h1>
-      <div class="subtitle" id="tournamentSubtitle">Fase de grupos todos contra todos + Semifinales, Final y Tercer Lugar</div>
+      <div class="subtitle" id="tournamentSubtitle">Grupo A: 3 equipos | Grupo B: 4 equipos | Todos contra todos + Semifinales, Final y Tercer Lugar</div>
     </div>
   </header>
 
@@ -298,7 +298,7 @@ function normalizeData(data) {
   // Estructura básica esperada del admin
   const normalized = {
     tournamentName: data.tournamentName || 'Torneo de Béisbol',
-    subtitle: data.subtitle || 'Fase de grupos todos contra todos + Semifinales, Final y Tercer Lugar',
+    subtitle: data.subtitle || 'Grupo A: 3 equipos | Grupo B: 4 equipos | Todos contra todos + Semifinales, Final y Tercer Lugar',
     theme: data.theme || { color: '#0284c7', bg: '#f8fafc' },
     points: data.points || { win: 2, draw: 1, loss: 0 },
     groups: {
@@ -471,7 +471,7 @@ function renderGroups() {
     
     html += `
       <div class="groupBox group${groupKey}">
-        <h3>Grupo ${groupKey}</h3>
+        <h3>Grupo ${groupKey} (${group.teams.length} equipos)</h3>
     `;
     
     // Tabla de posiciones
@@ -520,23 +520,12 @@ function renderGroups() {
       </div>
     `;
     
-    // Partidos del grupo
+    // Partidos del grupo - NUEVO: Mostrar los partidos que realmente existen en los datos
     html += '<div class="matches" style="margin-top:16px"><h4 style="margin:0 0 8px">Partidos</h4>';
     
-    const calendar = [
-      [group.teams[0], group.teams[1]],
-      [group.teams[2], group.teams[3]],
-      [group.teams[0], group.teams[2]],
-      [group.teams[1], group.teams[3]],
-      [group.teams[0], group.teams[3]],
-      [group.teams[1], group.teams[2]]
-    ];
-    
-    calendar.forEach(([home, away]) => {
-      const match = group.matches.find(m => m.home === home && m.away === away) || 
-                   { home, away, gh: null, ga: null, hour: '', place: '' };
-      
-      html += renderMatch(match, home, away);
+    // Usar los partidos reales del grupo en lugar de un calendario fijo
+    group.matches.forEach(match => {
+      html += renderMatch(match, match.home, match.away);
     });
     
     html += '</div></div>';
@@ -635,7 +624,7 @@ function renderKnockoutMatch(match, defaultHome, defaultAway) {
   return renderMatch(match, defaultHome, defaultAway);
 }
 
-// ===== CÁLCULO DE TABLAS (igual que en admin) =====
+// ===== CÁLCULO DE TABLAS (adaptado para grupos de diferentes tamaños) =====
 function computeTable(matches, teams, pointsConfig) {
   const table = Object.fromEntries(teams.map(team => [team, {
     team, 

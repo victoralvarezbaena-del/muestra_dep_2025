@@ -4,257 +4,257 @@
   "groups": {
     "A": {
       "teams": [
-        "1",
-        "2",
-        "3"
+        "1 ABEJAS PL08",
+        "2 PANTERAS PL28",
+        "3 COYOTES PL05"
       ],
       "matches": [
         {
-          "home": "1",
-          "away": "2",
+          "home": "1 ABEJAS PL08",
+          "away": "2 PANTERAS PL28",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025  9:05",
-          "place": "Gómez Morín Cancha 1"
+          "place": "Gomez Morin Cancha 1"
         },
         {
-          "home": "3",
-          "away": "1",
+          "home": "3 COYOTES PL05",
+          "away": "1 ABEJAS PL08",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025  11:45",
-          "place": "Gómez Morín Cancha 1"
+          "place": "Gomez Morin Cancha 1"
         },
         {
-          "home": "2",
-          "away": "3",
+          "home": "2 PANTERAS PL28",
+          "away": "3 COYOTES PL05",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025  9:35",
-          "place": "Gómez Morín Cancha 1"
+          "place": "Gomez Morin Cancha 1"
         }
       ]
     },
     "B": {
       "teams": [
-        "4",
-        "5",
-        "6"
+        "4 CORRECAMINOS PL20",
+        "5 LIEBRES PL01",
+        "6 TIGRES PL06"
       ],
       "matches": [
         {
-          "home": "4",
-          "away": "5",
+          "home": "4 CORRECAMINOS PL20",
+          "away": "5 LIEBRES PL01",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025  9:05",
-          "place": "Gómez Morín Cancha 1"
+          "place": "Gomez Morin Cancha 1"
         },
         {
-          "home": "6",
-          "away": "4",
+          "home": "6 TIGRES PL06",
+          "away": "4 CORRECAMINOS PL20",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025  11:45",
-          "place": "Gómez Morín Cancha 1"
+          "place": "Gomez Morin Cancha 1"
         },
         {
-          "home": "5",
-          "away": "6",
+          "home": "5 LIEBRES PL01",
+          "away": "6 TIGRES PL06",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025  9:20",
-          "place": "Gómez Morín Cancha 1"
+          "place": "Gomez Morin Cancha 1"
         }
       ]
     },
     "C": {
       "teams": [
-        "7",
-        "8",
-        "9"
+        "7 AGUILUCHOS PL17",
+        "8 AGUILAS PL07",
+        "9 ARDILLAS EM05"
       ],
       "matches": [
         {
-          "home": "7",
-          "away": "8",
+          "home": "7 AGUILUCHOS PL17",
+          "away": "8 AGUILAS PL07",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025  9:05",
-          "place": "Gómez Morín Cancha 2"
+          "place": "Gomez Morin Cancha 2"
         },
         {
-          "home": "9",
-          "away": "7",
+          "home": "9 ARDILLAS EM05",
+          "away": "7 AGUILUCHOS PL17",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025  11:45",
-          "place": "Gómez Morín Cancha 2"
+          "place": "Gomez Morin Cancha 2"
         },
         {
-          "home": "8",
-          "away": "9",
+          "home": "8 AGUILAS PL07",
+          "away": "9 ARDILLAS EM05",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025  9:20",
-          "place": "Gómez Morín Cancha 2"
+          "place": "Gomez Morin Cancha 2"
         }
       ]
     },
     "D": {
       "teams": [
-        "10",
-        "11",
-        "12"
+        "10 DRAGONES PL23",
+        "11 HUEHUES EM24",
+        "12 LINCES PL36"
       ],
       "matches": [
         {
-          "home": "10",
-          "away": "11",
+          "home": "10 DRAGONES PL23",
+          "away": "11 HUEHUES EM24",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025  9:05",
-          "place": "Gómez Morín Cancha 2"
+          "place": "Gomez Morin Cancha 2"
         },
         {
-          "home": "12",
-          "away": "10",
+          "home": "12 LINCES PL36",
+          "away": "10 DRAGONES PL23",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025  11:45",
-          "place": "Gómez Morín Cancha 2"
+          "place": "Gomez Morin Cancha 2"
         },
         {
-          "home": "11",
-          "away": "12",
+          "home": "11 HUEHUES EM24",
+          "away": "12 LINCES PL36",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025  9:20",
-          "place": "Gómez Morín Cancha 2"
+          "place": "Gomez Morin Cancha 2"
         }
       ]
     },
     "E": {
       "teams": [
-        "13",
-        "14",
-        "15"
+        "13 CATANES PL22",
+        "14 LOROS PL21",
+        "15 TIGRILLOS PL14"
       ],
       "matches": [
         {
-          "home": "13",
-          "away": "14",
+          "home": "13 CATANES PL22",
+          "away": "14 LOROS PL21",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025  9:05",
-          "place": "Gómez Morín Cancha 3"
+          "place": "Gomez Morin Cancha 3"
         },
         {
-          "home": "15",
-          "away": "13",
+          "home": "15 TIGRILLOS PL14",
+          "away": "13 CATANES PL22",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025  11:45",
-          "place": "Gómez Morín Cancha 3"
+          "place": "Gomez Morin Cancha 3"
         },
         {
-          "home": "14",
-          "away": "15",
+          "home": "14 LOROS PL21",
+          "away": "15 TIGRILLOS PL14",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025  9:20",
-          "place": "Gómez Morín Cancha 3"
+          "place": "Gomez Morin Cancha 3"
         }
       ]
     },
     "F": {
       "teams": [
-        "16",
-        "17",
-        "18"
+        "16 AGUILAS PL19",
+        "17 GATOS PARDOS PL35",
+        "18 CAIMANES PL27"
       ],
       "matches": [
         {
-          "home": "16",
-          "away": "17",
+          "home": "16 AGUILAS PL19",
+          "away": "17 GATOS PARDOS PL35",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025  9:05",
-          "place": "Gómez Morín Cancha 3"
+          "place": "Gomez Morin Cancha 3"
         },
         {
-          "home": "18",
-          "away": "16",
+          "home": "18 CAIMANES PL27",
+          "away": "16 AGUILAS PL19",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025  11:45",
-          "place": "Gómez Morín Cancha 3"
+          "place": "Gomez Morin Cancha 3"
         },
         {
-          "home": "17",
-          "away": "18",
+          "home": "17 GATOS PARDOS PL35",
+          "away": "18 CAIMANES PL27",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025  9:20",
-          "place": "Gómez Morín Cancha 3"
+          "place": "Gomez Morin Cancha 3"
         }
       ]
     },
     "G": {
       "teams": [
-        "19",
-        "20",
-        "21",
-        "22"
+        "19 MAPACHES PL24",
+        "20 HALCONES PL26",
+        "21 QUICHANES PL13",
+        "22 CORRECAMINOS PL10"
       ],
       "matches": [
         {
-          "home": "19",
-          "away": "20",
+          "home": "19 MAPACHES PL24",
+          "away": "20 HALCONES PL26",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025  9:05",
-          "place": "Gómez Morín Cancha 4"
+          "place": "Gomez Morin Cancha 4"
         },
         {
-          "home": "21",
-          "away": "22",
+          "home": "21 QUICHANES PL13",
+          "away": "22 CORRECAMINOS PL10",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025  9:05",
-          "place": "Gómez Morín Cancha 4"
+          "place": "Gomez Morin Cancha 4"
         },
         {
-          "home": "19",
-          "away": "21",
+          "home": "19 MAPACHES PL24",
+          "away": "21 QUICHANES PL13",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025  9:20",
-          "place": "Gómez Morín Cancha 4"
+          "place": "Gomez Morin Cancha 4"
         },
         {
-          "home": "20",
-          "away": "22",
+          "home": "20 HALCONES PL26",
+          "away": "22 CORRECAMINOS PL10",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025  9:20",
-          "place": "Gómez Morín Cancha 4"
+          "place": "Gomez Morin Cancha 4"
         },
         {
-          "home": "19",
-          "away": "22",
+          "home": "19 MAPACHES PL24",
+          "away": "22 CORRECAMINOS PL10",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025  11:45",
-          "place": "Gómez Morín Cancha 4"
+          "place": "Gomez Morin Cancha 4"
         },
         {
-          "home": "20",
-          "away": "21",
+          "home": "20 HALCONES PL26",
+          "away": "21 QUICHANES PL13",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025  11:45",
-          "place": "GGómez Morín Cancha 4"
+          "place": "Gomez Morin Cancha 4"
         }
       ]
     }
@@ -267,7 +267,7 @@
       "ga": null,
       "winner": "",
       "hour": "20/11/2025   9:30",
-      "place": "Gómez Morín Cancha 1",
+      "place": "Gomez Morin Cancha 1",
       "homeName": "",
       "awayName": ""
     },
@@ -278,7 +278,7 @@
       "ga": null,
       "winner": "",
       "hour": "20/11/2025   9:30",
-      "place": "Gómez Morín Cancha 2",
+      "place": "Gomez Morin Cancha 2",
       "homeName": "",
       "awayName": ""
     },
@@ -289,7 +289,7 @@
       "ga": null,
       "winner": "",
       "hour": "20/11/2025   9:30",
-      "place": "Gómez Morín Cancha 3",
+      "place": "Gomez Morin Cancha 3",
       "homeName": "",
       "awayName": ""
     },
@@ -300,7 +300,7 @@
       "ga": null,
       "winner": "",
       "hour": "20/11/2025   9:30",
-      "place": "Gómez Morín Cancha 4",
+      "place": "Gomez Morin Cancha 4",
       "homeName": "",
       "awayName": ""
     },
@@ -311,7 +311,7 @@
       "ga": null,
       "winner": "",
       "hour": "20/11/2025   11:40",
-      "place": "Gómez Morín Cancha 1",
+      "place": "Gomez Morin Cancha 1",
       "homeName": "",
       "awayName": ""
     },
@@ -322,7 +322,7 @@
       "ga": null,
       "winner": "",
       "hour": "20/11/2025   11:40",
-      "place": "Gómez Morín Cancha 2",
+      "place": "Gomez Morin Cancha 2",
       "homeName": "",
       "awayName": ""
     },
@@ -332,8 +332,8 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "21/11/2025   8:30",
-      "place": "Gómez Morín Cancha 2",
+      "hour": "",
+      "place": "",
       "homeName": "",
       "awayName": ""
     },
@@ -344,12 +344,12 @@
       "ga": null,
       "winner": "",
       "hour": "21/11/2025   8:30",
-      "place": "Gómez Morín Cancha 1",
+      "place": "Gomez Morin Cancha 1",
       "homeName": "",
       "awayName": ""
     }
   },
-  "updatedAtLocal": "5/11/2025, 10:53:19",
+  "updatedAtLocal": "11/11/2025, 9:24:06",
   "theme": {
     "color": "#db6a00",
     "bg": "#ecb009"

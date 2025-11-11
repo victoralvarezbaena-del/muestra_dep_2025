@@ -343,30 +343,6 @@
       border: 1px solid rgba(255,255,255,0.3);
     }
 
-    /* Información de clasificación */
-    .qualification {
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 16px;
-      font-size: clamp(13px, 1.8vw, 14px);
-    }
-
-    .qualified-team {
-      background: #dcfce7;
-      padding: 8px 12px;
-      border-radius: 8px;
-      margin: 4px 0;
-      border-left: 4px solid #16a34a;
-      word-break: break-word;
-    }
-
-    .second-place {
-      background: #fef9c3;
-      border-left: 4px solid #eab308;
-    }
-
     /* Mejoras responsive para móviles */
     @media (max-width: 480px) {
       .container {
@@ -417,15 +393,6 @@
         padding: 3px 40px;
         right: -40px;
       }
-      
-      .qualification {
-        padding: 10px;
-      }
-      
-      .qualified-team {
-        padding: 6px 10px;
-        font-size: 13px;
-      }
     }
 
     @media (max-width: 360px) {
@@ -452,11 +419,6 @@
       
       th, td {
         padding: 3px 4px;
-      }
-      
-      .qualified-team {
-        font-size: 12px;
-        padding: 5px 8px;
       }
     }
   </style>
@@ -719,28 +681,9 @@
       `;
     }
 
-    // Renderizar información de clasificación
-    function renderQualificationInfo(qualifiedTeams) {
-      if (!qualifiedTeams) return '';
-      
-      const qt = qualifiedTeams;
-      let html = '<div class="qualification"><h3>📊 Clasificación a Semifinales</h3>';
-      
-      html += '<div><strong>Clasificados:</strong></div>';
-      if (qt.firstA) html += `<div class="qualified-team">🥇 ${qt.firstA} (1º Grupo A)</div>`;
-      if (qt.firstB) html += `<div class="qualified-team">🥇 ${qt.firstB} (1º Grupo B)</div>`;
-      if (qt.firstC) html += `<div class="qualified-team">🥇 ${qt.firstC} (1º Grupo C)</div>`;
-      if (qt.secondC) html += `<div class="qualified-team second-place">🥈 ${qt.secondC} (2º Grupo C)</div>`;
-      
-      html += '</div>';
-      return html;
-    }
-
-    // Renderizar fase de grupos
-    function renderGroups(groups, pointsConfig, qualifiedTeams) {
+    // Renderizar fase de grupos (SIN información de clasificación)
+    function renderGroups(groups, pointsConfig) {
       let html = '<div class="card"><h2>Fase de Grupos</h2>';
-      
-      html += renderQualificationInfo(qualifiedTeams);
       html += '<div class="groups">';
       
       ['A', 'B', 'C'].forEach(groupKey => {
@@ -800,11 +743,10 @@
     }
 
     // Renderizar fase eliminatoria
-    function renderKnockout(knockout, qualifiedTeams, semifinalTeams) {
+    function renderKnockout(knockout, semifinalTeams) {
       if (!knockout) return '';
       
       const k = knockout;
-      const qt = qualifiedTeams || {};
       const st = semifinalTeams || {};
       
       let html = '';
@@ -819,10 +761,10 @@
       }
       
       // Usar nombres personalizados si existen, sino los automáticos
-      const sf1Home = st.sf1Home || qt.firstA || '1º Grupo A';
-      const sf1Away = st.sf1Away || qt.secondC || '2º Grupo C';
-      const sf2Home = st.sf2Home || qt.firstB || '1º Grupo B';
-      const sf2Away = st.sf2Away || qt.firstC || '1º Grupo C';
+      const sf1Home = st.sf1Home || '1º Grupo A';
+      const sf1Away = st.sf1Away || '2º Grupo C';
+      const sf2Home = st.sf2Home || '1º Grupo B';
+      const sf2Away = st.sf2Away || '1º Grupo C';
       
       html += `
         <div class="card">
@@ -881,11 +823,11 @@
       html += renderCover(data);
       
       if (data.groups) {
-        html += renderGroups(data.groups, data.points, data.qualifiedTeams);
+        html += renderGroups(data.groups, data.points);
       }
       
       if (data.knockout) {
-        html += renderKnockout(data.knockout, data.qualifiedTeams, data.semifinalTeams);
+        html += renderKnockout(data.knockout, data.semifinalTeams);
       }
       
       document.getElementById('tournamentContent').innerHTML = html;

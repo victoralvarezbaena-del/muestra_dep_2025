@@ -98,27 +98,7 @@
       opacity: 0.9;
     }
     
-    /* Clasificación a semifinales */
-    .qualification {
-      background: #f0fdf4;
-      border: 1px solid #bbf7d0;
-      border-radius: 12px;
-      padding: 12px;
-      margin-top: 16px;
-    }
-    
-    .qualified-team {
-      background: #dcfce7;
-      padding: 8px 12px;
-      border-radius: 8px;
-      margin: 4px 0;
-      border-left: 4px solid #16a34a;
-    }
-    
-    .best-second {
-      background: #fef9c3;
-      border-left: 4px solid #eab308;
-    }
+    /* Eliminados los estilos de clasificación */
   </style>
 </head>
 <body>
@@ -214,13 +194,7 @@ Equipo C4</textarea>
     <section class="card">
       <h2>Grupos y partidos</h2>
       
-      <!-- Clasificación a semifinales -->
-      <div id="qualificationInfo" class="qualification">
-        <h3>📊 Clasificación a Semifinales</h3>
-        <div id="qualifiedTeams">
-          <div class="loading">Calculando clasificación...</div>
-        </div>
-      </div>
+      <!-- ELIMINADO: Bloque de clasificación a semifinales -->
       
       <div id="groupsRoot"></div>
 
@@ -461,32 +435,11 @@ function getQualifiedTeams() {
   return qualified;
 }
 
-function updateQualificationInfo() {
-  const qualified = getQualifiedTeams();
-  const container = $('#qualifiedTeams');
-  
-  let html = '';
-  
-  // Equipos clasificados automáticamente (primeros)
-  html += '<div><strong>Clasificados directos:</strong></div>';
-  if (qualified.firstA) html += `<div class="qualified-team">🥇 ${qualified.firstA} (1º Grupo A)</div>`;
-  if (qualified.firstB) html += `<div class="qualified-team">🥇 ${qualified.firstB} (1º Grupo B)</div>`;
-  if (qualified.firstC) html += `<div class="qualified-team">🥇 ${qualified.firstC} (1º Grupo C)</div>`;
-  
-  // Mejor segundo
-  html += '<div style="margin-top: 8px;"><strong>Mejor segundo (Grupos A/B):</strong></div>';
-  if (qualified.bestSecond) {
-    const isFromA = qualified.bestSecond === qualified.secondA;
-    html += `<div class="qualified-team best-second">🥈 ${qualified.bestSecond} (2º Grupo ${isFromA ? 'A' : 'B'})</div>`;
-  }
-  
-  container.innerHTML = html;
-  
-  // Actualizar semifinales
-  updateKnockout(qualified);
-}
+// ELIMINADA: función updateQualificationInfo()
 
-function updateKnockout(qualified) {
+function updateKnockout() {
+  const qualified = getQualifiedTeams();
+  
   // Semifinal 1: 1º Grupo A vs Mejor 2º
   $('#sf1h').textContent = qualified.firstA || '1º Grupo A';
   $('#sf1a').textContent = qualified.bestSecond || 'Mejor 2º';
@@ -514,7 +467,7 @@ function updateKnockout(qualified) {
   $('#thirdh').textContent = state.knockout.third.home || sf1Loser;
   $('#thirda').textContent = state.knockout.third.away || sf2Loser;
 
-  updateWinnerSelects(qualified);
+  updateWinnerSelects();
 }
 
 // ===== RENDER GRUPOS =====
@@ -610,7 +563,7 @@ function renderGroups() {
   });
   
   setupGroupEventListeners();
-  updateQualificationInfo();
+  updateKnockout(); // Solo actualizar knockout, sin mostrar clasificación
 }
 
 // ===== EVENT LISTENERS PARA GRUPOS =====
@@ -664,7 +617,7 @@ function setupGroupEventListeners() {
 }
 
 // ===== KNOCKOUT =====
-function updateWinnerSelects(qualified) {
+function updateWinnerSelects() {
   const sf1h = $('#sf1h').textContent;
   const sf1a = $('#sf1a').textContent;
   const sf2h = $('#sf2h').textContent;
@@ -726,7 +679,7 @@ function loadKnockoutFromState() {
   $('#thirdHour').value = k.third.hour || '';
   $('#thirdPlace').value = k.third.place || '';
   
-  updateQualificationInfo();
+  updateKnockout();
 }
 
 function setupKnockoutEventListeners() {
@@ -734,17 +687,17 @@ function setupKnockoutEventListeners() {
   $('#sf1gh').addEventListener('input', () => {
     state.knockout.sf1.gh = valInt($('#sf1gh').value);
     saveState();
-    updateQualificationInfo();
+    updateKnockout();
   });
   $('#sf1ga').addEventListener('input', () => {
     state.knockout.sf1.ga = valInt($('#sf1ga').value);
     saveState();
-    updateQualificationInfo();
+    updateKnockout();
   });
   $('#sf1w').addEventListener('change', () => {
     state.knockout.sf1.winner = $('#sf1w').value;
     saveState();
-    updateQualificationInfo();
+    updateKnockout();
   });
   $('#sf1Hour').addEventListener('change', () => {
     state.knockout.sf1.hour = $('#sf1Hour').value.trim();
@@ -759,17 +712,17 @@ function setupKnockoutEventListeners() {
   $('#sf2gh').addEventListener('input', () => {
     state.knockout.sf2.gh = valInt($('#sf2gh').value);
     saveState();
-    updateQualificationInfo();
+    updateKnockout();
   });
   $('#sf2ga').addEventListener('input', () => {
     state.knockout.sf2.ga = valInt($('#sf2ga').value);
     saveState();
-    updateQualificationInfo();
+    updateKnockout();
   });
   $('#sf2w').addEventListener('change', () => {
     state.knockout.sf2.winner = $('#sf2w').value;
     saveState();
-    updateQualificationInfo();
+    updateKnockout();
   });
   $('#sf2Hour').addEventListener('change', () => {
     state.knockout.sf2.hour = $('#sf2Hour').value.trim();
@@ -784,17 +737,17 @@ function setupKnockoutEventListeners() {
   $('#figh').addEventListener('input', () => {
     state.knockout.final.gh = valInt($('#figh').value);
     saveState();
-    updateQualificationInfo();
+    updateKnockout();
   });
   $('#figa').addEventListener('input', () => {
     state.knockout.final.ga = valInt($('#figa').value);
     saveState();
-    updateQualificationInfo();
+    updateKnockout();
   });
   $('#fiw').addEventListener('change', () => {
     state.knockout.final.winner = $('#fiw').value;
     saveState();
-    updateQualificationInfo();
+    updateKnockout();
   });
   $('#fiHour').addEventListener('change', () => {
     state.knockout.final.hour = $('#fiHour').value.trim();
@@ -809,17 +762,17 @@ function setupKnockoutEventListeners() {
   $('#thirdgh').addEventListener('input', () => {
     state.knockout.third.gh = valInt($('#thirdgh').value);
     saveState();
-    updateQualificationInfo();
+    updateKnockout();
   });
   $('#thirdga').addEventListener('input', () => {
     state.knockout.third.ga = valInt($('#thirdga').value);
     saveState();
-    updateQualificationInfo();
+    updateKnockout();
   });
   $('#thirdw').addEventListener('change', () => {
     state.knockout.third.winner = $('#thirdw').value;
     saveState();
-    updateQualificationInfo();
+    updateKnockout();
   });
   $('#thirdHour').addEventListener('change', () => {
     state.knockout.third.hour = $('#thirdHour').value.trim();

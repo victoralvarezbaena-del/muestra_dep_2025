@@ -5,10 +5,132 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Administrador — Torneo Béisbol 2 Grupos + Semifinales</title>
   <style>
-    /* ESTILOS EXISTENTES... */
+    :root{ --bg:#f8fafc; --panel:#e2e8f0; --card:#ffffff; --muted:#475569; --text:#0f172a; --accent:#0284c7; --ok:#16a34a; --bad:#dc2626; --ring:0 0 0 2px var(--accent) inset; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    header{padding:20px 16px;border-bottom:2px solid #cbd5e1;background:linear-gradient(90deg,#e2e8f0,#f1f5f9);position:sticky;top:0;z-index:10}
+    .container{max-width:1200px;margin:0 auto;padding:16px}
+    h1{margin:0;font-size:clamp(22px,3.2vw,34px)}
+    .subtitle{color:var(--muted)}
+
+    .grid{display:grid;gap:16px}
+    @media(min-width:1100px){.grid{grid-template-columns:420px 1fr}}
+
+    .card{background:var(--card);border:1px solid #cbd5e1;border-radius:18px;padding:16px;box-shadow:0 3px 10px rgba(0,0,0,.1)}
+    .card h2{margin:0 0 12px;font-size:18px}
+    label{display:block;margin:8px 0 6px;color:var(--muted)}
+    textarea,input[type="text"],input[type="number"],input[type="url"],select,input[type="file"],input[type="color"]{width:100%;background:#f8fafc;color:var(--text);border:1px solid #cbd5e1;border-radius:12px;padding:10px 12px;outline:none}
+    textarea:focus,input:focus,select:focus{box-shadow:var(--ring);border-color:transparent}
+    textarea{min-height:96px;white-space:pre}
+    button{background:linear-gradient(180deg,var(--accent),#0ea5e9);color:#fff;border:none;border-radius:12px;padding:10px 14px;font-weight:700;cursor:pointer}
+    button.ghost{background:transparent;color:var(--accent);border:1px solid #cbd5e1}
+    button:disabled{opacity:0.6;cursor:not-allowed}
+    .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .spacer{flex:1}
+
+    .groups{display:grid;gap:12px}
+    @media(min-width:700px){.groups{grid-template-columns:1fr 1fr}}
+
+    /* Colores por grupo */
+    .groupA{background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.45)}
+    .groupB{background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.45)}
+
+    .groupBox{padding:12px;border-radius:12px;margin-bottom:12px}
+
+    .matches{display:grid;gap:10px;margin-top:10px}
+    .match{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;background:#f8fafc;border:1px solid #cbd5e1;border-radius:12px;padding:10px}
+    .team{display:flex;align-items:center;gap:10px}
+    .team input{max-width:80px;text-align:center}
+    .dash{opacity:.6}
+    .info{display:flex;gap:8px;margin-top:6px}
+    .info input{background:#f8fafc;border:1px solid #cbd5e1;border-radius:10px;padding:8px 10px;font-size:14px}
+
+    table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+    th,td{padding:6px 8px;border-bottom:1px solid #cbd5e1;text-align:right;font-variant-numeric: tabular-nums;}
+    th:first-child,td:first-child{text-align:left}
+    th:nth-child(2),td:nth-child(2){text-align:left}
+    thead th{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+    tbody tr:hover{background:#e2e8f0}
+    .pos{font-variant-numeric:tabular-nums;color:var(--muted);font-weight:600}
+    .pts{font-weight:800}
+    .first{background:rgba(34,197,94,.15)}
+    .second{background:rgba(251,191,36,.15)}
+    .note{font-size:12px;color:var(--muted)}
+    .pct{font-weight:600;color:var(--muted)}
+
+    /* Knockout */
+    .bracket{display:grid;gap:12px;margin-top:16px}
+    @media(min-width:900px){.bracket{grid-template-columns:1fr 1fr}}
+    .semi,.final,.third{background:#ffffff;border:1px solid #cbd5e1;border-radius:12px;padding:12px}
+    .semi h3,.final h3,.third h3{margin:0 0 8px;font-size:16px}
+
+    /* Estado de publicación */
+    .status{font-size:12px;padding:4px 8px;border-radius:6px;margin-left:8px}
+    .status.success{background:#dcfce7;color:#166534;border:1px solid #bbf7d0}
+    .status.error{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
+    .status.loading{background:#eff6ff;color:#1e40af;border:1px solid#dbeafe}
+
+    /* Import/Export section */
+    .import-export{background:#f0f9ff;border:2px dashed #bae6fd;border-radius:12px;padding:16px;margin-top:12px}
+    .import-export h3{margin:0 0 12px;font-size:16px;color:#0369a1}
     
-    /* Nuevo estilo para grupo de 3 equipos */
-    .groupC {background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.45)}
+    /* Resaltar Final */
+    .final {
+      position: relative;
+      border: 2px solid var(--accent);
+      box-shadow: 0 0 0 4px rgba(2,132,199,.12) inset;
+      background: #ffffff;
+      overflow: hidden;
+    }
+    .final h3{ color: var(--accent); }
+
+    .final::before {
+      content: 'FINAL 🏆';
+      position: absolute;
+      top: 12px;
+      right: -48px;
+      transform: rotate(45deg);
+      background: var(--accent);
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 4px 48px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      opacity: 0.9;
+    }
+    
+    /* Regla Mercy */
+    .mercy-rule {
+      background: #fef3c7;
+      border: 1px solid #f59e0b;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-top: 8px;
+      font-size: 12px;
+      color: #92400e;
+    }
+
+    /* Tooltip para explicar JV */
+    .tooltip {
+      position: relative;
+      cursor: help;
+      border-bottom: 1px dotted var(--muted);
+    }
+    
+    .tooltip:hover::after {
+      content: "Juegos de Ventaja = (Ganados del líder - Ganados) + (Perdidos - Perdidos del líder) ÷ 2";
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--text);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      white-space: nowrap;
+      z-index: 1000;
+    }
   </style>
 </head>
 <body>
@@ -32,7 +154,175 @@ Lobos
 Panteras</textarea></div>
       </div>
 
-      <!-- Resto del código igual hasta el script -->
+      <!-- Tema (colores) -->
+      <div class="row" style="margin-top:8px">
+        <input type="text" id="tournamentName" placeholder="Nombre del torneo (opcional)" style="flex:2" />
+        <div style="display:flex; gap:8px; align-items:center">
+          <label for="themeColor" style="margin:0;color:var(--muted)">Acento</label>
+          <input type="color" id="themeColor" value="#0284c7" style="width:54px;padding:0">
+          <label for="themeBg" style="margin:0;color:var(--muted)">Fondo</label>
+          <input type="color" id="themeBg" value="#f8fafc" style="width:54px;padding:0">
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:8px">
+        <button id="btnGenerate">Generar rol por grupo</button>
+
+        <!-- PUBLICAR (para GH Pages descarga data.json) -->
+        <input type="url" id="publishURL" placeholder="(Opcional para otros backends)" style="flex:2; min-width:320px" />
+        <button id="btnPublish">Publicar <span id="publishStatus"></span></button>
+
+        <div class="spacer"></div>
+        <button id="btnSaveCopy" class="ghost">💾 Guardar copia</button>
+        <button id="btnClearAll" class="ghost">🧹 Limpiar</button>
+      </div>
+
+      <!-- SECCIÓN IMPORTAR/EXPORTAR -->
+      <div class="import-export">
+        <h3>📥 Importar / 📤 Exportar Datos</h3>
+        <div class="row">
+          <input type="file" id="importFile" accept=".json" style="flex:2">
+          <button id="btnImport" class="ghost">📥 Importar JSON</button>
+          <button id="btnExport" class="ghost">📤 Exportar JSON</button>
+        </div>
+        <div style="font-size:12px; color:var(--muted); margin-top:8px">
+          💡 Puedes importar un archivo JSON anterior para continuar donde lo dejaste
+        </div>
+      </div>
+
+      <div style="margin-top:8px; font-size:12px; color:var(--muted)">
+        💡 <strong>Para usar:</strong> 1) Agrega equipos → 2) Genera rol → 3) Ingresa resultados → 4) Publica
+      </div>
+      
+      <!-- Información sobre criterios de desempate -->
+      <div class="mercy-rule">
+        <strong>Criterios de desempate (Normativa Mexicana):</strong><br>
+        1. Puntos<br>
+        2. Diferencia de carreras<br>
+        3. Carreras a favor<br>
+        4. Enfrentamiento directo<br>
+        5. Menor cantidad de outs recibidos<br>
+        6. Sorteo
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Grupos y partidos</h2>
+      <div id="groupsRoot"></div>
+
+      <div class="bracket">
+        <div class="semi">
+          <h3>Semifinal 1 — A1 vs B2</h3>
+          <div class="row">
+            <div class="team" style="flex:1"><span id="sf1h">A1</span></div>
+            <div class="team" style="justify-content:center">
+              <input type="number" min="0" inputmode="numeric" id="sf1gh" style="max-width:80px"> <span class="dash">—</span>
+              <input type="number" min="0" inputmode="numeric" id="sf1ga" style="max-width:80px">
+            </div>
+            <div class="team" style="flex:1;justify-content:flex-end"><span id="sf1a">B2</span></div>
+          </div>
+          <div class="row" style="margin-top:6px">
+            <label style="flex:1">Si hay empate, elige ganador</label>
+            <select id="sf1w" style="max-width:260px"><option value="">— Ganador —</option></select>
+            <div class="row" style="margin-top:6px">
+              <input type="text" id="sf1Hour" placeholder="Hora (ej. 16:00)" style="max-width:180px">
+              <input type="text" id="sf1Place" placeholder="Lugar (ej. Estadio)" style="flex:1">
+            </div>
+          </div>
+          <!-- Nombres manuales (opcional) -->
+          <div class="row" style="margin-top:6px">
+            <input type="text" id="sf1HomeName" placeholder="Nombre semifinalista local (opcional)" style="flex:1">
+            <input type="text" id="sf1AwayName" placeholder="Nombre semifinalista visita (opcional)" style="flex:1">
+          </div>
+          <div class="mercy-rule">
+            <strong>Regla Mercy:</strong> Diferencia de 15 carreras en la 3a entrada o 10 carreras en la 4a entrada
+          </div>
+        </div>
+
+        <div class="semi">
+          <h3>Semifinal 2 — B1 vs A2</h3>
+          <div class="row">
+            <div class="team" style="flex:1"><span id="sf2h">B1</span></div>
+            <div class="team" style="justify-content:center">
+              <input type="number" min="0" inputmode="numeric" id="sf2gh" style="max-width:80px"> <span class="dash">—</span>
+              <input type="number" min="0" inputmode="numeric" id="sf2ga" style="max-width:80px">
+            </div>
+            <div class="team" style="flex:1;justify-content:flex-end"><span id="sf2a">A2</span></div>
+          </div>
+          <div class="row" style="margin-top:6px">
+            <label style="flex:1">Si hay empate, elige ganador</label>
+            <select id="sf2w" style="max-width:260px"><option value="">— Ganador —</option></select>
+            <div class="row" style="margin-top:6px">
+              <input type="text" id="sf2Hour" placeholder="Hora (ej. 17:00)" style="max-width:180px">
+              <input type="text" id="sf2Place" placeholder="Lugar (ej. Estadio)" style="flex:1">
+            </div>
+          </div>
+          <!-- Nombres manuales (opcional) -->
+          <div class="row" style="margin-top:6px">
+            <input type="text" id="sf2HomeName" placeholder="Nombre semifinalista local (opcional)" style="flex:1">
+            <input type="text" id="sf2AwayName" placeholder="Nombre semifinalista visita (opcional)" style="flex:1">
+          </div>
+          <div class="mercy-rule">
+            <strong>Regla Mercy:</strong> Diferencia de 15 carreras en la 3a entrada o 10 carreras en la 4a entrada
+          </div>
+        </div>
+
+        <div class="third">
+          <h3>Tercer Lugar</h3>
+          <div class="row">
+            <div class="team" style="flex:1"><span id="thirdh">Perdedor SF1</span></div>
+            <div class="team" style="justify-content:center">
+              <input type="number" min="0" inputmode="numeric" id="thirdgh" style="max-width:80px"> <span class="dash">—</span>
+              <input type="number" min="0" inputmode="numeric" id="thirdga" style="max-width:80px">
+            </div>
+            <div class="team" style="flex:1;justify-content:flex-end"><span id="thirda">Perdedor SF2</span></div>
+          </div>
+          <div class="row" style="margin-top:6px">
+            <label style="flex:1">Si hay empate, elige tercero</label>
+            <select id="thirdw" style="max-width:260px"><option value="">— Tercero —</option></select>
+            <div class="row" style="margin-top:6px">
+              <input type="text" id="thirdHour" placeholder="Hora (ej. 18:00)" style="max-width:180px">
+              <input type="text" id="thirdPlace" placeholder="Lugar (ej. Estadio)" style="flex:1">
+            </div>
+          </div>
+          <!-- Nombres manuales (opcional) -->
+          <div class="row" style="margin-top:6px">
+            <input type="text" id="thirdHomeName" placeholder="Nombre local tercer lugar (opcional)" style="flex:1">
+            <input type="text" id="thirdAwayName" placeholder="Nombre visita tercer lugar (opcional)" style="flex:1">
+          </div>
+          <div class="mercy-rule">
+            <strong>Regla Mercy:</strong> Diferencia de 15 carreras en la 3a entrada o 10 carreras en la 4a entrada
+          </div>
+        </div>
+
+        <div class="final">
+          <h3>Final</h3>
+          <div class="row">
+            <div class="team" style="flex:1"><span id="fih">Ganador SF1</span></div>
+            <div class="team" style="justify-content:center">
+              <input type="number" min="0" inputmode="numeric" id="figh" style="max-width:80px"> <span class="dash">—</span>
+              <input type="number" min="0" inputmode="numeric" id="figa" style="max-width:80px">
+            </div>
+            <div class="team" style="flex:1;justify-content:flex-end"><span id="fia">Ganador SF2</span></div>
+          </div>
+          <div class="row" style="margin-top:6px">
+            <label style="flex:1">Si hay empate, elige campeón</label>
+            <select id="fiw" style="max-width:260px"><option value="">— Campeón —</option></select>
+            <div class="row" style="margin-top:6px">
+              <input type="text" id="fiHour" placeholder="Hora (ej. 19:00)" style="max-width:180px">
+              <input type="text" id="fiPlace" placeholder="Lugar (ej. Estadio)" style="flex:1">
+            </div>
+          </div>
+          <!-- Nombres manuales (opcional) -->
+          <div class="row" style="margin-top:6px">
+            <input type="text" id="fiHomeName" placeholder="Nombre finalista local (opcional)" style="flex:1">
+            <input type="text" id="fiAwayName" placeholder="Nombre finalista visita (opcional)" style="flex:1">
+          </div>
+          <div class="mercy-rule">
+            <strong>Regla Mercy:</strong> Diferencia de 15 carreras en la 3a entrada o 10 carreras en la 4a entrada
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -49,10 +339,10 @@ let state = {
   },
   points: { win: 2, draw: 1, loss: 0 },
   knockout: {
-    sf1: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
-    sf2: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
-    final: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' },
-    third: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '' }
+    sf1: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' },
+    sf2: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' },
+    final: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' },
+    third: { home: '', away: '', gh: null, ga: null, winner: '', hour: '', place: '', homeName: '', awayName: '' }
   },
   tournamentName: '',
   theme: { color: '#0284c7', bg: '#f8fafc' }
@@ -315,8 +605,260 @@ function renderGroups() {
   setupGroupEventListeners();
 }
 
-// Resto del código JavaScript se mantiene igual...
-// [Las funciones setupGroupEventListeners, updateKnockout, saveState, loadState, etc. se mantienen igual]
+// ===== EVENT LISTENERS PARA GRUPOS =====
+function setupGroupEventListeners() {
+  // Scores
+  document.querySelectorAll('.score-home, .score-away').forEach(input => {
+    input.addEventListener('input', function() {
+      const groupKey = this.dataset.group;
+      const home = this.dataset.home;
+      const away = this.dataset.away;
+      
+      let match = state.groups[groupKey].matches.find(m => m.home === home && m.away === away);
+      if (!match) {
+        match = { home, away, gh: null, ga: null, hour: '', place: '' };
+        state.groups[groupKey].matches.push(match);
+      }
+      
+      if (this.classList.contains('score-home')) {
+        match.gh = valInt(this.value);
+      } else {
+        match.ga = valInt(this.value);
+      }
+      
+      saveState();
+      renderGroups();
+      updateKnockout();
+    });
+  });
+  
+  // Hora y lugar
+  document.querySelectorAll('.match-hour, .match-place').forEach(input => {
+    input.addEventListener('change', function() {
+      const groupKey = this.dataset.group;
+      const home = this.dataset.home;
+      const away = this.dataset.away;
+      
+      let match = state.groups[groupKey].matches.find(m => m.home === home && m.away === away);
+      if (!match) {
+        match = { home, away, gh: null, ga: null, hour: '', place: '' };
+        state.groups[groupKey].matches.push(match);
+      }
+      
+      if (this.classList.contains('match-hour')) {
+        match.hour = this.value.trim();
+      } else {
+        match.place = this.value.trim();
+      }
+      
+      saveState();
+    });
+  });
+}
+
+// ===== KNOCKOUT =====
+function updateKnockout() {
+  const A1 = groupWinner('A') || 'A1';
+  const A2 = groupRunnerUp('A') || 'A2';
+  const B1 = groupWinner('B') || 'B1';
+  const B2 = groupRunnerUp('B') || 'B2';
+
+  // Semifinales
+  $('#sf1h').textContent = state.knockout.sf1.home || A1;
+  $('#sf1a').textContent = state.knockout.sf1.away || B2;
+  $('#sf2h').textContent = state.knockout.sf2.home || B1;
+  $('#sf2a').textContent = state.knockout.sf2.away || A2;
+
+  // Final y tercer lugar
+  const sf1Winner = state.knockout.sf1.winner;
+  const sf2Winner = state.knockout.sf2.winner;
+  
+  // Para la final
+  $('#fih').textContent = state.knockout.final.home || (sf1Winner || 'Ganador SF1');
+  $('#fia').textContent = state.knockout.final.away || (sf2Winner || 'Ganador SF2');
+  
+  // Para tercer lugar
+  const sf1Loser = sf1Winner ? 
+    (sf1Winner === (state.knockout.sf1.home || A1) ? (state.knockout.sf1.away || B2) : (state.knockout.sf1.home || A1)) : 
+    'Perdedor SF1';
+  const sf2Loser = sf2Winner ? 
+    (sf2Winner === (state.knockout.sf2.home || B1) ? (state.knockout.sf2.away || A2) : (state.knockout.sf2.home || B1)) : 
+    'Perdedor SF2';
+  
+  $('#thirdh').textContent = state.knockout.third.home || sf1Loser;
+  $('#thirda').textContent = state.knockout.third.away || sf2Loser;
+
+  updateWinnerSelects();
+}
+
+function updateWinnerSelects() {
+  const sf1h = $('#sf1h').textContent;
+  const sf1a = $('#sf1a').textContent;
+  const sf2h = $('#sf2h').textContent;
+  const sf2a = $('#sf2a').textContent;
+  const fih = $('#fih').textContent;
+  const fia = $('#fia').textContent;
+  const thirdh = $('#thirdh').textContent;
+  const thirda = $('#thirda').textContent;
+
+  // Semifinal 1
+  $('#sf1w').innerHTML = `<option value="">— Ganador —</option>
+                          <option value="${sf1h}">${sf1h}</option>
+                          <option value="${sf1a}">${sf1a}</option>`;
+  if (state.knockout.sf1.winner) $('#sf1w').value = state.knockout.sf1.winner;
+
+  // Semifinal 2
+  $('#sf2w').innerHTML = `<option value="">— Ganador —</option>
+                          <option value="${sf2h}">${sf2h}</option>
+                          <option value="${sf2a}">${sf2a}</option>`;
+  if (state.knockout.sf2.winner) $('#sf2w').value = state.knockout.sf2.winner;
+
+  // Final
+  $('#fiw').innerHTML = `<option value="">— Campeón —</option>
+                         <option value="${fih}">${fih}</option>
+                         <option value="${fia}">${fia}</option>`;
+  if (state.knockout.final.winner) $('#fiw').value = state.knockout.final.winner;
+
+  // Tercer lugar
+  $('#thirdw').innerHTML = `<option value="">— Tercero —</option>
+                            <option value="${thirdh}">${thirdh}</option>
+                            <option value="${thirda}">${thirda}</option>`;
+  if (state.knockout.third.winner) $('#thirdw').value = state.knockout.third.winner;
+}
+
+// ===== PERSISTENCIA =====
+function saveState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function loadState() {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored);
+      state = { ...state, ...parsed };
+    } catch (e) {
+      console.warn('Error loading state, using default', e);
+    }
+  }
+}
+
+// ===== PUBLICACIÓN =====
+function publish() {
+  const statusEl = $('#publishStatus');
+  statusEl.textContent = '⏳';
+  statusEl.className = 'status loading';
+  
+  const data = {
+    ...state,
+    timestamp: new Date().toISOString(),
+    updatedAtLocal: new Date().toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    })
+  };
+  
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'data.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  
+  statusEl.textContent = '✅';
+  statusEl.className = 'status success';
+  
+  setTimeout(() => {
+    statusEl.textContent = '';
+    statusEl.className = '';
+  }, 3000);
+}
+
+// ===== IMPORT/EXPORT =====
+function exportData() {
+  const data = {
+    ...state,
+    timestamp: new Date().toISOString()
+  };
+  
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `torneo-beisbol-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function importData(file) {
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const imported = JSON.parse(e.target.result);
+      state = { ...state, ...imported };
+      saveState();
+      applyStateToUI();
+      renderGroups();
+      updateKnockout();
+      alert('✅ Datos importados correctamente');
+    } catch (err) {
+      alert('❌ Error al importar: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+// ===== UI STATE =====
+function applyStateToUI() {
+  // Equipos
+  $('#ga').value = state.groups.A.teams.join('\n');
+  $('#gb').value = state.groups.B.teams.join('\n');
+  
+  // Tema
+  $('#tournamentName').value = state.tournamentName || '';
+  $('#themeColor').value = state.theme.color || '#0284c7';
+  $('#themeBg').value = state.theme.bg || '#f8fafc';
+  
+  // Knockout scores
+  $('#sf1gh').value = state.knockout.sf1.gh == null ? '' : state.knockout.sf1.gh;
+  $('#sf1ga').value = state.knockout.sf1.ga == null ? '' : state.knockout.sf1.ga;
+  $('#sf2gh').value = state.knockout.sf2.gh == null ? '' : state.knockout.sf2.gh;
+  $('#sf2ga').value = state.knockout.sf2.ga == null ? '' : state.knockout.sf2.ga;
+  $('#figh').value = state.knockout.final.gh == null ? '' : state.knockout.final.gh;
+  $('#figa').value = state.knockout.final.ga == null ? '' : state.knockout.final.ga;
+  $('#thirdgh').value = state.knockout.third.gh == null ? '' : state.knockout.third.gh;
+  $('#thirdga').value = state.knockout.third.ga == null ? '' : state.knockout.third.ga;
+  
+  // Knockout hora y lugar
+  $('#sf1Hour').value = state.knockout.sf1.hour || '';
+  $('#sf1Place').value = state.knockout.sf1.place || '';
+  $('#sf2Hour').value = state.knockout.sf2.hour || '';
+  $('#sf2Place').value = state.knockout.sf2.place || '';
+  $('#fiHour').value = state.knockout.final.hour || '';
+  $('#fiPlace').value = state.knockout.final.place || '';
+  $('#thirdHour').value = state.knockout.third.hour || '';
+  $('#thirdPlace').value = state.knockout.third.place || '';
+  
+  // Nombres manuales
+  $('#sf1HomeName').value = state.knockout.sf1.homeName || '';
+  $('#sf1AwayName').value = state.knockout.sf1.awayName || '';
+  $('#sf2HomeName').value = state.knockout.sf2.homeName || '';
+  $('#sf2AwayName').value = state.knockout.sf2.awayName || '';
+  $('#fiHomeName').value = state.knockout.final.homeName || '';
+  $('#fiAwayName').value = state.knockout.final.awayName || '';
+  $('#thirdHomeName').value = state.knockout.third.homeName || '';
+  $('#thirdAwayName').value = state.knockout.third.awayName || '';
+}
 
 // ===== INICIALIZACIÓN =====
 function init() {
@@ -336,7 +878,48 @@ function init() {
     updateKnockout();
   });
   
-  // Resto de los event listeners se mantienen igual...
+  // Publicar
+  $('#btnPublish').addEventListener('click', publish);
+  
+  // Guardar copia
+  $('#btnSaveCopy').addEventListener('click', function() {
+    saveState();
+    alert('✅ Estado guardado localmente');
+  });
+  
+  // Limpiar
+  $('#btnClearAll').addEventListener('click', function() {
+    if (confirm('¿Borrar todos los datos?')) {
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
+  });
+  
+  // Importar/Exportar
+  $('#btnExport').addEventListener('click', exportData);
+  $('#btnImport').addEventListener('click', function() {
+    $('#importFile').click();
+  });
+  $('#importFile').addEventListener('change', function() {
+    if (this.files[0]) {
+      importData(this.files[0]);
+      this.value = '';
+    }
+  });
+  
+  // Tema
+  $('#tournamentName').addEventListener('change', function() {
+    state.tournamentName = this.value.trim();
+    saveState();
+  });
+  $('#themeColor').addEventListener('change', function() {
+    state.theme.color = this.value;
+    saveState();
+  });
+  $('#themeBg').addEventListener('change', function() {
+    state.theme.bg = this.value;
+    saveState();
+  });
 }
 
 // Iniciar

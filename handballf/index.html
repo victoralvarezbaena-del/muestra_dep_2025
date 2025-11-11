@@ -717,29 +717,13 @@
       `;
     }
 
-    // Renderizar información de clasificación
-    function renderQualificationInfo(qualifiedTeams) {
-      if (!qualifiedTeams) return '';
-      
-      const qt = qualifiedTeams;
-      let html = '<div class="qualification"><h3>📊 Clasificación a Semifinales</h3>';
-      
-      html += '<div><strong>Clasificados:</strong></div>';
-      if (qt.firstA) html += `<div class="qualified-team">🥇 ${qt.firstA} (1º Grupo A)</div>`;
-      if (qt.firstB) html += `<div class="qualified-team">🥇 ${qt.firstB} (1º Grupo B)</div>`;
-      if (qt.firstC) html += `<div class="qualified-team">🥇 ${qt.firstC} (1º Grupo C)</div>`;
-      if (qt.secondC) html += `<div class="qualified-team second-place">🥈 ${qt.secondC} (2º Grupo C)</div>`;
-      
-      html += '</div>';
-      return html;
-    }
+  
 
     // Renderizar fase de grupos
     function renderGroups(groups, pointsConfig, qualifiedTeams) {
       let html = '<div class="card"><h2>Fase de Grupos</h2>';
       
-      html += renderQualificationInfo(qualifiedTeams);
-      html += '<div class="groups">';
+          html += '<div class="groups">';
       
       ['A', 'B', 'C'].forEach(groupKey => {
         const group = groups[groupKey];

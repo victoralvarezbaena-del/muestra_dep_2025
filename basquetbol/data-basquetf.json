@@ -111,8 +111,8 @@
   },
   "knockout": {
     "sf1": {
-      "home": "",
-      "away": "",
+      "home": "A1",
+      "away": "B1",
       "gh": null,
       "ga": null,
       "winner": "",
@@ -120,8 +120,8 @@
       "place": "Gómez Morín Cancha 3"
     },
     "sf2": {
-      "home": "",
-      "away": "",
+      "home": "C1",
+      "away": "D1",
       "gh": null,
       "ga": null,
       "winner": "",
@@ -147,7 +147,7 @@
       "place": "Gómez Morín Cancha 3"
     }
   },
-  "updatedAtLocal": "11/11/2025, 11:28:51",
+  "updatedAtLocal": "11/11/2025, 11:52:07",
   "theme": {
     "color": "#df944e",
     "bg": "#eed48b"

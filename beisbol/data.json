@@ -2,117 +2,92 @@
   "groups": {
     "A": {
       "teams": [
-        "A1",
-        "A2",
-        "A3",
-        "A4"
+        "1 AGUILUCHOS PL17",
+        "2 CORRECAMINOS PL10",
+        "3 LOBOS PL02"
       ],
       "matches": [
         {
-          "home": "A1",
-          "away": "A2",
+          "home": "1 AGUILUCHOS PL17",
+          "away": "2 CORRECAMINOS PL10",
           "gh": null,
           "ga": null,
-          "hour": "9:00  19/11/2025",
-          "place": "Estadio"
+          "hour": "19/11/2025   8:30",
+          "place": "La Diana"
         },
         {
-          "home": "A3",
-          "away": "A4",
+          "home": "2 CORRECAMINOS PL10",
+          "away": "3 LOBOS PL02",
           "gh": null,
           "ga": null,
-          "hour": "11:00  19/11/2025",
-          "place": "Estadio"
+          "hour": "19/11/2025   14:00",
+          "place": "La Diana"
         },
         {
-          "home": "A1",
-          "away": "A3",
+          "home": "1 AGUILUCHOS PL17",
+          "away": "3 LOBOS PL02",
           "gh": null,
           "ga": null,
-          "hour": "13:00  19/11/2025",
-          "place": "Estadio"
-        },
-        {
-          "home": "A2",
-          "away": "A4",
-          "gh": null,
-          "ga": null,
-          "hour": "15:00 19/11/2025",
-          "place": "Estadio"
-        },
-        {
-          "home": "A1",
-          "away": "A4",
-          "gh": null,
-          "ga": null,
-          "hour": "9:00  20/11/2025",
-          "place": "Estadio"
-        },
-        {
-          "home": "A2",
-          "away": "A3",
-          "gh": null,
-          "ga": null,
-          "hour": "11:00  20/11/2025",
-          "place": "Estadio"
+          "hour": "20/11/2025   8:30",
+          "place": "La Diana"
         }
       ]
     },
     "B": {
       "teams": [
-        "B1",
-        "B2",
-        "B3",
-        "B4"
+        "4 CARDENALES EM16",
+        "5 PUMAS EM09",
+        "6 TIGRES PL06",
+        "7 AGUILAS PL19"
       ],
       "matches": [
         {
-          "home": "B1",
-          "away": "B2",
+          "home": "4 CARDENALES EM16",
+          "away": "5 PUMAS EM09",
           "gh": null,
           "ga": null,
-          "hour": "9:00  19/11/2025",
-          "place": "La Diana"
+          "hour": "19/11/2025   8:30",
+          "place": "Estadio"
         },
         {
-          "home": "B3",
-          "away": "B4",
+          "home": "6 TIGRES PL06",
+          "away": "7 AGUILAS PL19",
           "gh": null,
           "ga": null,
-          "hour": "11.00  19/11/2025",
-          "place": "La Diana"
+          "hour": "19/11/2025   11:00",
+          "place": "Estadio"
         },
         {
-          "home": "B1",
-          "away": "B3",
+          "home": "4 CARDENALES EM16",
+          "away": "6 TIGRES PL06",
           "gh": null,
           "ga": null,
-          "hour": "13:00  19/11/2025",
-          "place": "La Diana"
+          "hour": "19/11/2025   14:00",
+          "place": "Estadio"
         },
         {
-          "home": "B2",
-          "away": "B4",
+          "home": "5 PUMAS EM09",
+          "away": "7 AGUILAS PL19",
           "gh": null,
           "ga": null,
-          "hour": "15:00  19/11/2025",
-          "place": "La Diana"
+          "hour": "19/11/2025   16:30",
+          "place": "Estadio"
         },
         {
-          "home": "B1",
-          "away": "B4",
+          "home": "4 CARDENALES EM16",
+          "away": "7 AGUILAS PL19",
           "gh": null,
           "ga": null,
-          "hour": "9:00  20/11/2025",
-          "place": "La Diana"
+          "hour": "20/11/2025   11:00",
+          "place": "Estadio"
         },
         {
-          "home": "B2",
-          "away": "B3",
+          "home": "5 PUMAS EM09",
+          "away": "6 TIGRES PL06",
           "gh": null,
           "ga": null,
-          "hour": "11:00  20/11/2025",
-          "place": "La Diana"
+          "hour": "20/11/2025   8:30",
+          "place": "Estadio"
         }
       ]
     }
@@ -130,7 +105,9 @@
       "ga": null,
       "winner": "",
       "hour": "",
-      "place": ""
+      "place": "",
+      "homeName": "",
+      "awayName": ""
     },
     "sf2": {
       "home": "",
@@ -139,7 +116,9 @@
       "ga": null,
       "winner": "",
       "hour": "",
-      "place": ""
+      "place": "",
+      "homeName": "",
+      "awayName": ""
     },
     "final": {
       "home": "",
@@ -148,7 +127,9 @@
       "ga": null,
       "winner": "",
       "hour": "",
-      "place": ""
+      "place": "",
+      "homeName": "",
+      "awayName": ""
     },
     "third": {
       "home": "",
@@ -157,13 +138,16 @@
       "ga": null,
       "winner": "",
       "hour": "",
-      "place": ""
+      "place": "",
+      "homeName": "",
+      "awayName": ""
     }
   },
   "tournamentName": "",
   "theme": {
     "color": "#004b70",
-    "bg": "#cce0f5"
+    "bg": "#f8fafc"
   },
-  "timestamp": "2025-10-28T15:02:50.266Z"
+  "timestamp": "2025-11-11T19:07:09.620Z",
+  "updatedAtLocal": "11 de noviembre de 2025, 13:07"
 }

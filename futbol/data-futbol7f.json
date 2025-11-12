@@ -4,30 +4,30 @@
   "groups": {
     "A": {
       "teams": [
-        "1 BUHOS PL25",
-        "2 CATANES PL22",
-        "3 ABEJAS PL08"
+        "BUHOS PL25",
+        "CATANES PL22",
+        "ABEJAS PL08"
       ],
       "matches": [
         {
-          "home": "1 BUHOS PL25",
-          "away": "2 CATANES PL22",
+          "home": "BUHOS PL25",
+          "away": "CATANES PL22",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   8:00",
           "place": "Tantocob Campo F7"
         },
         {
-          "home": "3 ABEJAS PL08",
-          "away": "1 BUHOS PL25",
+          "home": "ABEJAS PL08",
+          "away": "BUHOS PL25",
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   11:20",
           "place": "Tantocob Campo F7"
         },
         {
-          "home": "2 CATANES PL22",
-          "away": "3 ABEJAS PL08",
+          "home": "CATANES PL22",
+          "away": "ABEJAS PL08",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   14:40",
@@ -37,30 +37,30 @@
     },
     "B": {
       "teams": [
-        "4 ARDILLAS EM05",
-        "5 GRILLOS EM13",
-        "6 AGUILAS PL07"
+        "ARDILLAS EM05",
+        "GRILLOS EM13",
+        "AGUILAS PL07"
       ],
       "matches": [
         {
-          "home": "4 ARDILLAS EM05",
-          "away": "5 GRILLOS EM13",
+          "home": "ARDILLAS EM05",
+          "away": "GRILLOS EM13",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   8:50",
           "place": "Tantocob Campo F7"
         },
         {
-          "home": "6 AGUILAS PL07",
-          "away": "4 ARDILLAS EM05",
+          "home": "AGUILAS PL07",
+          "away": "ARDILLAS EM05",
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   12:10",
           "place": "Tantocob Campo F7"
         },
         {
-          "home": "5 GRILLOS EM13",
-          "away": "6 AGUILAS PL07",
+          "home": "GRILLOS EM13",
+          "away": "AGUILAS PL07",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   15:30",
@@ -70,30 +70,30 @@
     },
     "C": {
       "teams": [
-        "7 PATOS EM22",
-        "8 HALCONES PL26",
-        "9 AGUILAS PL19"
+        "PATOS EM22",
+        "HALCONES PL26",
+        "AGUILAS PL19"
       ],
       "matches": [
         {
-          "home": "7 PATOS EM22",
-          "away": "8 HALCONES PL26",
+          "home": "PATOS EM22",
+          "away": "HALCONES PL26",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   9:40",
           "place": "Tantocob Campo F7"
         },
         {
-          "home": "9 AGUILAS PL19",
-          "away": "7 PATOS EM22",
+          "home": "AGUILAS PL19",
+          "away": "PATOS EM22",
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   13:00",
           "place": "Tantocob Campo F7"
         },
         {
-          "home": "8 HALCONES PL26",
-          "away": "9 AGUILAS PL19",
+          "home": "HALCONES PL26",
+          "away": "AGUILAS PL19",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   16:20",
@@ -103,30 +103,30 @@
     },
     "D": {
       "teams": [
-        "10 CARNEROS PL29",
-        "11 AGUILUCHOS PL17",
-        "12 SERPIENTES EM28"
+        "CARNEROS PL29",
+        "AGUILUCHOS PL17",
+        "SERPIENTES EM28"
       ],
       "matches": [
         {
-          "home": "10 CARNEROS PL29",
-          "away": "11 AGUILUCHOS PL17",
+          "home": "CARNEROS PL29",
+          "away": "AGUILUCHOS PL17",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   10:30",
           "place": "Tantocob Campo F7"
         },
         {
-          "home": "12 SERPIENTES EM28",
-          "away": "10 CARNEROS PL29",
+          "home": "SERPIENTES EM28",
+          "away": "CARNEROS PL29",
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   13:50",
           "place": "Tantocob Campo F7"
         },
         {
-          "home": "11 AGUILUCHOS PL17",
-          "away": "12 SERPIENTES EM28",
+          "home": "AGUILUCHOS PL17",
+          "away": "SERPIENTES EM28",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   17:10",

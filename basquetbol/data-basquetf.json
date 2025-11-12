@@ -4,30 +4,30 @@
   "groups": {
     "A": {
       "teams": [
-        "1 LINCES EM20",
-        "2 COYOTES PL05",
-        "3 HALCONES PL26"
+        "LINCES EM20",
+        "COYOTES PL05",
+        "HALCONES PL26"
       ],
       "matches": [
         {
-          "home": "1 LINCES EM20",
-          "away": "2 COYOTES PL05",
+          "home": "LINCES EM20",
+          "away": "COYOTES PL05",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   8:00",
           "place": "Gómez Morín Cancha 1"
         },
         {
-          "home": "3 HALCONES PL26",
-          "away": "1 LINCES EM20",
+          "home": "HALCONES PL26",
+          "away": "LINCES EM20",
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   9:00",
           "place": "Gómez Morín Cancha 1"
         },
         {
-          "home": "2 COYOTES PL05",
-          "away": "3 HALCONES PL26",
+          "home": "COYOTES PL05",
+          "away": "HALCONES PL26",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   10:40",
@@ -37,30 +37,30 @@
     },
     "B": {
       "teams": [
-        "4 GRILLOS EM13",
-        "5 CARNEROS PL29",
-        "6 PANTERAS PL28"
+        "GRILLOS EM13",
+        "CARNEROS PL29",
+        "PANTERAS PL28"
       ],
       "matches": [
         {
-          "home": "4 GRILLOS EM13",
-          "away": "5 CARNEROS PL29",
+          "home": "GRILLOS EM13",
+          "away": "CARNEROS PL29",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   8:00",
           "place": "Gómez Morín Cancha 2"
         },
         {
-          "home": "6 PANTERAS PL28",
-          "away": "4 GRILLOS EM13",
+          "home": "PANTERAS PL28",
+          "away": "GRILLOS EM13",
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   9:00",
           "place": "Gómez Morín Cancha 2"
         },
         {
-          "home": "5 CARNEROS PL29",
-          "away": "6 PANTERAS PL28",
+          "home": "CARNEROS PL29",
+          "away": "PANTERAS PL28",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   10:40",
@@ -70,30 +70,30 @@
     },
     "C": {
       "teams": [
-        "7 MAPACHES PL24",
-        "8 ABEJAS PL08",
-        "9 LIEBRES PL01"
+        "MAPACHES PL24",
+        "ABEJAS PL08",
+        "LIEBRES PL01"
       ],
       "matches": [
         {
-          "home": "7 MAPACHES PL24",
-          "away": "8 ABEJAS PL08",
+          "home": "MAPACHES PL24",
+          "away": "ABEJAS PL08",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   8:00",
           "place": "Gómez Morín Cancha 3"
         },
         {
-          "home": "9 LIEBRES PL01",
-          "away": "7 MAPACHES PL24",
+          "home": "LIEBRES PL01",
+          "away": "MAPACHES PL24",
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   9:00",
           "place": "Gómez Morín Cancha 3"
         },
         {
-          "home": "8 ABEJAS PL08",
-          "away": "9 LIEBRES PL01",
+          "home": "ABEJAS PL08",
+          "away": "LIEBRES PL01",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   10:40",
@@ -103,8 +103,8 @@
     },
     "D": {
       "teams": [
-        "10 AGUILAS PL19",
-        "11 TIGRILLOS PL14"
+        "AGUILAS PL19",
+        "TIGRILLOS PL14"
       ],
       "matches": []
     }

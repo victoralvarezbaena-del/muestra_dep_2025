@@ -4,30 +4,30 @@
   "groups": {
     "A": {
       "teams": [
-        "1 ABEJAS PL08",
-        "2 AGUILAS PL07",
-        "3 CARNEROS PL29"
+        "ABEJAS PL08",
+        "AGUILAS PL07",
+        "CARNEROS PL29"
       ],
       "matches": [
         {
-          "home": "1 ABEJAS PL08",
-          "away": "2 AGUILAS PL07",
+          "home": "ABEJAS PL08",
+          "away": "AGUILAS PL07",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   11:20",
           "place": "Tantocob Campo F7"
         },
         {
-          "home": "3 CARNEROS PL29",
-          "away": "1 ABEJAS PL08",
+          "home": "CARNEROS PL29",
+          "away": "ABEJAS PL08",
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   9:40",
           "place": "Tantocob Campo F7"
         },
         {
-          "home": "2 AGUILAS PL07",
-          "away": "3 CARNEROS PL29",
+          "home": "AGUILAS PL07",
+          "away": "CARNEROS PL29",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   18:00",
@@ -37,30 +37,30 @@
     },
     "B": {
       "teams": [
-        "4 LIEBRES PL01",
-        "5 GAVILANES PL38",
-        "6 COYOTES PL05"
+        "LIEBRES PL01",
+        "GAVILANES PL38",
+        "COYOTES PL05"
       ],
       "matches": [
         {
-          "home": "4 LIEBRES PL01",
-          "away": "5 GAVILANES PL38",
+          "home": "LIEBRES PL01",
+          "away": "GAVILANES PL38",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   12:10",
           "place": "Tantocob Campo F7"
         },
         {
-          "home": "6 COYOTES PL05",
-          "away": "4 LIEBRES PL01",
+          "home": "COYOTES PL05",
+          "away": "LIEBRES PL01",
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   10:30",
           "place": "Tantocob Campo F7"
         },
         {
-          "home": "5 GAVILANES PL38",
-          "away": "6 COYOTES PL05",
+          "home": "GAVILANES PL38",
+          "away": "COYOTES PL05",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   18:50",
@@ -70,30 +70,30 @@
     },
     "C": {
       "teams": [
-        "7 AGUILAS PL19",
-        "8 HUEHUES EM24",
-        "9 BUHOS PL25"
+        "AGUILAS PL19",
+        "HUEHUES EM24",
+        "BUHOS PL25"
       ],
       "matches": [
         {
-          "home": "7 AGUILAS PL19",
-          "away": "8 HUEHUES EM24",
+          "home": "AGUILAS PL19",
+          "away": "HUEHUES EM24",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   13:00",
           "place": "Tantocob Campo F7"
         },
         {
-          "home": "9 BUHOS PL25",
-          "away": "7 AGUILAS PL19",
+          "home": "BUHOS PL25",
+          "away": "AGUILAS PL19",
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   8:00   14:50",
           "place": "Tantocob Campo F7"
         },
         {
-          "home": "8 HUEHUES EM24",
-          "away": "9 BUHOS PL25",
+          "home": "HUEHUES EM24",
+          "away": "BUHOS PL25",
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   8:00",
@@ -103,30 +103,30 @@
     },
     "D": {
       "teams": [
-        "10 CATANES PL22",
-        "11 MAPACHES PL24",
-        "12 TIGRILLOS PL14"
+        "CATANES PL22",
+        "MAPACHES PL24",
+        "TIGRILLOS PL14"
       ],
       "matches": [
         {
-          "home": "10 CATANES PL22",
-          "away": "11 MAPACHES PL24",
+          "home": "CATANES PL22",
+          "away": "MAPACHES PL24",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   13:50",
           "place": "Tantocob Campo F7"
         },
         {
-          "home": "12 TIGRILLOS PL14",
-          "away": "10 CATANES PL22",
+          "home": "TIGRILLOS PL14",
+          "away": "CATANES PL22",
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   15:40",
           "place": "Tantocob Campo F7"
         },
         {
-          "home": "11 MAPACHES PL24",
-          "away": "12 TIGRILLOS PL14",
+          "home": "MAPACHES PL24",
+          "away": "TIGRILLOS PL14",
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   8:50",

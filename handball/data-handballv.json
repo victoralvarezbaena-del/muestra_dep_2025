@@ -17,7 +17,7 @@
           "away": "2 MAPACHES PL24",
           "gh": null,
           "ga": null,
-          "hour": "20/11/2025   11:00",
+          "hour": "19/11/2025   11:00",
           "place": "Gómez Morín Cancha 1"
         },
         {
@@ -25,7 +25,7 @@
           "away": "3 COYOTES PL05",
           "gh": null,
           "ga": null,
-          "hour": "20/11/2025   14:20",
+          "hour": "19/11/2025   14:20",
           "place": "Gómez Morín Cancha 1"
         },
         {
@@ -33,7 +33,7 @@
           "away": "1 ARDILLAS PL03",
           "gh": null,
           "ga": null,
-          "hour": "21/11/2025   8:00",
+          "hour": "20/11/2025   8:00",
           "place": "Gómez Morín Cancha 1"
         }
       ],
@@ -85,7 +85,7 @@
           "away": "5 AGUILUCHOS PL17",
           "gh": null,
           "ga": null,
-          "hour": "20/11/2025   11:00",
+          "hour": "19/11/2025   11:00",
           "place": "Gómez Morín Cancha 2"
         },
         {
@@ -93,7 +93,7 @@
           "away": "6 LIEBRES PL01",
           "gh": null,
           "ga": null,
-          "hour": "20/11/2025   14:20",
+          "hour": "19/11/2025   14:20",
           "place": "Gómez Morín Cancha 2"
         },
         {
@@ -101,7 +101,7 @@
           "away": "4 BUHOS PL25",
           "gh": null,
           "ga": null,
-          "hour": "21/11/2025   8:00",
+          "hour": "20/11/2025   8:00",
           "place": "Gómez Morín Cancha 2"
         }
       ],
@@ -153,7 +153,7 @@
           "away": "8 TIGRES PL06",
           "gh": null,
           "ga": null,
-          "hour": "20/11/2025   11:50",
+          "hour": "19/11/2025   11:50",
           "place": "Gómez Morín Cancha 1"
         },
         {
@@ -161,7 +161,7 @@
           "away": "9 PANTERAS PL28",
           "gh": null,
           "ga": null,
-          "hour": "20/11/2025   15:10",
+          "hour": "19/11/2025   15:10",
           "place": "Gómez Morín Cancha 1"
         },
         {
@@ -169,7 +169,7 @@
           "away": "7 AGUILAS PL07",
           "gh": null,
           "ga": null,
-          "hour": "21/11/2025   8:50",
+          "hour": "20/11/2025   8:50",
           "place": "Gómez Morín Cancha 1"
         }
       ],
@@ -221,7 +221,7 @@
           "away": "11 AGUILAS PL19",
           "gh": null,
           "ga": null,
-          "hour": "20/11/2025   11:50",
+          "hour": "19/11/2025   11:50",
           "place": "Gómez Morín Cancha 2"
         },
         {
@@ -229,7 +229,7 @@
           "away": "10 TIGRILLOS PL14",
           "gh": null,
           "ga": null,
-          "hour": "21/11/2025   8:50",
+          "hour": "20/11/2025   8:50",
           "place": "Gómez Morín Cancha 2"
         },
         {
@@ -237,7 +237,7 @@
           "away": "12 ABEJAS PL08",
           "gh": null,
           "ga": null,
-          "hour": "20/11/2025   15:10",
+          "hour": "19/11/2025   15:10",
           "place": "Gómez Morín Cancha 2"
         }
       ],
@@ -285,7 +285,7 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "21/11/2025   13:00",
+      "hour": "20/11/2025   13:00",
       "place": "Gómez Morín Cancha 1"
     },
     "sf2": {
@@ -294,7 +294,7 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "21/11/2025   13:00",
+      "hour": "20/11/2025   13:00",
       "place": "Gómez Morín Cancha 2"
     },
     "final": {

@@ -13,7 +13,7 @@
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   8:00",
-          "place": "Campo 1"
+          "place": "Ingenio Campo 1"
         },
         {
           "home": "A2",
@@ -21,7 +21,7 @@
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   12:00",
-          "place": "Campo 1"
+          "place": "Ingenio Campo 1"
         },
         {
           "home": "A1",
@@ -29,7 +29,7 @@
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   8:00",
-          "place": "Campo 1"
+          "place": "Ingenio Campo 1"
         }
       ]
     },
@@ -46,7 +46,7 @@
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   8:00",
-          "place": "Campo 2"
+          "place": "Ingenio Campo 2"
         },
         {
           "home": "B2",
@@ -54,7 +54,7 @@
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   12:00",
-          "place": "Campo 2"
+          "place": "Ingenio Campo 2"
         },
         {
           "home": "B1",
@@ -62,7 +62,7 @@
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   8:00",
-          "place": "Campo 2"
+          "place": "Ingenio Campo 2"
         }
       ]
     },
@@ -79,7 +79,7 @@
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   10:00",
-          "place": "Campo 1"
+          "place": "Ingenio Campo 1"
         },
         {
           "home": "C1",
@@ -87,7 +87,7 @@
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   10:00",
-          "place": "Campo 1"
+          "place": "Ingenio Campo 1"
         },
         {
           "home": "C2",
@@ -95,7 +95,7 @@
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   14:00",
-          "place": "Campo 1"
+          "place": "Ingenio Campo 1"
         }
       ]
     }

@@ -103,7 +103,6 @@
     .groupA { background: rgba(56,189,248,.12); border: 1px solid rgba(56,189,248,.45) }
     .groupB { background: rgba(168,85,247,.12); border: 1px solid rgba(168,85,247,.45) }
     .groupC { background: rgba(251,191,36,.12); border: 1px solid rgba(251,191,36,.45) }
-    .groupD { background: rgba(34,197,94,.12); border: 1px solid rgba(34,197,94,.45) }
 
     .groupBox {
       padding: 12px;
@@ -615,7 +614,7 @@
         subtitle: data?.subtitle || '',
         theme: Object.assign({ color:'#0284c7', bg:'#f8fafc' }, data?.theme || {}),
         points: Object.assign({ win:2, loss:1 }, data?.points || {}),
-        groups: { A:{teams:[],matches:[]}, B:{teams:[],matches:[]}, C:{teams:[],matches:[]}, D:{teams:[],matches:[]} },
+        groups: { A:{teams:[],matches:[]}, B:{teams:[],matches:[]}, C:{teams:[],matches:[]} }, // SOLO 3 GRUPOS
         knockout: {
           sf1:  Object.assign({}, KO_DEF, data?.knockout?.sf1 || {}),
           sf2:  Object.assign({}, KO_DEF, data?.knockout?.sf2 || {}),
@@ -625,7 +624,8 @@
         updatedAtLocal: updatedAt
       };
       
-      ['A','B','C','D'].forEach(k => {
+      // SOLO PROCESAR GRUPOS A, B, C
+      ['A','B','C'].forEach(k => {
         const g = (data?.groups && data.groups[k]) ? data.groups[k] : {};
         const teams = Array.isArray(g.teams) ? g.teams.filter(Boolean) : [];
         const matches = Array.isArray(g.matches) ? g.matches.filter(Boolean).map(mm => {
@@ -900,11 +900,23 @@
       `;
     }
 
+    // Obtener primer y segundo lugar de un grupo
+    function getGroupPositions(group) {
+      if (!group || !group.teams || group.teams.length === 0) return { first: '', second: '' };
+      
+      const table = computeTable(group.matches || [], group.teams);
+      return {
+        first: table[0]?.team || '',
+        second: table[1]?.team || ''
+      };
+    }
+
     // Renderizar fase de grupos
     function renderGroups(groups) {
       let html = '<div class="card"><h2>Fase de Grupos</h2><div class="groups">';
       
-      ['A', 'B', 'C', 'D'].forEach(groupKey => {
+      // SOLO RENDERIZAR GRUPOS A, B, C
+      ['A', 'B', 'C'].forEach(groupKey => {
         const group = groups[groupKey];
         if (!group || !group.teams || group.teams.length === 0) return;
         
@@ -913,7 +925,7 @@
         
         html += `
           <div class="groupBox group${groupKey}">
-            <h3>Grupo ${groupKey}</h3>
+            <h3>Grupo ${groupKey} (${teams.length} equipos)</h3>
             <div class="matches">
         `;
         
@@ -969,11 +981,17 @@
       return html;
     }
 
-    // Renderizar fase eliminatoria
-    function renderKnockout(knockout) {
+    // Renderizar fase eliminatoria CON NUEVO FORMATO
+    function renderKnockout(knockout, groups) {
       if (!knockout) return '';
       
       const k = knockout;
+      
+      // Obtener posiciones de los grupos para mostrar nombres por defecto
+      const groupAPositions = getGroupPositions(groups.A);
+      const groupBPositions = getGroupPositions(groups.B);
+      const groupCPositions = getGroupPositions(groups.C);
+      
       let html = '';
       
       // Mostrar campeón destacado si existe
@@ -991,21 +1009,21 @@
           <h2>Fase Eliminatoria</h2>
           <div class="bracket">
             <div class="semi">
-              <h3>Semifinal 1</h3>
+              <h3>Semifinal 1 — A1 vs C2</h3>
               ${renderMatch(
                 k.sf1, 
-                k.sf1.home || 'A1', 
-                k.sf1.away || 'D1'
+                k.sf1.home || groupAPositions.first || 'A1', 
+                k.sf1.away || groupCPositions.second || 'C2'
               )}
               ${k.sf1.winner ? `<div class="info"><strong>Ganador: ${k.sf1.winner}</strong></div>` : ''}
             </div>
             
             <div class="semi">
-              <h3>Semifinal 2</h3>
+              <h3>Semifinal 2 — B1 vs C1</h3>
               ${renderMatch(
                 k.sf2, 
-                k.sf2.home || 'B1', 
-                k.sf2.away || 'C1'
+                k.sf2.home || groupBPositions.first || 'B1', 
+                k.sf2.away || groupCPositions.first || 'C1'
               )}
               ${k.sf2.winner ? `<div class="info"><strong>Ganador: ${k.sf2.winner}</strong></div>` : ''}
             </div>
@@ -1050,7 +1068,7 @@
       
       // Fase eliminatoria
       if (data.knockout) {
-        html += renderKnockout(data.knockout);
+        html += renderKnockout(data.knockout, data.groups);
       }
       
       document.getElementById('tournamentContent').innerHTML = html;

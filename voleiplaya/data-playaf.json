@@ -2,28 +2,28 @@
   "groups": {
     "A": {
       "teams": [
-        "1 COYOTES PL05",
-        "2 LIEBRES PL01",
-        "3 CATANES PL22"
+        "COYOTES PL05",
+        "LIEBRES PL01",
+        "CATANES PL22"
       ],
       "matches": [
         {
-          "home": "1 COYOTES PL05",
-          "away": "2 LIEBRES PL01",
+          "home": "COYOTES PL05",
+          "away": "LIEBRES PL01",
           "sets": [],
           "hour": "19/11/2025   8:00",
           "place": "Tantocob"
         },
         {
-          "home": "3 CATANES PL22",
-          "away": "1 COYOTES PL05",
+          "home": "CATANES PL22",
+          "away": "COYOTES PL05",
           "sets": [],
           "hour": "19/11/2025   11:00",
           "place": "Tantocob"
         },
         {
-          "home": "2 LIEBRES PL01",
-          "away": "3 CATANES PL22",
+          "home": "LIEBRES PL01",
+          "away": "CATANES PL22",
           "sets": [],
           "hour": "20/11/2025   9:30",
           "place": "Tantocob"
@@ -32,50 +32,50 @@
     },
     "B": {
       "teams": [
-        "4 TIGRES PL06",
-        "5 HALCONES PL26",
-        "6 AGUILAS PL19",
-        "7 PANTERAS PL28"
+        "TIGRES PL06",
+        "HALCONES PL26",
+        "AGUILAS PL19",
+        "PANTERAS PL28"
       ],
       "matches": [
         {
-          "home": "4 TIGRES PL06",
-          "away": "5 HALCONES PL26",
+          "home": "TIGRES PL06",
+          "away": "HALCONES PL26",
           "sets": [],
           "hour": "19/11/2025   8:40",
           "place": "Tantocob"
         },
         {
-          "home": "6 AGUILAS PL19",
-          "away": "7 PANTERAS PL28",
+          "home": "AGUILAS PL19",
+          "away": "PANTERAS PL28",
           "sets": [],
           "hour": "19/11/2025   11:40",
           "place": "Tantocob"
         },
         {
-          "home": "4 TIGRES PL06",
-          "away": "6 AGUILAS PL19",
+          "home": "TIGRES PL06",
+          "away": "AGUILAS PL19",
           "sets": [],
           "hour": "19/11/2025   14:40",
           "place": "Tantocob"
         },
         {
-          "home": "5 HALCONES PL26",
-          "away": "7 PANTERAS PL28",
+          "home": "HALCONES PL26",
+          "away": "PANTERAS PL28",
           "sets": [],
           "hour": "19/11/2025   14:00",
           "place": "Tantocob"
         },
         {
-          "home": "4 TIGRES PL06",
-          "away": "7 PANTERAS PL28",
+          "home": "TIGRES PL06",
+          "away": "PANTERAS PL28",
           "sets": [],
           "hour": "20/11/2025   10:20",
           "place": "Tantocob"
         },
         {
-          "home": "5 HALCONES PL26",
-          "away": "6 AGUILAS PL19",
+          "home": "HALCONES PL26",
+          "away": "AGUILAS PL19",
           "sets": [],
           "hour": "20/11/2025   11:40",
           "place": "Tantocob"

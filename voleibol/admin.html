@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Administrador — Torneo Voleibol 4 Grupos + Semifinales</title>
+  <title>Administrador — Torneo Voleibol 3 Grupos + Semifinales</title>
   <style>
     :root{ --bg:#f8fafc; --panel:#e2e8f0; --card:#ffffff; --muted:#475569; --text:#0f172a; --accent:#0284c7; --ok:#16a34a; --bad:#dc2626; --ring:0 0 0 2px var(--accent) inset; }
     *{box-sizing:border-box}
@@ -35,7 +35,6 @@
     .groupA{background:rgba(56,189,248,.12);border:1px solid rgba(56,189,248,.45)}
     .groupB{background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.45)}
     .groupC{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.45)}
-    .groupD{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.45)}
 
     .groupBox{padding:12px;border-radius:12px;margin-bottom:12px}
 
@@ -168,8 +167,8 @@
 <body>
   <header>
     <div class="container">
-      <h1>Administrador — Torneo Voleibol 4 Grupos + Semifinales</h1>
-      <div class="subtitle">Crea y gestiona tu torneo de voleibol. Los datos se guardan localmente y puedes publicarlos online.</div>
+      <h1>Administrador — Torneo Voleibol 3 Grupos + Semifinales</h1>
+      <div class="subtitle">Crea y gestiona tu torneo de voleibol. Formato: Grupos A y B (3 equipos), Grupo C (4 equipos). Semifinales: A1 vs C2, B1 vs C1</div>
     </div>
   </header>
 
@@ -177,18 +176,16 @@
     <section class="card">
       <h2>1) Equipos por grupo</h2>
       <div class="groups">
-        <div><label>Grupo A</label><textarea id="ga">Equipo A1
+        <div><label>Grupo A (3 equipos)</label><textarea id="ga">Equipo A1
 Equipo A2
 Equipo A3</textarea></div>
-        <div><label>Grupo B</label><textarea id="gb">Equipo B1
+        <div><label>Grupo B (3 equipos)</label><textarea id="gb">Equipo B1
 Equipo B2
 Equipo B3</textarea></div>
-        <div><label>Grupo C</label><textarea id="gc">Equipo C1
+        <div><label>Grupo C (4 equipos)</label><textarea id="gc">Equipo C1
 Equipo C2
-Equipo C3</textarea></div>
-        <div><label>Grupo D</label><textarea id="gd">Equipo D1
-Equipo D2
-Equipo D3</textarea></div>
+Equipo C3
+Equipo C4</textarea></div>
       </div>
 
       <!-- Tema (colores) -->
@@ -238,7 +235,7 @@ Equipo D3</textarea></div>
 
       <div class="bracket">
         <div class="semi">
-          <h3>Semifinal 1 — A1 vs D1</h3>
+          <h3>Semifinal 1 — A1 vs C2</h3>
           <div class="row">
             <div class="team" style="flex:1"><span id="sf1h">A1</span></div>
             <div class="team" style="justify-content:center">
@@ -246,7 +243,7 @@ Equipo D3</textarea></div>
                 <!-- Los sets se generarán dinámicamente aquí -->
               </div>
             </div>
-            <div class="team" style="flex:1;justify-content:flex-end"><span id="sf1a">D1</span></div>
+            <div class="team" style="flex:1;justify-content:flex-end"><span id="sf1a">C2</span></div>
           </div>
           <div class="total-sets" id="sf1-total">Total: 0-0</div>
           <div class="points-total" id="sf1-points">Puntos: 0-0</div>
@@ -354,7 +351,7 @@ Equipo D3</textarea></div>
 
 <script>
 // ===== CONFIGURACIÓN =====
-const STORAGE_KEY = 'torneo_voleibol_grupos_ko_v4';
+const STORAGE_KEY = 'torneo_voleibol_3grupos_ko_v1';
 const $ = (selector, root = document) => root.querySelector(selector);
 
 // ===== ESTADO INICIAL =====
@@ -362,8 +359,7 @@ let state = {
   groups: {
     A: { teams: ['Equipo A1', 'Equipo A2', 'Equipo A3'], matches: [] },
     B: { teams: ['Equipo B1', 'Equipo B2', 'Equipo B3'], matches: [] },
-    C: { teams: ['Equipo C1', 'Equipo C2', 'Equipo C3'], matches: [] },
-    D: { teams: ['Equipo D1', 'Equipo D2', 'Equipo D3'], matches: [] },
+    C: { teams: ['Equipo C1', 'Equipo C2', 'Equipo C3', 'Equipo C4'], matches: [] },
   },
   points: { win: 2, loss: 1 }, // Para voleibol: 2 puntos por victoria, 1 por derrota
   knockout: {
@@ -381,10 +377,22 @@ function parseTeams(txt) {
   return String(txt || '').split('\n').map(s => s.trim()).filter(Boolean);
 }
 
+// Función para generar partidos round-robin para grupos de 3 equipos
 function roundRobin3(teams) {
   if (teams.length !== 3) return [];
   const [a, b, c] = teams;
   return [[a, b], [c, a], [b, c]];
+}
+
+// Función para generar partidos round-robin para grupos de 4 equipos
+function roundRobin4(teams) {
+  if (teams.length !== 4) return [];
+  const [a, b, c, d] = teams;
+  return [
+    [a, b], [c, d],
+    [a, c], [b, d],
+    [a, d], [b, c]
+  ];
 }
 
 function valInt(v) {
@@ -492,24 +500,36 @@ function groupWinner(groupKey) {
   return rows[0]?.team || '';
 }
 
+function groupRunnerUp(groupKey) {
+  const group = state.groups[groupKey];
+  const rows = computeTable(group.matches, group.teams);
+  return rows[1]?.team || '';
+}
+
 // ===== RENDER GRUPOS =====
 function renderGroups() {
   const root = $('#groupsRoot');
   root.innerHTML = '';
   
-  ['A', 'B', 'C', 'D'].forEach(groupKey => {
+  ['A', 'B', 'C'].forEach(groupKey => {
     const group = state.groups[groupKey];
     const teams = group.teams || [];
     
     const groupDiv = document.createElement('div');
     groupDiv.className = `groupBox group${groupKey}`;
-    groupDiv.innerHTML = `<h3>Grupo ${groupKey}</h3>`;
+    groupDiv.innerHTML = `<h3>Grupo ${groupKey} (${teams.length} equipos)</h3>`;
     
     const matchesContainer = document.createElement('div');
     matchesContainer.className = 'matches';
     
-    // Crear partidos
-    const calendar = roundRobin3(teams);
+    // Crear partidos según el tamaño del grupo
+    let calendar = [];
+    if (teams.length === 3) {
+      calendar = roundRobin3(teams);
+    } else if (teams.length === 4) {
+      calendar = roundRobin4(teams);
+    }
+    
     calendar.forEach(([home, away]) => {
       const existingMatch = group.matches.find(m => m.home === home && m.away === away) || 
                           { home, away, sets: [], hour: '', place: '' };
@@ -748,11 +768,11 @@ function updateKnockout() {
   const A1 = groupWinner('A') || 'A1';
   const B1 = groupWinner('B') || 'B1';
   const C1 = groupWinner('C') || 'C1';
-  const D1 = groupWinner('D') || 'D1';
+  const C2 = groupRunnerUp('C') || 'C2';
 
-  // Semifinales
+  // Semifinales según el formato especificado
   $('#sf1h').textContent = state.knockout.sf1.home || A1;
-  $('#sf1a').textContent = state.knockout.sf1.away || D1;
+  $('#sf1a').textContent = state.knockout.sf1.away || C2;
   $('#sf2h').textContent = state.knockout.sf2.home || B1;
   $('#sf2a').textContent = state.knockout.sf2.away || C1;
 
@@ -766,7 +786,7 @@ function updateKnockout() {
   
   // Para tercer lugar
   const sf1Loser = sf1Winner ? 
-    (sf1Winner === (state.knockout.sf1.home || A1) ? (state.knockout.sf1.away || D1) : (state.knockout.sf1.home || A1)) : 
+    (sf1Winner === (state.knockout.sf1.home || A1) ? (state.knockout.sf1.away || C2) : (state.knockout.sf1.home || A1)) : 
     'Perdedor SF1';
   const sf2Loser = sf2Winner ? 
     (sf2Winner === (state.knockout.sf2.home || B1) ? (state.knockout.sf2.away || C1) : (state.knockout.sf2.home || B1)) : 
@@ -917,10 +937,23 @@ function generateGroups() {
   state.groups.A.teams = parseTeams($('#ga').value);
   state.groups.B.teams = parseTeams($('#gb').value);
   state.groups.C.teams = parseTeams($('#gc').value);
-  state.groups.D.teams = parseTeams($('#gd').value);
+  
+  // Validar que los grupos tengan el número correcto de equipos
+  if (state.groups.A.teams.length !== 3) {
+    alert('El Grupo A debe tener exactamente 3 equipos');
+    return;
+  }
+  if (state.groups.B.teams.length !== 3) {
+    alert('El Grupo B debe tener exactamente 3 equipos');
+    return;
+  }
+  if (state.groups.C.teams.length !== 4) {
+    alert('El Grupo C debe tener exactamente 4 equipos');
+    return;
+  }
   
   // Reiniciar partidos
-  ['A', 'B', 'C', 'D'].forEach(groupKey => {
+  ['A', 'B', 'C'].forEach(groupKey => {
     state.groups[groupKey].matches = [];
   });
   
@@ -1018,7 +1051,6 @@ function applyStateToUI() {
   $('#ga').value = state.groups.A.teams.join('\n');
   $('#gb').value = state.groups.B.teams.join('\n');
   $('#gc').value = state.groups.C.teams.join('\n');
-  $('#gd').value = state.groups.D.teams.join('\n');
   
   // Tema
   $('#tournamentName').value = state.tournamentName || '';

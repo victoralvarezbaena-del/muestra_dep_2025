@@ -2,30 +2,30 @@
   "groups": {
     "A": {
       "teams": [
-        "1 CARDENALES EM16",
-        "2 AGUILAS PL07",
-        "3 HALCONES PL26"
+        "CARDENALES EM16",
+        "AGUILAS PL07",
+        "HALCONES PL26"
       ],
       "matches": [
         {
-          "home": "1 CARDENALES EM16",
-          "away": "2 AGUILAS PL07",
+          "home": "CARDENALES EM16",
+          "away": "AGUILAS PL07",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   8:00",
           "place": "Ingenio Campo 1"
         },
         {
-          "home": "2 AGUILAS PL07",
-          "away": "3 HALCONES PL26",
+          "home": "AGUILAS PL07",
+          "away": "HALCONES PL26",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   12:00",
           "place": "Ingenio Campo 1"
         },
         {
-          "home": "1 CARDENALES EM16",
-          "away": "3 HALCONES PL26",
+          "home": "CARDENALES EM16",
+          "away": "HALCONES PL26",
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   8:00",
@@ -35,30 +35,30 @@
     },
     "B": {
       "teams": [
-        "4 AGUILUCHOS PL17",
-        "5 PUMAS PL04",
-        "6 PANTERAS PL28"
+        "AGUILUCHOS PL17",
+        "PUMAS PL04",
+        "PANTERAS PL28"
       ],
       "matches": [
         {
-          "home": "4 AGUILUCHOS PL17",
-          "away": "5 PUMAS PL04",
+          "home": "AGUILUCHOS PL17",
+          "away": "PUMAS PL04",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   8:00",
           "place": "Ingenio Campo 2"
         },
         {
-          "home": "5 PUMAS PL04",
-          "away": "6 PANTERAS PL28",
+          "home": "PUMAS PL04",
+          "away": "PANTERAS PL28",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   12:00",
           "place": "Ingenio Campo 2"
         },
         {
-          "home": "4 AGUILUCHOS PL17",
-          "away": "6 PANTERAS PL28",
+          "home": "AGUILUCHOS PL17",
+          "away": "PANTERAS PL28",
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   8:00",
@@ -68,30 +68,30 @@
     },
     "C": {
       "teams": [
-        "7 TIGRES PL06",
-        "8 AGUILAS PL19",
-        "9 LEONES PL11"
+        "TIGRES PL06",
+        "AGUILAS PL19",
+        "LEONES PL11"
       ],
       "matches": [
         {
-          "home": "7 TIGRES PL06",
-          "away": "8 AGUILAS PL19",
+          "home": "TIGRES PL06",
+          "away": "AGUILAS PL19",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   10:00",
           "place": "Ingenio Campo 1"
         },
         {
-          "home": "7 TIGRES PL06",
-          "away": "9 LEONES PL11",
+          "home": "TIGRES PL06",
+          "away": "LEONES PL11",
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   10:00",
           "place": "Ingenio Campo 1"
         },
         {
-          "home": "8 AGUILAS PL19",
-          "away": "9 LEONES PL11",
+          "home": "AGUILAS PL19",
+          "away": "LEONES PL11",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   14:00",

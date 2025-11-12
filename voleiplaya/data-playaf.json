@@ -2,83 +2,83 @@
   "groups": {
     "A": {
       "teams": [
-        "A1",
-        "A2",
-        "A3"
+        "1 COYOTES PL05",
+        "2 LIEBRES PL01",
+        "3 CATANES PL22"
       ],
       "matches": [
         {
-          "home": "A1",
-          "away": "A2",
+          "home": "1 COYOTES PL05",
+          "away": "2 LIEBRES PL01",
           "sets": [],
-          "hour": "",
-          "place": ""
+          "hour": "19/11/2025   8:00",
+          "place": "Tantocob"
         },
         {
-          "home": "A3",
-          "away": "A1",
+          "home": "3 CATANES PL22",
+          "away": "1 COYOTES PL05",
           "sets": [],
-          "hour": "",
-          "place": ""
+          "hour": "19/11/2025   11:00",
+          "place": "Tantocob"
         },
         {
-          "home": "A2",
-          "away": "A3",
+          "home": "2 LIEBRES PL01",
+          "away": "3 CATANES PL22",
           "sets": [],
-          "hour": "",
-          "place": ""
+          "hour": "20/11/2025   9:30",
+          "place": "Tantocob"
         }
       ]
     },
     "B": {
       "teams": [
-        "B1",
-        "B2",
-        "B3",
-        "B4"
+        "4 TIGRES PL06",
+        "5 HALCONES PL26",
+        "6 AGUILAS PL19",
+        "7 PANTERAS PL28"
       ],
       "matches": [
         {
-          "home": "B1",
-          "away": "B2",
+          "home": "4 TIGRES PL06",
+          "away": "5 HALCONES PL26",
           "sets": [],
-          "hour": "",
-          "place": ""
+          "hour": "19/11/2025   8:40",
+          "place": "Tantocob"
         },
         {
-          "home": "B3",
-          "away": "B4",
+          "home": "6 AGUILAS PL19",
+          "away": "7 PANTERAS PL28",
           "sets": [],
-          "hour": "",
-          "place": ""
+          "hour": "19/11/2025   11:40",
+          "place": "Tantocob"
         },
         {
-          "home": "B1",
-          "away": "B3",
+          "home": "4 TIGRES PL06",
+          "away": "6 AGUILAS PL19",
           "sets": [],
-          "hour": "",
-          "place": ""
+          "hour": "19/11/2025   14:40",
+          "place": "Tantocob"
         },
         {
-          "home": "B2",
-          "away": "B4",
+          "home": "5 HALCONES PL26",
+          "away": "7 PANTERAS PL28",
           "sets": [],
-          "hour": "",
-          "place": ""
+          "hour": "19/11/2025   14:00",
+          "place": "Tantocob"
         },
         {
-          "home": "B1",
-          "away": "B4",
+          "home": "4 TIGRES PL06",
+          "away": "7 PANTERAS PL28",
           "sets": [],
-          "hour": "",
-          "place": ""
+          "hour": "20/11/2025   10:20",
+          "place": "Tantocob"
         },
         {
-          "home": "B2",
-          "away": "B3",
+          "home": "5 HALCONES PL26",
+          "away": "6 AGUILAS PL19",
           "sets": [],
-          "hour": "",
-          "place": ""
+          "hour": "20/11/2025   11:40",
+          "place": "Tantocob"
         }
       ]
     }
@@ -89,36 +89,36 @@
   },
   "knockout": {
     "sf1": {
-      "home": "",
-      "away": "",
+      "home": "A1",
+      "away": "B2",
       "sets": [],
       "winner": "",
-      "hour": "",
-      "place": ""
+      "hour": "20/11/2025   14:00",
+      "place": "Tantocob"
     },
     "sf2": {
-      "home": "",
-      "away": "",
+      "home": "B1",
+      "away": "A2",
       "sets": [],
       "winner": "",
-      "hour": "",
-      "place": ""
+      "hour": "20/11/2025   14:40",
+      "place": "Tantocob"
     },
     "final": {
       "home": "",
       "away": "",
       "sets": [],
       "winner": "",
-      "hour": "",
-      "place": ""
+      "hour": "21/11/2025   10:00",
+      "place": "Tantocob"
     },
     "third": {
       "home": "",
       "away": "",
       "sets": [],
       "winner": "",
-      "hour": "",
-      "place": ""
+      "hour": "21/11/2025   8:30",
+      "place": "Tantocob"
     }
   },
   "tournamentName": "Voleibol de playa Femenil",
@@ -126,5 +126,5 @@
     "color": "#ab75d7",
     "bg": "#4c2361"
   },
-  "timestamp": "2025-10-29T19:32:30.753Z"
+  "timestamp": "2025-11-12T17:54:23.480Z"
 }

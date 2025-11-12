@@ -2,30 +2,30 @@
   "groups": {
     "A": {
       "teams": [
-        "1 AGUILUCHOS PL17",
-        "2 CORRECAMINOS PL10",
-        "3 LOBOS PL02"
+        "AGUILUCHOS PL17",
+        "CORRECAMINOS PL10",
+        "LOBOS PL02"
       ],
       "matches": [
         {
-          "home": "1 AGUILUCHOS PL17",
-          "away": "2 CORRECAMINOS PL10",
+          "home": "AGUILUCHOS PL17",
+          "away": "CORRECAMINOS PL10",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   8:30",
           "place": "La Diana"
         },
         {
-          "home": "2 CORRECAMINOS PL10",
-          "away": "3 LOBOS PL02",
+          "home": "CORRECAMINOS PL10",
+          "away": "LOBOS PL02",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   14:00",
           "place": "La Diana"
         },
         {
-          "home": "1 AGUILUCHOS PL17",
-          "away": "3 LOBOS PL02",
+          "home": "AGUILUCHOS PL17",
+          "away": "LOBOS PL02",
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   8:30",
@@ -35,55 +35,55 @@
     },
     "B": {
       "teams": [
-        "4 CARDENALES EM16",
-        "5 PUMAS EM09",
-        "6 TIGRES PL06",
-        "7 AGUILAS PL19"
+        "CARDENALES EM16",
+        "PUMAS EM09",
+        "TIGRES PL06",
+        "AGUILAS PL19"
       ],
       "matches": [
         {
-          "home": "4 CARDENALES EM16",
-          "away": "5 PUMAS EM09",
+          "home": "CARDENALES EM16",
+          "away": "PUMAS EM09",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   8:30",
           "place": "Estadio"
         },
         {
-          "home": "6 TIGRES PL06",
-          "away": "7 AGUILAS PL19",
+          "home": "TIGRES PL06",
+          "away": "AGUILAS PL19",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   11:00",
           "place": "Estadio"
         },
         {
-          "home": "4 CARDENALES EM16",
-          "away": "6 TIGRES PL06",
+          "home": "CARDENALES EM16",
+          "away": "TIGRES PL06",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   14:00",
           "place": "Estadio"
         },
         {
-          "home": "5 PUMAS EM09",
-          "away": "7 AGUILAS PL19",
+          "home": "PUMAS EM09",
+          "away": "AGUILAS PL19",
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   16:30",
           "place": "Estadio"
         },
         {
-          "home": "4 CARDENALES EM16",
-          "away": "7 AGUILAS PL19",
+          "home": "CARDENALES EM16",
+          "away": "AGUILAS PL19",
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   11:00",
           "place": "Estadio"
         },
         {
-          "home": "5 PUMAS EM09",
-          "away": "6 TIGRES PL06",
+          "home": "PUMAS EM09",
+          "away": "TIGRES PL06",
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   8:30",

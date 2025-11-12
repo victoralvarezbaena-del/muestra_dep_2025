@@ -13,7 +13,7 @@
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   8:00",
-          "place": "Campo 1"
+          "place": "Ingenio Campo 1"
         },
         {
           "home": "2 AGUILAS PL07",
@@ -21,7 +21,7 @@
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   12:00",
-          "place": "Campo 1"
+          "place": "Ingenio Campo 1"
         },
         {
           "home": "1 CARDENALES EM16",
@@ -29,7 +29,7 @@
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   8:00",
-          "place": "Campo 1"
+          "place": "Ingenio Campo 1"
         }
       ]
     },
@@ -46,7 +46,7 @@
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   8:00",
-          "place": "Campo 2"
+          "place": "Ingenio Campo 2"
         },
         {
           "home": "5 PUMAS PL04",
@@ -54,7 +54,7 @@
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   12:00",
-          "place": "Campo 2"
+          "place": "Ingenio Campo 2"
         },
         {
           "home": "4 AGUILUCHOS PL17",
@@ -62,7 +62,7 @@
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   8:00",
-          "place": "Campo 2"
+          "place": "Ingenio Campo 2"
         }
       ]
     },
@@ -79,7 +79,7 @@
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   10:00",
-          "place": "Campo 1"
+          "place": "Ingenio Campo 1"
         },
         {
           "home": "7 TIGRES PL06",
@@ -87,7 +87,7 @@
           "gh": null,
           "ga": null,
           "hour": "20/11/2025   10:00",
-          "place": "Campo 1"
+          "place": "Ingenio Campo 1"
         },
         {
           "home": "8 AGUILAS PL19",
@@ -95,7 +95,7 @@
           "gh": null,
           "ga": null,
           "hour": "19/11/2025   14:00",
-          "place": "Campo 1"
+          "place": "Ingenio Campo 1"
         }
       ]
     }
@@ -107,24 +107,24 @@
   },
   "knockout": {
     "sf1": {
-      "home": "",
-      "away": "",
+      "home": "A1",
+      "away": "B1",
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "",
-      "place": "",
+      "hour": "20/11/2025   13:00",
+      "place": "Ingenio Campo 1",
       "homeName": "",
       "awayName": ""
     },
     "sf2": {
-      "home": "",
-      "away": "",
+      "home": "C1",
+      "away": "M2",
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "",
-      "place": "",
+      "hour": "20/11/2025   13:00",
+      "place": "Ingenio Campo 2",
       "homeName": "",
       "awayName": ""
     },
@@ -134,8 +134,8 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "",
-      "place": "",
+      "hour": "21/11/2025   9:00",
+      "place": "Ingenio Campo 1",
       "homeName": "",
       "awayName": ""
     },
@@ -145,8 +145,8 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "",
-      "place": "",
+      "hour": "21/11/2025   9:00",
+      "place": "Ingenio Campo 2",
       "homeName": "",
       "awayName": ""
     }

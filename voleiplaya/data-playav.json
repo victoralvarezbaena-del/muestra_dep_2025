@@ -2,83 +2,83 @@
   "groups": {
     "A": {
       "teams": [
-        "A1",
-        "A2",
-        "A3"
+        "1 ARDILLAS PL03",
+        "2 BUHOS EM06",
+        "3 PANTERAS PL28"
       ],
       "matches": [
         {
-          "home": "A1",
-          "away": "A2",
+          "home": "1 ARDILLAS PL03",
+          "away": "2 BUHOS EM06",
           "sets": [],
-          "hour": "",
-          "place": ""
+          "hour": "19/11/2025   9:30",
+          "place": "Tantocob"
         },
         {
-          "home": "A3",
-          "away": "A1",
+          "home": "3 PANTERAS PL28",
+          "away": "1 ARDILLAS PL03",
           "sets": [],
-          "hour": "",
-          "place": ""
+          "hour": "19/11/2025   12:30",
+          "place": "Tantocob"
         },
         {
-          "home": "A2",
-          "away": "A3",
+          "home": "2 BUHOS EM06",
+          "away": "3 PANTERAS PL28",
           "sets": [],
-          "hour": "",
-          "place": ""
+          "hour": "20/11/2025   8:00",
+          "place": "Tantocob"
         }
       ]
     },
     "B": {
       "teams": [
-        "B1",
-        "B2",
-        "B3",
-        "B4"
+        "4 AGUILAS PL19",
+        "5 CATANES PL22",
+        "6 COYOTES PL05",
+        "7 HALCONES PL26"
       ],
       "matches": [
         {
-          "home": "B1",
-          "away": "B2",
+          "home": "4 AGUILAS PL19",
+          "away": "5 CATANES PL22",
           "sets": [],
-          "hour": "",
-          "place": ""
+          "hour": "19/11/2025   10:20",
+          "place": "Tantocob"
         },
         {
-          "home": "B3",
-          "away": "B4",
+          "home": "6 COYOTES PL05",
+          "away": "7 HALCONES PL26",
           "sets": [],
-          "hour": "",
-          "place": ""
+          "hour": "19/11/2025   13:20",
+          "place": "Tantocob"
         },
         {
-          "home": "B1",
-          "away": "B3",
+          "home": "4 AGUILAS PL19",
+          "away": "6 COYOTES PL05",
           "sets": [],
-          "hour": "",
-          "place": ""
+          "hour": "19/11/2025   16:20",
+          "place": "Tantocob"
         },
         {
-          "home": "B2",
-          "away": "B4",
+          "home": "5 CATANES PL22",
+          "away": "7 HALCONES PL26",
           "sets": [],
-          "hour": "",
-          "place": ""
+          "hour": "19/11/2025   15:30",
+          "place": "Tantocob"
         },
         {
-          "home": "B1",
-          "away": "B4",
+          "home": "4 AGUILAS PL19",
+          "away": "7 HALCONES PL26",
           "sets": [],
-          "hour": "",
-          "place": ""
+          "hour": "20/11/2025   8:40",
+          "place": "Tantocob"
         },
         {
-          "home": "B2",
-          "away": "B3",
+          "home": "5 CATANES PL22",
+          "away": "6 COYOTES PL05",
           "sets": [],
-          "hour": "",
-          "place": ""
+          "hour": "20/11/2025   11:00",
+          "place": "Tantocob"
         }
       ]
     }
@@ -89,42 +89,42 @@
   },
   "knockout": {
     "sf1": {
-      "home": "",
-      "away": "",
+      "home": "A1",
+      "away": "B2",
       "sets": [],
       "winner": "",
-      "hour": "",
-      "place": ""
+      "hour": "20/11/2025   12:30",
+      "place": "Tantocob"
     },
     "sf2": {
-      "home": "",
-      "away": "",
+      "home": "B1",
+      "away": "A2",
       "sets": [],
       "winner": "",
-      "hour": "",
-      "place": ""
+      "hour": "20/11/2025   13:20",
+      "place": "Tantocob"
     },
     "final": {
       "home": "",
       "away": "",
       "sets": [],
       "winner": "",
-      "hour": "",
-      "place": ""
+      "hour": "21/11/2025   10:40",
+      "place": "Tantocob"
     },
     "third": {
       "home": "",
       "away": "",
       "sets": [],
       "winner": "",
-      "hour": "",
-      "place": ""
+      "hour": "21/11/2025   9:20",
+      "place": "Tantocob"
     }
   },
-  "tournamentName": "Voleibol de playa Varonil",
+  "tournamentName": "Voleibol de Playa Varonil",
   "theme": {
     "color": "#8308e7",
     "bg": "#4c2361"
   },
-  "timestamp": "2025-10-29T19:33:23.721Z"
+  "timestamp": "2025-11-12T18:11:12.462Z"
 }

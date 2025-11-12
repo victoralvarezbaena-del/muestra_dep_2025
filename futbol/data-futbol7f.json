@@ -4,155 +4,155 @@
   "groups": {
     "A": {
       "teams": [
-        "A1",
-        "A2",
-        "A3"
+        "1 BUHOS PL25",
+        "2 CATANES PL22",
+        "3 ABEJAS PL08"
       ],
       "matches": [
         {
-          "home": "A1",
-          "away": "A2",
+          "home": "1 BUHOS PL25",
+          "away": "2 CATANES PL22",
           "gh": null,
           "ga": null,
-          "hour": "",
-          "place": ""
+          "hour": "19/11/2025   8:00",
+          "place": "Tantocob Campo 1"
         },
         {
-          "home": "A3",
-          "away": "A1",
+          "home": "3 ABEJAS PL08",
+          "away": "1 BUHOS PL25",
           "gh": null,
           "ga": null,
-          "hour": "",
-          "place": ""
+          "hour": "20/11/2025   11:20",
+          "place": "Tantocob Campo 1"
         },
         {
-          "home": "A2",
-          "away": "A3",
+          "home": "2 CATANES PL22",
+          "away": "3 ABEJAS PL08",
           "gh": null,
           "ga": null,
-          "hour": "",
-          "place": ""
+          "hour": "19/11/2025   14:40",
+          "place": "Tantocob Campo 1"
         }
       ]
     },
     "B": {
       "teams": [
-        "B1",
-        "B2",
-        "B3"
+        "4 ARDILLAS EM05",
+        "5 GRILLOS EM13",
+        "6 AGUILAS PL07"
       ],
       "matches": [
         {
-          "home": "B1",
-          "away": "B2",
+          "home": "4 ARDILLAS EM05",
+          "away": "5 GRILLOS EM13",
           "gh": null,
           "ga": null,
-          "hour": "",
-          "place": ""
+          "hour": "19/11/2025   8:50",
+          "place": "Tantocob Campo 1"
         },
         {
-          "home": "B3",
-          "away": "B1",
+          "home": "6 AGUILAS PL07",
+          "away": "4 ARDILLAS EM05",
           "gh": null,
           "ga": null,
-          "hour": "",
-          "place": ""
+          "hour": "20/11/2025   12:10",
+          "place": "Tantocob Campo 1"
         },
         {
-          "home": "B2",
-          "away": "B3",
+          "home": "5 GRILLOS EM13",
+          "away": "6 AGUILAS PL07",
           "gh": null,
           "ga": null,
-          "hour": "",
-          "place": ""
+          "hour": "19/11/2025   15:30",
+          "place": "Tantocob Campo 1"
         }
       ]
     },
     "C": {
       "teams": [
-        "C1",
-        "C2",
-        "C3"
+        "7 PATOS EM22",
+        "8 HALCONES PL26",
+        "9 AGUILAS PL19"
       ],
       "matches": [
         {
-          "home": "C1",
-          "away": "C2",
+          "home": "7 PATOS EM22",
+          "away": "8 HALCONES PL26",
           "gh": null,
           "ga": null,
-          "hour": "",
-          "place": ""
+          "hour": "19/11/2025   9:40",
+          "place": "Tantocob Campo 1"
         },
         {
-          "home": "C3",
-          "away": "C1",
+          "home": "9 AGUILAS PL19",
+          "away": "7 PATOS EM22",
           "gh": null,
           "ga": null,
-          "hour": "",
-          "place": ""
+          "hour": "20/11/2025   13:00",
+          "place": "Tantocob Campo 1"
         },
         {
-          "home": "C2",
-          "away": "C3",
+          "home": "8 HALCONES PL26",
+          "away": "9 AGUILAS PL19",
           "gh": null,
           "ga": null,
-          "hour": "",
-          "place": ""
+          "hour": "19/11/2025   16:20",
+          "place": "Tantocob Campo 1"
         }
       ]
     },
     "D": {
       "teams": [
-        "D1",
-        "D2",
-        "D3"
+        "10 CARNEROS PL29",
+        "11 AGUILUCHOS PL17",
+        "12 SERPIENTES EM28"
       ],
       "matches": [
         {
-          "home": "D1",
-          "away": "D2",
+          "home": "10 CARNEROS PL29",
+          "away": "11 AGUILUCHOS PL17",
           "gh": null,
           "ga": null,
-          "hour": "",
-          "place": ""
+          "hour": "19/11/2025   10:30",
+          "place": "Tantocob Campo 1"
         },
         {
-          "home": "D3",
-          "away": "D1",
+          "home": "12 SERPIENTES EM28",
+          "away": "10 CARNEROS PL29",
           "gh": null,
           "ga": null,
-          "hour": "",
-          "place": ""
+          "hour": "20/11/2025   13:50",
+          "place": "Tantocob Campo 1"
         },
         {
-          "home": "D2",
-          "away": "D3",
+          "home": "11 AGUILUCHOS PL17",
+          "away": "12 SERPIENTES EM28",
           "gh": null,
           "ga": null,
-          "hour": "",
-          "place": ""
+          "hour": "19/11/2025   17:10",
+          "place": "Tantocob Campo 1"
         }
       ]
     }
   },
   "knockout": {
     "sf1": {
-      "home": "",
-      "away": "",
+      "home": "A1",
+      "away": "B1",
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "",
-      "place": ""
+      "hour": "20/11/2025   16:30",
+      "place": "Tantocob Campo 1"
     },
     "sf2": {
-      "home": "",
-      "away": "",
+      "home": "C1",
+      "away": "D1",
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "",
-      "place": ""
+      "hour": "20/11/2025   17:20",
+      "place": "Tantocob Campo 1"
     },
     "final": {
       "home": "",
@@ -160,8 +160,8 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "",
-      "place": ""
+      "hour": "21/11/2025   9:30",
+      "place": "Tantocob Campo 1"
     },
     "third": {
       "home": "",
@@ -169,11 +169,11 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "",
-      "place": ""
+      "hour": "21/11/2025   8:50",
+      "place": "Tantocob Campo 1"
     }
   },
-  "updatedAtLocal": "24/10/2025, 12:46:31",
+  "updatedAtLocal": "12/11/2025, 10:12:00",
   "theme": {
     "color": "#62d0df",
     "bg": "#194c57"

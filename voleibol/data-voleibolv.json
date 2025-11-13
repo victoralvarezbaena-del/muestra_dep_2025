@@ -2,35 +2,115 @@
   "groups": {
     "A": {
       "teams": [
-        "Equipo A1",
-        "Equipo A2",
-        "Equipo A3"
+        "1 PUMAS PL04",
+        "2 HALCONES PL26",
+        "3 ARDILLAS PL03"
       ],
-      "matches": []
+      "matches": [
+        {
+          "home": "1 PUMAS PL04",
+          "away": "2 HALCONES PL26",
+          "sets": [],
+          "hour": "19/11/2025   14:00",
+          "place": "Gómez Morín Cancha 3"
+        },
+        {
+          "home": "2 HALCONES PL26",
+          "away": "3 ARDILLAS PL03",
+          "sets": [],
+          "hour": "19/11/2025   16:00",
+          "place": "Gómez Morín Cancha 3"
+        },
+        {
+          "home": "3 ARDILLAS PL03",
+          "away": "1 PUMAS PL04",
+          "sets": [],
+          "hour": "20/11/2025   15:00",
+          "place": "Gómez Morín Cancha 3"
+        }
+      ]
     },
     "B": {
       "teams": [
-        "Equipo B1",
-        "Equipo B2",
-        "Equipo B3"
+        "4 PANTERAS PL28",
+        "5 DRAGONES PL23",
+        "6 GATOS PARDOS PL35"
       ],
-      "matches": []
+      "matches": [
+        {
+          "home": "4 PANTERAS PL28",
+          "away": "5 DRAGONES PL23",
+          "sets": [],
+          "hour": "19/11/2025   14:00",
+          "place": "Gómez Morín Cancha 4"
+        },
+        {
+          "home": "5 DRAGONES PL23",
+          "away": "6 GATOS PARDOS PL35",
+          "sets": [],
+          "hour": "19/11/2025   16:00",
+          "place": "Gómez Morín Cancha 4"
+        },
+        {
+          "home": "6 GATOS PARDOS PL35",
+          "away": "4 PANTERAS PL28",
+          "sets": [],
+          "hour": "20/11/2025   15:00",
+          "place": "Gómez Morín Cancha 4"
+        }
+      ]
     },
     "C": {
       "teams": [
-        "Equipo C1",
-        "Equipo C2",
-        "Equipo C3"
+        "7 QUICHANES PL13",
+        "8 COYOTES PL05",
+        "9 CACHORROS PL16",
+        "10 LEONES PL11"
       ],
-      "matches": []
-    },
-    "D": {
-      "teams": [
-        "Equipo D1",
-        "Equipo D2",
-        "Equipo D3"
-      ],
-      "matches": []
+      "matches": [
+        {
+          "home": "7 QUICHANES PL13",
+          "away": "8 COYOTES PL05",
+          "sets": [],
+          "hour": "19/11/2025   15:00",
+          "place": "Gómez Morín Cancha 3"
+        },
+        {
+          "home": "9 CACHORROS PL16",
+          "away": "10 LEONES PL11",
+          "sets": [],
+          "hour": "19/11/2025   15:00",
+          "place": "Gómez Morín Cancha 4"
+        },
+        {
+          "home": "7 QUICHANES PL13",
+          "away": "9 CACHORROS PL16",
+          "sets": [],
+          "hour": "20/11/2025   14:00",
+          "place": "Gómez Morín Cancha 3"
+        },
+        {
+          "home": "8 COYOTES PL05",
+          "away": "10 LEONES PL11",
+          "sets": [],
+          "hour": "20/11/2025   14:00",
+          "place": "Gómez Morín Cancha 4"
+        },
+        {
+          "home": "8 COYOTES PL05",
+          "away": "9 CACHORROS PL16",
+          "sets": [],
+          "hour": "19/11/2025   17:00",
+          "place": "Gómez Morín Cancha 3"
+        },
+        {
+          "home": "7 QUICHANES PL13",
+          "away": "10 LEONES PL11",
+          "sets": [],
+          "hour": "19/11/2025   17:00",
+          "place": "Gómez Morín Cancha 4"
+        }
+      ]
     }
   },
   "points": {
@@ -43,32 +123,32 @@
       "away": "",
       "sets": [],
       "winner": "",
-      "hour": "",
-      "place": ""
+      "hour": "20/11/2025   17:00",
+      "place": "Gómez Morín Cancha 3"
     },
     "sf2": {
       "home": "",
       "away": "",
       "sets": [],
       "winner": "",
-      "hour": "",
-      "place": ""
+      "hour": "20/11/2025   17:00",
+      "place": "Gómez Morín Cancha 4"
     },
     "final": {
       "home": "",
       "away": "",
       "sets": [],
       "winner": "",
-      "hour": "",
-      "place": ""
+      "hour": "21/11/2025   11:00",
+      "place": "Gómez Morín Cancha 4"
     },
     "third": {
       "home": "",
       "away": "",
       "sets": [],
       "winner": "",
-      "hour": "",
-      "place": ""
+      "hour": "21/11/2025   11:00",
+      "place": "Gómez Morín Cancha 3"
     }
   },
   "tournamentName": "Voleibol Varonil",
@@ -76,5 +156,5 @@
     "color": "#8308e7",
     "bg": "#dcc8ea"
   },
-  "timestamp": "2025-10-27T18:17:32.055Z"
+  "timestamp": "2025-11-13T15:06:27.905Z"
 }

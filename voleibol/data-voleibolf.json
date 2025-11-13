@@ -2,28 +2,28 @@
   "groups": {
     "A": {
       "teams": [
-        "1 AGUILAS PL19",
-        "2 HALCONES PL26",
-        "3 QUICHANES PL13"
+        "AGUILAS PL19",
+        "HALCONES PL26",
+        "QUICHANES PL13"
       ],
       "matches": [
         {
-          "home": "1 AGUILAS PL19",
-          "away": "2 HALCONES PL26",
+          "home": "AGUILAS PL19",
+          "away": "HALCONES PL26",
           "sets": [],
           "hour": "19/11/2025   14:00",
           "place": "Gómez Morín Cancha 1"
         },
         {
-          "home": "2 HALCONES PL26",
-          "away": "3 QUICHANES PL13",
+          "home": "HALCONES PL26",
+          "away": "QUICHANES PL13",
           "sets": [],
           "hour": "19/11/2025   16:00",
           "place": "Gómez Morín Cancha 1"
         },
         {
-          "home": "3 QUICHANES PL13",
-          "away": "1 AGUILAS PL19",
+          "home": "QUICHANES PL13",
+          "away": "AGUILAS PL19",
           "sets": [],
           "hour": "20/11/2025   15:00",
           "place": "Gómez Morín Cancha 1"
@@ -32,28 +32,28 @@
     },
     "B": {
       "teams": [
-        "4 ARDILLAS PL03",
-        "5 MAPACHES PL24",
-        "6 TIGRES PL06"
+        "ARDILLAS PL03",
+        "MAPACHES PL24",
+        "TIGRES PL06"
       ],
       "matches": [
         {
-          "home": "4 ARDILLAS PL03",
-          "away": "5 MAPACHES PL24",
+          "home": "ARDILLAS PL03",
+          "away": "MAPACHES PL24",
           "sets": [],
           "hour": "19/11/2025   14:00",
           "place": "Gómez Morín Cancha 2"
         },
         {
-          "home": "5 MAPACHES PL24",
-          "away": "6 TIGRES PL06",
+          "home": "MAPACHES PL24",
+          "away": "TIGRES PL06",
           "sets": [],
           "hour": "19/11/2025   16:00",
           "place": "Gómez Morín Cancha 2"
         },
         {
-          "home": "6 TIGRES PL06",
-          "away": "4 ARDILLAS PL03",
+          "home": "TIGRES PL06",
+          "away": "ARDILLAS PL03",
           "sets": [],
           "hour": "20/11/2025   15:00",
           "place": "Gómez Morín Cancha 2"
@@ -62,50 +62,50 @@
     },
     "C": {
       "teams": [
-        "7 CARDENALES EM08",
-        "8 PANTERAS PL28",
-        "9 COYOTES PL05",
-        "10 CACHORROS PL16"
+        "CARDENALES EM08",
+        "PANTERAS PL28",
+        "COYOTES PL05",
+        "CACHORROS PL16"
       ],
       "matches": [
         {
-          "home": "7 CARDENALES EM08",
-          "away": "8 PANTERAS PL28",
+          "home": "CARDENALES EM08",
+          "away": "PANTERAS PL28",
           "sets": [],
           "hour": "19/11/2025   15:00",
           "place": "Gómez Morín Cancha 1"
         },
         {
-          "home": "9 COYOTES PL05",
-          "away": "10 CACHORROS PL16",
+          "home": "COYOTES PL05",
+          "away": "CACHORROS PL16",
           "sets": [],
           "hour": "19/11/2025   15:00",
           "place": "Gómez Morín Cancha 2"
         },
         {
-          "home": "7 CARDENALES EM08",
-          "away": "9 COYOTES PL05",
+          "home": "CARDENALES EM08",
+          "away": "COYOTES PL05",
           "sets": [],
           "hour": "20/11/2025   14:00",
           "place": "Gómez Morín Cancha 1"
         },
         {
-          "home": "8 PANTERAS PL28",
-          "away": "10 CACHORROS PL16",
+          "home": "PANTERAS PL28",
+          "away": "CACHORROS PL16",
           "sets": [],
           "hour": "20/11/2025   14:00",
           "place": "Gómez Morín Cancha 2"
         },
         {
-          "home": "8 PANTERAS PL28",
-          "away": "9 COYOTES PL05",
+          "home": "PANTERAS PL28",
+          "away": "COYOTES PL05",
           "sets": [],
           "hour": "19/11/2025   17:00",
           "place": "Gómez Morín Cancha 1"
         },
         {
-          "home": "7 CARDENALES EM08",
-          "away": "10 CACHORROS PL16",
+          "home": "CARDENALES EM08",
+          "away": "CACHORROS PL16",
           "sets": [],
           "hour": "19/11/2025   17:00",
           "place": "Gómez Morín Cancha 2"

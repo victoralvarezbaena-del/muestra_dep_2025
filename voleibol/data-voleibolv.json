@@ -2,28 +2,28 @@
   "groups": {
     "A": {
       "teams": [
-        "1 PUMAS PL04",
-        "2 HALCONES PL26",
-        "3 ARDILLAS PL03"
+        "PUMAS PL04",
+        "HALCONES PL26",
+        "ARDILLAS PL03"
       ],
       "matches": [
         {
-          "home": "1 PUMAS PL04",
-          "away": "2 HALCONES PL26",
+          "home": "PUMAS PL04",
+          "away": "HALCONES PL26",
           "sets": [],
           "hour": "19/11/2025   14:00",
           "place": "Gómez Morín Cancha 3"
         },
         {
-          "home": "2 HALCONES PL26",
-          "away": "3 ARDILLAS PL03",
+          "home": "HALCONES PL26",
+          "away": "ARDILLAS PL03",
           "sets": [],
           "hour": "19/11/2025   16:00",
           "place": "Gómez Morín Cancha 3"
         },
         {
-          "home": "3 ARDILLAS PL03",
-          "away": "1 PUMAS PL04",
+          "home": "ARDILLAS PL03",
+          "away": "PUMAS PL04",
           "sets": [],
           "hour": "20/11/2025   15:00",
           "place": "Gómez Morín Cancha 3"
@@ -32,28 +32,28 @@
     },
     "B": {
       "teams": [
-        "4 PANTERAS PL28",
-        "5 DRAGONES PL23",
-        "6 GATOS PARDOS PL35"
+        "PANTERAS PL28",
+        "DRAGONES PL23",
+        "GATOS PARDOS PL35"
       ],
       "matches": [
         {
-          "home": "4 PANTERAS PL28",
-          "away": "5 DRAGONES PL23",
+          "home": "PANTERAS PL28",
+          "away": "DRAGONES PL23",
           "sets": [],
           "hour": "19/11/2025   14:00",
           "place": "Gómez Morín Cancha 4"
         },
         {
-          "home": "5 DRAGONES PL23",
-          "away": "6 GATOS PARDOS PL35",
+          "home": "DRAGONES PL23",
+          "away": "GATOS PARDOS PL35",
           "sets": [],
           "hour": "19/11/2025   16:00",
           "place": "Gómez Morín Cancha 4"
         },
         {
-          "home": "6 GATOS PARDOS PL35",
-          "away": "4 PANTERAS PL28",
+          "home": "GATOS PARDOS PL35",
+          "away": "PANTERAS PL28",
           "sets": [],
           "hour": "20/11/2025   15:00",
           "place": "Gómez Morín Cancha 4"
@@ -62,50 +62,50 @@
     },
     "C": {
       "teams": [
-        "7 QUICHANES PL13",
-        "8 COYOTES PL05",
-        "9 CACHORROS PL16",
-        "10 LEONES PL11"
+        "QUICHANES PL13",
+        "COYOTES PL05",
+        "CACHORROS PL16",
+        "LEONES PL11"
       ],
       "matches": [
         {
-          "home": "7 QUICHANES PL13",
-          "away": "8 COYOTES PL05",
+          "home": "QUICHANES PL13",
+          "away": "COYOTES PL05",
           "sets": [],
           "hour": "19/11/2025   15:00",
           "place": "Gómez Morín Cancha 3"
         },
         {
-          "home": "9 CACHORROS PL16",
-          "away": "10 LEONES PL11",
+          "home": "CACHORROS PL16",
+          "away": "LEONES PL11",
           "sets": [],
           "hour": "19/11/2025   15:00",
           "place": "Gómez Morín Cancha 4"
         },
         {
-          "home": "7 QUICHANES PL13",
-          "away": "9 CACHORROS PL16",
+          "home": "QUICHANES PL13",
+          "away": "CACHORROS PL16",
           "sets": [],
           "hour": "20/11/2025   14:00",
           "place": "Gómez Morín Cancha 3"
         },
         {
-          "home": "8 COYOTES PL05",
-          "away": "10 LEONES PL11",
+          "home": "COYOTES PL05",
+          "away": "LEONES PL11",
           "sets": [],
           "hour": "20/11/2025   14:00",
           "place": "Gómez Morín Cancha 4"
         },
         {
-          "home": "8 COYOTES PL05",
-          "away": "9 CACHORROS PL16",
+          "home": "COYOTES PL05",
+          "away": "CACHORROS PL16",
           "sets": [],
           "hour": "19/11/2025   17:00",
           "place": "Gómez Morín Cancha 3"
         },
         {
-          "home": "7 QUICHANES PL13",
-          "away": "10 LEONES PL11",
+          "home": "QUICHANES PL13",
+          "away": "LEONES PL11",
           "sets": [],
           "hour": "19/11/2025   17:00",
           "place": "Gómez Morín Cancha 4"

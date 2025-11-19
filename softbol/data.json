@@ -76,10 +76,10 @@
         {
           "home": "TIGRES PL06",
           "away": "AGUILAS PL19",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   10:00",
-          "place": "Ingenio Campo 1"
+          "gh": 32,
+          "ga": 3,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "TIGRES PL06",
@@ -156,6 +156,6 @@
     "color": "#487a93",
     "bg": "#cce0f5"
   },
-  "timestamp": "2025-11-19T17:11:28.536Z",
-  "updatedAtLocal": "19 de noviembre de 2025, 11:11"
+  "timestamp": "2025-11-19T20:13:40.455Z",
+  "updatedAtLocal": "19 de noviembre de 2025, 14:13"
 }

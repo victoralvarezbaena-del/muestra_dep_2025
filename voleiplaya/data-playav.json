@@ -75,9 +75,22 @@
         {
           "home": "COYOTES PL05",
           "away": "HALCONES PL26",
-          "sets": [],
-          "hour": "19/11/2025   13:20",
-          "place": "Tantocob"
+          "sets": [
+            {
+              "home": 21,
+              "away": 11
+            },
+            {
+              "home": 11,
+              "away": 21
+            },
+            {
+              "home": 6,
+              "away": 15
+            }
+          ],
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "AGUILAS PL19",
@@ -153,5 +166,5 @@
     "color": "#8308e7",
     "bg": "#4c2361"
   },
-  "timestamp": "2025-11-19T19:22:58.340Z"
+  "timestamp": "2025-11-19T20:02:25.632Z"
 }

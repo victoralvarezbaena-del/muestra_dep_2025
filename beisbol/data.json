@@ -18,10 +18,10 @@
         {
           "home": "CORRECAMINOS PL10",
           "away": "LOBOS PL02",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   14:00",
-          "place": "La Diana"
+          "gh": 11,
+          "ga": 0,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "AGUILUCHOS PL17",
@@ -54,24 +54,24 @@
           "away": "AGUILAS PL19",
           "gh": 5,
           "ga": 5,
-          "hour": "19/11/2025   11:00",
-          "place": "Estadio"
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "CARDENALES EM16",
           "away": "TIGRES PL06",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   14:00",
-          "place": "Estadio"
+          "gh": 3,
+          "ga": 11,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "PUMAS EM09",
           "away": "AGUILAS PL19",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   16:30",
-          "place": "Estadio"
+          "gh": 0,
+          "ga": 6,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "CARDENALES EM16",
@@ -148,6 +148,6 @@
     "color": "#004b70",
     "bg": "#f8fafc"
   },
-  "timestamp": "2025-11-19T20:28:01.693Z",
-  "updatedAtLocal": "19 de noviembre de 2025, 14:28"
+  "timestamp": "2025-11-19T23:55:55.350Z",
+  "updatedAtLocal": "19 de noviembre de 2025, 17:55"
 }

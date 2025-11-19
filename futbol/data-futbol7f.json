@@ -1,11 +1,20 @@
 {
   "tournamentName": "Futbol 7 Femenil",
-  "subtitle": "",
+  "subtitle": "Torneo Femenil 2025",
+  "theme": {
+    "color": "#62d0df",
+    "bg": "#194c57"
+  },
+  "points": {
+    "win": 3,
+    "draw": 1,
+    "loss": 0
+  },
   "groups": {
     "A": {
       "teams": [
         "BUHOS PL25",
-        "CATANES PL22",
+        "CATANES PL22", 
         "ABEJAS PL08"
       ],
       "matches": [
@@ -14,7 +23,7 @@
           "away": "CATANES PL22",
           "gh": 8,
           "ga": 0,
-          "hour": "19/11/2025   8:00",
+          "hour": "19/11/2025 8:00",
           "place": "Tantocob Campo F7"
         },
         {
@@ -22,7 +31,7 @@
           "away": "BUHOS PL25",
           "gh": null,
           "ga": null,
-          "hour": "20/11/2025   11:20",
+          "hour": "20/11/2025 11:20",
           "place": "Tantocob Campo F7"
         },
         {
@@ -30,7 +39,7 @@
           "away": "ABEJAS PL08",
           "gh": null,
           "ga": null,
-          "hour": "19/11/2025   14:40",
+          "hour": "19/11/2025 14:40",
           "place": "Tantocob Campo F7"
         }
       ]
@@ -47,7 +56,7 @@
           "away": "GRILLOS EM13",
           "gh": null,
           "ga": null,
-          "hour": "19/11/2025   8:50",
+          "hour": "19/11/2025 8:50",
           "place": "Tantocob Campo F7"
         },
         {
@@ -55,7 +64,7 @@
           "away": "ARDILLAS EM05",
           "gh": null,
           "ga": null,
-          "hour": "20/11/2025   12:10",
+          "hour": "20/11/2025 12:10",
           "place": "Tantocob Campo F7"
         },
         {
@@ -63,7 +72,7 @@
           "away": "AGUILAS PL07",
           "gh": null,
           "ga": null,
-          "hour": "19/11/2025   15:30",
+          "hour": "19/11/2025 15:30",
           "place": "Tantocob Campo F7"
         }
       ]
@@ -71,7 +80,7 @@
     "C": {
       "teams": [
         "PATOS EM22",
-        "HALCONES PL26",
+        "HALCONES PL26", 
         "AGUILAS PL19"
       ],
       "matches": [
@@ -80,7 +89,7 @@
           "away": "HALCONES PL26",
           "gh": null,
           "ga": null,
-          "hour": "19/11/2025   9:40",
+          "hour": "19/11/2025 9:40",
           "place": "Tantocob Campo F7"
         },
         {
@@ -88,7 +97,7 @@
           "away": "PATOS EM22",
           "gh": null,
           "ga": null,
-          "hour": "20/11/2025   13:00",
+          "hour": "20/11/2025 13:00",
           "place": "Tantocob Campo F7"
         },
         {
@@ -96,7 +105,7 @@
           "away": "AGUILAS PL19",
           "gh": null,
           "ga": null,
-          "hour": "19/11/2025   16:20",
+          "hour": "19/11/2025 16:20",
           "place": "Tantocob Campo F7"
         }
       ]
@@ -113,7 +122,7 @@
           "away": "AGUILUCHOS PL17",
           "gh": null,
           "ga": null,
-          "hour": "19/11/2025   10:30",
+          "hour": "19/11/2025 10:30",
           "place": "Tantocob Campo F7"
         },
         {
@@ -121,7 +130,7 @@
           "away": "CARNEROS PL29",
           "gh": null,
           "ga": null,
-          "hour": "20/11/2025   13:50",
+          "hour": "20/11/2025 13:50",
           "place": "Tantocob Campo F7"
         },
         {
@@ -129,7 +138,7 @@
           "away": "SERPIENTES EM28",
           "gh": null,
           "ga": null,
-          "hour": "19/11/2025   17:10",
+          "hour": "19/11/2025 17:10",
           "place": "Tantocob Campo F7"
         }
       ]
@@ -142,16 +151,16 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "20/11/2025   16:30",
+      "hour": "20/11/2025 16:30",
       "place": "Tantocob Campo F7"
     },
     "sf2": {
       "home": "C1",
-      "away": "D1",
+      "away": "D1", 
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "20/11/2025   17:20",
+      "hour": "20/11/2025 17:20",
       "place": "Tantocob Campo F7"
     },
     "final": {
@@ -160,7 +169,7 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "21/11/2025   9:30",
+      "hour": "21/11/2025 9:30",
       "place": "Tantocob Campo F7"
     },
     "third": {
@@ -169,13 +178,9 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "21/11/2025   8:50",
+      "hour": "21/11/2025 8:50", 
       "place": "Tantocob Campo F7"
     }
   },
-  "updatedAtLocal": "19/11/2025, 9:14:18",
-  "theme": {
-    "color": "#62d0df",
-    "bg": "#194c57"
-  }
+  "updatedAtLocal": "19 de Noviembre 2025, 9:14"
 }

@@ -12,10 +12,10 @@
         {
           "home": "ABEJAS PL08",
           "away": "PANTERAS PL28",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025  9:05",
-          "place": "Gomez Morin Cancha 1"
+          "gh": 6,
+          "ga": 12,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "COYOTES PL05",
@@ -28,10 +28,10 @@
         {
           "home": "PANTERAS PL28",
           "away": "COYOTES PL05",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025  9:35",
-          "place": "Gomez Morin Cancha 1"
+          "gh": 3,
+          "ga": 9,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     },
@@ -61,10 +61,10 @@
         {
           "home": "LIEBRES PL01",
           "away": "TIGRES PL06",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025  9:20",
-          "place": "Gomez Morin Cancha 1"
+          "gh": 3,
+          "ga": 4,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     },
@@ -78,10 +78,10 @@
         {
           "home": "AGUILUCHOS PL17",
           "away": "AGUILAS PL07",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025  9:05",
-          "place": "Gomez Morin Cancha 2"
+          "gh": 3,
+          "ga": 9,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "ARDILLAS EM05",
@@ -94,10 +94,10 @@
         {
           "home": "AGUILAS PL07",
           "away": "ARDILLAS EM05",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025  9:20",
-          "place": "Gomez Morin Cancha 2"
+          "gh": 12,
+          "ga": 10,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     },
@@ -111,10 +111,10 @@
         {
           "home": "DRAGONES PL23",
           "away": "HUEHUES EM24",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025  9:05",
-          "place": "Gomez Morin Cancha 2"
+          "gh": 4,
+          "ga": 7,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "LINCES PL36",
@@ -127,10 +127,10 @@
         {
           "home": "HUEHUES EM24",
           "away": "LINCES PL36",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025  9:20",
-          "place": "Gomez Morin Cancha 2"
+          "gh": 10,
+          "ga": 3,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     },
@@ -177,10 +177,10 @@
         {
           "home": "AGUILAS PL19",
           "away": "GATOS PARDOS PL35",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025  9:05",
-          "place": "Gomez Morin Cancha 3"
+          "gh": 14,
+          "ga": 1,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "CAIMANES PL27",
@@ -211,10 +211,10 @@
         {
           "home": "MAPACHES PL24",
           "away": "HALCONES PL26",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025  9:05",
-          "place": "Gomez Morin Cancha 4"
+          "gh": 4,
+          "ga": 8,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "QUICHANES PL13",
@@ -268,8 +268,8 @@
       "winner": "",
       "hour": "20/11/2025   9:30",
       "place": "Gomez Morin Cancha 1",
-      "homeName": "",
-      "awayName": ""
+      "homeName": "A1",
+      "awayName": "G2"
     },
     "qf2": {
       "home": "",
@@ -301,8 +301,8 @@
       "winner": "",
       "hour": "20/11/2025   9:30",
       "place": "Gomez Morin Cancha 4",
-      "homeName": "",
-      "awayName": ""
+      "homeName": "G1",
+      "awayName": "B1"
     },
     "sf1": {
       "home": "",
@@ -332,8 +332,8 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "21/11/2025   8:30",
-      "place": "Gomez Morin Cancha 2",
+      "hour": "",
+      "place": "",
       "homeName": "",
       "awayName": ""
     },
@@ -349,7 +349,7 @@
       "awayName": ""
     }
   },
-  "updatedAtLocal": "11/11/2025, 9:24:06",
+  "updatedAtLocal": "19/11/2025, 11:52:37",
   "theme": {
     "color": "#db6a00",
     "bg": "#ecb009"

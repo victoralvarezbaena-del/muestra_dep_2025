@@ -10,10 +10,10 @@
         {
           "home": "CARDENALES EM16",
           "away": "AGUILAS PL07",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   8:00",
-          "place": "Ingenio Campo 1"
+          "gh": 11,
+          "ga": 22,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "AGUILAS PL07",
@@ -156,6 +156,6 @@
     "color": "#487a93",
     "bg": "#cce0f5"
   },
-  "timestamp": "2025-11-19T16:18:44.518Z",
-  "updatedAtLocal": "19 de noviembre de 2025, 10:18"
+  "timestamp": "2025-11-19T17:11:28.536Z",
+  "updatedAtLocal": "19 de noviembre de 2025, 11:11"
 }

@@ -88,10 +88,10 @@
         {
           "home": "GARZAS PL33",
           "away": "PANTERAS PL28",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   12:40",
-          "place": "Gómez Morín Cancha 2"
+          "gh": 14,
+          "ga": 9,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "PANTERAS PL28",
@@ -113,6 +113,17 @@
       "table": [
         {
           "team": "GARZAS PL33",
+          "PJ": 1,
+          "G": 1,
+          "E": 0,
+          "P": 0,
+          "GF": 14,
+          "GC": 9,
+          "DG": 5,
+          "Pts": 2
+        },
+        {
+          "team": "TIGRILLOS PL14",
           "PJ": 0,
           "G": 0,
           "E": 0,
@@ -124,24 +135,13 @@
         },
         {
           "team": "PANTERAS PL28",
-          "PJ": 0,
+          "PJ": 1,
           "G": 0,
           "E": 0,
-          "P": 0,
-          "GF": 0,
-          "GC": 0,
-          "DG": 0,
-          "Pts": 0
-        },
-        {
-          "team": "TIGRILLOS PL14",
-          "PJ": 0,
-          "G": 0,
-          "E": 0,
-          "P": 0,
-          "GF": 0,
-          "GC": 0,
-          "DG": 0,
+          "P": 1,
+          "GF": 9,
+          "GC": 14,
+          "DG": -5,
           "Pts": 0
         }
       ]
@@ -256,7 +256,7 @@
     "firstB": "GARZAS PL33",
     "firstC": "ABEJAS PL08",
     "secondA": "AGUILAS PL07",
-    "secondB": "PANTERAS PL28",
+    "secondB": "TIGRILLOS PL14",
     "secondC": "ARDILLAS PL03"
   },
   "semifinalTeams": {
@@ -303,6 +303,6 @@
       "place": "Gómez Morín Cancha 2"
     }
   },
-  "lastUpdated": "2025-11-19T19:57:55.976Z",
+  "lastUpdated": "2025-11-19T20:17:04.798Z",
   "format": "10_equipos_3_grupos"
 }

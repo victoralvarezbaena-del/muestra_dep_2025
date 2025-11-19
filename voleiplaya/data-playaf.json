@@ -10,7 +10,16 @@
         {
           "home": "COYOTES PL05",
           "away": "LIEBRES PL01",
-          "sets": [],
+          "sets": [
+            {
+              "home": 21,
+              "away": 17
+            },
+            {
+              "home": 2,
+              "away": 1
+            }
+          ],
           "hour": "19/11/2025   8:00",
           "place": "Tantocob"
         },
@@ -126,5 +135,5 @@
     "color": "#ab75d7",
     "bg": "#4c2361"
   },
-  "timestamp": "2025-11-12T17:54:23.480Z"
+  "timestamp": "2025-11-19T14:58:33.503Z"
 }

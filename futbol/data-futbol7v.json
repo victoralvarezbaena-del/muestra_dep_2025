@@ -45,8 +45,8 @@
         {
           "home": "LIEBRES PL01",
           "away": "GAVILANES PL38",
-          "gh": null,
-          "ga": null,
+          "gh": 0,
+          "ga": 3,
           "hour": "19/11/2025   12:10",
           "place": "Tantocob Campo F7"
         },
@@ -178,7 +178,7 @@
     "draw": 1,
     "loss": 0
   },
-  "updatedAtLocal": "19/11/2025, 13:08:35",
+  "updatedAtLocal": "19/11/2025, 13:41:02",
   "theme": {
     "color": "#01a6bc",
     "bg": "#194c57"

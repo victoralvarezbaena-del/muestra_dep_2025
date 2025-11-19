@@ -12,8 +12,8 @@
         {
           "home": "BUHOS PL25",
           "away": "CATANES PL22",
-          "gh": null,
-          "ga": null,
+          "gh": 8,
+          "ga": 0,
           "hour": "19/11/2025   8:00",
           "place": "Tantocob Campo F7"
         },
@@ -173,7 +173,7 @@
       "place": "Tantocob Campo F7"
     }
   },
-  "updatedAtLocal": "12/11/2025, 10:12:00",
+  "updatedAtLocal": "19/11/2025, 9:14:18",
   "theme": {
     "color": "#62d0df",
     "bg": "#194c57"

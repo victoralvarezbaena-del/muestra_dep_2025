@@ -364,7 +364,7 @@ function computeTable(matches, teams) {
     }
   });
   
-  // Calizar diferencia de goles
+  // Calcular diferencia de goles
   teams.forEach(team => {
     table[team].DG = table[team].GF - table[team].GC;
   });
@@ -729,12 +729,18 @@ function publishTournament() {
   statusEl.className = 'status loading';
   
   try {
-    // Preparar datos para exportar
+    // Preparar datos para exportar - CORREGIDO
     const exportData = {
       tournamentName: state.tournamentName,
       subtitle: '',
       groups: state.groups,
-      knockout: state.knockout,
+      knockout: {
+        sf1: state.knockout.sf1,
+        sf2: state.knockout.sf2,
+        final: state.knockout.final,
+        third: state.knockout.third
+      },
+      points: state.points, // ← AGREGAR ESTO
       updatedAtLocal: new Date().toLocaleString('es-ES'),
       theme: state.theme
     };
@@ -787,8 +793,8 @@ function exportData() {
     tournamentName: state.tournamentName,
     groups: state.groups,
     knockout: state.knockout,
+    points: state.points, // ← AGREGAR ESTO
     theme: state.theme,
-    points: state.points,
     exportedAt: new Date().toISOString()
   };
   
@@ -806,12 +812,7 @@ function exportData() {
 }
 
 function normalizeImported(data) {
-  const KO_DEF = {
-    sf1:  { home:'', away:'', gh:null, ga:null, winner:'', hour:'', place:'' },
-    sf2:  { home:'', away:'', gh:null, ga:null, winner:'', hour:'', place:'' },
-    final:{ home:'', away:'', gh:null, ga:null, winner:'', hour:'', place:'' },
-    third:{ home:'', away:'', gh:null, ga:null, winner:'', hour:'', place:'' }
-  };
+  const KO_DEF = { home:'', away:'', gh:null, ga:null, winner:'', hour:'', place:'' };
 
   const safe = {
     tournamentName: data.tournamentName || '',
@@ -819,10 +820,10 @@ function normalizeImported(data) {
     points: Object.assign({ win:3, draw:1, loss:0 }, data.points || {}),
     groups: { A:{teams:[],matches:[]}, B:{teams:[],matches:[]}, C:{teams:[],matches:[]}, D:{teams:[],matches:[]} },
     knockout: {
-      sf1:  Object.assign({}, KO_DEF.sf1,  data.knockout?.sf1  || {}),
-      sf2:  Object.assign({}, KO_DEF.sf2,  data.knockout?.sf2  || {}),
-      final:Object.assign({}, KO_DEF.final,data.knockout?.final|| {}),
-      third:Object.assign({}, KO_DEF.third,data.knockout?.third|| {})
+      sf1:  Object.assign({}, KO_DEF, data.knockout?.sf1 || {}),
+      sf2:  Object.assign({}, KO_DEF, data.knockout?.sf2 || {}),
+      final:Object.assign({}, KO_DEF, data.knockout?.final || {}),
+      third:Object.assign({}, KO_DEF, data.knockout?.third || {})
     }
   };
 
@@ -857,33 +858,32 @@ function importData() {
       }
       
       if (confirm('¿Estás seguro de que quieres importar estos datos? Se perderán los datos actuales.')) {
-  const safe = normalizeImported(importedData);
+        const safe = normalizeImported(importedData);
 
-  // Actualizar estado (seguro)
-  state.tournamentName = safe.tournamentName;
-  state.theme = safe.theme;
-  state.points = safe.points;
-  state.groups = safe.groups;
-  state.knockout = safe.knockout;
+        // Actualizar estado (seguro)
+        state.tournamentName = safe.tournamentName;
+        state.theme = safe.theme;
+        state.points = safe.points;
+        state.groups = safe.groups;
+        state.knockout = safe.knockout;
 
-  // Actualizar UI
-  $('#ga').value = state.groups.A.teams.join('\n');
-  $('#gb').value = state.groups.B.teams.join('\n');
-  $('#gc').value = state.groups.C.teams.join('\n');
-  $('#gd').value = state.groups.D.teams.join('\n');
-  $('#tournamentName').value = state.tournamentName;
-  $('#themeColor').value = state.theme.color;
-  $('#themeBg').value = state.theme.bg;
+        // Actualizar UI
+        $('#ga').value = state.groups.A.teams.join('\n');
+        $('#gb').value = state.groups.B.teams.join('\n');
+        $('#gc').value = state.groups.C.teams.join('\n');
+        $('#gd').value = state.groups.D.teams.join('\n');
+        $('#tournamentName').value = state.tournamentName;
+        $('#themeColor').value = state.theme.color;
+        $('#themeBg').value = state.theme.bg;
 
-    applyTheme();
-  saveState();
-  renderGroups();
-  loadKnockoutFromState();
-  if (typeof applyTheme === 'function') applyTheme();
+        applyTheme();
+        saveState();
+        renderGroups();
+        loadKnockoutFromState();
 
-  alert('✅ Datos importados correctamente');
-  fileInput.value = '';
-}
+        alert('✅ Datos importados correctamente');
+        fileInput.value = '';
+      }
     } catch (error) {
       alert('❌ Error al importar: ' + error.message);
       console.error('Error de importación:', error);
@@ -954,6 +954,7 @@ function init() {
   $('#themeColor').addEventListener('input', e => { state.theme.color = e.target.value; saveState(); applyTheme(); });
   
   $('#themeBg').addEventListener('input', e => { state.theme.bg = e.target.value; saveState(); applyTheme(); });
+  
   // Reordenar: colocar la Final después del Tercer Lugar
   (function(){
     const bracket = document.querySelector('.bracket');
@@ -970,6 +971,8 @@ function init() {
   } else {
     generateSchedule();
   }
+  
+  applyTheme();
 }
 
 // Iniciar la aplicación

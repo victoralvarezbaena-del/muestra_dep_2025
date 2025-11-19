@@ -26,9 +26,18 @@
         {
           "home": "CATANES PL22",
           "away": "COYOTES PL05",
-          "sets": [],
-          "hour": "19/11/2025   11:00",
-          "place": "Tantocob"
+          "sets": [
+            {
+              "home": 21,
+              "away": 10
+            },
+            {
+              "home": 21,
+              "away": 10
+            }
+          ],
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "LIEBRES PL01",
@@ -144,5 +153,5 @@
     "color": "#ab75d7",
     "bg": "#4c2361"
   },
-  "timestamp": "2025-11-19T15:45:15.582Z"
+  "timestamp": "2025-11-19T18:06:06.003Z"
 }

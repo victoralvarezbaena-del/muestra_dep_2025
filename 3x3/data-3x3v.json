@@ -20,10 +20,10 @@
         {
           "home": "COYOTES PL05",
           "away": "ABEJAS PL08",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025  11:45",
-          "place": "Gomez Morin Cancha 1"
+          "gh": 14,
+          "ga": 8,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "PANTERAS PL28",
@@ -45,18 +45,18 @@
         {
           "home": "CORRECAMINOS PL20",
           "away": "LIEBRES PL01",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025  9:05",
-          "place": "Gomez Morin Cancha 1"
+          "gh": 6,
+          "ga": 2,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "TIGRES PL06",
           "away": "CORRECAMINOS PL20",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025  11:45",
-          "place": "Gomez Morin Cancha 1"
+          "gh": 6,
+          "ga": 8,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "LIEBRES PL01",
@@ -86,10 +86,10 @@
         {
           "home": "ARDILLAS EM05",
           "away": "AGUILUCHOS PL17",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025  11:45",
-          "place": "Gomez Morin Cancha 2"
+          "gh": 4,
+          "ga": 13,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "AGUILAS PL07",
@@ -119,10 +119,10 @@
         {
           "home": "LINCES PL36",
           "away": "DRAGONES PL23",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025  11:45",
-          "place": "Gomez Morin Cancha 2"
+          "gh": 8,
+          "ga": 4,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "HUEHUES EM24",
@@ -144,26 +144,26 @@
         {
           "home": "CATANES PL22",
           "away": "LOROS PL21",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025  9:05",
-          "place": "Gomez Morin Cancha 3"
+          "gh": 1,
+          "ga": 0,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "TIGRILLOS PL14",
           "away": "CATANES PL22",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025  11:45",
-          "place": "Gomez Morin Cancha 3"
+          "gh": 8,
+          "ga": 7,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "LOROS PL21",
           "away": "TIGRILLOS PL14",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025  9:20",
-          "place": "Gomez Morin Cancha 3"
+          "gh": 4,
+          "ga": 3,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     },
@@ -185,18 +185,18 @@
         {
           "home": "CAIMANES PL27",
           "away": "AGUILAS PL19",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025  11:45",
-          "place": "Gomez Morin Cancha 3"
+          "gh": 3,
+          "ga": 8,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "GATOS PARDOS PL35",
           "away": "CAIMANES PL27",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025  9:20",
-          "place": "Gomez Morin Cancha 3"
+          "gh": 3,
+          "ga": 5,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     },
@@ -219,42 +219,42 @@
         {
           "home": "QUICHANES PL13",
           "away": "CORRECAMINOS PL10",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025  9:05",
-          "place": "Gomez Morin Cancha 4"
+          "gh": 11,
+          "ga": 4,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "MAPACHES PL24",
           "away": "QUICHANES PL13",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025  9:20",
-          "place": "Gomez Morin Cancha 4"
+          "gh": 2,
+          "ga": 16,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "HALCONES PL26",
           "away": "CORRECAMINOS PL10",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025  9:20",
-          "place": "Gomez Morin Cancha 4"
+          "gh": 10,
+          "ga": 7,
+          "hour": "PARTIDO",
+          "place": "GFINALIZADO"
         },
         {
           "home": "MAPACHES PL24",
           "away": "CORRECAMINOS PL10",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025  11:45",
-          "place": "Gomez Morin Cancha 4"
+          "gh": 4,
+          "ga": 6,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "HALCONES PL26",
           "away": "QUICHANES PL13",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025  11:45",
-          "place": "Gomez Morin Cancha 4"
+          "gh": 2,
+          "ga": 8,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     }
@@ -311,7 +311,7 @@
       "ga": null,
       "winner": "",
       "hour": "20/11/2025   11:40",
-      "place": "Gomez Morin Cancha 1",
+      "place": "Gómez Morín Cancha 1",
       "homeName": "",
       "awayName": ""
     },
@@ -322,7 +322,7 @@
       "ga": null,
       "winner": "",
       "hour": "20/11/2025   11:40",
-      "place": "Gomez Morin Cancha 2",
+      "place": "Gómez Morín Cancha 2",
       "homeName": "",
       "awayName": ""
     },
@@ -344,12 +344,12 @@
       "ga": null,
       "winner": "",
       "hour": "21/11/2025   8:30",
-      "place": "Gomez Morin Cancha 1",
+      "place": "Gómez Morín Cancha 2",
       "homeName": "",
       "awayName": ""
     }
   },
-  "updatedAtLocal": "19/11/2025, 11:52:37",
+  "updatedAtLocal": "19/11/2025, 17:35:23",
   "theme": {
     "color": "#db6a00",
     "bg": "#ecb009"

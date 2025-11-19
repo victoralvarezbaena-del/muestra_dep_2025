@@ -43,10 +43,10 @@
         {
           "home": "AGUILUCHOS PL17",
           "away": "PUMAS PL04",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   8:00",
-          "place": "Ingenio Campo 2"
+          "gh": 0,
+          "ga": 20,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "PUMAS PL04",
@@ -156,6 +156,6 @@
     "color": "#487a93",
     "bg": "#cce0f5"
   },
-  "timestamp": "2025-11-12T17:05:39.587Z",
-  "updatedAtLocal": "12 de noviembre de 2025, 11:05"
+  "timestamp": "2025-11-19T16:18:44.518Z",
+  "updatedAtLocal": "19 de noviembre de 2025, 10:18"
 }

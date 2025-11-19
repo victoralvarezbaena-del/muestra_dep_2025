@@ -1,101 +1,165 @@
 {
-  "groups": {
-    "A": {
-      "teams": [
-        "AGUILUCHOS PL17",
-        "CORRECAMINOS PL10",
-        "LOBOS PL02"
-      ],
-      "matches": [
-        {
-          "home": "AGUILUCHOS PL17",
-          "away": "CORRECAMINOS PL10",
-          "gh": 1,
-          "ga": 2,
-          "hour": "PARTIDO",
-          "place": "FINALIZADO"
-        },
-        {
-          "home": "CORRECAMINOS PL10",
-          "away": "LOBOS PL02",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   14:00",
-          "place": "La Diana"
-        },
-        {
-          "home": "AGUILUCHOS PL17",
-          "away": "LOBOS PL02",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025   8:30",
-          "place": "La Diana"
-        }
-      ]
-    },
-    "B": {
-      "teams": [
-        "CARDENALES EM16",
-        "PUMAS EM09",
-        "TIGRES PL06",
-        "AGUILAS PL19"
-      ],
-      "matches": [
-        {
-          "home": "CARDENALES EM16",
-          "away": "PUMAS EM09",
-          "gh": 2,
-          "ga": 5,
-          "hour": "PARTIDO",
-          "place": "FINALIZADO"
-        },
-        {
-          "home": "TIGRES PL06",
-          "away": "AGUILAS PL19",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   11:00",
-          "place": "Estadio"
-        },
-        {
-          "home": "CARDENALES EM16",
-          "away": "TIGRES PL06",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   14:00",
-          "place": "Estadio"
-        },
-        {
-          "home": "PUMAS EM09",
-          "away": "AGUILAS PL19",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   16:30",
-          "place": "Estadio"
-        },
-        {
-          "home": "CARDENALES EM16",
-          "away": "AGUILAS PL19",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025   11:00",
-          "place": "Estadio"
-        },
-        {
-          "home": "PUMAS EM09",
-          "away": "TIGRES PL06",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025   8:30",
-          "place": "Estadio"
-        }
-      ]
-    }
+  "tournamentName": "",
+  "theme": {
+    "color": "#0284c7",
+    "bg": "#f8fafc"
   },
   "points": {
     "win": 2,
     "draw": 1,
     "loss": 0
+  },
+  "groups": {
+    "A": {
+      "teams": [
+        "Equipo A1",
+        "Equipo A2",
+        "Equipo A3"
+      ],
+      "matches": [],
+      "table": [
+        {
+          "team": "Equipo A1",
+          "PJ": 0,
+          "G": 0,
+          "E": 0,
+          "P": 0,
+          "GF": 0,
+          "GC": 0,
+          "DG": 0,
+          "Pts": 0
+        },
+        {
+          "team": "Equipo A2",
+          "PJ": 0,
+          "G": 0,
+          "E": 0,
+          "P": 0,
+          "GF": 0,
+          "GC": 0,
+          "DG": 0,
+          "Pts": 0
+        },
+        {
+          "team": "Equipo A3",
+          "PJ": 0,
+          "G": 0,
+          "E": 0,
+          "P": 0,
+          "GF": 0,
+          "GC": 0,
+          "DG": 0,
+          "Pts": 0
+        }
+      ]
+    },
+    "B": {
+      "teams": [
+        "Equipo B1",
+        "Equipo B2",
+        "Equipo B3"
+      ],
+      "matches": [],
+      "table": [
+        {
+          "team": "Equipo B1",
+          "PJ": 0,
+          "G": 0,
+          "E": 0,
+          "P": 0,
+          "GF": 0,
+          "GC": 0,
+          "DG": 0,
+          "Pts": 0
+        },
+        {
+          "team": "Equipo B2",
+          "PJ": 0,
+          "G": 0,
+          "E": 0,
+          "P": 0,
+          "GF": 0,
+          "GC": 0,
+          "DG": 0,
+          "Pts": 0
+        },
+        {
+          "team": "Equipo B3",
+          "PJ": 0,
+          "G": 0,
+          "E": 0,
+          "P": 0,
+          "GF": 0,
+          "GC": 0,
+          "DG": 0,
+          "Pts": 0
+        }
+      ]
+    },
+    "C": {
+      "teams": [
+        "Equipo C1",
+        "Equipo C2",
+        "Equipo C3",
+        "Equipo C4"
+      ],
+      "matches": [],
+      "table": [
+        {
+          "team": "Equipo C1",
+          "PJ": 0,
+          "G": 0,
+          "E": 0,
+          "P": 0,
+          "GF": 0,
+          "GC": 0,
+          "DG": 0,
+          "Pts": 0
+        },
+        {
+          "team": "Equipo C2",
+          "PJ": 0,
+          "G": 0,
+          "E": 0,
+          "P": 0,
+          "GF": 0,
+          "GC": 0,
+          "DG": 0,
+          "Pts": 0
+        },
+        {
+          "team": "Equipo C3",
+          "PJ": 0,
+          "G": 0,
+          "E": 0,
+          "P": 0,
+          "GF": 0,
+          "GC": 0,
+          "DG": 0,
+          "Pts": 0
+        },
+        {
+          "team": "Equipo C4",
+          "PJ": 0,
+          "G": 0,
+          "E": 0,
+          "P": 0,
+          "GF": 0,
+          "GC": 0,
+          "DG": 0,
+          "Pts": 0
+        }
+      ]
+    }
+  },
+  "qualifiedTeams": {
+    "firstA": "Equipo A1",
+    "firstB": "Equipo B1",
+    "firstC": "Equipo C1",
+    "secondA": "Equipo A2",
+    "secondB": "Equipo B2",
+    "secondC": "Equipo C2",
+    "bestSecond": "Equipo B2"
   },
   "knockout": {
     "sf1": {
@@ -104,10 +168,8 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "20/11/2025   14:30",
-      "place": "Estadio",
-      "homeName": "",
-      "awayName": ""
+      "hour": "",
+      "place": ""
     },
     "sf2": {
       "home": "",
@@ -115,10 +177,8 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "20/11/2025   14:30",
-      "place": "La Diana",
-      "homeName": "",
-      "awayName": ""
+      "hour": "",
+      "place": ""
     },
     "final": {
       "home": "",
@@ -126,10 +186,8 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "21/11/2025   8:30",
-      "place": "Estadio",
-      "homeName": "",
-      "awayName": ""
+      "hour": "",
+      "place": ""
     },
     "third": {
       "home": "",
@@ -137,17 +195,10 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "20/11/2025   18:00",
-      "place": "Estadio",
-      "homeName": "",
-      "awayName": ""
+      "hour": "",
+      "place": ""
     }
   },
-  "tournamentName": "",
-  "theme": {
-    "color": "#004b70",
-    "bg": "#f8fafc"
-  },
-  "timestamp": "2025-11-19T19:28:21.148Z",
-  "updatedAtLocal": "19 de noviembre de 2025, 13:28"
+  "lastUpdated": "2025-10-23T19:37:23.885Z",
+  "format": "10_equipos_3_grupos"
 }

@@ -10,10 +10,10 @@
         {
           "home": "AGUILUCHOS PL17",
           "away": "CORRECAMINOS PL10",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   8:30",
-          "place": "La Diana"
+          "gh": 1,
+          "ga": 2,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "CORRECAMINOS PL10",
@@ -44,10 +44,10 @@
         {
           "home": "CARDENALES EM16",
           "away": "PUMAS EM09",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   8:30",
-          "place": "Estadio"
+          "gh": 2,
+          "ga": 5,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "TIGRES PL06",
@@ -137,8 +137,8 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "21/11/2025   8:30",
-      "place": "La Diana",
+      "hour": "20/11/2025   18:00",
+      "place": "Estadio",
       "homeName": "",
       "awayName": ""
     }
@@ -148,6 +148,6 @@
     "color": "#004b70",
     "bg": "#f8fafc"
   },
-  "timestamp": "2025-11-13T14:27:00.947Z",
-  "updatedAtLocal": "13 de noviembre de 2025, 08:27"
+  "timestamp": "2025-11-19T19:28:21.148Z",
+  "updatedAtLocal": "19 de noviembre de 2025, 13:28"
 }

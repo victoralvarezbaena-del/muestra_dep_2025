@@ -261,8 +261,8 @@
   },
   "knockout": {
     "qf1": {
-      "home": "",
-      "away": "",
+      "home": "A1",
+      "away": "G2",
       "gh": null,
       "ga": null,
       "winner": "",
@@ -294,8 +294,8 @@
       "awayName": ""
     },
     "qf4": {
-      "home": "",
-      "away": "",
+      "home": "G1",
+      "away": "B1",
       "gh": null,
       "ga": null,
       "winner": "",

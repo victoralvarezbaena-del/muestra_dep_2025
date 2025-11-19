@@ -18,10 +18,10 @@
         {
           "home": "AGUILAS PL07",
           "away": "HALCONES PL26",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   12:00",
-          "place": "Ingenio Campo 1"
+          "gh": 7,
+          "ga": 0,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "CARDENALES EM16",
@@ -51,10 +51,10 @@
         {
           "home": "PUMAS PL04",
           "away": "PANTERAS PL28",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   12:00",
-          "place": "Ingenio Campo 2"
+          "gh": 17,
+          "ga": 0,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "AGUILUCHOS PL17",
@@ -156,6 +156,6 @@
     "color": "#487a93",
     "bg": "#cce0f5"
   },
-  "timestamp": "2025-11-19T20:13:40.455Z",
-  "updatedAtLocal": "19 de noviembre de 2025, 14:13"
+  "timestamp": "2025-11-19T20:40:29.724Z",
+  "updatedAtLocal": "19 de noviembre de 2025, 14:40"
 }

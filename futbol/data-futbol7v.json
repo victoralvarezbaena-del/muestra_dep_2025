@@ -12,10 +12,10 @@
         {
           "home": "ABEJAS PL08",
           "away": "AGUILAS PL07",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   11:20",
-          "place": "Tantocob Campo F7"
+          "gh": 1,
+          "ga": 3,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "CARNEROS PL29",
@@ -88,7 +88,7 @@
           "away": "AGUILAS PL19",
           "gh": null,
           "ga": null,
-          "hour": "20/11/2025   14:50",
+          "hour": "20/11/2025   8:00   14:50",
           "place": "Tantocob Campo F7"
         },
         {
@@ -173,7 +173,12 @@
       "place": "Tantocob Campo F7"
     }
   },
-  "updatedAtLocal": "12/11/2025, 10:44:53",
+  "points": {
+    "win": 3,
+    "draw": 1,
+    "loss": 0
+  },
+  "updatedAtLocal": "19/11/2025, 13:08:35",
   "theme": {
     "color": "#01a6bc",
     "bg": "#194c57"

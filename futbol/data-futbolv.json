@@ -12,8 +12,8 @@
         {
           "home": "LIEBRES PL01",
           "away": "CACHORROS PL16",
-          "gh": null,
-          "ga": null,
+          "gh": 6,
+          "ga": 1,
           "hour": "19/11/2025   8:00",
           "place": "Tantocob Campo 1"
         },
@@ -45,8 +45,8 @@
         {
           "home": "GARZAS PL33",
           "away": "AGUILUCHOS PL17",
-          "gh": null,
-          "ga": null,
+          "gh": 0,
+          "ga": 0,
           "hour": "19/11/2025   8:00",
           "place": "Tantocob Campo 2"
         },
@@ -78,8 +78,8 @@
         {
           "home": "JAGUARES PL31",
           "away": "MAPACHES PL24",
-          "gh": null,
-          "ga": null,
+          "gh": 1,
+          "ga": 1,
           "hour": "19/11/2025   8:00",
           "place": "Tantocob Campo 3"
         },
@@ -173,7 +173,12 @@
       "place": "Tantocob Campo 1"
     }
   },
-  "updatedAtLocal": "11/11/2025, 12:11:48",
+  "points": {
+    "win": 3,
+    "draw": 1,
+    "loss": 0
+  },
+  "updatedAtLocal": "19/11/2025, 9:55:54",
   "theme": {
     "color": "#01a6bc",
     "bg": "#b2e1eb"

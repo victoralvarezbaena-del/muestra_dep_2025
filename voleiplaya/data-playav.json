@@ -26,9 +26,18 @@
         {
           "home": "PANTERAS PL28",
           "away": "ARDILLAS PL03",
-          "sets": [],
-          "hour": "19/11/2025   12:30",
-          "place": "Tantocob"
+          "sets": [
+            {
+              "home": 10,
+              "away": 21
+            },
+            {
+              "home": 11,
+              "away": 21
+            }
+          ],
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "BUHOS EM06",
@@ -144,5 +153,5 @@
     "color": "#8308e7",
     "bg": "#4c2361"
   },
-  "timestamp": "2025-11-19T17:14:29.849Z"
+  "timestamp": "2025-11-19T19:22:58.340Z"
 }

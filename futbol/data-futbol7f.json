@@ -78,10 +78,10 @@
         {
           "home": "PATOS EM22",
           "away": "HALCONES PL26",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025 9:40",
-          "place": "Tantocob Campo F7"
+          "gh": 1,
+          "ga": 1,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "AGUILAS PL19",
@@ -178,7 +178,7 @@
     "draw": 1,
     "loss": 0
   },
-  "updatedAtLocal": "19/11/2025, 10:03:05",
+  "updatedAtLocal": "19/11/2025, 11:18:15",
   "theme": {
     "color": "#62d0df",
     "bg": "#194c57"

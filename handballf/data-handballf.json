@@ -20,10 +20,10 @@
         {
           "home": "AGUILAS PL19",
           "away": "AGUILUCHOS PL17",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   12:40",
-          "place": "Gómez Morín Cancha 1"
+          "gh": 2,
+          "ga": 12,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "AGUILUCHOS PL17",
@@ -44,26 +44,15 @@
       ],
       "table": [
         {
-          "team": "AGUILAS PL19",
-          "PJ": 0,
-          "G": 0,
-          "E": 0,
-          "P": 0,
-          "GF": 0,
-          "GC": 0,
-          "DG": 0,
-          "Pts": 0
-        },
-        {
           "team": "AGUILUCHOS PL17",
-          "PJ": 0,
-          "G": 0,
+          "PJ": 1,
+          "G": 1,
           "E": 0,
           "P": 0,
-          "GF": 0,
-          "GC": 0,
-          "DG": 0,
-          "Pts": 0
+          "GF": 12,
+          "GC": 2,
+          "DG": 10,
+          "Pts": 2
         },
         {
           "team": "AGUILAS PL07",
@@ -74,6 +63,17 @@
           "GF": 0,
           "GC": 0,
           "DG": 0,
+          "Pts": 0
+        },
+        {
+          "team": "AGUILAS PL19",
+          "PJ": 1,
+          "G": 0,
+          "E": 0,
+          "P": 1,
+          "GF": 2,
+          "GC": 12,
+          "DG": -10,
           "Pts": 0
         }
       ]
@@ -205,17 +205,6 @@
       ],
       "table": [
         {
-          "team": "ARDILLAS PL03",
-          "PJ": 0,
-          "G": 0,
-          "E": 0,
-          "P": 0,
-          "GF": 0,
-          "GC": 0,
-          "DG": 0,
-          "Pts": 0
-        },
-        {
           "team": "ABEJAS PL08",
           "PJ": 0,
           "G": 0,
@@ -227,7 +216,7 @@
           "Pts": 0
         },
         {
-          "team": "TIGRES PL06",
+          "team": "ARDILLAS PL03",
           "PJ": 0,
           "G": 0,
           "E": 0,
@@ -247,18 +236,34 @@
           "GC": 0,
           "DG": 0,
           "Pts": 0
+        },
+        {
+          "team": "TIGRES PL06",
+          "PJ": 0,
+          "G": 0,
+          "E": 0,
+          "P": 0,
+          "GF": 0,
+          "GC": 0,
+          "DG": 0,
+          "Pts": 0
         }
       ]
     }
   },
   "qualifiedTeams": {
-    "firstA": "AGUILAS PL19",
+    "firstA": "AGUILUCHOS PL17",
     "firstB": "GARZAS PL33",
-    "firstC": "ARDILLAS PL03",
-    "secondA": "AGUILUCHOS PL17",
+    "firstC": "ABEJAS PL08",
+    "secondA": "AGUILAS PL07",
     "secondB": "PANTERAS PL28",
-    "secondC": "ABEJAS PL08",
-    "bestSecond": "PANTERAS PL28"
+    "secondC": "ARDILLAS PL03"
+  },
+  "semifinalTeams": {
+    "sf1Home": "",
+    "sf1Away": "",
+    "sf2Home": "",
+    "sf2Away": ""
   },
   "knockout": {
     "sf1": {
@@ -298,6 +303,6 @@
       "place": "Gómez Morín Cancha 2"
     }
   },
-  "lastUpdated": "2025-11-11T20:00:05.362Z",
+  "lastUpdated": "2025-11-19T19:57:55.976Z",
   "format": "10_equipos_3_grupos"
 }

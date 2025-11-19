@@ -92,10 +92,10 @@
         {
           "home": "AGUILAS PL19",
           "away": "LEONES PL11",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   14:00",
-          "place": "Ingenio Campo 1"
+          "gh": 4,
+          "ga": 14,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     }
@@ -156,6 +156,6 @@
     "color": "#487a93",
     "bg": "#cce0f5"
   },
-  "timestamp": "2025-11-19T20:40:29.724Z",
-  "updatedAtLocal": "19 de noviembre de 2025, 14:40"
+  "timestamp": "2025-11-19T23:47:32.397Z",
+  "updatedAtLocal": "19 de noviembre de 2025, 17:47"
 }

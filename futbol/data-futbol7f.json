@@ -111,10 +111,10 @@
         {
           "home": "CARNEROS PL29",
           "away": "AGUILUCHOS PL17",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025 10:30",
-          "place": "Tantocob Campo F7"
+          "gh": 4,
+          "ga": 0,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "SERPIENTES EM28",
@@ -178,7 +178,7 @@
     "draw": 1,
     "loss": 0
   },
-  "updatedAtLocal": "19/11/2025, 11:18:15",
+  "updatedAtLocal": "19/11/2025, 12:14:51",
   "theme": {
     "color": "#62d0df",
     "bg": "#194c57"

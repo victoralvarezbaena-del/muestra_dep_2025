@@ -50,7 +50,16 @@
         {
           "home": "TIGRES PL06",
           "away": "HALCONES PL26",
-          "sets": [],
+          "sets": [
+            {
+              "home": 4,
+              "away": 21
+            },
+            {
+              "home": 8,
+              "away": 21
+            }
+          ],
           "hour": "19/11/2025   8:40",
           "place": "Tantocob"
         },
@@ -135,5 +144,5 @@
     "color": "#ab75d7",
     "bg": "#4c2361"
   },
-  "timestamp": "2025-11-19T14:58:33.503Z"
+  "timestamp": "2025-11-19T15:40:57.454Z"
 }

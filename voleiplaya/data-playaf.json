@@ -75,9 +75,18 @@
         {
           "home": "AGUILAS PL19",
           "away": "PANTERAS PL28",
-          "sets": [],
-          "hour": "19/11/2025   11:40",
-          "place": "Tantocob"
+          "sets": [
+            {
+              "home": 21,
+              "away": 23
+            },
+            {
+              "home": 12,
+              "away": 21
+            }
+          ],
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "TIGRES PL06",
@@ -153,5 +162,5 @@
     "color": "#ab75d7",
     "bg": "#4c2361"
   },
-  "timestamp": "2025-11-19T18:06:06.003Z"
+  "timestamp": "2025-11-19T18:28:04.521Z"
 }

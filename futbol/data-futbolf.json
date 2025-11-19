@@ -12,10 +12,10 @@
         {
           "home": "VENADOS PL09",
           "away": "AGUILAS EM07",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   9:30",
-          "place": "Tantocob Campo 1"
+          "gh": 0,
+          "ga": 5,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "LIEBRES PL01",
@@ -45,10 +45,10 @@
         {
           "home": "TIGRES PL06",
           "away": "ABEJAS PL08",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   9:30",
-          "place": "Tantocob Campo 2"
+          "gh": 4,
+          "ga": 0,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "GARZAS PL33",
@@ -78,10 +78,10 @@
         {
           "home": "DRAGONES PL23",
           "away": "LEONES PL11",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   9:30",
-          "place": "Tantocob Campo 3"
+          "gh": 6,
+          "ga": 1,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "QUICHANES PL13",
@@ -173,7 +173,12 @@
       "place": "Tantocob Campo 2"
     }
   },
-  "updatedAtLocal": "11/11/2025, 12:05:51",
+  "points": {
+    "win": 3,
+    "draw": 1,
+    "loss": 0
+  },
+  "updatedAtLocal": "19/11/2025, 12:11:43",
   "theme": {
     "color": "#62d0df",
     "bg": "#b2e1eb"

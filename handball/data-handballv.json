@@ -151,10 +151,10 @@
         {
           "home": "AGUILAS PL07",
           "away": "TIGRES PL06",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   11:50",
-          "place": "Gómez Morín Cancha 1"
+          "gh": 2,
+          "ga": 27,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "TIGRES PL06",
@@ -175,15 +175,15 @@
       ],
       "table": [
         {
-          "team": "AGUILAS PL07",
-          "PJ": 0,
-          "G": 0,
+          "team": "TIGRES PL06",
+          "PJ": 1,
+          "G": 1,
           "E": 0,
           "P": 0,
-          "GF": 0,
-          "GC": 0,
-          "DG": 0,
-          "Pts": 0
+          "GF": 27,
+          "GC": 2,
+          "DG": 25,
+          "Pts": 2
         },
         {
           "team": "PANTERAS PL28",
@@ -197,14 +197,14 @@
           "Pts": 0
         },
         {
-          "team": "TIGRES PL06",
-          "PJ": 0,
+          "team": "AGUILAS PL07",
+          "PJ": 1,
           "G": 0,
           "E": 0,
-          "P": 0,
-          "GF": 0,
-          "GC": 0,
-          "DG": 0,
+          "P": 1,
+          "GF": 2,
+          "GC": 27,
+          "DG": -25,
           "Pts": 0
         }
       ]
@@ -316,5 +316,5 @@
       "place": "Gómez Morín Cancha 1"
     }
   },
-  "lastUpdated": "2025-11-19T18:19:52.378Z"
+  "lastUpdated": "2025-11-19T18:51:47.815Z"
 }

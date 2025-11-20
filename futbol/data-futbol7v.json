@@ -127,8 +127,8 @@
         {
           "home": "MAPACHES PL24",
           "away": "TIGRILLOS PL14",
-          "gh": null,
-          "ga": null,
+          "gh": 1,
+          "ga": 5,
           "hour": "20/11/2025   8:50",
           "place": "Tantocob Campo F7"
         }

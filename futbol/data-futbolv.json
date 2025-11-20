@@ -53,10 +53,10 @@
         {
           "home": "TIGRES PL06",
           "away": "GARZAS PL33",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025   9:30",
-          "place": "Tantocob Campo 2"
+          "gh": 4,
+          "ga": 0,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "AGUILUCHOS PL17",

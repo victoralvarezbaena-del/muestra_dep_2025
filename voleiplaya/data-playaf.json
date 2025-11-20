@@ -170,12 +170,21 @@
   },
   "knockout": {
     "sf1": {
-      "home": "A1",
-      "away": "B2",
-      "sets": [],
+      "home": "CATANES PL22",
+      "away": "PANTERAS PL28",
+      "sets": [
+        {
+          "home": 21,
+          "away": 4
+        },
+        {
+          "home": 21,
+          "away": 13
+        }
+      ],
       "winner": "",
-      "hour": "20/11/2025   14:00",
-      "place": "Tantocob"
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     },
     "sf2": {
       "home": "B1",
@@ -207,5 +216,5 @@
     "color": "#ab75d7",
     "bg": "#4c2361"
   },
-  "timestamp": "2025-11-20T19:22:13.019Z"
+  "timestamp": "2025-11-20T20:48:34.794Z"
 }

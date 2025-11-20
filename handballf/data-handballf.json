@@ -36,10 +36,10 @@
         {
           "home": "AGUILAS PL07",
           "away": "AGUILAS PL19",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025   9:40",
-          "place": "Gómez Morín Cancha 1"
+          "gh": 0,
+          "ga": 7,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ],
       "table": [
@@ -104,8 +104,8 @@
         {
           "home": "TIGRILLOS PL14",
           "away": "GARZAS PL33",
-          "gh": null,
-          "ga": null,
+          "gh": 5,
+          "ga": 4,
           "hour": "20/11/2025   9:40",
           "place": "Gómez Morín Cancha 2"
         }

@@ -99,8 +99,8 @@
   },
   "knockout": {
     "sf1": {
-      "home": "",
-      "away": "",
+      "home": "CORRECAMINOS PL10",
+      "away": "TIGRES PL06",
       "gh": null,
       "ga": null,
       "winner": "",
@@ -110,8 +110,8 @@
       "awayName": ""
     },
     "sf2": {
-      "home": "",
-      "away": "",
+      "home": "AGUILAS PL19",
+      "away": "AGUILUCHOS PL17",
       "gh": null,
       "ga": null,
       "winner": "",
@@ -137,8 +137,8 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "20/11/2025   18:00",
-      "place": "Estadio",
+      "hour": "21/11/2025   8:30",
+      "place": "La Diana",
       "homeName": "",
       "awayName": ""
     }

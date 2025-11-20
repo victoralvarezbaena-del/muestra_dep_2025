@@ -131,7 +131,20 @@
         {
           "home": "AGUILAS PL19",
           "away": "HALCONES PL26",
-          "sets": [],
+          "sets": [
+            {
+              "home": 15,
+              "away": 21
+            },
+            {
+              "home": 21,
+              "away": 5
+            },
+            {
+              "home": 15,
+              "away": 7
+            }
+          ],
           "hour": "20/11/2025   8:40",
           "place": "Tantocob"
         },
@@ -188,5 +201,5 @@
     "color": "#8308e7",
     "bg": "#4c2361"
   },
-  "timestamp": "2025-11-20T15:45:08.469Z"
+  "timestamp": "2025-11-20T16:05:59.509Z"
 }

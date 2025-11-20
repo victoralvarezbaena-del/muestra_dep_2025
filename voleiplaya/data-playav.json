@@ -124,7 +124,16 @@
         {
           "home": "CATANES PL22",
           "away": "HALCONES PL26",
-          "sets": [],
+          "sets": [
+            {
+              "home": 21,
+              "away": 8
+            },
+            {
+              "home": 21,
+              "away": 7
+            }
+          ],
           "hour": "19/11/2025   15:30",
           "place": "Tantocob"
         },
@@ -145,13 +154,22 @@
               "away": 7
             }
           ],
-          "hour": "PARTIDO",
-          "place": "FINALIZADO"
+          "hour": "20/11/2025   8:40",
+          "place": "Tantocob"
         },
         {
           "home": "CATANES PL22",
           "away": "COYOTES PL05",
-          "sets": [],
+          "sets": [
+            {
+              "home": 21,
+              "away": 10
+            },
+            {
+              "home": 21,
+              "away": 10
+            }
+          ],
           "hour": "20/11/2025   11:00",
           "place": "Tantocob"
         }
@@ -201,5 +219,5 @@
     "color": "#8308e7",
     "bg": "#4c2361"
   },
-  "timestamp": "2025-11-20T16:05:59.509Z"
+  "timestamp": "2025-11-20T17:30:43.060Z"
 }

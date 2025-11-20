@@ -127,10 +127,10 @@
         {
           "home": "AGUILAS PL19",
           "away": "HALCONES PL26",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025   8:00",
-          "place": "Tantocob Campo 1"
+          "gh": 0,
+          "ga": 5,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     }

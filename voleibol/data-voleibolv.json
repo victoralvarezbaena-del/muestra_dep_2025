@@ -180,16 +180,16 @@
           "away": "LEONES PL11",
           "sets": [
             {
-              "home": 28,
-              "away": 26
+              "home": null,
+              "away": null
             },
             {
-              "home": 25,
-              "away": 14
+              "home": null,
+              "away": null
             },
             {
-              "home": 14,
-              "away": 15
+              "home": null,
+              "away": null
             }
           ],
           "hour": "PARTIDO",
@@ -241,5 +241,5 @@
     "color": "#8308e7",
     "bg": "#dcc8ea"
   },
-  "timestamp": "2025-11-20T01:03:08.797Z"
+  "timestamp": "2025-11-20T01:15:35.704Z"
 }

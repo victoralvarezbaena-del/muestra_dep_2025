@@ -187,9 +187,18 @@
       "place": "FINALIZADO"
     },
     "sf2": {
-      "home": "B1",
-      "away": "A2",
-      "sets": [],
+      "home": "HALCONES PL26",
+      "away": "COYOTES PL05",
+      "sets": [
+        {
+          "home": 21,
+          "away": 7
+        },
+        {
+          "home": 21,
+          "away": 9
+        }
+      ],
       "winner": "",
       "hour": "20/11/2025   14:40",
       "place": "Tantocob"
@@ -216,5 +225,5 @@
     "color": "#ab75d7",
     "bg": "#4c2361"
   },
-  "timestamp": "2025-11-20T20:48:34.794Z"
+  "timestamp": "2025-11-20T22:24:36.643Z"
 }

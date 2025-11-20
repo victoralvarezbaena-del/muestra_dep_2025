@@ -20,18 +20,18 @@
         {
           "home": "HALCONES PL26",
           "away": "LINCES EM20",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025   9:00",
-          "place": "Gómez Morín Cancha 1"
+          "gh": 78,
+          "ga": 10,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "COYOTES PL05",
           "away": "HALCONES PL26",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   10:40",
-          "place": "Gómez Morín Cancha 1"
+          "gh": 34,
+          "ga": 32,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     },
@@ -53,18 +53,18 @@
         {
           "home": "PANTERAS PL28",
           "away": "GRILLOS EM13",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025   9:00",
-          "place": "Gómez Morín Cancha 2"
+          "gh": 41,
+          "ga": 5,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "CARNEROS PL29",
           "away": "PANTERAS PL28",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   10:40",
-          "place": "Gómez Morín Cancha 2"
+          "gh": 9,
+          "ga": 94,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     },
@@ -86,18 +86,18 @@
         {
           "home": "LIEBRES PL01",
           "away": "MAPACHES PL24",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025   9:00",
-          "place": "Gómez Morín Cancha 3"
+          "gh": 20,
+          "ga": 14,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "ABEJAS PL08",
           "away": "LIEBRES PL01",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   10:40",
-          "place": "Gómez Morín Cancha 3"
+          "gh": 30,
+          "ga": 33,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     },
@@ -111,8 +111,8 @@
   },
   "knockout": {
     "sf1": {
-      "home": "A1",
-      "away": "B1",
+      "home": "COYOTES PL05",
+      "away": "PANTERAS PL28",
       "gh": null,
       "ga": null,
       "winner": "",
@@ -120,8 +120,8 @@
       "place": "Gómez Morín Cancha 3"
     },
     "sf2": {
-      "home": "C1",
-      "away": "D1",
+      "home": "ABEJAS PL08",
+      "away": "TIGRILLOS PL14",
       "gh": null,
       "ga": null,
       "winner": "",
@@ -147,7 +147,7 @@
       "place": "Gómez Morín Cancha 3"
     }
   },
-  "updatedAtLocal": "19/11/2025, 11:57:26",
+  "updatedAtLocal": "20/11/2025, 12:06:13",
   "theme": {
     "color": "#df944e",
     "bg": "#eed48b"

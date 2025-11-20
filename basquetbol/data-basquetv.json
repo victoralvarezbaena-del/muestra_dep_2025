@@ -12,26 +12,26 @@
         {
           "home": "CAIMANES PL27",
           "away": "VENADOS PL09",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   9:50",
-          "place": "Gómez Morín Cancha 1"
+          "gh": 50,
+          "ga": 5,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "COYOTES PL05",
           "away": "CAIMANES PL27",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025   8:00",
-          "place": "Gómez Morín Cancha 1"
+          "gh": 37,
+          "ga": 28,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "VENADOS PL09",
           "away": "COYOTES PL05",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   12:00",
-          "place": "Gómez Morín Cancha 1"
+          "gh": 20,
+          "ga": 60,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     },
@@ -45,26 +45,26 @@
         {
           "home": "TIGRES PL06",
           "away": "TIGRILLOS PL14",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   9:50",
-          "place": "Gómez Morín Cancha 2"
+          "gh": 19,
+          "ga": 65,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "CORRECAMINOS PL20",
           "away": "TIGRES PL06",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025   8:00",
-          "place": "Gómez Morín Cancha 2"
+          "gh": 30,
+          "ga": 22,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "TIGRILLOS PL14",
           "away": "CORRECAMINOS PL20",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   12:00",
-          "place": "Gómez Morín Cancha 2"
+          "gh": 40,
+          "ga": 35,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     },
@@ -78,26 +78,26 @@
         {
           "home": "BUHOS PL25",
           "away": "MAPACHES PL24",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   9:50",
-          "place": "Gómez Morín Cancha 3"
+          "gh": 15,
+          "ga": 31,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "HALCONES PL26",
           "away": "BUHOS PL25",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025   8:00",
-          "place": "Gómez Morín Cancha 3"
+          "gh": 65,
+          "ga": 19,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "MAPACHES PL24",
           "away": "HALCONES PL26",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   12:00",
-          "place": "Gómez Morín Cancha 3"
+          "gh": 39,
+          "ga": 58,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     },
@@ -111,26 +111,26 @@
         {
           "home": "GAVILANES PL38",
           "away": "LIEBRES PL01",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   9:50",
-          "place": "Gómez Morín Cancha 4"
+          "gh": 28,
+          "ga": 42,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "PANTERAS PL28",
           "away": "GAVILANES PL38",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025   8:00",
-          "place": "Gómez Morín Cancha 4"
+          "gh": 48,
+          "ga": 28,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "LIEBRES PL01",
           "away": "PANTERAS PL28",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   12:00",
-          "place": "Gómez Morín Cancha 4"
+          "gh": 34,
+          "ga": 36,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     }
@@ -173,7 +173,7 @@
       "place": "Gómez Morín Cancha 1"
     }
   },
-  "updatedAtLocal": "11/11/2025, 11:54:46",
+  "updatedAtLocal": "20/11/2025, 10:21:23",
   "theme": {
     "color": "#db6a00",
     "bg": "#eed48b"

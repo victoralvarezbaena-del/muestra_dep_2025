@@ -94,10 +94,10 @@
         {
           "home": "LEONES PL11",
           "away": "QUICHANES PL13",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   14:00",
-          "place": "Tantocob Campo 3"
+          "gh": 0,
+          "ga": 2,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     },
@@ -178,7 +178,7 @@
     "draw": 1,
     "loss": 0
   },
-  "updatedAtLocal": "19/11/2025, 14:45:47",
+  "updatedAtLocal": "19/11/2025, 22:16:28",
   "theme": {
     "color": "#62d0df",
     "bg": "#b2e1eb"

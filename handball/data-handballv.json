@@ -167,10 +167,10 @@
         {
           "home": "PANTERAS PL28",
           "away": "AGUILAS PL07",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025   8:50",
-          "place": "Gómez Morín Cancha 1"
+          "gh": 26,
+          "ga": 0,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ],
       "table": [
@@ -227,8 +227,8 @@
         {
           "home": "ABEJAS PL08",
           "away": "TIGRILLOS PL14",
-          "gh": null,
-          "ga": null,
+          "gh": 18,
+          "ga": 2,
           "hour": "20/11/2025   8:50",
           "place": "Gómez Morín Cancha 2"
         },

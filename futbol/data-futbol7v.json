@@ -28,10 +28,10 @@
         {
           "home": "AGUILAS PL07",
           "away": "CARNEROS PL29",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   18:00",
-          "place": "Tantocob Campo F7"
+          "gh": 3,
+          "ga": 1,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     },
@@ -47,8 +47,8 @@
           "away": "GAVILANES PL38",
           "gh": 0,
           "ga": 3,
-          "hour": "19/11/2025   12:10",
-          "place": "Tantocob Campo F7"
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "COYOTES PL05",
@@ -61,10 +61,10 @@
         {
           "home": "GAVILANES PL38",
           "away": "COYOTES PL05",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   18:50",
-          "place": "Tantocob Campo F7"
+          "gh": 2,
+          "ga": 1,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     },
@@ -78,10 +78,10 @@
         {
           "home": "AGUILAS PL19",
           "away": "HUEHUES EM24",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   13:00",
-          "place": "Tantocob Campo F7"
+          "gh": 13,
+          "ga": 0,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "BUHOS PL25",
@@ -111,10 +111,10 @@
         {
           "home": "CATANES PL22",
           "away": "MAPACHES PL24",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   13:50",
-          "place": "Tantocob Campo F7"
+          "gh": 2,
+          "ga": 1,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "TIGRILLOS PL14",
@@ -178,7 +178,7 @@
     "draw": 1,
     "loss": 0
   },
-  "updatedAtLocal": "19/11/2025, 13:41:02",
+  "updatedAtLocal": "19/11/2025, 21:52:06",
   "theme": {
     "color": "#01a6bc",
     "bg": "#194c57"

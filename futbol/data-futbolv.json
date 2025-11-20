@@ -20,10 +20,10 @@
         {
           "home": "PANTERAS PL28",
           "away": "LIEBRES PL01",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025   9:30",
-          "place": "Tantocob Campo 1"
+          "gh": 4,
+          "ga": 2,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "CACHORROS PL16",
@@ -178,7 +178,7 @@
     "draw": 1,
     "loss": 0
   },
-  "updatedAtLocal": "19/11/2025, 22:12:52",
+  "updatedAtLocal": "20/11/2025, 11:55:06",
   "theme": {
     "color": "#01a6bc",
     "bg": "#b2e1eb"

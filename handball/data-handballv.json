@@ -40,24 +40,24 @@
       "table": [
         {
           "team": "ARDILLAS PL03",
-          "PJ": 1,
-          "G": 1,
+          "PJ": 2,
+          "G": 2,
           "E": 0,
           "P": 0,
-          "GF": 10,
-          "GC": 0,
-          "DG": 10,
-          "Pts": 2
+          "GF": 62,
+          "GC": 11,
+          "DG": 51,
+          "Pts": 4
         },
         {
           "team": "COYOTES PL05",
-          "PJ": 1,
+          "PJ": 2,
           "G": 1,
           "E": 0,
-          "P": 0,
-          "GF": 10,
-          "GC": 0,
-          "DG": 10,
+          "P": 1,
+          "GF": 21,
+          "GC": 52,
+          "DG": -31,
           "Pts": 2
         },
         {
@@ -108,35 +108,35 @@
       "table": [
         {
           "team": "AGUILUCHOS PL17",
-          "PJ": 1,
-          "G": 1,
+          "PJ": 2,
+          "G": 2,
           "E": 0,
           "P": 0,
-          "GF": 34,
-          "GC": 2,
-          "DG": 32,
-          "Pts": 2
+          "GF": 65,
+          "GC": 17,
+          "DG": 48,
+          "Pts": 4
         },
         {
           "team": "LIEBRES PL01",
-          "PJ": 0,
-          "G": 0,
+          "PJ": 2,
+          "G": 1,
           "E": 0,
-          "P": 0,
-          "GF": 0,
-          "GC": 0,
-          "DG": 0,
-          "Pts": 0
+          "P": 1,
+          "GF": 42,
+          "GC": 34,
+          "DG": 8,
+          "Pts": 2
         },
         {
           "team": "BUHOS PL25",
-          "PJ": 1,
+          "PJ": 2,
           "G": 0,
           "E": 0,
-          "P": 1,
-          "GF": 2,
-          "GC": 34,
-          "DG": -32,
+          "P": 2,
+          "GF": 5,
+          "GC": 61,
+          "DG": -56,
           "Pts": 0
         }
       ]
@@ -187,24 +187,24 @@
         },
         {
           "team": "PANTERAS PL28",
-          "PJ": 1,
-          "G": 0,
+          "PJ": 2,
+          "G": 1,
           "E": 0,
           "P": 1,
-          "GF": 12,
+          "GF": 38,
           "GC": 13,
-          "DG": -1,
-          "Pts": 0
+          "DG": 25,
+          "Pts": 2
         },
         {
           "team": "AGUILAS PL07",
-          "PJ": 1,
+          "PJ": 2,
           "G": 0,
           "E": 0,
-          "P": 1,
+          "P": 2,
           "GF": 2,
-          "GC": 27,
-          "DG": -25,
+          "GC": 53,
+          "DG": -51,
           "Pts": 0
         }
       ]
@@ -244,24 +244,24 @@
       "table": [
         {
           "team": "ABEJAS PL08",
-          "PJ": 1,
-          "G": 1,
+          "PJ": 2,
+          "G": 2,
           "E": 0,
           "P": 0,
-          "GF": 28,
-          "GC": 1,
-          "DG": 27,
-          "Pts": 2
+          "GF": 46,
+          "GC": 3,
+          "DG": 43,
+          "Pts": 4
         },
         {
           "team": "TIGRILLOS PL14",
-          "PJ": 1,
+          "PJ": 2,
           "G": 1,
           "E": 0,
-          "P": 0,
-          "GF": 11,
-          "GC": 5,
-          "DG": 6,
+          "P": 1,
+          "GF": 13,
+          "GC": 23,
+          "DG": -10,
           "Pts": 2
         },
         {
@@ -289,13 +289,13 @@
       "place": "Gómez Morín Cancha 1"
     },
     "sf2": {
-      "home": "C1",
-      "away": "D1",
-      "gh": null,
-      "ga": null,
+      "home": "TIGRES PL06",
+      "away": "ABEJAS PL08",
+      "gh": 8,
+      "ga": 22,
       "winner": "",
-      "hour": "20/11/2025   13:00",
-      "place": "Gómez Morín Cancha 2"
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     },
     "final": {
       "home": "",
@@ -316,5 +316,5 @@
       "place": "Gómez Morín Cancha 1"
     }
   },
-  "lastUpdated": "2025-11-20T04:47:59.568Z"
+  "lastUpdated": "2025-11-20T20:21:17.114Z"
 }

@@ -42,9 +42,18 @@
         {
           "home": "LIEBRES PL01",
           "away": "CATANES PL22",
-          "sets": [],
-          "hour": "20/11/2025   9:30",
-          "place": "Tantocob"
+          "sets": [
+            {
+              "home": 13,
+              "away": 21
+            },
+            {
+              "home": 8,
+              "away": 21
+            }
+          ],
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     },
@@ -123,9 +132,18 @@
         {
           "home": "TIGRES PL06",
           "away": "PANTERAS PL28",
-          "sets": [],
-          "hour": "20/11/2025   10:20",
-          "place": "Tantocob"
+          "sets": [
+            {
+              "home": 0,
+              "away": 21
+            },
+            {
+              "home": 0,
+              "away": 21
+            }
+          ],
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "HALCONES PL26",
@@ -180,5 +198,5 @@
     "color": "#ab75d7",
     "bg": "#4c2361"
   },
-  "timestamp": "2025-11-20T03:36:39.266Z"
+  "timestamp": "2025-11-20T17:35:44.532Z"
 }

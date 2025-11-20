@@ -42,8 +42,17 @@
         {
           "home": "ARDILLAS PL03",
           "away": "PUMAS PL04",
-          "sets": [],
-          "hour": "20/11/2025   15:00",
+          "sets": [
+            {
+              "home": 25,
+              "away": 18
+            },
+            {
+              "home": 25,
+              "away": 17
+            }
+          ],
+          "hour": "PARTIDO",
           "place": "FINALIZADO"
         }
       ]
@@ -90,9 +99,18 @@
         {
           "home": "GATOS PARDOS PL35",
           "away": "PANTERAS PL28",
-          "sets": [],
-          "hour": "20/11/2025   15:00",
-          "place": "Gómez Morín Cancha 4"
+          "sets": [
+            {
+              "home": 5,
+              "away": 25
+            },
+            {
+              "home": 14,
+              "away": 25
+            }
+          ],
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     },
@@ -250,5 +268,5 @@
     "color": "#8308e7",
     "bg": "#dcc8ea"
   },
-  "timestamp": "2025-11-20T21:16:23.650Z"
+  "timestamp": "2025-11-20T22:28:46.583Z"
 }

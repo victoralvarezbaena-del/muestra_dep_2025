@@ -42,9 +42,18 @@
         {
           "home": "BUHOS EM06",
           "away": "PANTERAS PL28",
-          "sets": [],
-          "hour": "20/11/2025   8:00",
-          "place": "Tantocob"
+          "sets": [
+            {
+              "home": 21,
+              "away": 13
+            },
+            {
+              "home": 21,
+              "away": 14
+            }
+          ],
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     },
@@ -179,5 +188,5 @@
     "color": "#8308e7",
     "bg": "#4c2361"
   },
-  "timestamp": "2025-11-20T15:09:41.773Z"
+  "timestamp": "2025-11-20T15:45:08.469Z"
 }

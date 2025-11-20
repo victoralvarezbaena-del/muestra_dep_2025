@@ -139,7 +139,16 @@
         {
           "home": "QUICHANES PL13",
           "away": "CACHORROS PL16",
-          "sets": [],
+          "sets": [
+            {
+              "home": 19,
+              "away": 25
+            },
+            {
+              "home": 25,
+              "away": 27
+            }
+          ],
           "hour": "20/11/2025   14:00",
           "place": "Gómez Morín Cancha 3"
         },
@@ -241,5 +250,5 @@
     "color": "#8308e7",
     "bg": "#dcc8ea"
   },
-  "timestamp": "2025-11-20T21:07:16.546Z"
+  "timestamp": "2025-11-20T21:16:23.650Z"
 }

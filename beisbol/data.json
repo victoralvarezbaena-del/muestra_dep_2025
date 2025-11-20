@@ -26,10 +26,10 @@
         {
           "home": "AGUILUCHOS PL17",
           "away": "LOBOS PL02",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025   8:30",
-          "place": "La Diana"
+          "gh": 11,
+          "ga": 1,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     },
@@ -84,10 +84,10 @@
         {
           "home": "PUMAS EM09",
           "away": "TIGRES PL06",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025   8:30",
-          "place": "Estadio"
+          "gh": 5,
+          "ga":9,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     }

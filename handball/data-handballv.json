@@ -31,10 +31,10 @@
         {
           "home": "COYOTES PL05",
           "away": "ARDILLAS PL03",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025   8:00",
-          "place": "Gómez Morín Cancha 1"
+          "gh": 11,
+          "ga": 52,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ],
       "table": [

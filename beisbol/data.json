@@ -18,18 +18,18 @@
         {
           "home": "CORRECAMINOS PL10",
           "away": "LOBOS PL02",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   14:00",
-          "place": "La Diana"
+          "gh": 11,
+          "ga": 0,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "AGUILUCHOS PL17",
           "away": "LOBOS PL02",
           "gh": 11,
           "ga": 1,
-          "hour": "20/11/2025   8:30",
-          "place": "La Diana"
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     },
@@ -54,40 +54,40 @@
           "away": "AGUILAS PL19",
           "gh": 5,
           "ga": 5,
-          "hour": "19/11/2025   11:00",
-          "place": "Estadio"
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "CARDENALES EM16",
           "away": "TIGRES PL06",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   14:00",
-          "place": "Estadio"
+          "gh": 3,
+          "ga": 11,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "PUMAS EM09",
           "away": "AGUILAS PL19",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   16:30",
-          "place": "Estadio"
+          "gh": 0,
+          "ga": 6,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "CARDENALES EM16",
           "away": "AGUILAS PL19",
           "gh": 1,
           "ga": 11,
-          "hour": "20/11/2025   11:00",
-          "place": "Estadio"
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "PUMAS EM09",
           "away": "TIGRES PL06",
           "gh": 5,
           "ga": 9,
-          "hour": "20/11/2025   8:30",
-          "place": "Estadio"
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     }
@@ -137,7 +137,7 @@
       "gh": null,
       "ga": null,
       "winner": "",
-      "hour": "20/11/2025   8:30",
+      "hour": "20/11/2025   18:00",
       "place": "Estadio",
       "homeName": "",
       "awayName": ""
@@ -148,6 +148,6 @@
     "color": "#004b70",
     "bg": "#f8fafc"
   },
-  "timestamp": "2025-11-20T19:20:09.011Z",
-  "updatedAtLocal": "20 de noviembre de 2025, 13:20"
+  "timestamp": "2025-11-20T19:48:35.139Z",
+  "updatedAtLocal": "20 de noviembre de 2025, 13:48"
 }

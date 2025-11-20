@@ -20,8 +20,8 @@
         {
           "home": "ABEJAS PL08",
           "away": "BUHOS PL25",
-          "gh": null,
-          "ga": null,
+          "gh": 0,
+          "ga": 7,
           "hour": "20/11/2025 11:20",
           "place": "Tantocob Campo F7"
         },

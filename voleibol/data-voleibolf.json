@@ -26,9 +26,18 @@
         {
           "home": "HALCONES PL26",
           "away": "QUICHANES PL13",
-          "sets": [],
-          "hour": "19/11/2025   16:00",
-          "place": "Gómez Morín Cancha 1"
+          "sets": [
+            {
+              "home": 25,
+              "away": 8
+            },
+            {
+              "home": 25,
+              "away": 6
+            }
+          ],
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "QUICHANES PL13",
@@ -49,16 +58,34 @@
         {
           "home": "ARDILLAS PL03",
           "away": "MAPACHES PL24",
-          "sets": [],
-          "hour": "19/11/2025   14:00",
-          "place": "Gómez Morín Cancha 2"
+          "sets": [
+            {
+              "home": 10,
+              "away": 25
+            },
+            {
+              "home": 20,
+              "away": 25
+            }
+          ],
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "MAPACHES PL24",
           "away": "TIGRES PL06",
-          "sets": [],
-          "hour": "19/11/2025   16:00",
-          "place": "Gómez Morín Cancha 2"
+          "sets": [
+            {
+              "home": 16,
+              "away": 25
+            },
+            {
+              "home": 16,
+              "away": 25
+            }
+          ],
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "TIGRES PL06",
@@ -80,16 +107,34 @@
         {
           "home": "CARDENALES EM08",
           "away": "PANTERAS PL28",
-          "sets": [],
-          "hour": "19/11/2025   15:00",
-          "place": "Gómez Morín Cancha 1"
+          "sets": [
+            {
+              "home": 5,
+              "away": 25
+            },
+            {
+              "home": 10,
+              "away": 25
+            }
+          ],
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "COYOTES PL05",
           "away": "CACHORROS PL16",
-          "sets": [],
-          "hour": "19/11/2025   15:00",
-          "place": "Gómez Morín Cancha 2"
+          "sets": [
+            {
+              "home": 25,
+              "away": 10
+            },
+            {
+              "home": 25,
+              "away": 15
+            }
+          ],
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "CARDENALES EM08",
@@ -108,16 +153,34 @@
         {
           "home": "PANTERAS PL28",
           "away": "COYOTES PL05",
-          "sets": [],
-          "hour": "19/11/2025   17:00",
-          "place": "Gómez Morín Cancha 1"
+          "sets": [
+            {
+              "home": 0,
+              "away": 25
+            },
+            {
+              "home": 0,
+              "away": 25
+            }
+          ],
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "CARDENALES EM08",
           "away": "CACHORROS PL16",
-          "sets": [],
-          "hour": "19/11/2025   17:00",
-          "place": "Gómez Morín Cancha 2"
+          "sets": [
+            {
+              "home": 23,
+              "away": 25
+            },
+            {
+              "home": 12,
+              "away": 25
+            }
+          ],
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     }
@@ -165,5 +228,5 @@
     "color": "#ab75d7",
     "bg": "#dcc8ea"
   },
-  "timestamp": "2025-11-19T20:58:05.594Z"
+  "timestamp": "2025-11-20T00:38:29.137Z"
 }

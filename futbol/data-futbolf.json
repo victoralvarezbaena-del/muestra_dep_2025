@@ -86,8 +86,8 @@
         {
           "home": "QUICHANES PL13",
           "away": "DRAGONES PL23",
-          "gh": null,
-          "ga": null,
+          "gh": 0,
+          "ga": 4,
           "hour": "20/11/2025   11:00",
           "place": "Tantocob Campo 3"
         },
@@ -119,8 +119,8 @@
         {
           "home": "HALCONES PL26",
           "away": "PUMAS PL04",
-          "gh": null,
-          "ga": null,
+          "gh": 3,
+          "ga": 1,
           "hour": "20/11/2025   11:00",
           "place": "Tantocob Campo 2"
         },
@@ -178,7 +178,7 @@
     "draw": 1,
     "loss": 0
   },
-  "updatedAtLocal": "19/11/2025, 22:16:28",
+  "updatedAtLocal": "20/11/2025, 14:27:40",
   "theme": {
     "color": "#62d0df",
     "bg": "#b2e1eb"

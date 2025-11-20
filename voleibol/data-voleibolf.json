@@ -201,7 +201,7 @@
   "knockout": {
     "sf1": {
       "home": "",
-      "away": "",
+      "away": "POR DEFINIR",
       "sets": [],
       "winner": "",
       "hour": "20/11/2025   17:00",
@@ -237,5 +237,5 @@
     "color": "#ab75d7",
     "bg": "#dcc8ea"
   },
-  "timestamp": "2025-11-20T22:32:04.482Z"
+  "timestamp": "2025-11-20T22:38:05.067Z"
 }

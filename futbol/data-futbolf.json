@@ -53,10 +53,10 @@
         {
           "home": "GARZAS PL33",
           "away": "TIGRES PL06",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025   8:00",
-          "place": "Tantocob Campo 3"
+          "gh": 0,
+          "ga": 1,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "ABEJAS PL08",

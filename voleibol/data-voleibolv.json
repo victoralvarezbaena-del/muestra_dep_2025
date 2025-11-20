@@ -13,7 +13,7 @@
           "sets": [
             {
               "home": 17,
-              "away": 25
+              "away": 15
             },
             {
               "home": 16,
@@ -148,12 +148,12 @@
           "away": "LEONES PL11",
           "sets": [
             {
-              "home": 25,
-              "away": 11
+              "home": 21,
+              "away": 25
             },
             {
-              "home": 25,
-              "away": 19
+              "home": 12,
+              "away": 25
             }
           ],
           "hour": "PARTIDO",
@@ -180,16 +180,16 @@
           "away": "LEONES PL11",
           "sets": [
             {
-              "home": null,
-              "away": null
+              "home": 28,
+              "away": 26
             },
             {
-              "home": null,
-              "away": null
+              "home": 14,
+              "away": 25
             },
             {
-              "home": null,
-              "away": null
+              "home": 14,
+              "away": 16
             }
           ],
           "hour": "PARTIDO",
@@ -241,5 +241,5 @@
     "color": "#8308e7",
     "bg": "#dcc8ea"
   },
-  "timestamp": "2025-11-20T18:33:00.107Z"
+  "timestamp": "2025-11-20T21:07:16.546Z"
 }

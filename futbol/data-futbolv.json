@@ -94,10 +94,10 @@
         {
           "home": "MAPACHES PL24",
           "away": "COYOTES PL05",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   14:00",
-          "place": "Tantocob Campo 1"
+          "gh": 1,
+          "ga": 1,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     },
@@ -127,10 +127,10 @@
         {
           "home": "HALCONES PL26",
           "away": "LOROS PL21",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   14:00",
-          "place": "Tantocob Campo 2"
+          "gh": 3,
+          "ga": 1,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     }
@@ -178,7 +178,7 @@
     "draw": 1,
     "loss": 0
   },
-  "updatedAtLocal": "19/11/2025, 13:06:51",
+  "updatedAtLocal": "19/11/2025, 22:12:52",
   "theme": {
     "color": "#01a6bc",
     "bg": "#b2e1eb"

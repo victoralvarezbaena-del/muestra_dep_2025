@@ -94,10 +94,10 @@
         {
           "home": "HUEHUES EM24",
           "away": "BUHOS PL25",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025   8:00",
-          "place": "Tantocob Campo F7"
+          "gh": 1,
+          "ga": 7,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     },

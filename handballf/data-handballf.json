@@ -28,10 +28,10 @@
         {
           "home": "AGUILUCHOS PL17",
           "away": "AGUILAS PL07",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   16:00",
-          "place": "Gómez Morín Cancha 1"
+          "gh": 15,
+          "ga": 2,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "AGUILAS PL07",
@@ -45,25 +45,14 @@
       "table": [
         {
           "team": "AGUILUCHOS PL17",
-          "PJ": 1,
-          "G": 1,
+          "PJ": 2,
+          "G": 2,
           "E": 0,
           "P": 0,
-          "GF": 12,
-          "GC": 2,
-          "DG": 10,
-          "Pts": 2
-        },
-        {
-          "team": "AGUILAS PL07",
-          "PJ": 0,
-          "G": 0,
-          "E": 0,
-          "P": 0,
-          "GF": 0,
-          "GC": 0,
-          "DG": 0,
-          "Pts": 0
+          "GF": 27,
+          "GC": 4,
+          "DG": 23,
+          "Pts": 4
         },
         {
           "team": "AGUILAS PL19",
@@ -74,6 +63,17 @@
           "GF": 2,
           "GC": 12,
           "DG": -10,
+          "Pts": 0
+        },
+        {
+          "team": "AGUILAS PL07",
+          "PJ": 1,
+          "G": 0,
+          "E": 0,
+          "P": 1,
+          "GF": 2,
+          "GC": 15,
+          "DG": -13,
           "Pts": 0
         }
       ]
@@ -96,10 +96,10 @@
         {
           "home": "PANTERAS PL28",
           "away": "TIGRILLOS PL14",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   16:00",
-          "place": "Gómez Morín Cancha 2"
+          "gh": 5,
+          "ga": 12,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "TIGRILLOS PL14",
@@ -112,6 +112,17 @@
       ],
       "table": [
         {
+          "team": "TIGRILLOS PL14",
+          "PJ": 1,
+          "G": 1,
+          "E": 0,
+          "P": 0,
+          "GF": 12,
+          "GC": 5,
+          "DG": 7,
+          "Pts": 2
+        },
+        {
           "team": "GARZAS PL33",
           "PJ": 1,
           "G": 1,
@@ -123,25 +134,14 @@
           "Pts": 2
         },
         {
-          "team": "TIGRILLOS PL14",
-          "PJ": 0,
-          "G": 0,
-          "E": 0,
-          "P": 0,
-          "GF": 0,
-          "GC": 0,
-          "DG": 0,
-          "Pts": 0
-        },
-        {
           "team": "PANTERAS PL28",
-          "PJ": 1,
+          "PJ": 2,
           "G": 0,
           "E": 0,
-          "P": 1,
-          "GF": 9,
-          "GC": 14,
-          "DG": -5,
+          "P": 2,
+          "GF": 14,
+          "GC": 26,
+          "DG": -12,
           "Pts": 0
         }
       ]
@@ -157,18 +157,18 @@
         {
           "home": "ABEJAS PL08",
           "away": "TIGRES PL06",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   13:30",
-          "place": "Gómez Morín Cancha 1"
+          "gh": 21,
+          "ga": 1,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "BUHOS PL25",
           "away": "ARDILLAS PL03",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   13:30",
-          "place": "Gómez Morín Cancha 2"
+          "gh": 0,
+          "ga": 10,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "ABEJAS PL08",
@@ -189,63 +189,63 @@
         {
           "home": "ABEJAS PL08",
           "away": "ARDILLAS PL03",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   16:50",
-          "place": "Gómez Morín Cancha 1"
+          "gh": 13,
+          "ga": 12,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "TIGRES PL06",
           "away": "BUHOS PL25",
-          "gh": null,
-          "ga": null,
-          "hour": "19/11/2025   16:50",
-          "place": "Gómez Morín Cancha 2"
+          "gh": 10,
+          "ga": 0,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ],
       "table": [
         {
           "team": "ABEJAS PL08",
-          "PJ": 0,
-          "G": 0,
+          "PJ": 2,
+          "G": 2,
           "E": 0,
           "P": 0,
-          "GF": 0,
-          "GC": 0,
-          "DG": 0,
-          "Pts": 0
+          "GF": 34,
+          "GC": 13,
+          "DG": 21,
+          "Pts": 4
         },
         {
           "team": "ARDILLAS PL03",
-          "PJ": 0,
-          "G": 0,
+          "PJ": 2,
+          "G": 1,
           "E": 0,
-          "P": 0,
-          "GF": 0,
-          "GC": 0,
-          "DG": 0,
-          "Pts": 0
-        },
-        {
-          "team": "BUHOS PL25",
-          "PJ": 0,
-          "G": 0,
-          "E": 0,
-          "P": 0,
-          "GF": 0,
-          "GC": 0,
-          "DG": 0,
-          "Pts": 0
+          "P": 1,
+          "GF": 22,
+          "GC": 13,
+          "DG": 9,
+          "Pts": 2
         },
         {
           "team": "TIGRES PL06",
-          "PJ": 0,
+          "PJ": 2,
+          "G": 1,
+          "E": 0,
+          "P": 1,
+          "GF": 11,
+          "GC": 21,
+          "DG": -10,
+          "Pts": 2
+        },
+        {
+          "team": "BUHOS PL25",
+          "PJ": 2,
           "G": 0,
           "E": 0,
-          "P": 0,
+          "P": 2,
           "GF": 0,
-          "GC": 0,
-          "DG": 0,
+          "GC": 20,
+          "DG": -20,
           "Pts": 0
         }
       ]
@@ -253,10 +253,10 @@
   },
   "qualifiedTeams": {
     "firstA": "AGUILUCHOS PL17",
-    "firstB": "GARZAS PL33",
+    "firstB": "TIGRILLOS PL14",
     "firstC": "ABEJAS PL08",
-    "secondA": "AGUILAS PL07",
-    "secondB": "TIGRILLOS PL14",
+    "secondA": "AGUILAS PL19",
+    "secondB": "GARZAS PL33",
     "secondC": "ARDILLAS PL03"
   },
   "semifinalTeams": {
@@ -303,6 +303,6 @@
       "place": "Gómez Morín Cancha 2"
     }
   },
-  "lastUpdated": "2025-11-19T20:17:04.798Z",
+  "lastUpdated": "2025-11-20T04:43:21.140Z",
   "format": "10_equipos_3_grupos"
 }

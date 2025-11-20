@@ -20,8 +20,8 @@
         {
           "home": "LIEBRES PL01",
           "away": "VENADOS PL09",
-          "gh": null,
-          "ga": null,
+          "gh": 5,
+          "ga": 0,
           "hour": "20/11/2025   8:00",
           "place": "Tantocob Campo 2"
         },

@@ -119,10 +119,10 @@
         {
           "home": "LOROS PL21",
           "away": "AGUILAS EM07",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025   11:00",
-          "place": "Tantocob Campo 1"
+          "gh": 1,
+          "ga": 5,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "HALCONES PL26",
@@ -146,10 +146,10 @@
       "place": "Tantocob Campo 1"
     },
     "sf2": {
-      "home": "C1",
-      "away": "D1",
-      "gh": null,
-      "ga": null,
+      "home": "COYOTES PL05",
+      "away": "HALCONES PL26",
+      "gh": 0,
+      "ga": 2,
       "winner": "",
       "hour": "20/11/2025   12:30",
       "place": "Tantocob Campo 2"
@@ -178,7 +178,7 @@
     "draw": 1,
     "loss": 0
   },
-  "updatedAtLocal": "20/11/2025, 11:55:06",
+  "updatedAtLocal": "20/11/2025, 14:57:21",
   "theme": {
     "color": "#01a6bc",
     "bg": "#b2e1eb"

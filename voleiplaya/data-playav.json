@@ -134,8 +134,8 @@
               "away": 7
             }
           ],
-          "hour": "19/11/2025   15:30",
-          "place": "Tantocob"
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "AGUILAS PL19",
@@ -154,8 +154,8 @@
               "away": 7
             }
           ],
-          "hour": "20/11/2025   8:40",
-          "place": "Tantocob"
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "CATANES PL22",
@@ -170,8 +170,8 @@
               "away": 10
             }
           ],
-          "hour": "20/11/2025   11:00",
-          "place": "Tantocob"
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     }
@@ -182,20 +182,38 @@
   },
   "knockout": {
     "sf1": {
-      "home": "A1",
-      "away": "B2",
-      "sets": [],
+      "home": "BUHOS EM06",
+      "away": "AGUILAS PL19",
+      "sets": [
+        {
+          "home": 6,
+          "away": 21
+        },
+        {
+          "home": 13,
+          "away": 21
+        }
+      ],
       "winner": "",
-      "hour": "20/11/2025   12:30",
-      "place": "Tantocob"
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     },
     "sf2": {
-      "home": "B1",
-      "away": "A2",
-      "sets": [],
+      "home": "CATANES PL22",
+      "away": "ARDILLAS PL03",
+      "sets": [
+        {
+          "home": 21,
+          "away": 5
+        },
+        {
+          "home": 21,
+          "away": 11
+        }
+      ],
       "winner": "",
-      "hour": "20/11/2025   13:20",
-      "place": "Tantocob"
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     },
     "final": {
       "home": "",
@@ -208,7 +226,12 @@
     "third": {
       "home": "",
       "away": "",
-      "sets": [],
+      "sets": [
+        {
+          "home": "",
+          "away": null
+        }
+      ],
       "winner": "",
       "hour": "21/11/2025   9:20",
       "place": "Tantocob"
@@ -219,5 +242,5 @@
     "color": "#8308e7",
     "bg": "#4c2361"
   },
-  "timestamp": "2025-11-20T17:30:43.060Z"
+  "timestamp": "2025-11-20T20:05:31.762Z"
 }

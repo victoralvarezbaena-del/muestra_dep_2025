@@ -173,8 +173,8 @@
         {
           "home": "ABEJAS PL08",
           "away": "BUHOS PL25",
-          "gh": null,
-          "ga": null,
+          "gh": 10,
+          "ga": 0,
           "hour": "20/11/2025   10:30",
           "place": "Gómez Morín Cancha 2"
         },
@@ -205,6 +205,17 @@
       ],
       "table": [
         {
+          "team": "ABEJAS PL08",
+          "PJ": 3,
+          "G": 3,
+          "E": 0,
+          "P": 0,
+          "GF": 44,
+          "GC": 13,
+          "DG": 31,
+          "Pts": 6
+        },
+        {
           "team": "ARDILLAS PL03",
           "PJ": 3,
           "G": 2,
@@ -213,17 +224,6 @@
           "GF": 40,
           "GC": 15,
           "DG": 25,
-          "Pts": 4
-        },
-        {
-          "team": "ABEJAS PL08",
-          "PJ": 2,
-          "G": 2,
-          "E": 0,
-          "P": 0,
-          "GF": 34,
-          "GC": 13,
-          "DG": 21,
           "Pts": 4
         },
         {
@@ -239,13 +239,13 @@
         },
         {
           "team": "BUHOS PL25",
-          "PJ": 2,
+          "PJ": 3,
           "G": 0,
           "E": 0,
-          "P": 2,
+          "P": 3,
           "GF": 0,
-          "GC": 20,
-          "DG": -20,
+          "GC": 30,
+          "DG": -30,
           "Pts": 0
         }
       ]
@@ -254,10 +254,10 @@
   "qualifiedTeams": {
     "firstA": "AGUILUCHOS PL17",
     "firstB": "TIGRILLOS PL14",
-    "firstC": "ARDILLAS PL03",
+    "firstC": "ABEJAS PL08",
     "secondA": "AGUILAS PL19",
     "secondB": "GARZAS PL33",
-    "secondC": "ABEJAS PL08"
+    "secondC": "ARDILLAS PL03"
   },
   "semifinalTeams": {
     "sf1Home": "",
@@ -269,8 +269,8 @@
     "sf1": {
       "home": "",
       "away": "",
-      "gh": null,
-      "ga": null,
+      "gh": 17,
+      "ga": 27,
       "winner": "",
       "hour": "20/11/2025   14:00",
       "place": "Gómez Morín Cancha 1"
@@ -303,6 +303,6 @@
       "place": "Gómez Morín Cancha 2"
     }
   },
-  "lastUpdated": "2025-11-20T18:08:59.844Z",
+  "lastUpdated": "2025-11-20T20:16:55.370Z",
   "format": "10_equipos_3_grupos"
 }

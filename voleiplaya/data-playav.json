@@ -95,25 +95,29 @@
         {
           "home": "AGUILAS PL19",
           "away": "COYOTES PL05",
-          "sets": [],
+          "sets": [
+            {
+              "home": 21,
+              "away": 15
+            },
+            {
+              "home": 19,
+              "away": 21
+            },
+            {
+              "home": 15,
+              "away": 10
+            }
+          ],
           "hour": "PARTIDO",
           "place": "FINALIZADO"
         },
         {
           "home": "CATANES PL22",
           "away": "HALCONES PL26",
-          "sets": [
-            {
-              "home": 21,
-              "away": 8
-            },
-            {
-              "home": 21,
-              "away": 7
-            }
-          ],
-          "hour": "PARTIDO",
-          "place": "FINALIZADO"
+          "sets": [],
+          "hour": "19/11/2025   15:30",
+          "place": "Tantocob"
         },
         {
           "home": "AGUILAS PL19",
@@ -175,5 +179,5 @@
     "color": "#8308e7",
     "bg": "#4c2361"
   },
-  "timestamp": "2025-11-20T03:41:07.718Z"
+  "timestamp": "2025-11-20T15:09:41.773Z"
 }

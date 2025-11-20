@@ -26,10 +26,10 @@
         {
           "home": "CARDENALES EM16",
           "away": "HALCONES PL26",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025   8:00",
-          "place": "Ingenio Campo 1"
+          "gh": 7,
+          "ga": 0,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     },

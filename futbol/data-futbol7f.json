@@ -119,10 +119,10 @@
         {
           "home": "SERPIENTES EM28",
           "away": "CARNEROS PL29",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025 13:50",
-          "place": "Tantocob Campo F7"
+          "gh": 0,
+          "ga": 3,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "AGUILUCHOS PL17",
@@ -137,26 +137,26 @@
   },
   "knockout": {
     "sf1": {
-      "home": "A1",
-      "away": "B1",
-      "gh": null,
-      "ga": null,
+      "home": "BUHOS PL25",
+      "away": "AGUILAS PL07",
+      "gh": 3,
+      "ga": 2,
       "winner": "",
-      "hour": "20/11/2025 16:30",
-      "place": "Tantocob Campo F7"
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     },
     "sf2": {
-      "home": "C1",
-      "away": "D1",
-      "gh": null,
-      "ga": null,
+      "home": "PATOS EM22",
+      "away": "CARNEROS PL29",
+      "gh": 0,
+      "ga": 9,
       "winner": "",
       "hour": "20/11/2025 17:20",
       "place": "Tantocob Campo F7"
     },
     "final": {
-      "home": "",
-      "away": "",
+      "home": "BUHOS PL25",
+      "away": "CARNEROS PL29",
       "gh": null,
       "ga": null,
       "winner": "",
@@ -164,8 +164,8 @@
       "place": "Tantocob Campo F7"
     },
     "third": {
-      "home": "",
-      "away": "",
+      "home": "AGUILAS PL07",
+      "away": "PATOS EM22",
       "gh": null,
       "ga": null,
       "winner": "",
@@ -178,7 +178,7 @@
     "draw": 1,
     "loss": 0
   },
-  "updatedAtLocal": "20/11/2025, 13:37:35",
+  "updatedAtLocal": "20/11/2025, 20:24:37",
   "theme": {
     "color": "#62d0df",
     "bg": "#194c57"

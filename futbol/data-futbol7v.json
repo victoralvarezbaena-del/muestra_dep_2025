@@ -157,11 +157,11 @@
     "final": {
       "home": "GAVILANES PL38",
       "away": "AGUILAS PL19",
-      "gh": null,
-      "ga": null,
+      "gh": 0,
+      "ga": 0,
       "winner": "",
-      "hour": "21/11/2025   10:20",
-      "place": "Tantocob Campo F7"
+      "hour": "PL38",
+      "place": "GANA EN PENALES"
     },
     "third": {
       "home": "TIGRILLOS PL14",
@@ -178,7 +178,7 @@
     "draw": 1,
     "loss": 0
   },
-  "updatedAtLocal": "21/11/2025, 09:25:05",
+  "updatedAtLocal": "21/11/2025, 12:44:05",
   "theme": {
     "color": "#01a6bc",
     "bg": "#194c57"

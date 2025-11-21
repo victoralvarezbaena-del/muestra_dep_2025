@@ -216,12 +216,21 @@
       "place": "FINALIZADO"
     },
     "final": {
-      "home": "",
-      "away": "",
-      "sets": [],
-      "winner": "",
-      "hour": "",
-      "place": ""
+      "home": "AGUILAS PL19",
+      "away": "CATANES PL22",
+      "sets": [
+        {
+          "home": 10,
+          "away": 31
+        },
+        {
+          "home": 13,
+          "away": 21
+        }
+      ],
+      "winner": "CATANES PL22",
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     },
     "third": {
       "home": "BUHOS EM06",
@@ -250,5 +259,5 @@
     "color": "#8308e7",
     "bg": "#4c2361"
   },
-  "timestamp": "2025-11-21T17:42:48.988Z"
+  "timestamp": "2025-11-21T17:55:21.188Z"
 }

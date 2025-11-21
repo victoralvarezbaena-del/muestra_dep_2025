@@ -260,29 +260,29 @@
     "secondC": "ARDILLAS PL03"
   },
   "semifinalTeams": {
-    "sf1Home": "",
-    "sf1Away": "",
-    "sf2Home": "",
-    "sf2Away": ""
+    "sf1Home": "AGUILUCHOS PL17",
+    "sf1Away": "ARDILLAS PL03",
+    "sf2Home": "ABEJAS PL08",
+    "sf2Away": "TIGRILLOS PL14"
   },
   "knockout": {
     "sf1": {
       "home": "",
       "away": "",
-      "gh": 17,
-      "ga": 27,
+      "gh": 9,
+      "ga": 18,
       "winner": "",
-      "hour": "20/11/2025   14:00",
-      "place": "Gómez Morín Cancha 1"
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     },
     "sf2": {
       "home": "",
       "away": "",
-      "gh": null,
-      "ga": null,
+      "gh": 29,
+      "ga": 5,
       "winner": "",
-      "hour": "20/11/2025   14:00",
-      "place": "Gómez Morín Cancha 2"
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     },
     "final": {
       "home": "",
@@ -303,6 +303,6 @@
       "place": "Gómez Morín Cancha 2"
     }
   },
-  "lastUpdated": "2025-11-20T20:16:55.370Z",
+  "lastUpdated": "2025-11-21T02:01:14.005Z",
   "format": "10_equipos_3_grupos"
 }

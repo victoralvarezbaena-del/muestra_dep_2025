@@ -204,20 +204,38 @@
       "place": "Tantocob"
     },
     "final": {
-      "home": "",
-      "away": "",
-      "sets": [],
-      "winner": "",
-      "hour": "21/11/2025   10:00",
-      "place": "Tantocob"
+      "home": "CATANES PL22",
+      "away": "HALCONES PL26",
+      "sets": [
+        {
+          "home": 21,
+          "away": 15
+        },
+        {
+          "home": 21,
+          "away": 13
+        }
+      ],
+      "winner": "CATANES PL22",
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     },
     "third": {
-      "home": "",
-      "away": "",
-      "sets": [],
-      "winner": "",
-      "hour": "21/11/2025   8:30",
-      "place": "Tantocob"
+      "home": "PANTERAS PL28",
+      "away": "COYOTES PL05",
+      "sets": [
+        {
+          "home": 21,
+          "away": 23
+        },
+        {
+          "home": 19,
+          "away": 21
+        }
+      ],
+      "winner": "PANTERAS PL28",
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     }
   },
   "tournamentName": "Voleibol de playa Femenil",
@@ -225,5 +243,5 @@
     "color": "#ab75d7",
     "bg": "#4c2361"
   },
-  "timestamp": "2025-11-20T22:24:36.643Z"
+  "timestamp": "2025-11-21T17:22:09.950Z"
 }

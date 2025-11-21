@@ -157,11 +157,11 @@
     "final": {
       "home": "BUHOS PL25",
       "away": "CARNEROS PL29",
-      "gh": null,
-      "ga": null,
-      "winner": "",
-      "hour": "21/11/2025 9:30",
-      "place": "Tantocob Campo F7"
+      "gh": 4,
+      "ga": 2,
+      "winner": "BUHOS PL25",
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     },
     "third": {
       "home": "AGUILAS PL07",

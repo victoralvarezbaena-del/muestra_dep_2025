@@ -285,8 +285,8 @@
       "place": "FINALIZADO"
     },
     "final": {
-      "home": "",
-      "away": "",
+      "home": "ARDILLAS PL03",
+      "away": "ABEJAS PL08",
       "gh": null,
       "ga": null,
       "winner": "",
@@ -294,8 +294,8 @@
       "place": "Gómez Morín Cancha 2"
     },
     "third": {
-      "home": "",
-      "away": "",
+      "home": "AGUILUCHOS PL17",
+      "away": "TIGRILLOS PL14",
       "gh": null,
       "ga": null,
       "winner": "",

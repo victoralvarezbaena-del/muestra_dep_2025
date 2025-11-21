@@ -166,11 +166,11 @@
     "third": {
       "home": "AGUILAS PL07",
       "away": "PATOS EM22",
-      "gh": null,
-      "ga": null,
-      "winner": "",
-      "hour": "21/11/2025 8:50",
-      "place": "Tantocob Campo F7"
+      "gh": 2,
+      "ga": 0,
+      "winner": "AGUILAS PL07",
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     }
   },
   "points": {
@@ -178,7 +178,7 @@
     "draw": 1,
     "loss": 0
   },
-  "updatedAtLocal": "20/11/2025, 20:24:37",
+  "updatedAtLocal": "21/11/2025, 10:20:37",
   "theme": {
     "color": "#62d0df",
     "bg": "#194c57"

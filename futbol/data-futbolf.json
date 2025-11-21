@@ -137,26 +137,26 @@
   },
   "knockout": {
     "sf1": {
-      "home": "A1",
-      "away": "B1",
-      "gh": null,
-      "ga": null,
+      "home": "LIEBRES PL01",
+      "away": "TIGRES PL06",
+      "gh": 1,
+      "ga": 0,
       "winner": "",
       "hour": "20/11/2025   14:00",
       "place": "Tantocob Campo 1"
     },
     "sf2": {
-      "home": "C1",
-      "away": "D1",
-      "gh": null,
-      "ga": null,
+      "home": "DRAGONES PL23",
+      "away": "HALCONES PL26",
+      "gh": 4,
+      "ga": 0,
       "winner": "",
-      "hour": "20/11/2025   14:00",
-      "place": "Tantocob Campo 2"
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     },
     "final": {
-      "home": "",
-      "away": "",
+      "home": "LIEBRES PL01",
+      "away": "DRAGONES PL23",
       "gh": null,
       "ga": null,
       "winner": "",
@@ -164,8 +164,8 @@
       "place": "Tantocob Campo 2"
     },
     "third": {
-      "home": "",
-      "away": "",
+      "home": "TIGRES PL06",
+      "away": "HALCONES PL26",
       "gh": null,
       "ga": null,
       "winner": "",
@@ -178,7 +178,7 @@
     "draw": 1,
     "loss": 0
   },
-  "updatedAtLocal": "20/11/2025, 14:27:40",
+  "updatedAtLocal": "20/11/2025, 20:37:25",
   "theme": {
     "color": "#62d0df",
     "bg": "#b2e1eb"

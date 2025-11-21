@@ -287,22 +287,22 @@
     "final": {
       "home": "ARDILLAS PL03",
       "away": "ABEJAS PL08",
-      "gh": null,
-      "ga": null,
-      "winner": "",
-      "hour": "21/11/2025   9:30",
-      "place": "Gómez Morín Cancha 2"
+      "gh": 16,
+      "ga": 14,
+      "winner": "ARDILLAS PL03",
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     },
     "third": {
       "home": "AGUILUCHOS PL17",
       "away": "TIGRILLOS PL14",
-      "gh": null,
-      "ga": null,
-      "winner": "",
-      "hour": "21/11/2025   8:30",
-      "place": "Gómez Morín Cancha 2"
+      "gh": 16,
+      "ga": 4,
+      "winner": "AGUILUCHOS PL17",
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     }
   },
-  "lastUpdated": "2025-11-21T02:01:14.005Z",
+  "lastUpdated": "2025-11-21T11:05:14.005",
   "format": "10_equipos_3_grupos"
 }

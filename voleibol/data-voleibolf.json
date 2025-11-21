@@ -229,10 +229,19 @@
     "sf1": {
       "home": "",
       "away": "PANTERAS PL28",
-      "sets": [],
+      "sets": [
+        {
+          "home": 25,
+          "away": 15
+        },
+        {
+          "home": 25,
+          "away": 18
+        }
+      ],
       "winner": "",
-      "hour": "20/11/2025   17:00",
-      "place": "Gómez Morín Cancha 1"
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     },
     "sf2": {
       "home": "",
@@ -264,5 +273,5 @@
     "color": "#ab75d7",
     "bg": "#dcc8ea"
   },
-  "timestamp": "2025-11-20T22:51:47.888Z"
+  "timestamp": "2025-11-21T02:52:00.071Z"
 }

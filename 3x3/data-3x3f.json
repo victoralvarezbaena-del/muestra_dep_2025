@@ -261,8 +261,8 @@
   },
   "knockout": {
     "qf1": {
-      "home": "A1",
-      "away": "G2",
+      "home": "LOROS PL21",
+      "away": "HUEHUES EM24",
       "gh": 9,
       "ga": 3,
       "winner": "",
@@ -272,8 +272,8 @@
       "awayName": "HUEHUES EM24"
     },
     "qf2": {
-      "home": "",
-      "away": "",
+      "home": "ARDILLAS PL03",
+      "away": "CAIMANES PL27",
       "gh": 6,
       "ga": 1,
       "winner": "",
@@ -283,8 +283,8 @@
       "awayName": "CAIMANES PL27"
     },
     "qf3": {
-      "home": "",
-      "away": "",
+      "home": "LOBOS PL02",
+      "away": "CORRECAMINOS PL10",
       "gh": 3,
       "ga": 9,
       "winner": "",
@@ -294,8 +294,8 @@
       "awayName": "CORRECAMINOS PL10"
     },
     "qf4": {
-      "home": "G1",
-      "away": "B1",
+      "home": "AGUILAS PL19",
+      "away": "GARZAS PL33",
       "gh": 7,
       "ga": 0,
       "winner": "",
@@ -305,51 +305,51 @@
       "awayName": "GARZAS PL33"
     },
     "sf1": {
-      "home": "",
-      "away": "",
-      "gh": null,
-      "ga": null,
+      "home": "LOROS PL21",
+      "away": "ARDILLAS PL03",
+      "gh": 1,
+      "ga": 6,
       "winner": "",
-      "hour": "20/11/2025   11:40",
-      "place": "Gómez Morín Cancha 3",
+      "hour": "PARTIDO",
+      "place": "FINALIZADO",
       "homeName": "",
       "awayName": ""
     },
     "sf2": {
-      "home": "",
-      "away": "",
-      "gh": null,
-      "ga": null,
+      "home": "CORRECAMINOS PL10",
+      "away": "AGUILAS PL19",
+      "gh": 2,
+      "ga": 8,
       "winner": "",
-      "hour": "20/11/2025   11:40",
-      "place": "Gómez Morín Cancha 4",
+      "hour": "PARTIDO",
+      "place": "FINALIZADO",
       "homeName": "",
       "awayName": ""
     },
     "final": {
-      "home": "",
-      "away": "",
-      "gh": null,
-      "ga": null,
-      "winner": "",
-      "hour": "21/11/2025   8:30",
-      "place": "Gomez Morin Cancha 4",
+      "home": "AGUILAS PL19",
+      "away": "ARDILLAS PL03",
+      "gh": 4,
+      "ga": 1,
+      "winner": "AGUILAS PL19",
+      "hour": "PARTIDO",
+      "place": "FINALIZADO",
       "homeName": "",
       "awayName": ""
     },
     "third": {
-      "home": "",
-      "away": "",
-      "gh": null,
-      "ga": null,
-      "winner": "",
-      "hour": "21/11/2025   8:30",
-      "place": "Gómez Morín Cancha 4",
+      "home": "LOROS PL21",
+      "away": "CORRECAMINOS PL10",
+      "gh": 11,
+      "ga": 3,
+      "winner": "LOROS PL21",
+      "hour": "PARTIDO",
+      "place": "FINALIZADO",
       "homeName": "",
       "awayName": ""
     }
   },
-  "updatedAtLocal": "20/11/2025, 12:58:42",
+  "updatedAtLocal": "21/11/2025, 09:40:42",
   "theme": {
     "color": "#df944e",
     "bg": "#ecb009"

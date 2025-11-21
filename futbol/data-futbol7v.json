@@ -137,26 +137,26 @@
   },
   "knockout": {
     "sf1": {
-      "home": "A1",
-      "away": "B1",
-      "gh": null,
-      "ga": null,
-      "winner": "",
-      "hour": "20/11/2025   18:10",
-      "place": "Tantocob Campo F7"
+      "home": "AGUILAS PL07",
+      "away": "GAVILANES PL38",
+      "gh": 3,
+      "ga": 3,
+      "winner": "GAVILANES PL38",
+      "hour": "PL38",
+      "place": "GANA EN PENALES"
     },
     "sf2": {
-      "home": "C1",
-      "away": "D1",
-      "gh": null,
-      "ga": null,
+      "home": "AGUILAS PL19",
+      "away": "TIGRILLOS PL14",
+      "gh": 3,
+      "ga": 1,
       "winner": "",
-      "hour": "20/11/2025   19:00",
-      "place": "Tantocob Campo F7"
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     },
     "final": {
-      "home": "",
-      "away": "",
+      "home": "GAVILANES PL38",
+      "away": "AGUILAS PL19",
       "gh": null,
       "ga": null,
       "winner": "",
@@ -164,13 +164,13 @@
       "place": "Tantocob Campo F7"
     },
     "third": {
-      "home": "",
-      "away": "",
-      "gh": null,
-      "ga": null,
-      "winner": "",
-      "hour": "21/11/2025   8:00",
-      "place": "Tantocob Campo F7"
+      "home": "TIGRILLOS PL14",
+      "away": "AGUILAS PL07",
+      "gh": 2,
+      "ga": 2,
+      "winner": "TIGRILLOS PL14",
+      "hour": "PL14",
+      "place": "GANA EN PENALES"
     }
   },
   "points": {
@@ -178,7 +178,7 @@
     "draw": 1,
     "loss": 0
   },
-  "updatedAtLocal": "20/11/2025, 20:32:05",
+  "updatedAtLocal": "21/11/2025, 09:25:05",
   "theme": {
     "color": "#01a6bc",
     "bg": "#194c57"

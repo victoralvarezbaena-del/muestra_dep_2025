@@ -113,24 +113,24 @@
     "sf1": {
       "home": "COYOTES PL05",
       "away": "PANTERAS PL28",
-      "gh": null,
-      "ga": null,
+      "gh": 49,
+      "ga": 18,
       "winner": "",
-      "hour": "20/11/2025   12:00",
-      "place": "Gómez Morín Cancha 3"
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     },
     "sf2": {
       "home": "LIEBRES PL01",
       "away": "TIGRILLOS PL14",
-      "gh": null,
-      "ga": null,
+      "gh": 35,
+      "ga": 23,
       "winner": "",
       "hour": "20/11/2025   12:00",
       "place": "Gómez Morín Cancha 3"
     },
     "final": {
-      "home": "",
-      "away": "",
+      "home": "COYOTES PL05",
+      "away": "LIEBRES PL01",
       "gh": null,
       "ga": null,
       "winner": "",
@@ -138,8 +138,8 @@
       "place": "Gómez Morín Cancha 4"
     },
     "third": {
-      "home": "",
-      "away": "",
+      "home": "PANTERAS PL28",
+      "away": "TIGRILLOS PL14",
       "gh": null,
       "ga": null,
       "winner": "",
@@ -147,7 +147,7 @@
       "place": "Gómez Morín Cancha 3"
     }
   },
-  "updatedAtLocal": "20/11/2025, 12:06:13",
+  "updatedAtLocal": "21/11/2025, 10:25:13",
   "theme": {
     "color": "#df944e",
     "bg": "#eed48b"

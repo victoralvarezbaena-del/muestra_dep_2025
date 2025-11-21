@@ -137,26 +137,26 @@
   },
   "knockout": {
     "sf1": {
-      "home": "A1",
-      "away": "B1",
-      "gh": null,
-      "ga": null,
+      "home": "COYOTES PL05",
+      "away": "TIGRILLOS PL14",
+      "gh": 37,
+      "ga": 34,
       "winner": "",
-      "hour": "20/11/2025   12:00",
-      "place": "Gómez Morín Cancha 1"
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     },
     "sf2": {
-      "home": "C1",
-      "away": "D1",
-      "gh": null,
-      "ga": null,
+      "home": "HALCONES PL26",
+      "away": "PANTERAS PL28",
+      "gh": 24,
+      "ga": 21,
       "winner": "",
-      "hour": "20/11/2025   12:00",
-      "place": "Gómez Morín Cancha 2"
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     },
     "final": {
-      "home": "",
-      "away": "",
+      "home": "COYOTES PL05",
+      "away": "HALCONES PL26",
       "gh": null,
       "ga": null,
       "winner": "",
@@ -164,8 +164,8 @@
       "place": "Gómez Morín Cancha 2"
     },
     "third": {
-      "home": "",
-      "away": "",
+      "home": "TIGRILLOS PL14",
+      "away": "PANTERAS PL28",
       "gh": null,
       "ga": null,
       "winner": "",
@@ -173,7 +173,7 @@
       "place": "Gómez Morín Cancha 1"
     }
   },
-  "updatedAtLocal": "20/11/2025, 10:21:23",
+  "updatedAtLocal": "21/11/2025, 10:38:23",
   "theme": {
     "color": "#db6a00",
     "bg": "#eed48b"

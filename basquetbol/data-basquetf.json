@@ -131,23 +131,23 @@
     "final": {
       "home": "COYOTES PL05",
       "away": "LIEBRES PL01",
-      "gh": null,
-      "ga": null,
-      "winner": "",
-      "hour": "21/11/2025  9:00",
-      "place": "Gómez Morín Cancha 4"
+      "gh": 46,
+      "ga": 21,
+      "winner": "COYOTES PL05",
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     },
     "third": {
       "home": "PANTERAS PL28",
       "away": "TIGRILLOS PL14",
-      "gh": null,
-      "ga": null,
-      "winner": "",
-      "hour": "21/11/2025  9:00",
-      "place": "Gómez Morín Cancha 3"
+      "gh": 19,
+      "ga": 24,
+      "winner": "TIGRILLOS PL14",
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     }
   },
-  "updatedAtLocal": "21/11/2025, 10:25:13",
+  "updatedAtLocal": "21/11/2025, 11:30:13",
   "theme": {
     "color": "#df944e",
     "bg": "#eed48b"

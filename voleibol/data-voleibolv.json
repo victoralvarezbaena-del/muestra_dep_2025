@@ -288,10 +288,19 @@
     "third": {
       "home": "CACHORROS PL16",
       "away": "COYOTES PL05",
-      "sets": [],
-      "winner": "",
-      "hour": "21/11/2025   11:00",
-      "place": "Gómez Morín Cancha 3"
+      "sets": [
+        {
+          "home": 24,
+          "away": 26
+        },
+        {
+          "home": 24,
+          "away": 26
+        }
+      ],
+      "winner": "COYOTES PL05",
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     }
   },
   "tournamentName": "Voleibol Varonil",
@@ -299,5 +308,5 @@
     "color": "#8308e7",
     "bg": "#dcc8ea"
   },
-  "timestamp": "2025-11-21T18:20:04.907Z"
+  "timestamp": "2025-11-21T20:06:43.334Z"
 }

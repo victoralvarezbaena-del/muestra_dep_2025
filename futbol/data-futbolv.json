@@ -137,13 +137,13 @@
   },
   "knockout": {
     "sf1": {
-      "home": "A1",
-      "away": "B1",
-      "gh": null,
-      "ga": null,
+      "home": "PANTERAS PL28",
+      "away": "TIGRES PL06",
+      "gh": 1,
+      "ga": 2,
       "winner": "",
-      "hour": "20/11/2025   12:30",
-      "place": "Tantocob Campo 1"
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     },
     "sf2": {
       "home": "COYOTES PL05",
@@ -151,8 +151,8 @@
       "gh": 0,
       "ga": 2,
       "winner": "",
-      "hour": "20/11/2025   12:30",
-      "place": "Tantocob Campo 2"
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     },
     "final": {
       "home": "",
@@ -164,13 +164,13 @@
       "place": "Tantocob Campo 1"
     },
     "third": {
-      "home": "",
-      "away": "",
-      "gh": null,
-      "ga": null,
-      "winner": "",
-      "hour": "21/11/2025   8:00",
-      "place": "Tantocob Campo 1"
+      "home": "PANTERAS PL28",
+      "away": "COYOTES PL05",
+      "gh": 1,
+      "ga": 1,
+      "winner": "PANTERAS PL28",
+      "hour": "PL28",
+      "place": "GANA EN PENALES"
     }
   },
   "points": {
@@ -178,7 +178,7 @@
     "draw": 1,
     "loss": 0
   },
-  "updatedAtLocal": "20/11/2025, 14:57:21",
+  "updatedAtLocal": "21/11/2025, 10:15:21",
   "theme": {
     "color": "#01a6bc",
     "bg": "#b2e1eb"

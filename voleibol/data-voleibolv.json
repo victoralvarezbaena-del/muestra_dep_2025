@@ -233,30 +233,52 @@
     "sf1": {
       "home": "",
       "away": "",
-      "sets": [],
+      "sets": [
+        {
+          "home": 25,
+          "away": 11
+        },
+        {
+          "home": 25,
+          "away": 13
+        }
+      ],
       "winner": "",
-      "hour": "20/11/2025   17:00",
-      "place": "Gómez Morín Cancha 3"
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     },
     "sf2": {
       "home": "",
       "away": "",
-      "sets": [],
+      "sets": [
+        {
+          "home": 25,
+          "away": 13
+        },
+        {
+          "home": 23,
+          "away": 24
+        },
+        {
+          "home": 15,
+          "away": 8
+        }
+      ],
       "winner": "",
-      "hour": "20/11/2025   17:00",
-      "place": "Gómez Morín Cancha 4"
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     },
     "final": {
-      "home": "",
-      "away": "",
+      "home": "HALCONES PL26",
+      "away": "PANTERAS PL28",
       "sets": [],
       "winner": "",
       "hour": "21/11/2025   11:00",
       "place": "Gómez Morín Cancha 4"
     },
     "third": {
-      "home": "",
-      "away": "",
+      "home": "CACHORROS PL16",
+      "away": "COYOTES PL05",
       "sets": [],
       "winner": "",
       "hour": "21/11/2025   11:00",
@@ -268,5 +290,5 @@
     "color": "#8308e7",
     "bg": "#dcc8ea"
   },
-  "timestamp": "2025-11-20T22:28:46.583Z"
+  "timestamp": "2025-11-21T02:59:25.734Z"
 }

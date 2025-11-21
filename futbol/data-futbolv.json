@@ -157,11 +157,11 @@
     "final": {
       "home": "TIGRES PL06",
       "away": "HALCONES PL26",
-      "gh": null,
-      "ga": null,
-      "winner": "",
-      "hour": "21/11/2025   9:30",
-      "place": "Tantocob Campo 1"
+      "gh": 1,
+      "ga": 1,
+      "winner": "TIGRES PL06",
+      "hour": "PL06",
+      "place": "GANA EN PENALES"
     },
     "third": {
       "home": "PANTERAS PL28",
@@ -178,7 +178,7 @@
     "draw": 1,
     "loss": 0
   },
-  "updatedAtLocal": "21/11/2025, 10:15:21",
+  "updatedAtLocal": "21/11/2025, 12:43:21",
   "theme": {
     "color": "#01a6bc",
     "bg": "#b2e1eb"

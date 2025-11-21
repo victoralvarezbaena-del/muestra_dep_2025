@@ -86,10 +86,10 @@
         {
           "home": "BUHOS PL25",
           "away": "AGUILAS PL19",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025   8:00   14:50",
-          "place": "Tantocob Campo F7"
+          "gh": 1,
+          "ga": 3,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "HUEHUES EM24",
@@ -119,18 +119,18 @@
         {
           "home": "TIGRILLOS PL14",
           "away": "CATANES PL22",
-          "gh": null,
-          "ga": null,
-          "hour": "20/11/2025   15:40",
-          "place": "Tantocob Campo F7"
+          "gh": 2,
+          "ga": 2,
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         },
         {
           "home": "MAPACHES PL24",
           "away": "TIGRILLOS PL14",
           "gh": 1,
           "ga": 5,
-          "hour": "20/11/2025   8:50",
-          "place": "Tantocob Campo F7"
+          "hour": "PARTIDO",
+          "place": "FINALIZADO"
         }
       ]
     }
@@ -178,7 +178,7 @@
     "draw": 1,
     "loss": 0
   },
-  "updatedAtLocal": "20/11/2025, 11:51:40",
+  "updatedAtLocal": "20/11/2025, 20:32:05",
   "theme": {
     "color": "#01a6bc",
     "bg": "#194c57"

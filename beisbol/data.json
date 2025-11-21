@@ -123,11 +123,11 @@
     "final": {
       "home": "CORRECAMINOS PL10",
       "away": "AGUILUCHOS PL17",
-      "gh": null,
-      "ga": null,
-      "winner": "",
-      "hour": "21/11/2025   8:30",
-      "place": "Estadio",
+      "gh": 3,
+      "ga": 2,
+      "winner": "CORRECAMINOS PL10",
+      "hour": "PARTIDO",
+      "place": "FINALIZADO",
       "homeName": "",
       "awayName": ""
     },

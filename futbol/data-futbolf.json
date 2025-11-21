@@ -157,11 +157,11 @@
     "final": {
       "home": "LIEBRES PL01",
       "away": "DRAGONES PL23",
-      "gh": null,
-      "ga": null,
-      "winner": "",
-      "hour": "21/11/2025   9:30",
-      "place": "Tantocob Campo 2"
+      "gh": 0,
+      "ga": 1,
+      "winner": "DRAGONES PL23",
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     },
     "third": {
       "home": "TIGRES PL06",
@@ -178,7 +178,7 @@
     "draw": 1,
     "loss": 0
   },
-  "updatedAtLocal": "21/11/2025, 21:27:25",
+  "updatedAtLocal": "21/11/2025, 12:41:25",
   "theme": {
     "color": "#62d0df",
     "bg": "#b2e1eb"

@@ -309,12 +309,12 @@
     "third": {
       "home": "AGUILUCHOS PL17",
       "away": "TIGRES PL06",
-      "gh": null,
-      "ga": null,
-      "winner": "",
-      "hour": "21/11/2025   8:30",
-      "place": "Gómez Morín Cancha 1"
+      "gh": 21,
+      "ga": 13,
+      "winner": "AGUILUCHOS PL17",
+      "hour": "PARTIDO",
+      "place": "FINALIZADO"
     }
   },
-  "lastUpdated": "2025-11-21T02:15:14.522Z"
+  "lastUpdated": "2025-11-21T10:43:14"
 }

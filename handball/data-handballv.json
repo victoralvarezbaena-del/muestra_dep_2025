@@ -300,10 +300,10 @@
     "final": {
       "home": "ARDILLAS PL03",
       "away": "ABEJAS PL08",
-      "gh": null,
-      "ga": null,
-      "winner": "",
-      "hour": "21/11/2025   9:30",
+      "gh": 18,
+      "ga": 12,
+      "winner": "ARDILLAS PL03",
+      "hour": "PARTIDO FINALIZADO",
       "place": "Gómez Morín Cancha 1"
     },
     "third": {
@@ -316,5 +316,5 @@
       "place": "FINALIZADO"
     }
   },
-  "lastUpdated": "2025-11-21T10:43:14"
+  "lastUpdated": "2025-11-21T11:03:14"
 }

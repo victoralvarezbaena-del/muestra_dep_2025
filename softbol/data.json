@@ -142,11 +142,11 @@
     "third": {
       "home": "PUMAS PL04",
       "away": "LEONES PL11",
-      "gh": null,
-      "ga": null,
-      "winner": "",
-      "hour": "21/11/2025   9:00",
-      "place": "Ingenio Campo 2",
+      "gh": 10,
+      "ga": 3,
+      "winner": "PUMAS PL04",
+      "hour": "PARTIDO",
+      "place": "FINALIZADO",
       "homeName": "",
       "awayName": ""
     }
@@ -156,6 +156,6 @@
     "color": "#487a93",
     "bg": "#cce0f5"
   },
-  "timestamp": "2025-11-21T01:30:30.208Z",
-  "updatedAtLocal": "20 de noviembre de 2025, 19:30"
+  "timestamp": "2025-11-21T11:44:30.208",
+  "updatedAtLocal": "21 de noviembre de 2025, 11:45"
 }

@@ -435,7 +435,16 @@
         padding: 3px 4px;
       }
     }
-  </style>
+  
+.team-identity{display:inline-flex;flex-direction:column;align-items:center;gap:5px;max-width:100%;text-align:center;vertical-align:middle;white-space:normal}
+.team-identity img{width:96px;height:96px;object-fit:contain;background:white;border-radius:10px}
+.school-label{display:block;color:#102a20;background:#e6f4ed;border:1px solid #94bba8;border-radius:6px;padding:5px 9px;font:700 14px/1.3 system-ui;overflow-wrap:anywhere}
+.identity-name{font-size:12px;line-height:1.3;overflow-wrap:anywhere}
+td .team-identity{flex-direction:row;text-align:left;gap:8px}td .team-identity img{width:48px;height:48px}
+.identity-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}.identity-editor{padding:14px;border:1px solid #cbd5e1;border-radius:10px;display:grid;gap:10px}.identity-editor input{width:100%;max-width:100%;box-sizing:border-box}
+@media(max-width:600px){.team-identity img{width:64px;height:64px}.school-label{font-size:12px;padding:4px}.team{min-width:0}.team-name{white-space:normal!important}}
+@media print{.team-identity img{width:60px;height:60px}.school-label{color:#000;background:white}}
+</style>
 </head>
 <body>
   <header>
@@ -482,6 +491,12 @@
       return 'data.json';
     }
 
+    let teamProfiles = Object.create(null);
+
+function escapeIdentity(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function normalizeProfiles(profiles){const result=Object.create(null);if(profiles&&typeof profiles==='object')for(const [key,p] of Object.entries(profiles)){if(!p||typeof p!=='object')continue;result[key]={school:String(p.school||'').slice(0,180),image:/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(p.image||'')?p.image:''};}return result;}
+function teamIdentity(name){const p=teamProfiles[name]||{};const label=p.school||name;return `<span class="team-identity">${p.image?`<img src="${p.image}" alt="Mascota de ${escapeIdentity(label)}">`:''}<span><span class="school-label">${escapeIdentity(label)}</span>${p.school&&p.school!==name?`<span class="identity-name">${escapeIdentity(name)}</span>`:''}</span></span>`;}
+
     // Mejorar la normalización para evitar el error "Cannot read properties of undefined"
     function normalizeImported(data) {
       // Si data es null o undefined, crear estructura vacía
@@ -492,6 +507,7 @@
       const KO_DEF = { home:'', away:'', gh:null, ga:null, winner:'', hour:'', place:'' };
       const safe = {
         tournamentName: data?.tournamentName || '',
+        teamProfiles: normalizeProfiles(data.teamProfiles),
         subtitle: data?.subtitle || '',
         theme: Object.assign({ color:'#0284c7', bg:'#f8fafc' }, data?.theme || {}),
         points: Object.assign({ win:3, draw:1, loss:0 }, data?.points || {}),
@@ -665,7 +681,7 @@
       return `
         <div class="match">
           <div class="team ${homeWinner ? 'winner' : ''}">
-            <span class="team-name">${homeName}</span>
+            <span class="team-name">${teamIdentity(homeName)}</span>
           </div>
           <div class="match-result">
             ${hasResult ? `
@@ -675,7 +691,7 @@
             ` : '<span class="dash">-</span>'}
           </div>
           <div class="team ${awayWinner ? 'winner' : ''}" style="justify-content:flex-end">
-            <span class="team-name">${awayName}</span>
+            <span class="team-name">${teamIdentity(awayName)}</span>
           </div>
         </div>
         ${(_m.hour || _m.place) ? `
@@ -750,7 +766,7 @@
                 ${table.map((row, index) => `
                   <tr class="${index === 0 ? 'first' : ''}">
                     <td class="pos">${index + 1}</td>
-                    <td>${row.team}</td>
+                    <td>${teamIdentity(row.team)}</td>
                     <td>${row.PJ}</td>
                     <td>${row.G}</td>
                     <td>${row.E}</td>
@@ -785,7 +801,7 @@
         html += `
           <div class="champion">
             <h2>🏆 CAMPEÓN 🏆</h2>
-            <div class="team-name">${k.final.winner}</div>
+            <div class="team-name">${teamIdentity(k.final.winner)}</div>
           </div>
         `;
       }
@@ -842,6 +858,7 @@
 
     // Renderizar todo el torneo
     function renderTournament(data) {
+      teamProfiles = normalizeProfiles(data.teamProfiles);
       let html = '';
       
       // Portada con tema

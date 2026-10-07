@@ -136,10 +136,11 @@ Gladiadores</textarea></div>
         <div><label>Grupo C</label><textarea id="gc">Halcones
 Leones
 Águilas</textarea></div>
-        <div><label>Grupo D</label><textarea id="gd">Dragones</textarea></div>
+        <div><label>Grupo D</label><textarea id="gd">Dragones
+Cóndores</textarea></div>
       </div>
 
-      <p class="note">Formato 2026: tres grupos de tres equipos y uno de un equipo. El equipo único pasa directamente a semifinales, sin partidos de grupo. Generar rol reinicia los marcadores y horarios de grupos.</p>
+      <p class="note">Formato 2026: tres grupos de tres equipos y uno de dos equipos. El primer lugar de cada grupo pasa a semifinales. Generar rol reinicia los marcadores y horarios de grupos.</p>
       <!-- Configuración específica de handball -->
       <div class="row" style="margin-top:8px">
         <div style="display:flex; gap:8px; align-items:center; flex:1">
@@ -336,7 +337,7 @@ let state = {
     A: { teams: ['Dinamo', 'Atlético', 'Vikings'], matches: [] },
     B: { teams: ['Titans', 'Fénix', 'Gladiadores'], matches: [] },
     C: { teams: ['Halcones', 'Leones', 'Águilas'], matches: [] },
-    D: { teams: ['Dragones'], matches: [] },
+    D: { teams: ['Dragones', 'Cóndores'], matches: [] },
   },
   points: { win: 2, draw: 1, loss: 0 }, // Puntos típicos en handball
   knockout: {
@@ -355,6 +356,7 @@ function parseTeams(txt) {
 }
 
 function roundRobin3(teams) {
+  if (teams.length === 2) return [[teams[0], teams[1]]];
   if (teams.length !== 3) return [];
   const [a, b, c] = teams;
   return [[a, b], [c, a], [b, c]];

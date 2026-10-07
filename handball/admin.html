@@ -425,6 +425,22 @@ function computeTable(matches, teams) {
   });
 }
 
+function groupStageComplete(groups) {
+  return ['A','B','C','D'].every(key => {
+    const group = groups[key];
+    if (!group || !Array.isArray(group.teams) || !group.teams.length) return false;
+    const teams = group.teams;
+    for (let i=0; i<teams.length; i++) for (let j=i+1; j<teams.length; j++) {
+      const match = (group.matches || []).find(m =>
+        (m.home === teams[i] && m.away === teams[j]) ||
+        (m.home === teams[j] && m.away === teams[i]));
+      if (!match || !Number.isFinite(match.gh) || !Number.isFinite(match.ga) ||
+          match.gh < 0 || match.ga < 0) return false;
+    }
+    return true;
+  });
+}
+
 function groupWinner(groupKey) {
   const group = state.groups[groupKey];
   if (group.teams.length === 1) return group.teams[0];
@@ -576,6 +592,10 @@ function setupGroupEventListeners() {
 
 // ===== KNOCKOUT =====
 function updateKnockout() {
+  const ready = groupStageComplete(state.groups);
+  document.querySelector('.bracket').hidden = !ready;
+  document.querySelector('.bracket').style.display = ready ? '' : 'none';
+  if (!ready) return;
   const A1 = groupWinner('A') || 'A1';
   const B1 = groupWinner('B') || 'B1';
   const C1 = groupWinner('C') || 'C1';
@@ -984,7 +1004,7 @@ function init() {
   });
   
   $('#btnExport').addEventListener('click', () => {
-    const dataStr = JSON.stringify(state, null, 2);
+    const dataStr = JSON.stringify({...state, lastUpdated: new Date().toISOString()}, null, 2);
     const dataBlob = new Blob([dataStr], { type: 'application/json' });
     const url = URL.createObjectURL(dataBlob);
     const a = document.createElement('a');
@@ -999,6 +1019,10 @@ function init() {
 
 // ===== PUBLICACIÓN =====
 function resolvedKnockout() {
+  if (!groupStageComplete(state.groups)) {
+    return Object.fromEntries(['sf1','sf2','final','third'].map(key => [key,
+      {home:'',away:'',gh:null,ga:null,winner:'',hour:'',place:''}]));
+  }
   updateKnockout();
   const result = JSON.parse(JSON.stringify(state.knockout));
   for (const [key, homeId, awayId] of [['sf1','sf1h','sf1a'], ['sf2','sf2h','sf2a'], ['final','fih','fia'], ['third','thirdh','thirda']]) {

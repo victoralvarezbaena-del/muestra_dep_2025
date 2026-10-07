@@ -500,7 +500,8 @@ function teamIdentity(name){const p=teamProfiles[name]||{};const label=p.school|
           final:Object.assign({}, KO_DEF, data?.knockout?.final || {}),
           third:Object.assign({}, KO_DEF, data?.knockout?.third || {})
         },
-        lastUpdated: data?.lastUpdated || ''
+        lastUpdated: data?.lastUpdated || data?.exportedAt || data?.updatedAt || '',
+        updatedAtLocal: data?.updatedAtLocal || ''
       };
       
       ['A','B','C','D'].forEach(k => {
@@ -685,12 +686,12 @@ function teamIdentity(name){const p=teamProfiles[name]||{};const label=p.school|
     function renderCover(data) {
       const theme = data.theme || {};
       const accentColor = theme.color || '#0284c7';
-      const updatedAt = data.lastUpdated || '';
+      const updatedAt = data.lastUpdated || data.exportedAt || data.updatedAt || '';
       
       let updateInfo = '';
-      if (updatedAt) {
+      if (updatedAt && !Number.isNaN(new Date(updatedAt).getTime())) {
         const date = new Date(updatedAt);
-        const formattedDate = date.toLocaleDateString('es-ES', {
+        const formattedDate = date.toLocaleString('es-MX', {
           day: '2-digit',
           month: '2-digit',
           year: 'numeric',
@@ -705,6 +706,7 @@ function teamIdentity(name){const p=teamProfiles[name]||{};const label=p.school|
         `;
       }
       
+      if (!updateInfo && data.updatedAtLocal) updateInfo = `<div class="update-info">📅 Última actualización: ${escapeIdentity(data.updatedAtLocal)}</div>`;
       return `
         <div class="cover" style="background: linear-gradient(135deg, ${accentColor}, color-mix(in srgb, ${accentColor} 80%, black));">
           <h1>${data.tournamentName || 'Torneo Handball'}</h1>
@@ -845,6 +847,22 @@ function teamIdentity(name){const p=teamProfiles[name]||{};const label=p.school|
     }
 
     // Renderizar todo el torneo
+    function groupStageComplete(groups) {
+  return ['A','B','C','D'].every(key => {
+    const group = groups[key];
+    if (!group || !Array.isArray(group.teams) || !group.teams.length) return false;
+    const teams = group.teams;
+    for (let i=0; i<teams.length; i++) for (let j=i+1; j<teams.length; j++) {
+      const match = (group.matches || []).find(m =>
+        (m.home === teams[i] && m.away === teams[j]) ||
+        (m.home === teams[j] && m.away === teams[i]));
+      if (!match || !Number.isFinite(match.gh) || !Number.isFinite(match.ga) ||
+          match.gh < 0 || match.ga < 0) return false;
+    }
+    return true;
+  });
+}
+
     function renderTournament(data) {
       let html = '';
       
@@ -857,7 +875,7 @@ function teamIdentity(name){const p=teamProfiles[name]||{};const label=p.school|
       }
       
       // Fase eliminatoria
-      if (data.knockout) {
+      if (data.knockout && groupStageComplete(data.groups)) {
         const knockout = JSON.parse(JSON.stringify(data.knockout));
         for (const [key, side, groupKey] of [['sf1','home','A'],['sf1','away','D'],['sf2','home','B'],['sf2','away','C']]) {
           const group = data.groups[groupKey];

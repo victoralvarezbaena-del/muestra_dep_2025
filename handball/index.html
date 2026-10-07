@@ -885,6 +885,9 @@ function teamIdentity(name){const p=teamProfiles[name]||{};const label=p.school|
         html += renderKnockout(knockout);
       }
       
+      if (!groupStageComplete(data.groups)) {
+        html += '<div class="card"><p>Fase de grupos en curso. Las semifinales se mostrarán al completar todos los resultados.</p></div>';
+      }
       document.getElementById('tournamentContent').innerHTML = html;
     }
 

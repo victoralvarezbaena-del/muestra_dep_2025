@@ -106,7 +106,17 @@
       padding: 16px;
       margin-top: 16px;
     }
-  </style>
+  .team-identity{display:inline-flex;flex-direction:column;align-items:center;gap:5px;max-width:100%;text-align:center;vertical-align:middle;white-space:normal}
+.team-identity img{width:96px;height:96px;object-fit:contain;background:white;border-radius:10px}
+.school-label{display:block;color:#102a20;background:#e6f4ed;border:1px solid #94bba8;border-radius:6px;padding:5px 9px;font:700 14px/1.3 system-ui;overflow-wrap:anywhere}
+.identity-name{font-size:12px;line-height:1.3;overflow-wrap:anywhere}
+td .team-identity{flex-direction:row;text-align:left;gap:8px}td .team-identity img{width:48px;height:48px}
+.identity-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}.identity-editor{padding:14px;border:1px solid #cbd5e1;border-radius:10px;display:grid;gap:10px}.identity-editor input{width:100%;max-width:100%;box-sizing:border-box}
+@media(max-width:600px){.team-identity img{width:64px;height:64px}.school-label{font-size:12px;padding:4px}.team{min-width:0}.team-name{white-space:normal!important}}
+@media print{.team-identity img{width:60px;height:60px}.school-label{color:#000;background:white}}
+
+.team-name:has(.team-identity){max-width:none;overflow:visible;white-space:normal}.team:has(.team-identity){min-width:0}
+</style>
 </head>
 <body>
   <header>
@@ -307,15 +317,35 @@ Equipo C4</textarea>
         </div>
       </div>
     </section>
-  </main>
+  <section class="card"><h2>Imágenes y centros escolares</h2><p>Carga la mascota de cada equipo y escribe su centro escolar (Plantel / EMSaD, número y localidad). Las imágenes y etiquetas se incluyen al exportar y publicar.</p><div id="identityEditors" class="identity-grid"></div></section></main>
 
 <script>
+function escapeIdentity(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function normalizeProfiles(profiles){const result=Object.create(null);if(profiles&&typeof profiles==='object')for(const [key,p] of Object.entries(profiles)){if(!p||typeof p!=='object')continue;result[key]={school:String(p.school||'').slice(0,180),image:/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(p.image||'')?p.image:''};}return result;}
+function teamIdentity(name){const p=(state.teamProfiles||{})[name]||{};const label=p.school||name;return `<span class="team-identity">${p.image?`<img src="${p.image}" alt="Mascota de ${escapeIdentity(label)}">`:''}<span><span class="school-label">${escapeIdentity(label)}</span>${p.school&&p.school!==name?`<span class="identity-name">${escapeIdentity(name)}</span>`:''}</span></span>`;}
+
+function renderIdentityEditors(){
+ const root=document.getElementById('identityEditors');root.replaceChildren();
+ const names=[...new Set(Object.values(state.groups||{}).flatMap(g=>g.teams||[]))];
+ for(const name of names){
+  const p=(state.teamProfiles||{})[name]||{};const card=document.createElement('div');card.className='identity-editor';
+  card.innerHTML=`<strong>${escapeIdentity(name)}</strong><div>${teamIdentity(name)}</div><label>Centro escolar<input class="school-input" type="text" maxlength="180" value="${escapeIdentity(p.school||'')}" placeholder="Plantel / EMSaD + número + localidad"></label><label>Imagen de mascota<input class="image-input" type="file" accept="image/png,image/jpeg,image/webp"></label><button type="button">Quitar imagen</button>`;
+  const profile=()=>{state.teamProfiles=state.teamProfiles||Object.create(null);if(!Object.hasOwn(state.teamProfiles,name))Object.defineProperty(state.teamProfiles,name,{value:{school:'',image:''},enumerable:true,writable:true,configurable:true});return state.teamProfiles[name];};
+  const refresh=()=>{saveState();renderGroups();updateKnockout();};
+  card.querySelector('.school-input').addEventListener('change',e=>{profile().school=e.target.value.trim();refresh();renderIdentityEditors();});
+  card.querySelector('button').addEventListener('click',()=>{profile().image='';refresh();renderIdentityEditors();});
+  card.querySelector('.image-input').addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{if(!['image/png','image/jpeg','image/webp'].includes(file.type))throw Error('Selecciona una imagen PNG, JPG o WebP.');if(file.size>15*1024*1024)throw Error('La imagen debe pesar menos de 15 MB.');const bitmap=await createImageBitmap(file);const scale=Math.min(1,360/Math.max(bitmap.width,bitmap.height));const canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(bitmap.width*scale));canvas.height=Math.max(1,Math.round(bitmap.height*scale));canvas.getContext('2d').drawImage(bitmap,0,0,canvas.width,canvas.height);bitmap.close();profile().image=canvas.toDataURL('image/webp',0.85);refresh();renderIdentityEditors();}catch(error){alert(error.message);}});
+  root.appendChild(card);
+ }
+}
+
 // ===== CONFIGURACIÓN =====
 const STORAGE_KEY = 'torneo_handball_10_equipos_v3';
 const $ = (selector, root = document) => root.querySelector(selector);
 
 // ===== ESTADO INICIAL =====
 let state = {
+  teamProfiles: Object.create(null),
   groups: {
     A: { teams: ['Equipo A1', 'Equipo A2', 'Equipo A3'], matches: [] },
     B: { teams: ['Equipo B1', 'Equipo B2', 'Equipo B3'], matches: [] },
@@ -448,19 +478,19 @@ function updateKnockout() {
   const qualified = getQualifiedTeams();
   
   // Usar nombres personalizados si están definidos, sino los automáticos
-  $('#sf1h').textContent = state.semifinalTeams.sf1Home || qualified.firstA || '1º Grupo A';
-  $('#sf1a').textContent = state.semifinalTeams.sf1Away || qualified.secondC || '2º Grupo C';
+  $('#sf1h').dataset.team = state.semifinalTeams.sf1Home || qualified.firstA || '1º Grupo A'; $('#sf1h').innerHTML = teamIdentity($('#sf1h').dataset.team);
+  $('#sf1a').dataset.team = state.semifinalTeams.sf1Away || qualified.secondC || '2º Grupo C'; $('#sf1a').innerHTML = teamIdentity($('#sf1a').dataset.team);
   
-  $('#sf2h').textContent = state.semifinalTeams.sf2Home || qualified.firstB || '1º Grupo B';
-  $('#sf2a').textContent = state.semifinalTeams.sf2Away || qualified.firstC || '1º Grupo C';
+  $('#sf2h').dataset.team = state.semifinalTeams.sf2Home || qualified.firstB || '1º Grupo B'; $('#sf2h').innerHTML = teamIdentity($('#sf2h').dataset.team);
+  $('#sf2a').dataset.team = state.semifinalTeams.sf2Away || qualified.firstC || '1º Grupo C'; $('#sf2a').innerHTML = teamIdentity($('#sf2a').dataset.team);
   
   // Final y tercer lugar
   const sf1Winner = state.knockout.sf1.winner;
   const sf2Winner = state.knockout.sf2.winner;
   
   // Para la final
-  $('#fih').textContent = state.knockout.final.home || (sf1Winner || 'Ganador SF1');
-  $('#fia').textContent = state.knockout.final.away || (sf2Winner || 'Ganador SF2');
+  $('#fih').dataset.team = state.knockout.final.home || (sf1Winner || 'Ganador SF1'); $('#fih').innerHTML = teamIdentity($('#fih').dataset.team);
+  $('#fia').dataset.team = state.knockout.final.away || (sf2Winner || 'Ganador SF2'); $('#fia').innerHTML = teamIdentity($('#fia').dataset.team);
   
   // Para tercer lugar
   const sf1Loser = sf1Winner ? 
@@ -474,14 +504,16 @@ function updateKnockout() {
      (state.knockout.sf2.home || state.semifinalTeams.sf2Home || qualified.firstB)) : 
     'Perdedor SF2';
   
-  $('#thirdh').textContent = state.knockout.third.home || sf1Loser;
-  $('#thirda').textContent = state.knockout.third.away || sf2Loser;
+  $('#thirdh').dataset.team = state.knockout.third.home || sf1Loser; $('#thirdh').innerHTML = teamIdentity($('#thirdh').dataset.team);
+  $('#thirda').dataset.team = state.knockout.third.away || sf2Loser; $('#thirda').innerHTML = teamIdentity($('#thirda').dataset.team);
 
   updateWinnerSelects();
 }
 
 // ===== RENDER GRUPOS =====
 function renderGroups() {
+  state.teamProfiles = normalizeProfiles(state.teamProfiles);
+  renderIdentityEditors();
   const root = $('#groupsRoot');
   root.innerHTML = '';
   
@@ -511,7 +543,7 @@ function renderGroups() {
       const matchDiv = document.createElement('div');
       matchDiv.className = 'match';
       matchDiv.innerHTML = `
-        <div class="team">${home}</div>
+        <div class="team">${teamIdentity(home)}</div>
         <div class="team" style="justify-content:center">
           <input type="number" min="0" class="score-home" data-group="${groupKey}" data-home="${home}" data-away="${away}" 
                  value="${existingMatch.gh == null ? '' : existingMatch.gh}" style="max-width:80px">
@@ -519,7 +551,7 @@ function renderGroups() {
           <input type="number" min="0" class="score-away" data-group="${groupKey}" data-home="${home}" data-away="${away}" 
                  value="${existingMatch.ga == null ? '' : existingMatch.ga}" style="max-width:80px">
         </div>
-        <div class="team" style="justify-content:flex-end">${away}</div>
+        <div class="team" style="justify-content:flex-end">${teamIdentity(away)}</div>
       `;
       
       const infoDiv = document.createElement('div');
@@ -552,7 +584,7 @@ function renderGroups() {
             ${rows.map((row, index) => `
               <tr class="${index === 0 ? 'first' : ''} ${index === 1 ? 'second' : ''}">
                 <td class="pos">${index + 1}</td>
-                <td>${row.team}</td>
+                <td>${teamIdentity(row.team)}</td>
                 <td>${row.PJ}</td>
                 <td>${row.G}</td>
                 <td>${row.E}</td>
@@ -628,14 +660,14 @@ function setupGroupEventListeners() {
 
 // ===== KNOCKOUT =====
 function updateWinnerSelects() {
-  const sf1h = $('#sf1h').textContent;
-  const sf1a = $('#sf1a').textContent;
-  const sf2h = $('#sf2h').textContent;
-  const sf2a = $('#sf2a').textContent;
-  const fih = $('#fih').textContent;
-  const fia = $('#fia').textContent;
-  const thirdh = $('#thirdh').textContent;
-  const thirda = $('#thirda').textContent;
+  const sf1h = $('#sf1h').dataset.team;
+  const sf1a = $('#sf1a').dataset.team;
+  const sf2h = $('#sf2h').dataset.team;
+  const sf2a = $('#sf2a').dataset.team;
+  const fih = $('#fih').dataset.team;
+  const fia = $('#fia').dataset.team;
+  const thirdh = $('#thirdh').dataset.team;
+  const thirda = $('#thirda').dataset.team;
 
   // Semifinal 1
   $('#sf1w').innerHTML = `<option value="">— Ganador —</option>
@@ -830,6 +862,7 @@ function importData(file) {
   reader.onload = function(e) {
     try {
       const imported = JSON.parse(e.target.result);
+      imported.teamProfiles = normalizeProfiles(imported.teamProfiles);
       state = { ...state, ...imported };
       saveState();
       loadUIFromState();
@@ -885,6 +918,7 @@ function publishData() {
     // Preparar datos para publicación
     const publishData = {
       tournamentName: state.tournamentName,
+      teamProfiles: normalizeProfiles(state.teamProfiles),
       theme: state.theme,
       points: state.points,
       groups: {},

@@ -69,7 +69,17 @@
     .total-sets{ font-weight:bold; margin-top:4px; text-align:center; }
     .set-label{ font-size:11px; color:var(--muted); text-align:center; }
     .points-total{ font-size:12px; color:var(--muted); text-align:center; margin-top:2px; }
-  </style>
+  .team-identity{display:inline-flex;flex-direction:column;align-items:center;gap:5px;max-width:100%;text-align:center;vertical-align:middle;white-space:normal}
+.team-identity img{width:96px;height:96px;object-fit:contain;background:white;border-radius:10px}
+.school-label{display:block;color:#102a20;background:#e6f4ed;border:1px solid #94bba8;border-radius:6px;padding:5px 9px;font:700 14px/1.3 system-ui;overflow-wrap:anywhere}
+.identity-name{font-size:12px;line-height:1.3;overflow-wrap:anywhere}
+td .team-identity{flex-direction:row;text-align:left;gap:8px}td .team-identity img{width:48px;height:48px}
+.identity-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}.identity-editor{padding:14px;border:1px solid #cbd5e1;border-radius:10px;display:grid;gap:10px}.identity-editor input{width:100%;max-width:100%;box-sizing:border-box}
+@media(max-width:600px){.team-identity img{width:64px;height:64px}.school-label{font-size:12px;padding:4px}.team{min-width:0}.team-name{white-space:normal!important}}
+@media print{.team-identity img{width:60px;height:60px}.school-label{color:#000;background:white}}
+
+.team-name:has(.team-identity){max-width:none;overflow:visible;white-space:normal}.team:has(.team-identity){min-width:0}
+</style>
 </head>
 <body>
   <header>
@@ -222,15 +232,35 @@ Equipo B4</textarea></div>
         </div>
       </div>
     </section>
-  </main>
+  <section class="card"><h2>Imágenes y centros escolares</h2><p>Carga la mascota de cada equipo y escribe su centro escolar (Plantel / EMSaD, número y localidad). Las imágenes y etiquetas se incluyen al exportar y publicar.</p><div id="identityEditors" class="identity-grid"></div></section></main>
 
 <script>
+function escapeIdentity(value){return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function normalizeProfiles(profiles){const result=Object.create(null);if(profiles&&typeof profiles==='object')for(const [key,p] of Object.entries(profiles)){if(!p||typeof p!=='object')continue;result[key]={school:String(p.school||'').slice(0,180),image:/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(p.image||'')?p.image:''};}return result;}
+function teamIdentity(name){const p=(state.teamProfiles||{})[name]||{};const label=p.school||name;return `<span class="team-identity">${p.image?`<img src="${p.image}" alt="Mascota de ${escapeIdentity(label)}">`:''}<span><span class="school-label">${escapeIdentity(label)}</span>${p.school&&p.school!==name?`<span class="identity-name">${escapeIdentity(name)}</span>`:''}</span></span>`;}
+
+function renderIdentityEditors(){
+ const root=document.getElementById('identityEditors');root.replaceChildren();
+ const names=[...new Set(Object.values(state.groups||{}).flatMap(g=>g.teams||[]))];
+ for(const name of names){
+  const p=(state.teamProfiles||{})[name]||{};const card=document.createElement('div');card.className='identity-editor';
+  card.innerHTML=`<strong>${escapeIdentity(name)}</strong><div>${teamIdentity(name)}</div><label>Centro escolar<input class="school-input" type="text" maxlength="180" value="${escapeIdentity(p.school||'')}" placeholder="Plantel / EMSaD + número + localidad"></label><label>Imagen de mascota<input class="image-input" type="file" accept="image/png,image/jpeg,image/webp"></label><button type="button">Quitar imagen</button>`;
+  const profile=()=>{state.teamProfiles=state.teamProfiles||Object.create(null);if(!Object.hasOwn(state.teamProfiles,name))Object.defineProperty(state.teamProfiles,name,{value:{school:'',image:''},enumerable:true,writable:true,configurable:true});return state.teamProfiles[name];};
+  const refresh=()=>{saveState();renderGroups();updateKnockout();};
+  card.querySelector('.school-input').addEventListener('change',e=>{profile().school=e.target.value.trim();refresh();renderIdentityEditors();});
+  card.querySelector('button').addEventListener('click',()=>{profile().image='';refresh();renderIdentityEditors();});
+  card.querySelector('.image-input').addEventListener('change',async e=>{const file=e.target.files[0];if(!file)return;try{if(!['image/png','image/jpeg','image/webp'].includes(file.type))throw Error('Selecciona una imagen PNG, JPG o WebP.');if(file.size>15*1024*1024)throw Error('La imagen debe pesar menos de 15 MB.');const bitmap=await createImageBitmap(file);const scale=Math.min(1,360/Math.max(bitmap.width,bitmap.height));const canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(bitmap.width*scale));canvas.height=Math.max(1,Math.round(bitmap.height*scale));canvas.getContext('2d').drawImage(bitmap,0,0,canvas.width,canvas.height);bitmap.close();profile().image=canvas.toDataURL('image/webp',0.85);refresh();renderIdentityEditors();}catch(error){alert(error.message);}});
+  root.appendChild(card);
+ }
+}
+
 // ===== CONFIG Y UTIL =====
 const STORAGE_KEY = 'torneo_playa_2grupos_v1_fix';
 const $ = (sel, root=document) => root.querySelector(sel);
 const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
 
 let state = {
+  teamProfiles: Object.create(null),
   groups: { A:{teams:['Equipo A1','Equipo A2','Equipo A3'], matches:[]}, B:{teams:['Equipo B1','Equipo B2','Equipo B3','Equipo B4'], matches:[]} },
   points: { win:2, loss:1 },
   knockout: { sf1:{home:'',away:'',sets:[],winner:'',hour:'',place:''}, sf2:{home:'',away:'',sets:[],winner:'',hour:'',place:''}, final:{home:'',away:'',sets:[],winner:'',hour:'',place:''}, third:{home:'',away:'',sets:[],winner:'',hour:'',place:''} },
@@ -252,6 +282,8 @@ function calculateSetsAndPoints(sets){ let hs=0,as=0,hp=0,ap=0; (sets||[]).forEa
 function computeTable(matches, teams){ const t=Object.fromEntries(teams.map(x=>[x,{team:x,PJ:0,G:0,P:0,SF:0,SC:0,DS:0,PF:0,PC:0,DP:0,Pts:0}])); (matches||[]).forEach(m=>{ if(!m || !m.sets || !m.sets.length) return; const H=t[m.home], A=t[m.away]; if(!H||!A) return; const r=calculateSetsAndPoints(m.sets); H.PJ++;A.PJ++; H.SF+=r.homeSets;H.SC+=r.awaySets; A.SF+=r.awaySets;A.SC+=r.homeSets; H.PF+=r.homePoints;H.PC+=r.awayPoints; A.PF+=r.awayPoints;A.PC+=r.homePoints; if(r.homeSets>r.awaySets){H.G++;A.P++;H.Pts+=state.points.win;A.Pts+=state.points.loss;} else {A.G++;H.P++;A.Pts+=state.points.win;H.Pts+=state.points.loss;} }); teams.forEach(x=>{t[x].DS=t[x].SF-t[x].SC; t[x].DP=t[x].PF-t[x].PC;}); return Object.values(t).sort((a,b)=> b.Pts-a.Pts || b.DS-a.DS || b.DP-a.DP || b.PF-a.PF || a.team.localeCompare(b.team)); }
 
 function renderGroups(){
+  state.teamProfiles = normalizeProfiles(state.teamProfiles);
+  renderIdentityEditors();
   const root = $('#groupsRoot');
   if(!root) return;
   root.innerHTML = '';
@@ -272,7 +304,7 @@ function renderGroups(){
           <span class="sets-separator">-</span>
           <input type="number" min="0" class="set-away" data-group="${k}" data-home="${home}" data-away="${away}" data-set="${i}" value="${setData.away||''}" placeholder="0" style="max-width:50px">
           <div class="set-label">Set ${i+1}</div>`; setsContainer.appendChild(row); }
-        matchDiv.innerHTML = `<div class="team">${home}</div><div class="team" style="justify-content:center">${setsContainer.outerHTML}</div><div class="team" style="justify-content:flex-end">${away}</div>`;
+        matchDiv.innerHTML = `<div class="team">${teamIdentity(home)}</div><div class="team" style="justify-content:center">${setsContainer.outerHTML}</div><div class="team" style="justify-content:flex-end">${teamIdentity(away)}</div>`;
         const res = calculateSetsAndPoints(ex.sets);
         const total = document.createElement('div'); total.className='total-sets'; total.id=`total-${k}-${home}-${away}`; total.textContent=`Sets: ${res.homeSets}-${res.awaySets}`;
         const pts = document.createElement('div'); pts.className='points-total'; pts.id=`points-${k}-${home}-${away}`; pts.textContent=`Puntos: ${res.homePoints}-${res.awayPoints}`;
@@ -287,7 +319,7 @@ function renderGroups(){
     const tableHTML = `<div class="table-wrap"><table><thead><tr>
       <th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>P</th><th>SF</th><th>SC</th><th>DS</th><th>PF</th><th>PC</th><th>DP</th><th>Pts</th>
     </tr></thead><tbody>${rows.map((r,i)=>`
-      <tr class="${i===0?'first':''}"><td class="pos">${i+1}</td><td>${r.team}</td><td>${r.PJ}</td><td>${r.G}</td><td>${r.P}</td>
+      <tr class="${i===0?'first':''}"><td class="pos">${i+1}</td><td>${teamIdentity(r.team)}</td><td>${r.PJ}</td><td>${r.G}</td><td>${r.P}</td>
       <td>${r.SF}</td><td>${r.SC}</td><td>${r.DS}</td><td>${r.PF}</td><td>${r.PC}</td><td>${r.DP}</td><td class="pts">${r.Pts}</td></tr>`).join('')}
     </tbody></table><div class="note" style="margin-top:8px;">💡 Orden: Puntos → Dif. Sets → Dif. Puntos → Puntos a favor</div></div>`;
     box.insertAdjacentHTML('beforeend', tableHTML);
@@ -339,22 +371,22 @@ function updateKnockout(){
   const A=groupStandings('A'), B=groupStandings('B');
   const A1=A[0]?.team||'A1', A2=A[1]?.team||'A2', B1=B[0]?.team||'B1', B2=B[1]?.team||'B2';
   const sf1h=$('#sf1h'), sf1a=$('#sf1a'), sf2h=$('#sf2h'), sf2a=$('#sf2a'), fih=$('#fih'), fia=$('#fia'), thirdh=$('#thirdh'), thirda=$('#thirda');
-  if(sf1h) sf1h.textContent = state.knockout.sf1.home || A1;
-  if(sf1a) sf1a.textContent = state.knockout.sf1.away || B2;
-  if(sf2h) sf2h.textContent = state.knockout.sf2.home || B1;
-  if(sf2a) sf2a.textContent = state.knockout.sf2.away || A2;
+  if(sf1h) { sf1h.dataset.team = state.knockout.sf1.home || A1; sf1h.innerHTML = teamIdentity(sf1h.dataset.team); }
+  if(sf1a) { sf1a.dataset.team = state.knockout.sf1.away || B2; sf1a.innerHTML = teamIdentity(sf1a.dataset.team); }
+  if(sf2h) { sf2h.dataset.team = state.knockout.sf2.home || B1; sf2h.innerHTML = teamIdentity(sf2h.dataset.team); }
+  if(sf2a) { sf2a.dataset.team = state.knockout.sf2.away || A2; sf2a.innerHTML = teamIdentity(sf2a.dataset.team); }
   const w1=state.knockout.sf1.winner, w2=state.knockout.sf2.winner;
-  if(fih) fih.textContent = state.knockout.final.home || (w1 || 'Ganador SF1');
-  if(fia) fia.textContent = state.knockout.final.away || (w2 || 'Ganador SF2');
+  if(fih) { fih.dataset.team = state.knockout.final.home || (w1 || 'Ganador SF1'); fih.innerHTML = teamIdentity(fih.dataset.team); }
+  if(fia) { fia.dataset.team = state.knockout.final.away || (w2 || 'Ganador SF2'); fia.innerHTML = teamIdentity(fia.dataset.team); }
   const l1 = w1 ? (w1===(state.knockout.sf1.home||A1) ? (state.knockout.sf1.away||B2) : (state.knockout.sf1.home||A1)) : 'Perdedor SF1';
   const l2 = w2 ? (w2===(state.knockout.sf2.home||B1) ? (state.knockout.sf2.away||A2) : (state.knockout.sf2.home||B1)) : 'Perdedor SF2';
-  if(thirdh) thirdh.textContent = state.knockout.third.home || l1;
-  if(thirda) thirda.textContent = state.knockout.third.away || l2;
+  if(thirdh) { thirdh.dataset.team = state.knockout.third.home || l1; thirdh.innerHTML = teamIdentity(thirdh.dataset.team); }
+  if(thirda) { thirda.dataset.team = state.knockout.third.away || l2; thirda.innerHTML = teamIdentity(thirda.dataset.team); }
   updateWinnerSelects();
 }
 
 function updateWinnerSelects(){
-  const sf1hText=$('#sf1h')?.textContent||'', sf1aText=$('#sf1a')?.textContent||'', sf2hText=$('#sf2h')?.textContent||'', sf2aText=$('#sf2a')?.textContent||'', fihText=$('#fih')?.textContent||'', fiaText=$('#fia')?.textContent||'', thirdhText=$('#thirdh')?.textContent||'', thirdaText=$('#thirda')?.textContent||'';
+  const sf1hText=$('#sf1h')?.dataset.team||'', sf1aText=$('#sf1a')?.dataset.team||'', sf2hText=$('#sf2h')?.dataset.team||'', sf2aText=$('#sf2a')?.dataset.team||'', fihText=$('#fih')?.dataset.team||'', fiaText=$('#fia')?.dataset.team||'', thirdhText=$('#thirdh')?.dataset.team||'', thirdaText=$('#thirda')?.dataset.team||'';
   const sf1w=$('#sf1w'), sf2w=$('#sf2w'), fiw=$('#fiw'), thirdw=$('#thirdw');
   if(sf1w){ sf1w.innerHTML = `<option value="">— Ganador —</option><option value="${sf1hText}">${sf1hText}</option><option value="${sf1aText}">${sf1aText}</option>`; if(state.knockout.sf1.winner) sf1w.value=state.knockout.sf1.winner; }
   if(sf2w){ sf2w.innerHTML = `<option value="">— Ganador —</option><option value="${sf2hText}">${sf2hText}</option><option value="${sf2aText}">${sf2aText}</option>`; if(state.knockout.sf2.winner) sf2w.value=state.knockout.sf2.winner; }
@@ -531,7 +563,7 @@ function wireButtons(){
 }
 
 function exportData(){ const str=JSON.stringify(state,null,2); const blob=new Blob([str],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`torneo_playa_${new Date().toISOString().slice(0,10)}.json`; a.click(); URL.revokeObjectURL(url); }
-function importData(file){ const r=new FileReader(); r.onload = e=>{ try{ const imp=JSON.parse(e.target.result); state={...state, ...imp}; saveState(); applyStateToUI(); renderGroups(); updateKnockout(); renderKnockoutSets(); alert('✅ Datos importados correctamente'); }catch{ alert('❌ Error al importar: JSON inválido'); } }; r.readAsText(file); }
+function importData(file){ const r=new FileReader(); r.onload = e=>{ try{ const imp=JSON.parse(e.target.result); imp.teamProfiles=normalizeProfiles(imp.teamProfiles); state={...state, ...imp}; saveState(); applyStateToUI(); renderGroups(); updateKnockout(); renderKnockoutSets(); alert('✅ Datos importados correctamente'); }catch{ alert('❌ Error al importar: JSON inválido'); } }; r.readAsText(file); }
 
 function init(){
   // Cargar estado primero

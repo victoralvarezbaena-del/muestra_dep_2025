@@ -728,6 +728,7 @@ function teamIdentity(name){const p=teamProfiles[name]||{};const label=p.school|
         html += `
           <div class="groupBox group${groupKey}">
             <h3>Grupo ${groupKey}</h3>
+            ${teams.length === 1 ? '<p class="note">Pase directo a semifinales. Sin partidos de grupo.</p>' : ''}
             <div class="matches">
         `;
         
@@ -798,21 +799,21 @@ function teamIdentity(name){const p=teamProfiles[name]||{};const label=p.school|
           <h2>Fase Eliminatoria</h2>
           <div class="bracket">
             <div class="semi">
-              <h3>Semifinal 1 — A1 vs B1</h3>
+              <h3>Semifinal 1 — A1 vs D1</h3>
               ${renderMatch(
                 k.sf1, 
                 k.sf1.home || 'A1', 
-                k.sf1.away || 'B1'
+                k.sf1.away || 'D1'
               )}
               ${k.sf1.winner ? `<div class="info"><strong>Ganador: ${k.sf1.winner}</strong></div>` : ''}
             </div>
             
             <div class="semi">
-              <h3>Semifinal 2 — C1 vs D1</h3>
+              <h3>Semifinal 2 — B1 vs C1</h3>
               ${renderMatch(
                 k.sf2, 
-                k.sf2.home || 'C1', 
-                k.sf2.away || 'D1'
+                k.sf2.home || 'B1', 
+                k.sf2.away || 'C1'
               )}
               ${k.sf2.winner ? `<div class="info"><strong>Ganador: ${k.sf2.winner}</strong></div>` : ''}
             </div>
@@ -857,7 +858,13 @@ function teamIdentity(name){const p=teamProfiles[name]||{};const label=p.school|
       
       // Fase eliminatoria
       if (data.knockout) {
-        html += renderKnockout(data.knockout);
+        const knockout = JSON.parse(JSON.stringify(data.knockout));
+        for (const [key, side, groupKey] of [['sf1','home','A'],['sf1','away','D'],['sf2','home','B'],['sf2','away','C']]) {
+          const group = data.groups[groupKey];
+          const leader = computeTable(group.matches, group.teams, data.points)[0]?.team;
+          if (!knockout[key][side] && leader) knockout[key][side] = leader;
+        }
+        html += renderKnockout(knockout);
       }
       
       document.getElementById('tournamentContent').innerHTML = html;
@@ -873,3 +880,4 @@ function teamIdentity(name){const p=teamProfiles[name]||{};const label=p.school|
   </script>
 </body>
 </html>
+

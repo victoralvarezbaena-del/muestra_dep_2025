@@ -136,11 +136,10 @@ Gladiadores</textarea></div>
         <div><label>Grupo C</label><textarea id="gc">Halcones
 Leones
 Águilas</textarea></div>
-        <div><label>Grupo D</label><textarea id="gd">Dragones
-Cóndores
-Panteras</textarea></div>
+        <div><label>Grupo D</label><textarea id="gd">Dragones</textarea></div>
       </div>
 
+      <p class="note">Formato 2026: tres grupos de tres equipos y uno de un equipo. El equipo único pasa directamente a semifinales, sin partidos de grupo. Generar rol reinicia los marcadores y horarios de grupos.</p>
       <!-- Configuración específica de handball -->
       <div class="row" style="margin-top:8px">
         <div style="display:flex; gap:8px; align-items:center; flex:1">
@@ -337,7 +336,7 @@ let state = {
     A: { teams: ['Dinamo', 'Atlético', 'Vikings'], matches: [] },
     B: { teams: ['Titans', 'Fénix', 'Gladiadores'], matches: [] },
     C: { teams: ['Halcones', 'Leones', 'Águilas'], matches: [] },
-    D: { teams: ['Dragones', 'Cóndores', 'Panteras'], matches: [] },
+    D: { teams: ['Dragones'], matches: [] },
   },
   points: { win: 2, draw: 1, loss: 0 }, // Puntos típicos en handball
   knockout: {
@@ -426,6 +425,7 @@ function computeTable(matches, teams) {
 
 function groupWinner(groupKey) {
   const group = state.groups[groupKey];
+  if (group.teams.length === 1) return group.teams[0];
   const rows = computeTable(group.matches, group.teams);
   return rows[0]?.team || '';
 }
@@ -443,7 +443,7 @@ function renderGroups() {
     
     const groupDiv = document.createElement('div');
     groupDiv.className = `groupBox group${groupKey}`;
-    groupDiv.innerHTML = `<h3>Grupo ${groupKey}</h3>`;
+    groupDiv.innerHTML = `<h3>Grupo ${groupKey}</h3>${teams.length === 1 ? '<p class="note">Pase directo a semifinales. Sin partidos de grupo.</p>' : ''}`;
     
     const matchesContainer = document.createElement('div');
     matchesContainer.className = 'matches';
@@ -784,7 +784,8 @@ function loadState() {
   if (saved) {
     try {
       const parsed = JSON.parse(saved);
-      state = { ...state, ...parsed };
+      state = deepMerge(state, parsed);
+      return true;
     } catch (e) {
       console.warn('Error loading saved state:', e);
     }
@@ -834,14 +835,14 @@ function syncUIWithState() {
   $('#themeBg').value = state.theme.bg;
   
   // Actualizar knockout
-  $('#sf1gh').value = state.knockout.sf1.gh || '';
-  $('#sf1ga').value = state.knockout.sf1.ga || '';
-  $('#sf2gh').value = state.knockout.sf2.gh || '';
-  $('#sf2ga').value = state.knockout.sf2.ga || '';
-  $('#figh').value = state.knockout.final.gh || '';
-  $('#figa').value = state.knockout.final.ga || '';
-  $('#thirdgh').value = state.knockout.third.gh || '';
-  $('#thirdga').value = state.knockout.third.ga || '';
+  $('#sf1gh').value = state.knockout.sf1.gh ?? '';
+  $('#sf1ga').value = state.knockout.sf1.ga ?? '';
+  $('#sf2gh').value = state.knockout.sf2.gh ?? '';
+  $('#sf2ga').value = state.knockout.sf2.ga ?? '';
+  $('#figh').value = state.knockout.final.gh ?? '';
+  $('#figa').value = state.knockout.final.ga ?? '';
+  $('#thirdgh').value = state.knockout.third.gh ?? '';
+  $('#thirdga').value = state.knockout.third.ga ?? '';
   
   $('#sf1Hour').value = state.knockout.sf1.hour || '';
   $('#sf1Place').value = state.knockout.sf1.place || '';
@@ -869,33 +870,8 @@ function syncUIWithState() {
 // ===== INICIALIZACIÓN =====
 function init() {
   loadState();
-  
-  // Cargar equipos desde textareas
-  state.groups.A.teams = parseTeams($('#ga').value);
-  state.groups.B.teams = parseTeams($('#gb').value);
-  state.groups.C.teams = parseTeams($('#gc').value);
-  state.groups.D.teams = parseTeams($('#gd').value);
-  
-  // Cargar configuración de puntos
-  state.points.win = parseInt($('#pointsWin').value) || 2;
-  state.points.draw = parseInt($('#pointsDraw').value) || 1;
-  state.points.loss = parseInt($('#pointsLoss').value) || 0;
-  
-  // Cargar tema
-  state.tournamentName = $('#tournamentName').value;
-  state.theme.color = $('#themeColor').value;
-  state.theme.bg = $('#themeBg').value;
-  
-  // Cargar knockout desde inputs
-  state.knockout.sf1.gh = valInt($('#sf1gh').value);
-  state.knockout.sf1.ga = valInt($('#sf1ga').value);
-  state.knockout.sf2.gh = valInt($('#sf2gh').value);
-  state.knockout.sf2.ga = valInt($('#sf2ga').value);
-  state.knockout.final.gh = valInt($('#figh').value);
-  state.knockout.final.ga = valInt($('#figa').value);
-  state.knockout.third.gh = valInt($('#thirdgh').value);
-  state.knockout.third.ga = valInt($('#thirdga').value);
-  
+  syncUIWithState();
+
   renderGroups();
   updateKnockout();
   setupKnockoutListeners();
@@ -907,11 +883,11 @@ function init() {
     state.groups.C.teams = parseTeams($('#gc').value);
     state.groups.D.teams = parseTeams($('#gd').value);
     
-    // Reiniciar partidos
-    state.groups.A.matches = [];
-    state.groups.B.matches = [];
-    state.groups.C.matches = [];
-    state.groups.D.matches = [];
+    // Guardar también los partidos pendientes para exportarlos y publicarlos.
+    for (const group of Object.values(state.groups)) {
+      group.matches = roundRobin3(group.teams).map(([home, away]) =>
+        ({ home, away, gh: null, ga: null, hour: '', place: '' }));
+    }
     
     saveState();
     renderGroups();
@@ -1020,6 +996,16 @@ function init() {
 }
 
 // ===== PUBLICACIÓN =====
+function resolvedKnockout() {
+  updateKnockout();
+  const result = JSON.parse(JSON.stringify(state.knockout));
+  for (const [key, homeId, awayId] of [['sf1','sf1h','sf1a'], ['sf2','sf2h','sf2a'], ['final','fih','fia'], ['third','thirdh','thirda']]) {
+    result[key].home = document.getElementById(homeId).dataset.team;
+    result[key].away = document.getElementById(awayId).dataset.team;
+  }
+  return result;
+}
+
 function publishData() {
   const statusEl = $('#publishStatus');
   statusEl.className = 'status loading';
@@ -1031,8 +1017,9 @@ function publishData() {
       tournamentName: state.tournamentName,
       teamProfiles: normalizeProfiles(state.teamProfiles),
       theme: state.theme,
+      points: state.points,
       groups: {},
-      knockout: state.knockout,
+      knockout: resolvedKnockout(),
       lastUpdated: new Date().toISOString()
     };
     
